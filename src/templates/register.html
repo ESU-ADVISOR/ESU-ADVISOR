@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Register</title>
+        <!-- <link rel="stylesheet" href="/styles/main.css" /> -->
+        <script src="scripts/register_form_validation.js" defer></script>
+    </head>
+    <body>
+        <main>
+            <h1>Register</h1>
+
+            <template id="server-response-template"></template>
+
+            <form action="register.php" method="POST" class="register-form">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        aria-describedby="username-error"
+                    />
+                    <small id="username-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        aria-describedby="email-error"
+                    />
+                    <small id="email-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        aria-describedby="password-error"
+                    />
+                    <small id="password-error" class="error-message"></small>
+                </div>
+
+                <button type="submit" class="btn">Register</button>
+            </form>
+
+            <p>
+                Already have an account?
+                <a href="login.php">Login here</a>.
+            </p>
+        </main>
+    </body>
+</html>

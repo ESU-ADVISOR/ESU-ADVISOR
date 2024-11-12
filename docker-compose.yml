@@ -1,0 +1,32 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "unless-stopped"
+    depends_on:
+      - mariadb
+    ports:
+      - "8800:80"
+    volumes:
+      - "./public_html:/var/www/html:Z"
+      - "./src:/var/www/src:Z"
+      - "./php.ini:/usr/local/etc/php/php.ini:Z"
+    env_file:
+      - ".env"
+  mariadb:
+    image: "mariadb:10.6.7"
+    restart: "unless-stopped"
+    ports:
+      - "3306:3306"
+    volumes:
+      - "mariadb:/var/lib/mysql"
+      - "./db.sql:/docker-entrypoint-initdb.d/db.sql:Z"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root-password"
+      MYSQL_DATABASE: "db"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+
+volumes:
+  mariadb:

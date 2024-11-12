@@ -1,0 +1,53 @@
+<!doctype html>
+
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- <link rel="stylesheet" href="/styles/main.css" /> -->
+        <!-- <link rel="icon" href="images/favicon.ico" type="image/x-icon" /> -->
+        <title>ESUADVISOR</title>
+    </head>
+    <body>
+        <template id="header-template"></template>
+        <main>
+            <!-- <h1>ESUADVISOR</h1> -->
+
+            <img class="logo" src="images/logo.svg" alt="ESUADVISOR (logo)" />
+
+            <template id="welcome-template"></template>
+
+            <section class="search-section">
+                <form action="search.php" method="GET" class="search-form">
+                    <input
+                        type="text"
+                        name="query"
+                        placeholder="Cerca Menù, Mense o Piatti..."
+                        required
+                    />
+                    <button type="submit">Cerca</button>
+                </form>
+            </section>
+
+            <section class="menu-section">
+                <h2>Menu</h2>
+                <ul>
+                    <template id="menu-template"></template>
+                </ul>
+            </section>
+
+            <section class="mense-section">
+                <h2>Mense</h2>
+                <ul>
+                    <template id="mense-template"></template>
+                </ul>
+            </section>
+
+            <section class="dish-of-the-day">
+                <h2>Piatto del giorno</h2>
+                <template id="dish-of-the-day-template"></template>
+            </section>
+        </main>
+        <template id="footer-template"></template>
+    </body>
+</html>

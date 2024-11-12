@@ -1,0 +1,73 @@
+name: Deploy to Remote Server via SFTP
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via SFTP with SSH Tunnel
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SFTP_PAOLOTTI_HOST: sshpaolotti.studenti.math.unipd.it
+          SFTP_TECWEB_HOST: tecweb
+          SFTP_PORT: 22
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openssh-client
+
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          cat > ~/.ssh/config <<EOF
+          Host paolotti
+              HostName $SFTP_PAOLOTTI_HOST
+              User $SSH_USER
+              ForwardAgent yes
+
+          Host tecweb
+              HostName $SFTP_TECWEB_HOST
+              User $SSH_USER
+              ProxyJump paolotti
+              ForwardAgent yes
+          EOF
+          chmod 600 ~/.ssh/config
+
+          ssh-keyscan -H $SFTP_PAOLOTTI_HOST >> ~/.ssh/known_hosts
+          ssh paolotti "ssh-keyscan -H tecweb" >> ~/.ssh/known_hosts
+
+          ssh -o StrictHostKeyChecking=no tecweb 'echo "SSH connection established."'
+
+          ssh tecweb 'rm -rf public_html'
+          ssh tecweb 'rm -rf src'
+
+          sftp tecweb <<EOF
+          put -r ./public_html public_html
+          bye
+          EOF
+
+          sed -i 's/\getenv("DB_HOST")/'\"$DB_HOST\"'/g' ./src/config.php
+          sed -i 's/\getenv("DB_USER")/'\"$DB_USER\"'/g' ./src/config.php
+          sed -i 's/\getenv("DB_PASS")/'\"$DB_PASS\"'/g' ./src/config.php
+          sed -i 's/\getenv("DB_NAME")/'\"$DB_NAME\"'/g' ./src/config.php
+
+          sftp tecweb <<EOF
+          put -r ./src src
+          bye
+          EOF

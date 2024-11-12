@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login</title>
+        <!-- <link rel="stylesheet" href="/styles/main.css" /> -->
+        <script src="scripts/login_form_validation.js" defer></script>
+    </head>
+    <body>
+        <main>
+            <h1>Login</h1>
+
+            <template id="server-response-template"></template>
+
+            <form action="login.php" method="POST" class="login-form">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        aria-describedby="username-error"
+                    />
+                    <small id="username-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        aria-describedby="password-error"
+                    />
+                    <small id="password-error" class="error-message"></small>
+                </div>
+
+                <button type="submit" class="btn">Login</button>
+            </form>
+
+            <p>
+                Don't have an account?
+                <a href="register.php">Register here</a>.
+            </p>
+        </main>
+    </body>
+</html>

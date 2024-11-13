@@ -1,4 +1,4 @@
-# TecWeb
+# ESU-ADVISOR
 
 ## Local Development
 To start the local development environment, you'll need to have installed [docker](https://www.docker.com/), after that run the following command inside the repo directory:

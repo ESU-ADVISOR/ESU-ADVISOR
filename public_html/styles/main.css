@@ -28,6 +28,15 @@ header {
     text-align: center;
 }
 
+/* Star styles */
+.star {
+    color: #ccc; /* Colore grigio chiaro per le stelle non riempite */
+}
+
+.star.filled {
+    color: #f39c12; /* Colore giallo per le stelle riempite */
+}
+
 /* Navigation styles */
 nav ul {
     list-style: none;

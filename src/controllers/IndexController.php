@@ -37,7 +37,7 @@ class IndexController implements BaseController
                 return [
                     'id' => $piatto['id'],
                     'nome' => $piatto['nome'],
-                    'prezzo' => $piatto['descrizione']
+                    'descrizione' => $piatto['descrizione']
                 ];
             }, $piatti)
         ]);

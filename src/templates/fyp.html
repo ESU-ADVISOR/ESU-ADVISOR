@@ -1,0 +1,40 @@
+<!doctype html>
+
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="/styles/main.css" />
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+        <title>For you page</title>
+    </head>
+    <body>
+        <main>
+        <h1>Lascia una recensione</h1>
+        <form action="/submit-review" method="post">
+            <label for="dish-name">Nome del piatto:</label>
+            <input type="text" id="dish-name" name="dish-name" required><br><br>
+            
+            <label for="review">Recensione:</label><br>
+            <textarea id="review" name="review" rows="4" cols="50" required></textarea><br><br>
+            
+            <label for="rating">Valutazione:</label>
+            <select id="rating" name="rating" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            </select><br><br>
+
+            <labael for="descrizione">Descrizione:</label>
+            <input type="text" id="descrizione" name="descrizione"><br><br>
+
+            <label for="foto">Foto:</label>
+            <input type="file" id="foto" name="foto"><br><br>
+            
+            <input type="submit" value="Invia Recensione">
+        </form>
+    </main>
+    <template id="footer-template"></template>
+    </body>

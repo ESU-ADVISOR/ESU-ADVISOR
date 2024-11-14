@@ -27,7 +27,9 @@ class IndexView extends BaseView
         $menseContent = "";
         if (isset($data["mense"]) && is_array($data["mense"])) {
             foreach ($data["mense"] as $mensa) {
-                $menseContent .= "<li>" . htmlspecialchars($mensa) . "</li>";
+                //print_r($mensa);
+                //$menseContent .= "<li>" . htmlspecialchars($mensa) . "</li>";
+                $menseContent .= "<option value=\"" . htmlspecialchars($mensa["id"]) . "\">" . htmlspecialchars($mensa["nome"]) . "</option>";
             }
         }
 
@@ -35,6 +37,13 @@ class IndexView extends BaseView
         if (isset($data["menu"]) && is_array($data["menu"])) {
             foreach ($data["menu"] as $menuItem) {
                 $menuContent .= "<li>" . htmlspecialchars($menuItem) . "</li>";
+            }
+        }
+
+        $piattiContent = "";
+        if (isset($data["piatti"]) && is_array($data["piatti"])) {
+            foreach ($data["piatti"] as $piatto) {
+                $piattiContent .= "<li>" . htmlspecialchars($piatto["nome"]) . "</li>";
             }
         }
 

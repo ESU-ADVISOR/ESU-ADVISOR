@@ -4,8 +4,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- <link rel="stylesheet" href="/styles/main.css" /> -->
-        <!-- <link rel="icon" href="images/favicon.ico" type="image/x-icon" /> -->
+        <link rel="stylesheet" href="/styles/main.css" />
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
         <title>ESUADVISOR</title>
     </head>
     <body>
@@ -13,10 +13,10 @@
         <main>
             <!-- <h1>ESUADVISOR</h1> -->
 
-            <img class="logo" src="images/logo.svg" alt="ESUADVISOR (logo)" />
-
+            <!--<img class="logo" src="images/logo.svg" alt="ESUADVISOR (logo)" /> spostata nell'header -->
+            
             <template id="welcome-template"></template>
-
+<!--
             <section class="search-section">
                 <form action="search.php" method="GET" class="search-form">
                     <input
@@ -28,19 +28,32 @@
                     <button type="submit">Cerca</button>
                 </form>
             </section>
-
-            <section class="menu-section">
-                <h2>Menu</h2>
-                <ul>
-                    <template id="menu-template"></template>
-                </ul>
+-->
+            <section class="mense-section">
+                <select id="mense-select">
+                    <template id="mense-template"></template>
+                </select>
             </section>
-
+            <!--
             <section class="mense-section">
                 <h2>Mense</h2>
                 <ul>
                     <template id="mense-template"></template>
                 </ul>
+            </section>
+-->
+
+            <section class="menu-section">
+                <h2>Menu del giorno</h2>
+                <ul>
+                    <template id="menu-template"></template>
+                </ul>
+            </section>
+
+            <section class="piatti-section">
+                <dl>
+                    <template id="piatti-template"></template>  <!--ogni piatto è un dt con dd e due immagini (stelle e img)-->
+                </dl>
             </section>
 
             <section class="dish-of-the-day">

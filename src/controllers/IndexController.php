@@ -22,24 +22,22 @@ class IndexController implements BaseController
         $view = new IndexView();
 
         $view->render([
-            //test
-            //"mense" => array_column($mense, "nome"),
-            //"mense" => $mense,
-            "mense" => array_map(function($mensa){
+            "mense" => array_map(function ($mensa) {
                 return [
-                    'id' => $mensa['id'],
-                    'nome' => $mensa['nome']
+                    "id" => $mensa["id"],
+                    "nome" => $mensa["nome"],
                 ];
             }, $mense),
             //
             "menu" => array_column($menu, "nome"),
-            "piatti" => array_map(function($piatto){
+            "piatti" => array_map(function ($piatto) {
                 return [
-                    'id' => $piatto['id'],
-                    'nome' => $piatto['nome'],
-                    'descrizione' => $piatto['descrizione']
+                    "id" => $piatto["id"],
+                    "nome" => $piatto["nome"],
+                    "descrizione" => $piatto["descrizione"],
+                    "mensa_id" => $piatto["mensa_id"],
                 ];
-            }, $piatti)
+            }, $piatti),
         ]);
     }
 

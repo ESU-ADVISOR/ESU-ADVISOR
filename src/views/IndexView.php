@@ -93,8 +93,8 @@ class IndexView extends BaseView
         $menseInfoContent .= "<dd>Indirizzo: via roma</dd>";
         $menseInfoContent .= "<dd>Telefono mensa: 1234567890</dd>";
         $menseInfoContent .= "<dd>Orari mensa: 00.00 - 23.59</dd>";
-        $menseInfoContent .= "<button>Direzioni</button>";
-
+        $menseInfoContent .= "<button class=\"nav-button secondary\">Direzioni</button>";
+        
         Utils::replaceTemplateContent(
             $this->dom,
             "mense-template",

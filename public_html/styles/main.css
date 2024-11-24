@@ -1,79 +1,58 @@
-/* Reset some default browser styles */
-body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl, dd {
-    margin: 0;
+/* main.css */
+
+/* Base styles */
+@import 'base/variables.css';
+@import 'base/reset.css';
+@import 'base/typography.css';
+@import 'base/breakpoints.css';
+@import 'base/animations.css';
+
+/* Layouts */
+@import 'layouts/header.css';
+@import 'layouts/body.css';
+@import 'layouts/footer.css';
+
+/* Components */
+@import 'components/buttons.css';
+@import 'components/cards.css';
+@import 'components/forms.css';
+@import 'components/ratings.css';
+
+/* Utils */
+@import 'utils/spacing.css';
+
+/* Accessibility utilities */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
     padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }
 
-/* Set default font and background color */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    background-color: red;
-    color: #333;
-    line-height: 1.6;
+[hidden] {
+    display: none !important;
 }
 
-/* Container for centering content */
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-}
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .page-content {
+        padding: 0;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+    }
 
-/* Header styles */
-header {
-    background: #333;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
-}
-
-/* Star styles */
-.star {
-    color: #ccc; /* Colore grigio chiaro per le stelle non riempite */
-}
-
-.star.filled {
-    color: #f39c12; /* Colore giallo per le stelle riempite */
-}
-
-/* Navigation styles */
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin-right: 10px;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Main content styles */
-main {
-    background: #fff;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-/* Footer styles */
-footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    margin-top: 20px;
-}
-
-/* Utility classes */
-.text-center {
-    text-align: center;
-}
-
-.mt-20 {
-    margin-top: 20px;
+    @page {
+        margin: 2cm;
+    }
 }

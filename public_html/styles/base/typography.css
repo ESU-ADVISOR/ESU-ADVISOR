@@ -1,0 +1,45 @@
+/* base/typography.css */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+h1 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+}
+
+h2 {
+    font-size: var(--text-xl);
+    font-weight: 600;
+}
+
+h3 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+}
+
+p {
+    color: var(--text-secondary);
+    font-size: var(--text-base);
+}
+
+.text-sm {
+    font-size: var(--text-sm);
+}
+
+.text-xs {
+    font-size: var(--text-xs);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.font-semibold {
+    font-weight: 600;
+}

@@ -1,5 +1,4 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="it">
     <head>
         <meta charset="UTF-8" />
@@ -11,12 +10,13 @@
     </head>
     <body>
         <template id="header-template"></template>
-        <main>
+        <main class="page-content">
             <!-- <h1>ESUADVISOR</h1> -->
 
             <!--<img class="logo" src="images/logo.svg" alt="ESUADVISOR (logo)" /> spostata nell'header -->
 
             <template id="welcome-template"></template>
+
 <!--
             <section class="search-section">
                 <form action="search.php" method="GET" class="search-form">
@@ -30,12 +30,15 @@
                 </form>
             </section>
 -->
-            <section class="mense-section">
-                <select id="mense-select">
-                    <template id="mense-template"></template>
-                </select>
-            </section>
-            <!--
+            <div class="mensa-select-container">
+                <section class="mense-section">
+                    <select id="mense-select" class="form-select">
+                        <template id="mense-template"></template>
+                    </select>
+                </section>
+            </div>
+
+<!--
             <section class="mense-section">
                 <h2>Mense</h2>
                 <ul>
@@ -45,29 +48,73 @@
 -->
 
             <section class="menu-section">
-                <h2>Menu del giorno</h2>
-                <ul>
-                    <template id="menu-template"></template>
-                </ul>
+                <div class="card card-expanded mb-4">
+                    <h2 class="card-title">Menu del giorno</h2>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-info">
+                                <ul>
+                                    <template id="menu-template"></template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section class="piatti-section">
-                <h2>Piatti</h2>
-                <dl>
-                    <template id="piatti-template"></template>  <!--ogni piatto è un dt con dd e due immagini (stelle e img)-->
-                </dl>
+                <div class="section-card">
+                    <h2>Piatti</h2>
+                    <div class="card-item">
+                        <div class="card-content">
+                            <div class="card-info">
+                                <dl>
+                                    <template id="piatti-template"></template>  <!--ogni piatto è un dt con dd e due immagini (stelle e img)-->
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section class="dish-of-the-day">
-                <h2>Piatto del giorno</h2>
-                <template id="dish-of-the-day-template"></template>
+                <div class="card card-expanded mb-4">
+                    <h2 class="card-title">Piatto del giorno</h2>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-info">
+                                <div class="card-title">
+                                    <template id="dish-of-the-day-template"></template>
+                                </div>
+                                <div class="card-description">
+                                    <template id="dish-of-the-day-description-template"></template>
+                                </div>
+                                <div class="card-rating">
+                                    <template id="dish-of-the-day-rating-template"></template>
+                                </div>
+                            </div>
+                            <div class="card-media">
+                                <template id="dish-of-the-day-image-template"></template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section class="mense-info-section">
-                <h2>Informazioni sulle mense</h2>
-                <ul>
-                    <template id="mense-info-template"></template>
-                </ul>
+                <div class="card card-expanded mb-4">
+                    <h2 class="card-title">Informazioni sulle mense</h2>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-info">
+                                <ul>
+                                    <template id="mense-info-template"></template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
         <template id="footer-template"></template>
     </body>

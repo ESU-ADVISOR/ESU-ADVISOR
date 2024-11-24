@@ -1,41 +1,55 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="it">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="styles/main.css" />
-        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
         <title>Dettagli piatto</title>
     </head>
     <body>
-        <h1>Dettagli del piatto</h1>
-        <input
-            type="button"
-            value="Torna alla lista dei piatti"
-            href="index.html"
-        />
+        <template id="header-template"></template>
+        
+        <main class="page-content">
+            <div class="mb-4">
+                <a href="index.html" class="nav-button secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m12 19-7-7 7-7"/>
+                        <path d="M19 12H5"/>
+                    </svg>
+                    Torna alla lista dei piatti
+                </a>
+            </div>
 
-        <img src="images/logo.png" alt="Immagine del piatto" />
+            <article class="card card-expanded">
+                <div class="card-media mb-4">
+                    <img src="images/logo.png" alt="Immagine del piatto" class="w-full h-auto" />
+                </div>
 
-        <h2>Nome del piatto</h2>
+                <div class="card-body">
+                    <h1 class="card-title">Nome del piatto</h1>
 
-        <h3>Dettagli</h3>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+                    <section class="mb-4">
+                        <h2 class="text-lg font-semibold mb-2">Dettagli</h2>
+                        <div class="card-description">
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                aliquip ex ea commodo consequat.
+                            </p>
+                        </div>
+                    </section>
 
-        <section class="review-section">
-            <h3>Rating e reviews</h3>
-            <ul>
-                <template id="review-template"></template>
-            </ul>
-        </section>
+                    <section>
+                        <h2 class="text-lg font-semibold mb-2">Rating e reviews</h2>
+                        <div class="cards-stack">
+                            <template id="review-template"></template>
+                        </div>
+                    </section>
+                </div>
+            </article>
+        </main>
+
+        <template id="footer-template"></template>
     </body>
 </html>

@@ -1,0 +1,75 @@
+/* base/variables.css */
+:root {
+    /* Colors - Light theme default */
+    --primary: #4F46E5;
+    --primary-hover: #4338CA;
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    
+    /* Text colors */
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    
+    /* Background colors */
+    --background: #F3F4F6;
+    --background-card: #FFFFFF;
+    
+    /* Border colors */
+    --border-color: #e5e7eb;
+    
+    /* Shadows */
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* Border radius */
+    --radius: 0.5rem;
+    --radius-sm: 0.25rem;
+    --radius-full: 9999px;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;  /* 4px */
+    --spacing-sm: 0.5rem;   /* 8px */
+    --spacing-md: 1rem;     /* 16px */
+    --spacing-lg: 1.5rem;   /* 24px */
+    --spacing-xl: 2rem;     /* 32px */
+    
+    /* Font sizes */
+    --text-xs: 0.75rem;     /* 12px */
+    --text-sm: 0.875rem;    /* 14px */
+    --text-base: 1rem;      /* 16px */
+    --text-lg: 1.125rem;    /* 18px */
+    --text-xl: 1.25rem;     /* 20px */
+    --text-2xl: 1.5rem;     /* 24px */
+    
+    /* Container */
+    --container-max: 1200px;
+    
+    /* Z-index */
+    --z-header: 30;
+    --z-navigation: 20;
+    --z-default: 1;
+    --z-below: -1;
+    
+    /* Transitions */
+    --transition: 200ms ease-out;
+}
+
+/* Dark theme */
+.theme-dark {
+    --text-primary: #F9FAFB;
+    --text-secondary: #D1D5DB;
+    --background: #1F2937;
+    --background-card: #374151;
+    --border-color: #4B5563;
+}
+
+/* Optional: System preference dark mode override */
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) {
+        --text-primary: #F9FAFB;
+        --text-secondary: #D1D5DB;
+        --background: #1F2937;
+        --background-card: #374151;
+        --border-color: #4B5563;
+    }
+}

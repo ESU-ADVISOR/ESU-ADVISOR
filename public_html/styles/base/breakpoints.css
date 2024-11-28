@@ -1,0 +1,75 @@
+/* base/breakpoints.css */
+
+/* Mobile First approach */
+/* Anything smaller than 640px is considered mobile and doesn't need a media query */
+
+/* Small devices (tablets, 640px and up) */
+@media (min-width: 640px) {
+    :root {
+        --container-width: 640px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    :root {
+        --container-width: 768px;
+        --text-base: 1rem;
+        --text-lg: 1.25rem;
+        --spacing-md: 1.25rem;
+    }
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+    :root {
+        --container-width: 1024px;
+        --text-base: 1.125rem;
+        --text-lg: 1.5rem;
+        --spacing-md: 1.5rem;
+    }
+}
+
+/* Extra large devices (large desktops, 1280px and up) */
+@media (min-width: 1280px) {
+    :root {
+        --container-width: 1280px;
+    }
+}
+
+/* Print styles */
+@media print {
+    :root {
+        --text-base: 12pt;
+        --text-lg: 14pt;
+        --spacing-md: 1rem;
+    }
+}
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition: none !important;
+    }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) {
+        --background: #1f2937;
+        --background-card: #374151;
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --border-color: #4b5563;
+    }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+    :root {
+        --primary: CanvasText;
+        --background: Canvas;
+        --text-primary: CanvasText;
+        --border-color: CanvasText;
+    }
+}

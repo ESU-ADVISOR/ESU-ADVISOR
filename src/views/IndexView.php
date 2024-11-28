@@ -27,7 +27,12 @@ class IndexView extends BaseView
         $menseContent = "";
         if (isset($data["mense"]) && is_array($data["mense"])) {
             foreach ($data["mense"] as $mensa) {
-                $menseContent .= "<li>" . htmlspecialchars($mensa) . "</li>";
+                $menseContent .=
+                    "<option value=\"" .
+                    htmlspecialchars($mensa["id"]) .
+                    "\">" .
+                    htmlspecialchars($mensa["nome"]) .
+                    "</option>";
             }
         }
 
@@ -38,6 +43,58 @@ class IndexView extends BaseView
             }
         }
 
+        $starSVG = file_get_contents(
+            __DIR__ . "/../../public_html/images/star.svg"
+        );
+
+        $starFilledSVG = file_get_contents(
+            __DIR__ . "/../../public_html/images/star_filled.svg"
+        );
+
+        $piattiContent = "";
+        if (isset($data["piatti"]) && is_array($data["piatti"])) {
+            foreach ($data["piatti"] as $piatto) {
+                $piattiContent .=
+                    "<article class=\"menu-item\" hidden data-mensa-id=\"" .
+                    $piatto["mensa_id"] .
+                    "\">";
+                $piattiContent .=
+                    "<figure><img src=\"images/logo.png\" alt=\"" .
+                    htmlspecialchars($piatto["nome"]) .
+                    "\" width=\"auto\" height=\"50\"></figure>";
+                $piattiContent .=
+                    "<div class=\"menu-item-content\">" .
+                    "<h3>" .
+                    htmlspecialchars($piatto["nome"]) .
+                    "</h3>";
+                $piattiContent .=
+                    "<p>" . htmlspecialchars($piatto["descrizione"]) . "</p>";
+
+                $piattiContent .= "<div class=\"ratings\">" . $starFilledSVG;
+                $piattiContent .= $starSVG . "</div>";
+                $piattiContent .=
+                    "" .
+                    "<a href=\"./piatto.html\">Vedi recensioni</a>" .
+                    "</div>" .
+                    "</article>";
+            }
+        }
+
+        $dishOfTheDayContent = "";
+        $dishOfTheDayContent .= "<dt>Nome piatto</dt>";
+        $dishOfTheDayContent .= "<dd>Descrizione piatto</dd>";
+        $dishOfTheDayContent .=
+            "<dd><img src=\"images/logo.png\" alt=\"Foto piatto del giorno\" width=\"auto\" height=\"50\"></dd>";
+        $dishOfTheDayContent .= $starFilledSVG;
+        $dishOfTheDayContent .= $starSVG;
+
+        $menseInfoContent = "";
+        $menseInfoContent .= "<dt>Nome mensa</dt>";
+        $menseInfoContent .= "<dd>Indirizzo: via roma</dd>";
+        $menseInfoContent .= "<dd>Telefono mensa: 1234567890</dd>";
+        $menseInfoContent .= "<dd>Orari mensa: 00.00 - 23.59</dd>";
+        $menseInfoContent .= "<button class=\"nav-button secondary\">Direzioni</button>";
+        
         Utils::replaceTemplateContent(
             $this->dom,
             "mense-template",
@@ -47,6 +104,21 @@ class IndexView extends BaseView
             $this->dom,
             "menu-template",
             $menuContent
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "piatti-template",
+            $piattiContent
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "dish-of-the-day-template",
+            $dishOfTheDayContent
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "mense-info-template",
+            $menseInfoContent
         );
 
         echo $this->dom->saveHTML();

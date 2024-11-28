@@ -3,6 +3,7 @@ namespace Controllers;
 
 use Models\MenseModel;
 use Models\MenuModel;
+use Models\PiattiModel;
 use Views\IndexView;
 
 class IndexController implements BaseController
@@ -15,11 +16,28 @@ class IndexController implements BaseController
         $menuModel = new MenuModel();
         $menu = $menuModel->getAllMenu();
 
+        $piattiModel = new PiattiModel();
+        $piatti = $piattiModel->getAllPiatti();
+
         $view = new IndexView();
 
         $view->render([
-            "mense" => array_column($mense, "nome"),
+            "mense" => array_map(function ($mensa) {
+                return [
+                    "id" => $mensa["id"],
+                    "nome" => $mensa["nome"],
+                ];
+            }, $mense),
+            //
             "menu" => array_column($menu, "nome"),
+            "piatti" => array_map(function ($piatto) {
+                return [
+                    "id" => $piatto["id"],
+                    "nome" => $piatto["nome"],
+                    "descrizione" => $piatto["descrizione"],
+                    "mensa_id" => $piatto["mensa_id"],
+                ];
+            }, $piatti),
         ]);
     }
 

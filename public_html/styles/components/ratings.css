@@ -1,0 +1,27 @@
+/* components/ratings.css */
+.ratings {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.star {
+    width: 16px;
+    height: 16px;
+}
+
+.star-filled {
+    color: #FFD700;
+}
+
+.star-empty {
+    color: #E5E7EB;
+}
+
+/* Interazione hover per sistemi che lo supportano */
+@media (hover: hover) {
+    .ratings[data-interactive="true"] .star:hover {
+        transform: scale(1.2);
+        transition: transform var(--transition);
+    }
+}

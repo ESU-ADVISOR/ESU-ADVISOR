@@ -8,6 +8,7 @@ abstract class BaseView
     protected $template;
     protected $dom;
 
+    /** @param string $templatePath */
     public function __construct($templatePath)
     {
         $this->template = file_get_contents($templatePath);
@@ -17,7 +18,7 @@ abstract class BaseView
         libxml_clear_errors();
     }
 
-    public function render(array $data = [])
+    public function render(array $data = []): void
     {
         $headerContent = file_get_contents(
             __DIR__ . "/../templates/header.html"
@@ -36,5 +37,18 @@ abstract class BaseView
             "footer-template",
             $footerContent
         );
+        if (isset($_SESSION["email"]) && !empty($_SESSION["email"])) {
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "session-buttons-template",
+                '<a href="logout.php" class="nav-button danger">Logout</a>'
+            );
+        } else {
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "session-buttons-template",
+                '<a href="login.php" class="nav-button primary">Login</a><a href="register.php" class="nav-button secondary">Register</a>'
+            );
+        }
     }
 }

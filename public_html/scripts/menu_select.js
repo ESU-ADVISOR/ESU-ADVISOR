@@ -3,11 +3,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function edit_list(event) {
     const piatti = document.querySelectorAll(".menu-item");
+    const info = document.querySelectorAll(".mense-info-item");
     const selectedMensaId = event.target.value;
 
     let hasVisibleItems = false;
 
     piatti.forEach(function (item) {
+      const mensaId = item.getAttribute("data-mensa-id");
+
+      if (selectedMensaId === "") {
+        item.setAttribute("hidden", "");
+      } else if (mensaId === selectedMensaId) {
+        item.removeAttribute("hidden");
+        hasVisibleItems = true;
+      } else {
+        item.setAttribute("hidden", "");
+      }
+    });
+
+    info.forEach(function (item) {
       const mensaId = item.getAttribute("data-mensa-id");
 
       if (selectedMensaId === "") {

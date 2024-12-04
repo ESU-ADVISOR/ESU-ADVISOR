@@ -2,42 +2,52 @@
 namespace Controllers;
 
 use Models\MenseModel;
-use Models\MenuModel;
-use Models\PiattiModel;
+use Models\PiattoModel;
 use Views\IndexView;
 
 class IndexController implements BaseController
 {
     public function handleGETRequest(array $get = []): void
     {
-        $model = new MenseModel();
-        $mense = $model->getAllMense();
+        $menus = [];
+        foreach (MenseModel::findAll() as $mensa) {
+            $menuModel = $mensa->getCurrentMenu();
+            $piatti = $menuModel->getPiatti();
 
-        $menuModel = new MenuModel();
-        $menu = $menuModel->getAllMenu();
-
-        $piattiModel = new PiattiModel();
-        $piatti = $piattiModel->getAllPiatti();
+            $menus[] = [
+                "nome" => $mensa->getNome(),
+                "indirizzo" => $mensa->getIndirizzo(),
+                "piatti" => $piatti,
+            ];
+        }
 
         $view = new IndexView();
 
+        $piatti = [];
+
         $view->render([
-            "mense" => array_map(function ($mensa) {
+            "mense" => array_map(function ($menu) {
                 return [
-                    "id" => $mensa["id"],
-                    "nome" => $mensa["nome"],
+                    "nome" => $menu["nome"],
+                    "indirizzo" => $menu["indirizzo"],
+                    "piatti" => $menu["piatti"],
                 ];
-            }, $mense),
+            }, $menus),
             //
-            "menu" => array_column($menu, "nome"),
-            "piatti" => array_map(function ($piatto) {
-                return [
-                    "id" => $piatto["id"],
-                    "nome" => $piatto["nome"],
-                    "descrizione" => $piatto["descrizione"],
-                    "mensa_id" => $piatto["mensa_id"],
-                ];
-            }, $piatti),
+            // "menu" => array_map(function (MenuModel $menu) {
+            //     return [
+            //         "data" => $menu->getData(),
+            //         "menu" => $menu->get(),
+            //     ];
+            // }, $menu),
+            "piatti" => array_map(function ($menu) {
+                return array_map(function (PiattoModel $piatto) {
+                    return [
+                        "nome" => $piatto->getNome(),
+                        "descrizione" => $piatto->getDescrizione(),
+                    ];
+                }, $menu["piatti"])[0];
+            }, $menus),
         ]);
     }
 

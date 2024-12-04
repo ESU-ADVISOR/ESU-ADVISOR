@@ -7,21 +7,17 @@ use Controllers\LoginController;
 $controller = new LoginController();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = $password = "";
+    $email = $email = "";
     $errors = [];
 
-    $username = trim($_POST["username"] ?? "");
+    $email = trim($_POST["email"] ?? "");
     $password = trim($_POST["password"] ?? "");
 
-    if (empty($username)) {
-        $errors[] = "Username is required.";
+    if (empty($email)) {
+        $errors[] = "Email address is required.";
     } else {
-        if (strlen($username) < 3 || strlen($username) > 50) {
-            $errors[] = "Username must be between 3 and 50 characters long.";
-        }
-        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $username)) {
-            $errors[] =
-                "Username can only contain letters, numbers, underscores, and hyphens.";
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Please enter a valid email address.";
         }
     }
 
@@ -44,10 +40,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($errors)) {
         $data = [
-            "username" => $username,
+            "email" => $email,
             "password" => $password,
         ];
         $controller->handlePOSTRequest($data);
+    } else {
+        $controller->handleGETRequest(["errors" => $errors]);
     }
 } else {
     $controller->handleGETRequest($_GET);

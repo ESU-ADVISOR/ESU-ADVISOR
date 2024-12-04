@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = trim($_POST["username"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $password = trim($_POST["password"] ?? "");
+    $dataNascita = trim($_POST["birth_date"] ?? "");
 
     if (empty($username)) {
         $errors[] = "Username is required.";
@@ -51,19 +52,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
+    if (empty($dataNascita)) {
+        $errors[] = "Data di nascita is required.";
+    } else {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dataNascita)) {
+            $errors[] = "Please enter a valid data di nascita.";
+        }
+    }
+
     if (empty($errors)) {
         $data = [
             "username" => $username,
             "email" => $email,
             "password" => $password,
+            "dataNascita" => $dataNascita,
         ];
         $controller->handlePOSTRequest($data);
     } else {
         http_response_code(400);
-        echo json_encode([
+        $controller->handleGETRequest([
             "status" => "error",
             "errors" => $errors,
         ]);
+
         exit();
     }
 } else {

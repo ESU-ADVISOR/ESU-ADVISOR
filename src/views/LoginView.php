@@ -10,7 +10,7 @@ class LoginView extends BaseView
         parent::__construct(__DIR__ . "/../templates/login.html");
     }
 
-    public function render(array $data = [])
+    public function render(array $data = []): void
     {
         parent::render();
 

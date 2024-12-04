@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
     <head>
         <meta charset="UTF-8" />
@@ -17,7 +17,7 @@
 
             <template id="welcome-template"></template>
 
-<!--
+            <!--
             <section class="search-section">
                 <form action="search.php" method="GET" class="search-form">
                     <input
@@ -38,7 +38,7 @@
                 </section>
             </div>
 
-<!--
+            <!--
             <section class="mense-section">
                 <h2>Mense</h2>
                 <ul>
@@ -50,30 +50,10 @@
             <section class="menu-section">
                 <div class="card card-expanded mb-4">
                     <h2 class="card-title">Menu del giorno</h2>
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="card-info">
-                                <ul>
-                                    <template id="menu-template"></template>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="piatti-section">
-                <div class="section-card">
-                    <h2>Piatti</h2>
-                    <div class="card-item">
-                        <div class="card-content">
-                            <div class="card-info">
-                                <dl>
-                                    <template id="piatti-template"></template>  <!--ogni piatto è un dt con dd e due immagini (stelle e img)-->
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
+                    <ul>
+                        <template id="piatti-template"></template>
+                        <!--ogni piatto è un dt con dd e due immagini (stelle e img)-->
+                    </ul>
                 </div>
             </section>
 
@@ -84,17 +64,25 @@
                         <div class="card-content">
                             <div class="card-info">
                                 <div class="card-title">
-                                    <template id="dish-of-the-day-template"></template>
+                                    <template
+                                        id="dish-of-the-day-template"
+                                    ></template>
                                 </div>
                                 <div class="card-description">
-                                    <template id="dish-of-the-day-description-template"></template>
+                                    <template
+                                        id="dish-of-the-day-description-template"
+                                    ></template>
                                 </div>
                                 <div class="card-rating">
-                                    <template id="dish-of-the-day-rating-template"></template>
+                                    <template
+                                        id="dish-of-the-day-rating-template"
+                                    ></template>
                                 </div>
                             </div>
                             <div class="card-media">
-                                <template id="dish-of-the-day-image-template"></template>
+                                <template
+                                    id="dish-of-the-day-image-template"
+                                ></template>
                             </div>
                         </div>
                     </div>
@@ -108,7 +96,9 @@
                         <div class="card-content">
                             <div class="card-info">
                                 <ul>
-                                    <template id="mense-info-template"></template>
+                                    <template
+                                        id="mense-info-template"
+                                    ></template>
                                 </ul>
                             </div>
                         </div>

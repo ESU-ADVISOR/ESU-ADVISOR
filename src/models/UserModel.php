@@ -1,73 +1,241 @@
 <?php
 namespace Models;
 
-class UserModel extends BaseModel
+use Models\Database;
+use DateTimeImmutable;
+
+class UserModel
 {
-    public function __construct()
+    private $db;
+
+    // table fields
+    private string|null $username;
+    private string|null $email;
+    private string|null $hashedPassword;
+    private string|DateTimeImmutable|null $dataNascita;
+
+    /**
+     * @param array<int,string> $data
+     */
+    public function __construct(array $data = [])
     {
-        parent::__construct();
+        $this->db = Database::getInstance();
+        if (!empty($data)) {
+            $this->fill($data);
+        }
     }
 
-    public function createUser(
-        string $username,
-        string $email,
-        string $password
-    ): bool {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $user_creation_date = date("Y-m-d H:i:s");
+    //-------------Stateful methods----------------
 
-        $stmt = $this->db->prepare(
-            "INSERT INTO user (username, email, password, user_creation_date) VALUES (?, ?, ?, ?)"
-        );
+    /**
+     * @param array<int,string> $data
+     */
+    private function fill(array $data): void
+    {
+        if (isset($data["username"])) {
+            $this->username = $data["username"];
+        }
+        if (isset($data["email"])) {
+            $this->email = $data["email"];
+        }
+        if (isset($data["password"])) {
+            $this->hashedPassword = password_hash(
+                $data["password"],
+                PASSWORD_DEFAULT
+            );
+        }
+        if (isset($data["dataNascita"])) {
+            $this->dataNascita = new DateTimeImmutable($data["dataNascita"]);
+        }
+    }
 
+    public function validate(): bool
+    {
+        return $this->email != "";
+    }
+
+    public function refresh(): bool
+    {
+        if ($this->email === null) {
+            return false;
+        }
+
+        $data = self::findByEmail($this->email);
+        if ($data) {
+            self::__construct($data);
+            return true;
+        }
+        return false;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /** @param string $value */
+    public function setUsername($value): void
+    {
+        $this->username = $value;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /** @param string $value */
+    public function setEmail($value): void
+    {
+        $this->email = $value;
+    }
+
+    /** @param string $password */
+    public function setPassword($password): void
+    {
+        $this->hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    /**
+     * @param mixed $value @param string $password */
+    public function setHashedPassword($value): void
+    {
+        $this->hashedPassword = $value;
+    }
+
+    /** @return DateTimeImmutable */
+    public function getDataNascita(): ?DateTimeImmutable
+    {
+        return $this->dataNascita;
+    }
+
+    /** @param string $value */
+    public function setDataNascita($value): void
+    {
+        $this->dataNascita = new DateTimeImmutable($value);
+    }
+
+    //-----------------Relationals methods----------------
+
+    //-----------------Database methods----------------
+    public function saveToDB(): bool
+    {
+        if ($this->email == null) {
+            return false;
+        }
+        $exists = self::findByEmail($this->email);
+        if (!$exists) {
+            $stmt = $this->db->prepare(
+                "INSERT INTO utente (username, email, password, dataNascita) VALUES (:username, :email, :password, :dataNascita)"
+            );
+            echo $this->hashedPassword;
+            return $stmt->execute([
+                "username" => $this->username,
+                "email" => $this->email,
+                "password" => $this->hashedPassword,
+                "dataNascita" => $this->dataNascita->format("Y-m-d"),
+            ]);
+        } elseif ($this->username != "") {
+            $stmt = $this->db->prepare(
+                "UPDATE utente SET username = :username, password = :password, dataNascita = :dataNascita WHERE email = :email"
+            );
+            return $stmt->execute([
+                "username" => $this->username,
+                "email" => $this->email,
+                "password" => $this->hashedPassword,
+                "dataNascita" => $this->dataNascita,
+            ]);
+        }
+    }
+
+    public function deleteFromDB(): bool
+    {
+        if ($this->email == null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare("DELETE FROM utente WHERE email = :email");
         return $stmt->execute([
-            $username,
-            $email,
-            $hashedPassword,
-            $user_creation_date,
+            "email" => $this->email,
         ]);
     }
 
-    public function isEmailTaken(string $email): bool
+    //-----------------Stateless methods----------------
+
+    public static function isEmailTaken(string $email): bool
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) FROM user WHERE email = ?");
-        $stmt->execute([$email]);
+        $db = Database::getInstance();
+        $stmt = $db->prepare(
+            "SELECT COUNT(*) FROM utente WHERE email = :email"
+        );
+        $stmt->execute(["email" => $email]);
         return $stmt->fetchColumn() > 0;
     }
 
-    public function isUserValid(string $username): bool
+    public static function isUserValid(string $email): bool
     {
-        $stmt = $this->db->prepare(
-            "SELECT COUNT(*) FROM user WHERE username = ?"
+        $db = Database::getInstance();
+        $stmt = $db->prepare(
+            "SELECT COUNT(*) FROM utente WHERE email = :email"
         );
-
-        $stmt->execute([$username]);
+        $stmt->execute(["email" => $email]);
         return $stmt->fetchColumn() > 0;
     }
 
-    public function authenticate(string $username, string $password): bool
+    public static function authenticate(string $email, string $password): bool
     {
-        $stmt = $this->db->prepare(
-            "SELECT password FROM user WHERE username = ?"
+        $db = Database::getInstance();
+        $stmt = $db->prepare(
+            "SELECT password FROM utente WHERE email = :email"
         );
-        $stmt->execute([$username]);
+        $stmt->execute(["email" => $email]);
         $hashedPassword = $stmt->fetchColumn();
-
         if ($hashedPassword && password_verify($password, $hashedPassword)) {
             if (password_needs_rehash($hashedPassword, PASSWORD_DEFAULT)) {
                 $newHash = password_hash($password, PASSWORD_DEFAULT);
                 $updateSql =
-                    "UPDATE users SET password = :password WHERE username = :username";
-                $updateStmt = $this->db->prepare($updateSql);
+                    "UPDATE utente SET password = :password WHERE email = :email";
+                $updateStmt = $db->prepare($updateSql);
                 $updateStmt->execute([
                     ":password" => $newHash,
-                    ":username" => $username,
+                    ":email" => $email,
                 ]);
             }
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param mixed $email @param string $$email */
+    public static function findByEmail($email): ?UserModel
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM utente WHERE email = :email");
+        $stmt->execute([
+            "email" => $email,
+        ]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($data) {
+            return new UserModel($data);
+        }
+        return null;
+    }
+
+    /** @return UserModel[] */
+    public static function findAll(): array
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM utente");
+        $stmt->execute();
+        /** @var MenuModel[] */
+        $users = $stmt->fetchAll(
+            \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
+            UserModel::class
+        );
+        return $users;
     }
 }
 ?>

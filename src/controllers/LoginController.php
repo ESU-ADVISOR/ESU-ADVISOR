@@ -20,24 +20,25 @@ class LoginController implements BaseController
         $this->view->render();
     }
 
-    public function handlePOSTRequest(array $post = [])
+    public function handlePOSTRequest(array $post = []): void
     {
-        $username = $post["username"];
+        $email = $post["email"];
         $password = $post["password"];
 
-        if (!$this->model->isUserValid($username, $password)) {
-            $this->view->render(["errors" => ["Invalid username or password"]]);
+        if (!$this->model->isEmailTaken($email)) {
+            $this->view->render(["errors" => ["Email is not registered"]]);
             return;
         }
 
-        if (!$this->model->authenticate($username, $password)) {
+        if (!$this->model->authenticate($email, $password)) {
             $this->view->render(["errors" => ["Invalid username or password"]]);
+            echo "Invalid username or password";
             return;
         }
 
         session_regenerate_id(true);
 
-        $_SESSION["username"] = $username;
+        $_SESSION["email"] = $email;
 
         header("Location: index.php");
     }

@@ -1,0 +1,17 @@
+<div class="ranking-container">
+  <h1>Classifica dei Piatti</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome del Piatto</th>
+        <th>Valutazione Media</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let piatto of ranking">
+        <td>{{ piatto.nome_piatto }}</td>
+        <td>{{ piatto.valutazione_media }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

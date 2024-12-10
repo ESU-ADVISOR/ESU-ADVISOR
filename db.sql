@@ -122,6 +122,17 @@ CREATE TABLE piatto_allergeni (
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+
+CREATE TABLE preferenze_utente
+(
+    email VARCHAR(50) NOT NULL,
+    mensa_preferita VARCHAR(50),
+    dark_mode BOOLEAN,
+    PRIMARY KEY (email),
+    FOREIGN KEY (email) REFERENCES utente(email) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (mensa_preferita) REFERENCES mensa(nome) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 CREATE VIEW piatto_recensioni_foto AS
 SELECT
     p.nome AS piatto,

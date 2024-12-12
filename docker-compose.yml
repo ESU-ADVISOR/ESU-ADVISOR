@@ -28,6 +28,14 @@ services:
       MYSQL_DATABASE: "db"
       MYSQL_USER: "user"
       MYSQL_PASSWORD: "password"
+  # phpmyadmin:
+  #   image: "phpmyadmin/phpmyadmin"
+  #   restart: "unless-stopped"
+  #   ports:
+  #     - "8080:80"
+  #   environment:
+  #     PMA_HOST: "mariadb"
+  #     MYSQL_ROOT_PASSWORD: "root-password"
 
 volumes:
   mariadb:

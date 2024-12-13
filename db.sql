@@ -113,14 +113,11 @@ CREATE TABLE piatto_foto (
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-DELIMITER / / CREATE TRIGGER check_menu_date BEFORE INSERT ON menu FOR EACH ROW BEGIN IF NEW.data > CURDATE () THEN SIGNAL SQLSTATE '45000'
-SET
-    MESSAGE_TEXT = 'Date cannot be in the future';
-
-END IF;
-
-END / / DELIMITER;
-
+-- CREATE TRIGGER check_menu_date BEFORE INSERT ON menu FOR EACH ROW BEGIN IF NEW.data > CURDATE () THEN SIGNAL SQLSTATE '45000'
+-- SET
+--     MESSAGE_TEXT = 'Date cannot be in the future';
+-- END IF;
+-- END;
 CREATE TABLE piatto_allergeni (
     allergeni VARCHAR(30) NOT NULL,
     piatto VARCHAR(50) NOT NULL,

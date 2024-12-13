@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require_once "../src/config.php";
 use Controllers\IndexController;
 

@@ -117,6 +117,22 @@ class UserModel
 
     //-----------------Relationals methods----------------
 
+    /** @return RecensioneModel[] */
+    public function getRecensioni(): array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM recensione WHERE utente = :utente"
+        );
+        $stmt->execute([
+            "utente" => $this->email,
+        ]);
+        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, RecensioneModel::class);
+        if (!empty($data)) {
+            return $data;
+        }
+        return [];
+    }
+
     //-----------------Database methods----------------
     public function saveToDB(): bool
     {
@@ -128,7 +144,6 @@ class UserModel
             $stmt = $this->db->prepare(
                 "INSERT INTO utente (username, email, password, dataNascita) VALUES (:username, :email, :password, :dataNascita)"
             );
-            echo $this->hashedPassword;
             return $stmt->execute([
                 "username" => $this->username,
                 "email" => $this->email,

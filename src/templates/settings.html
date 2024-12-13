@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, user-scalable=no"
+        />
+        <link rel="stylesheet" href="styles/main.css" />
+        <title>Impostazioni - ESUAdvisor</title>
+    </head>
+    <body>
+        <template id="header-template"></template>
+
+        <main class="form-container">
+            <div class="card card-expanded">
+                <div class="form-header">
+                    <h1>Impostazioni</h1>
+                </div>
+
+                <div class="card-body">
+                    <section class="mb-4 pb-4 border-b border-color">
+                        <h2 class="text-lg font-semibold mb-3">
+                            Preferenze Tema
+                        </h2>
+                        <div class="flex items-center gap-3">
+                            <span class="text-secondary">Tema Chiaro</span>
+                            <label class="theme-switch">
+                                <input
+                                    type="checkbox"
+                                    id="theme-toggle"
+                                    class="visually-hidden"
+                                />
+                                <span class="slider"></span>
+                            </label>
+                            <span class="text-secondary">Tema Scuro</span>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-lg font-semibold mb-3">
+                            Preferenze Mensa
+                        </h2>
+                        <div class="form-group">
+                            <label for="mensa"
+                                >Scegli la tua mensa preferita:</label
+                            >
+                            <select id="mensa" name="mensa" class="form-select">
+                                <option value="mensa1">Mensa 1</option>
+                                <option value="mensa2">Mensa 2</option>
+                                <option value="mensa3">Mensa 3</option>
+                                <option value="mensa4">Mensa 4</option>
+                            </select>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <template id="footer-template"></template>
+
+        <script src="scripts/theme-switcher.js"></script>
+    </body>
+</html>

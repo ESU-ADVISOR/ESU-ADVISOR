@@ -1,60 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, user-scalable=no"
+        />
         <link rel="stylesheet" href="styles/main.css" />
         <title>Lascia una recensione - ESUAdvisor</title>
     </head>
     <body>
         <template id="header-template"></template>
-        
+
         <main class="form-container">
             <div class="form-header">
                 <h1>Lascia una recensione</h1>
             </div>
 
-            <form action="/submit-review" method="post" class="base-form">
+            <template id="server-response-template"></template>
+
+            <form action="fyp.php" method="post" class="base-form">
                 <div class="form-group">
-                    <label for="dish-name">Nome del piatto:</label>
-                    <input type="text" id="dish-name" name="dish-name" required class="form-input">
+                    <label for="mensa">Nome della mensa:</label>
+                    <input
+                        type="text"
+                        id="mensa"
+                        name="mensa"
+                        required
+                        class="form-input"
+                        list="suggerimenti-mense"
+                    />
+                    <small id="mensa-error" class="error"></small>
+                    <datalist id="suggerimenti-mense">
+                        <template id="suggerimenti-mense-template"></template>
+                    </datalist>
+                </div>
+
+                <div class="form-group">
+                    <label for="piatto">Nome del piatto:</label>
+                    <input
+                        type="text"
+                        id="piatto"
+                        name="piatto"
+                        required
+                        class="form-input"
+                        list="suggerimenti-piatti"
+                    />
+                    <small id="piatto-error" class="error"></small>
+
+                    <!-- <template id="suggerimenti-piatti-template"></template> -->
                 </div>
 
                 <div class="form-group">
                     <label for="review">Recensione:</label>
-                    <textarea id="review" name="review" rows="4" required class="form-input"></textarea>
+                    <textarea
+                        id="review"
+                        name="review"
+                        rows="4"
+                        required
+                        class="form-input"
+                    ></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Valutazione:</label>
                     <div class="rating">
-                        <input type="radio" id="star5" name="rating" value="5" class="visually-hidden"/>
+                        <input
+                            type="radio"
+                            id="star5"
+                            name="rating"
+                            value="5"
+                            class="visually-hidden"
+                        />
                         <label for="star5" title="5 stelle">★</label>
-                        <input type="radio" id="star4" name="rating" value="4" class="visually-hidden"/>
+                        <input
+                            type="radio"
+                            id="star4"
+                            name="rating"
+                            value="4"
+                            class="visually-hidden"
+                        />
                         <label for="star4" title="4 stelle">★</label>
-                        <input type="radio" id="star3" name="rating" value="3" class="visually-hidden"/>
+                        <input
+                            type="radio"
+                            id="star3"
+                            name="rating"
+                            value="3"
+                            class="visually-hidden"
+                        />
                         <label for="star3" title="3 stelle">★</label>
-                        <input type="radio" id="star2" name="rating" value="2" class="visually-hidden"/>
+                        <input
+                            type="radio"
+                            id="star2"
+                            name="rating"
+                            value="2"
+                            class="visually-hidden"
+                        />
                         <label for="star2" title="2 stelle">★</label>
-                        <input type="radio" id="star1" name="rating" value="1" class="visually-hidden"/>
+                        <input
+                            type="radio"
+                            id="star1"
+                            name="rating"
+                            value="1"
+                            class="visually-hidden"
+                        />
                         <label for="star1" title="1 stella">★</label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="descrizione">Descrizione:</label>
-                    <input type="text" id="descrizione" name="descrizione" class="form-input">
-                </div>
-
-                <div class="form-group">
                     <label for="foto">Foto:</label>
-                    <input type="file" id="foto" name="foto" accept="image/*" class="form-file">
+                    <input
+                        type="file"
+                        id="foto"
+                        name="foto"
+                        accept="image/*"
+                        class="form-file"
+                    />
                 </div>
 
-                <button type="submit" class="form-button">Invia Recensione</button>
+                <button type="submit" class="form-button">
+                    Invia Recensione
+                </button>
             </form>
         </main>
-
+        <script src="scripts/review_validation.js"></script>
         <template id="footer-template"></template>
     </body>
 </html>

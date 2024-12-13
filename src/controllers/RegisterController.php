@@ -6,16 +6,10 @@ use Views\RegisterView;
 
 class RegisterController implements BaseController
 {
-    private $view;
-
-    public function __construct()
-    {
-        $this->view = new RegisterView();
-    }
-
     public function handleGETRequest(array $get = []): void
     {
-        $this->view->render($get);
+        $view = new RegisterView();
+        $view->render($get);
     }
 
     public function handlePOSTRequest(array $post = []): void
@@ -24,9 +18,9 @@ class RegisterController implements BaseController
         $email = $post["email"];
         $password = $post["password"];
         $dataNascita = $post["dataNascita"];
-
+        $view = new RegisterView();
         if (UserModel::isEmailTaken($email)) {
-            $this->view->render(["errors" => ["Email is already taken"]]);
+            $view->render(["errors" => ["Email is already taken"]]);
             return;
         }
 
@@ -39,18 +33,16 @@ class RegisterController implements BaseController
             ]);
 
             if ($new_user->saveToDB()) {
-                echo "hi";
-                $this->view->render(["success" => "Registration successful!"]);
+                $view->render(["success" => "Registration successful!"]);
                 return;
             } else {
-                echo "ho on";
-                $this->view->render([
+                $view->render([
                     "error" => "Registration failed: ",
                     // "Registration failed: " . $this->model->getLastError(),
                 ]);
             }
         } catch (\Exception $e) {
-            $this->view->render([
+            $view->render([
                 "error" => "Registration failed: " . $e->getMessage(),
             ]);
         }

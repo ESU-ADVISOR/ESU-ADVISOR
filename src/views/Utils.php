@@ -13,9 +13,13 @@ class Utils
         if ($template) {
             $newDom = new \DOMDocument();
             libxml_use_internal_errors(true);
+
             $newDom->loadHTML(
-                "<div>" . $newContent . "</div>",
-                LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+                mb_convert_encoding(
+                    "<div>" . $newContent . "</div>",
+                    "HTML-ENTITIES",
+                    "UTF-8"
+                )
             );
             libxml_clear_errors();
 

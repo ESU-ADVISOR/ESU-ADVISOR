@@ -84,7 +84,9 @@
 
 .piatti-list .menu-item {
     margin: 0;
-    transition: opacity var(--transition-normal), transform var(--transition-normal);
+    transition:
+        opacity var(--transition-normal),
+        transform var(--transition-normal);
 }
 
 .piatti-list .menu-item[hidden] {
@@ -94,7 +96,7 @@
 /* Menu item styles */
 .menu-item {
     display: flex;
-    align-items: start;
+    align-items: center;
     gap: var(--spacing-md);
     padding: var(--spacing-md);
     background-color: var(--background-card);
@@ -280,7 +282,9 @@
 /* Interactive cards */
 .card-interactive {
     cursor: pointer;
-    transition: transform var(--transition), box-shadow var(--transition);
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition);
 }
 
 .card-interactive:hover {
@@ -313,12 +317,12 @@
     .card-content {
         flex-direction: column;
     }
-    
+
     .card-media {
         width: 100%;
         height: 200px;
     }
-    
+
     .card-expanded {
         padding: var(--spacing-md);
     }
@@ -347,6 +351,10 @@
 }
 
 @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }

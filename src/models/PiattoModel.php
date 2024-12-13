@@ -1,6 +1,6 @@
 <?php
 namespace Models;
-
+use Models\RecensioneModel;
 use Models\Database;
 
 class PiattoModel
@@ -98,6 +98,17 @@ class PiattoModel
         }
 
         return $result;
+    }
+
+    public function getAvgVote(): ?int
+    {
+        $recensioni = $this->getRecensioni();
+        $avg = 0.0;
+        foreach ($recensioni as $recensione) {
+            $avg += $recensione->getVoto();
+        }
+        $avg = $avg / count($recensioni);
+        return intval($avg);
     }
 
     //-----------------Database methods----------------

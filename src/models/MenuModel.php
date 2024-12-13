@@ -2,6 +2,7 @@
 namespace Models;
 
 use Models\Database;
+use Models\PiattoModel;
 use DateTimeImmutable;
 
 class MenuModel

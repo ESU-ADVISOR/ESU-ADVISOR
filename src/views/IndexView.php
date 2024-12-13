@@ -15,16 +15,6 @@ class IndexView extends BaseView
     {
         parent::render();
 
-        if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
-            $welcomeMessage =
-                "Welcome, " . htmlspecialchars($_SESSION["username"]);
-            Utils::replaceTemplateContent(
-                $this->dom,
-                "welcome-template",
-                $welcomeMessage
-            );
-        }
-
         $starSVG = file_get_contents(
             __DIR__ . "/../../public_html/images/star.svg"
         );
@@ -36,30 +26,40 @@ class IndexView extends BaseView
         $menseContent = "";
         $menseInfoContent = "";
         $piattiContent = "";
-
+        $dishOfTheDayContent = "";
         if (isset($data["mense"]) && is_array($data["mense"])) {
             $id = 0;
             foreach ($data["mense"] as $mensa) {
+                // Build menseContent
                 $menseContent .=
                     "<option value=\"" .
-                    $id .
+                    htmlspecialchars($id) .
                     "\">" .
                     htmlspecialchars($mensa["nome"]) .
                     "</option>";
 
+                // Start menseInfoContent for each mensa
                 $menseInfoContent .=
                     "<div class=\"mense-info-item\" hidden data-mensa-id=\"" .
-                    $id .
+                    htmlspecialchars($id) .
                     "\">";
-                $menseInfoContent .= "<dt>" . $mensa["nome"] . "</dt>";
                 $menseInfoContent .=
-                    "<dd>Indirizzo: " . $mensa["indirizzo"] . "</dd>";
-                $menseInfoContent .= "<dd>Telefono mensa: 1234567890</dd>";
+                    "<dt>" . htmlspecialchars($mensa["nome"]) . "</dt>";
+                $menseInfoContent .=
+                    "<dd>Indirizzo: " .
+                    htmlspecialchars($mensa["indirizzo"]) .
+                    "</dd>";
+                $menseInfoContent .=
+                    "<dd>Telefono mensa: " .
+                    htmlspecialchars($mensa["telefono"]) .
+                    "</dd>";
 
+                // Fetch orari
                 $orari = MenseModel::findByName(
                     $mensa["nome"]
                 )->getMenseOrari();
 
+                // Weekdays
                 $giorniSettimana = [
                     "Lunedì",
                     "Martedì",
@@ -69,34 +69,55 @@ class IndexView extends BaseView
                     "Sabato",
                     "Domenica",
                 ];
-                $menseInfoContent .=
-                    "<table> <caption>Orari mensa</caption><tbody>";
+
+                // Initialize table
+                $menseInfoContent .= "<table> <caption>Orari Mensa</caption><thead>
+                    <tr>
+                        <th>Giorno</th>
+                        <th>Inizio</th>
+                        <th>Fine</th>
+                    </tr>
+                </thead><tbody>";
 
                 foreach ($orari as $orario) {
-                    $menseInfoContent .=
-                        "<tr><th>" .
-                        $giorniSettimana[
-                            intval($orario["giornoSettimana"]) - 1
-                        ] .
-                        "</th><td>" .
-                        $orario["orainizio"] .
-                        "</td><td>" .
-                        $orario["orafine"] .
-                        "</td></tr>";
+                    $giornoSettimanaIndex =
+                        intval($orario["giornoSettimana"]) - 1;
+                    if (
+                        $giornoSettimanaIndex >= 0 &&
+                        $giornoSettimanaIndex < count($giorniSettimana)
+                    ) {
+                        $giorno = htmlspecialchars(
+                            $giorniSettimana[$giornoSettimanaIndex]
+                        );
+                    } else {
+                        $giorno = "N/A";
+                    }
+
+                    $orainizio = htmlspecialchars($orario["orainizio"]);
+                    $orafine = htmlspecialchars($orario["orafine"]);
+
+                    $menseInfoContent .= "<tr>
+                        <th>{$giorno}</th>
+                        <td>{$orainizio}</td>
+                        <td>{$orafine}</td>
+                    </tr>";
                 }
                 $menseInfoContent .= "</tbody></table>";
 
+                // Add maps link
                 $menseInfoContent .=
-                    "<button class=\"nav-button secondary\">Direzioni</button></div>";
+                    "<a href=\"" .
+                    htmlspecialchars($mensa["maps_link"]) .
+                    "\">
+                    <button class=\"nav-button secondary\">Direzioni</button>
+                </a></div>";
 
+                // Handle piatti
                 if (isset($mensa["piatti"]) && is_array($mensa["piatti"])) {
-                    /**
-                     * @var PiattoModel $piatto
-                     */
                     foreach ($mensa["piatti"] as $piatto) {
                         $piattiContent .=
                             "<article class=\"menu-item\" hidden data-mensa-id=\"" .
-                            $id .
+                            htmlspecialchars($id) .
                             "\">";
                         $piattiContent .=
                             "<figure><img src=\"images/logo.png\" alt=\"" .
@@ -111,12 +132,15 @@ class IndexView extends BaseView
                             "<p>" .
                             htmlspecialchars($piatto->getDescrizione()) .
                             "</p>";
-
+                        $piattiContent .= "<div class=\"ratings\">";
+                        for ($i = 0; $i < $piatto->getAvgVote(); $i++) {
+                            $piattiContent .= $starFilledSVG;
+                        }
+                        for ($i = 0; $i < 5 - $piatto->getAvgVote(); $i++) {
+                            $piattiContent .= $starSVG;
+                        }
+                        $piattiContent .= "</div>";
                         $piattiContent .=
-                            "<div class=\"ratings\">" . $starFilledSVG;
-                        $piattiContent .= $starSVG . "</div>";
-                        $piattiContent .=
-                            "" .
                             "<a href=\"./piatto.php?nome=" .
                             htmlspecialchars(
                                 str_replace(
@@ -131,36 +155,74 @@ class IndexView extends BaseView
                     }
                 }
 
+                if (
+                    isset($mensa["piatto_del_giorno"]) &&
+                    $mensa["piatto_del_giorno"]
+                ) {
+                    $dishOfTheDayContent .=
+                        "<article class=\"menu-item\" hidden data-mensa-id=\"" .
+                        htmlspecialchars($id) .
+                        "\">";
+                    $dishOfTheDayContent .=
+                        "<figure><img src=\"images/logo.png\" alt=\"" .
+                        htmlspecialchars(
+                            $mensa["piatto_del_giorno"]->getNome()
+                        ) .
+                        "\" width=\"auto\" height=\"50\"></figure>";
+                    $dishOfTheDayContent .= "<div class=\"menu-item-content\">";
+                    $dishOfTheDayContent .=
+                        "<h3>" .
+                        htmlspecialchars(
+                            $mensa["piatto_del_giorno"]->getNome()
+                        ) .
+                        "</h3>";
+                    $dishOfTheDayContent .=
+                        "<p>" .
+                        htmlspecialchars(
+                            $mensa["piatto_del_giorno"]->getDescrizione()
+                        ) .
+                        "</p>";
+                    $dishOfTheDayContent .= "<div class=\"ratings\">";
+                    for (
+                        $i = 0;
+                        $i < $mensa["piatto_del_giorno"]->getAvgVote();
+                        $i++
+                    ) {
+                        $dishOfTheDayContent .= $starFilledSVG;
+                    }
+                    for (
+                        $i = 0;
+                        $i < 5 - $mensa["piatto_del_giorno"]->getAvgVote();
+                        $i++
+                    ) {
+                        $dishOfTheDayContent .= $starSVG;
+                    }
+                    $dishOfTheDayContent .= "</div>";
+                    $dishOfTheDayContent .=
+                        "<a href=\"./piatto.php?nome=" .
+                        htmlspecialchars(
+                            str_replace(
+                                " ",
+                                "_",
+                                strtolower(
+                                    $mensa["piatto_del_giorno"]->getNome()
+                                )
+                            )
+                        ) .
+                        "\">Vedi recensioni</a>" .
+                        "</div>" .
+                        "</article>";
+                }
                 $id++;
             }
         }
 
-        $dishOfTheDayContent = "";
-        $dishOfTheDayContent .= "<dt>Nome piatto</dt>";
-        $dishOfTheDayContent .= "<dd>Descrizione piatto</dd>";
-        $dishOfTheDayContent .=
-            "<dd><img src=\"images/logo.png\" alt=\"Foto piatto del giorno\" width=\"auto\" height=\"50\"></dd>";
-        $dishOfTheDayContent .= $starFilledSVG;
-        $dishOfTheDayContent .= $starSVG;
-
-        // $menseInfoContent = "";
-        // $menseInfoContent .= "<dt>Nome mensa</dt>";
-        // $menseInfoContent .= "<dd>Indirizzo: via roma</dd>";
-        // $menseInfoContent .= "<dd>Telefono mensa: 1234567890</dd>";
-        // $menseInfoContent .= "<dd>Orari mensa: 00.00 - 23.59</dd>";
-        // $menseInfoContent .=
-        //     "<button class=\"nav-button secondary\">Direzioni</button>";
-
+        // Replace template placeholders with actual content
         Utils::replaceTemplateContent(
             $this->dom,
             "mense-template",
             $menseContent
         );
-        // Utils::replaceTemplateContent(
-        //     $this->dom,
-        //     "menu-template",
-        //     $menuContent
-        // );
         Utils::replaceTemplateContent(
             $this->dom,
             "piatti-template",
@@ -176,8 +238,13 @@ class IndexView extends BaseView
             "mense-info-template",
             $menseInfoContent
         );
+        // Save the HTML from DOMDocument
+        $html = $this->dom->saveHTML();
 
-        echo $this->dom->saveHTML();
+        $html = mb_convert_encoding($html, "UTF-8", "HTML-ENTITIES");
+
+        // Output the HTML
+        echo $html;
     }
 }
 ?>

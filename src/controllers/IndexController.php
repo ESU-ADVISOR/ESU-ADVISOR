@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Models\MenseModel;
@@ -13,11 +14,22 @@ class IndexController implements BaseController
         foreach (MenseModel::findAll() as $mensa) {
             $menuModel = $mensa->getCurrentMenu();
             $piatti = $menuModel->getPiatti();
+            $piattoDelGiorno = null;
+            $bestAvg = 0;
+            foreach ($piatti as $piatto) {
+                if ($piatto->getAvgVote() > $bestAvg) {
+                    $bestAvg = $piatto->getAvgVote();
+                    $piattoDelGiorno = $piatto;
+                }
+            }
 
             $menus[] = [
                 "nome" => $mensa->getNome(),
                 "indirizzo" => $mensa->getIndirizzo(),
+                "telefono" => $mensa->getTelefono(),
+                "maps_link" => $mensa->getMapsLink(),
                 "piatti" => $piatti,
+                "piatto_del_giorno" => $piattoDelGiorno,
             ];
         }
 
@@ -30,17 +42,16 @@ class IndexController implements BaseController
                 return [
                     "nome" => $menu["nome"],
                     "indirizzo" => $menu["indirizzo"],
+                    "telefono" => $menu["telefono"],
+                    "maps_link" => $menu["maps_link"],
                     "piatti" => $menu["piatti"],
+                    "piatto_del_giorno" => $menu["piatto_del_giorno"],
                 ];
             }, $menus),
-            //
-            // "menu" => array_map(function (MenuModel $menu) {
-            //     return [
-            //         "data" => $menu->getData(),
-            //         "menu" => $menu->get(),
-            //     ];
-            // }, $menu),
             "piatti" => array_map(function ($menu) {
+                if (empty($menu["piatti"])) {
+                    return null;
+                }
                 return array_map(function (PiattoModel $piatto) {
                     return [
                         "nome" => $piatto->getNome(),

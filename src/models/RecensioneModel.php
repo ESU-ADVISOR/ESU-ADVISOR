@@ -173,10 +173,10 @@ class RecensioneModel
             "piatto" => $piatto,
         ]);
 
-        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, RecensioneModel::class)[0];
+        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, RecensioneModel::class);
 
-        if (!empty($data)) {
-            return $data;
+        if (!empty($data) && count($data) == 1) {
+            return $data[0];
         }
         return null;
     }

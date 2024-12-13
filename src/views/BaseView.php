@@ -51,4 +51,22 @@ abstract class BaseView
             );
         }
     }
+    public function renderError(string $error): void
+    {
+        $this->template = file_get_contents(
+            __DIR__ . "/../templates/error.html"
+        );
+        $this->dom = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $this->dom->loadHTML($this->template);
+        libxml_clear_errors();
+
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "error-message-template",
+            "<h3>" . htmlspecialchars($error) . "</h3>"
+        );
+
+        echo $this->dom->saveHTML();
+    }
 }

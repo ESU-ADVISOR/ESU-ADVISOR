@@ -11,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($_GET) && isset($_GET["nome"])) {
         $controller->handleGETRequest($_GET);
     } else {
-        echo "GET is empty";
         header("Location: index.php");
     }
 }

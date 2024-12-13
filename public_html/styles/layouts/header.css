@@ -39,4 +39,35 @@
     .logo-container {
         height: 2.5rem;
     }
+    .profile-header {
+        padding: 12px;
+    }
+
+    .profile-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .profile-header a svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+.profile-header {
+    background-color: var(--background-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px;
+}
+.profile-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+.profile-header a svg {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: stroke 0.3s ease;
+}
+.profile-header a:hover svg {
+    stroke: var(--border-color);
 }

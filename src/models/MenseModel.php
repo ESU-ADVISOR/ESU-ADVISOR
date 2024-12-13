@@ -12,6 +12,8 @@ class MenseModel
     // table fields
     private string|null $nome;
     private string|null $indirizzo;
+    private string|null $telefono;
+    private string|null $maps_link;
 
     /**
      * @param array<int,string> $data
@@ -36,6 +38,12 @@ class MenseModel
         }
         if (isset($data["indirizzo"])) {
             $this->indirizzo = $data["indirizzo"];
+        }
+        if (isset($data["telefono"])) {
+            $this->telefono = $data["telefono"];
+        }
+        if (isset($data["maps_link"])) {
+            $this->maps_link = $data["maps_link"];
         }
     }
 
@@ -78,6 +86,28 @@ class MenseModel
     public function setIndirizzo($value): void
     {
         $this->indirizzo = $value;
+    }
+
+    public function getTelefono(): ?string
+    {
+        return $this->telefono;
+    }
+
+    /** @param string $value */
+    public function setTelefono($value): void
+    {
+        $this->telefono = $value;
+    }
+
+    public function getMapsLink(): ?string
+    {
+        return $this->maps_link;
+    }
+
+    /** @param string $value */
+    public function setMapsLink($value): void
+    {
+        $this->maps_link = $value;
     }
 
     //-----------------Relationals methods----------------

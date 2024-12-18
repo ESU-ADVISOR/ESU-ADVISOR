@@ -152,6 +152,15 @@ textarea.form-input {
     color: white;
 }
 
+.form-button.danger {
+    background-color: var(--danger);
+    color: white;
+}
+
+.form-button.danger:hover {
+    background-color: var(--danger-hover);
+}
+
 /* Error handling */
 .error-container {
     margin-bottom: var(--spacing-md);

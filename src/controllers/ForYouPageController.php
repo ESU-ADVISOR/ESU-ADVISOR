@@ -1,4 +1,6 @@
-<?php namespace Controllers;
+<?php
+
+namespace Controllers;
 
 use Models\RecensioneModel;
 use Views\ForYouPageView;
@@ -20,6 +22,7 @@ class ForYouPageController implements BaseController
             "descrizione" => $post["review"],
             "utente" => $_SESSION["email"],
             "piatto" => $post["piatto"],
+            "data" => date("Y-m-d H:i:s"),
         ]);
 
         try {
@@ -28,15 +31,13 @@ class ForYouPageController implements BaseController
                 return;
             } else {
                 $view->render([
-                    "error" => "Review submission failed: ",
-                    // "Review submission failed: " . $this->model->getLastError(),
+                    "errors" => ["Review submission failed: could not save to database"],
                 ]);
             }
         } catch (\Exception $e) {
             $view->render([
-                "error" => "Review submission failed: " . $e->getMessage(),
+                "errors" => ["Review submission failed: " . $e->getMessage()],
             ]);
         }
     }
 }
-?>

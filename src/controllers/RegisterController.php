@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Models\UserModel;
@@ -37,13 +38,12 @@ class RegisterController implements BaseController
                 return;
             } else {
                 $view->render([
-                    "error" => "Registration failed: ",
-                    // "Registration failed: " . $this->model->getLastError(),
+                    "errors" => ["Registration failed: Could not save to the database"],
                 ]);
             }
         } catch (\Exception $e) {
             $view->render([
-                "error" => "Registration failed: " . $e->getMessage(),
+                "errors" => ["Registration failed: " . $e->getMessage()],
             ]);
         }
     }

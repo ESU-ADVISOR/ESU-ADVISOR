@@ -1,4 +1,5 @@
 <?php
+
 namespace Models;
 
 use Models\Database;
@@ -65,7 +66,6 @@ class MenuModel
             try {
                 $this->data = new DateTimeImmutable($this->data);
             } catch (\Exception $e) {
-                // Handle invalid date formats
                 $this->data = null;
             }
         }
@@ -133,7 +133,7 @@ class MenuModel
                 "INSERT INTO menu (data, mensa) VALUES (:data, :mensa)"
             );
             return $stmt->execute([
-                "data" => $this->data,
+                "data" => $this->data->format("Y-m-d"),
                 "mensa" => $this->mensa,
             ]);
         } else {
@@ -162,7 +162,7 @@ class MenuModel
             "DELETE FROM menu WHERE data = :data AND mensa = :mensa"
         );
         return $stmt->execute([
-            "data" => $this->data,
+            "data" => $this->data->format("Y-m-d"),
             "mensa" => $this->mensa,
         ]);
     }
@@ -173,7 +173,7 @@ class MenuModel
     @param DateTimeImmutable $data
     @param string $mensa
     @return MenuModel|null
-    */
+     */
     public static function findByFields($data, $mensa): ?MenuModel
     {
         $db = Database::getInstance();
@@ -181,7 +181,7 @@ class MenuModel
             "SELECT * FROM menu WHERE data = :data AND mensa = :mensa"
         );
         $stmt->execute([
-            "data" => $data,
+            "data" => $data->format("Y-m-d"),
             "mensa" => $mensa,
         ]);
 
@@ -207,4 +207,3 @@ class MenuModel
         }
     }
 }
-?>

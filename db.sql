@@ -129,6 +129,11 @@ CREATE TABLE piatto_allergeni (
 CREATE TABLE preferenze_utente (
     email VARCHAR(50) NOT NULL,
     mensa_preferita VARCHAR(50),
+    allergene_arachidi BOOLEAN,
+    allergene_glutine BOOLEAN,
+    allergene_lattosio BOOLEAN,
+    allergene_uova BOOLEAN,
+    filtro_daltonici ENUM ('deuteranopia', 'protanopia', 'tritanopia'),
     dimensione_testo ENUM ('piccolo', 'medio', 'grande', 'molto grande'),
     dimensione_icone ENUM ('piccolo', 'medio', 'grande', 'molto grande'),
     modifica_font ENUM ('normale', 'dislessia'),

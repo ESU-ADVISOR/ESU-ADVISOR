@@ -2,130 +2,132 @@
 <html lang="it">
     <head>
         <meta charset="UTF-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, user-scalable=no"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="styles/main.css" />
-        <title>Lascia una recensione - ESUAdvisor</title>
+        <title>ESUAdvisor - La tua area personale</title>
     </head>
     <body>
         <template id="header-template"></template>
 
-        <main class="form-container">
-            <div class="form-header">
-                <h1>Lascia una recensione</h1>
-            </div>
-
-            <template id="server-response-template"></template>
-
-            <form action="fyp.php" method="post" class="base-form">
-                <div class="form-group">
-                    <label for="mensa">Nome della mensa:</label>
-                    <input
-                        type="text"
-                        id="mensa"
-                        name="mensa"
-                        required
-                        class="form-input"
-                        list="suggerimenti-mense"
-                    />
-                    <small id="mensa-error" role="alert" class="error"></small>
-                    <datalist id="suggerimenti-mense">
-                        <template id="suggerimenti-mense-template"></template>
-                    </datalist>
+        <main class="page-content">
+            <!-- Sezione Chef's Kiss -->
+            <section class="card card-expanded mb-4">
+                <h2 class="card-title">Chef's Kiss</h2>
+                <p class="text-secondary mb-4">In base ai tuoi gusti, ti consigliamo questo piatto:</p>
+                <div class="recommended-dish">
+                    <template id="chefs-kiss-template"></template>
                 </div>
+            </section>
 
-                <div class="form-group">
-                    <label for="piatto">Nome del piatto:</label>
-                    <input
-                        type="text"
-                        id="piatto"
-                        name="piatto"
-                        required
-                        class="form-input"
-                        list="suggerimenti-piatti"
-                    />
-                    <small id="piatto-error" role="alert" class="error"></small>
-
-                    <template id="suggerimenti-piatti-template"></template>
-                </div>
-
-                <div class="form-group">
-                    <label for="review">Recensione:</label>
-                    <textarea
-                        id="review"
-                        name="review"
-                        rows="4"
-                        required
-                        class="form-input"
-                    ></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Valutazione:</label>
-                    <div class="rating">
-                        <input
-                            type="radio"
-                            id="star5"
-                            name="rating"
-                            value="5"
-                            class="visually-hidden"
-                        />
-                        <label for="star5" title="5 stelle">★</label>
-                        <input
-                            type="radio"
-                            id="star4"
-                            name="rating"
-                            value="4"
-                            class="visually-hidden"
-                        />
-                        <label for="star4" title="4 stelle">★</label>
-                        <input
-                            type="radio"
-                            id="star3"
-                            name="rating"
-                            value="3"
-                            class="visually-hidden"
-                        />
-                        <label for="star3" title="3 stelle">★</label>
-                        <input
-                            type="radio"
-                            id="star2"
-                            name="rating"
-                            value="2"
-                            class="visually-hidden"
-                        />
-                        <label for="star2" title="2 stelle">★</label>
-                        <input
-                            type="radio"
-                            id="star1"
-                            name="rating"
-                            value="1"
-                            class="visually-hidden"
-                        />
-                        <label for="star1" title="1 stella">★</label>
+            <!-- Quick Log Section -->
+            <section class="card card-expanded mb-4">
+                <h2 class="card-title">Diario Pasti</h2>
+                <p class="text-secondary mb-4">Tieni traccia di ciò che hai mangiato oggi:</p>
+                
+                <form action="fyp.php" method="post" class="quick-log-form">
+                    <div class="form-group">
+                        <label for="quick-mensa">Mensa:</label>
+                        <select id="quick-mensa" name="quick-mensa" required class="form-select">
+                            <option value="">Seleziona una mensa</option>
+                            <template id="mense-select-template"></template>
+                        </select>
                     </div>
-                    <small id="rating-error" role="alert" class="error"></small>
-                </div>
 
-                <div class="form-group">
-                    <label for="foto">Foto:</label>
-                    <input
-                        type="file"
-                        id="foto"
-                        name="foto"
-                        accept="image/*"
-                        class="form-file"
-                    />
-                </div>
+                    <div class="form-group">
+                        <label for="quick-piatto">Piatto:</label>
+                        <input type="text" id="quick-piatto" name="quick-piatto" required class="form-input" list="suggerimenti-piatti" />
+                        <datalist id="suggerimenti-piatti">
+                            <template id="suggerimenti-piatti-template"></template>
+                        </datalist>
+                    </div>
 
-                <button type="submit" class="form-button">
-                    Invia Recensione
-                </button>
-            </form>
+                    <div class="form-group">
+                        <label>Valutazione rapida:</label>
+                        <div class="rating">
+                            <input type="radio" id="quick-star5" name="quick-rating" value="5" class="visually-hidden" />
+                            <label for="quick-star5" title="5 stelle">★</label>
+                            <input type="radio" id="quick-star4" name="quick-rating" value="4" class="visually-hidden" />
+                            <label for="quick-star4" title="4 stelle">★</label>
+                            <input type="radio" id="quick-star3" name="quick-rating" value="3" class="visually-hidden" />
+                            <label for="quick-star3" title="3 stelle">★</label>
+                            <input type="radio" id="quick-star2" name="quick-rating" value="2" class="visually-hidden" />
+                            <label for="quick-star2" title="2 stelle">★</label>
+                            <input type="radio" id="quick-star1" name="quick-rating" value="1" class="visually-hidden" />
+                            <label for="quick-star1" title="1 stella">★</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="quick-log" class="form-button">Salva nel diario</button>
+                </form>
+
+                <div class="meal-log mt-4">
+                    <button class="form-button secondary meal-log-toggle" type="button" aria-expanded="false">
+                        Mostra pasti recenti
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="meal-log-content" hidden>
+                        <template id="meal-log-template"></template>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sezione Recensione Completa -->
+            <section class="card card-expanded">
+                <h2 class="card-title">Lascia una recensione</h2>
+                <p class="text-secondary mb-4">Condividi la tua esperienza dettagliata:</p>
+
+                <template id="server-response-template"></template>
+
+                <form action="fyp.php" method="post" class="base-form">
+                    <div class="form-group">
+                        <label for="mensa">Nome della mensa:</label>
+                        <select id="mensa" name="mensa" required class="form-select">
+                            <option value="">Seleziona una mensa</option>
+                            <template id="mense-select-template"></template>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="piatto">Nome del piatto:</label>
+                        <input type="text" id="piatto" name="piatto" required class="form-input" list="suggerimenti-piatti" />
+                        <small id="piatto-error" class="error"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="review">Recensione:</label>
+                        <textarea id="review" name="review" rows="4" required class="form-input"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Valutazione:</label>
+                        <div class="rating">
+                            <input type="radio" id="star5" name="rating" value="5" class="visually-hidden" />
+                            <label for="star5" title="5 stelle">★</label>
+                            <input type="radio" id="star4" name="rating" value="4" class="visually-hidden" />
+                            <label for="star4" title="4 stelle">★</label>
+                            <input type="radio" id="star3" name="rating" value="3" class="visually-hidden" />
+                            <label for="star3" title="3 stelle">★</label>
+                            <input type="radio" id="star2" name="rating" value="2" class="visually-hidden" />
+                            <label for="star2" title="2 stelle">★</label>
+                            <input type="radio" id="star1" name="rating" value="1" class="visually-hidden" />
+                            <label for="star1" title="1 stella">★</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="foto">Foto:</label>
+                        <input type="file" id="foto" name="foto" accept="image/*" class="form-file" />
+                    </div>
+
+                    <button type="submit" class="form-button">Invia Recensione</button>
+                </form>
+            </section>
         </main>
-        <script src="scripts/review_validation.js"></script>
+
         <template id="footer-template"></template>
+        <script src="scripts/review_validation.js"></script>
+        <script src="scripts/meal-log.js"></script>
     </body>
 </html>

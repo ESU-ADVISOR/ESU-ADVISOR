@@ -19,123 +19,125 @@
                 </div>
 
                 <div class="card-body">
-                    <section class="mb-4 pb-4 border-b border-color">
-                        <h2 class="text-lg font-semibold mb-3">
-                            Preferenze Mensa
-                        </h2>
-                        <div class="form-group">
-                            <label for="mensa"
-                                >Scegli la tua mensa preferita:</label
-                            >
-                            <select id="mensa" name="mensa" class="form-select">
-                                <option value="mensa1">Mensa 1</option>
-                                <option value="mensa2">Mensa 2</option>
-                                <option value="mensa3">Mensa 3</option>
-                                <option value="mensa4">Mensa 4</option>
-                            </select>
-                        </div>
-                    </section>
-
-                    <section class="mb-4 pb-4 border-b border-color">
-                        <h2 class="text-lg font-semibold mb-3">
-                            Preferenze menù
-                        </h2>
-                        <div class="form-group">
-                            <div class="checkbox-group">
-                                <label> <input type="checkbox" name="menu" value="vegano">Vegano</label><br> 
-                                <label> <input type="checkbox" name="menu" value="vegetariano">Vegetariano</label><br> 
-                                <label> <input type="checkbox" name="menu" value="halal">Halal</label><br> 
-                                <label> <input type="checkbox" name="menu" value="kosher">Kosher</label>
+                    <form action="settings.php" method="post" class="base-form">
+                        <section class="mb-4 pb-4 border-b border-color">
+                            <h2 class="text-lg font-semibold mb-3">
+                                Preferenze Mensa
+                            </h2>
+                            <div class="form-group">
+                                <label for="mensa"
+                                    >Scegli la tua mensa preferita:</label
+                                >
+                                <select id="mensa" name="mensa" class="form-select">
+                                    <option value="mensa1">Mensa 1</option>
+                                    <option value="mensa2">Mensa 2</option>
+                                    <option value="mensa3">Mensa 3</option>
+                                    <option value="mensa4">Mensa 4</option>
+                                </select>
                             </div>
-                            <label for="menu">
-                                I piatti fuori dalle tue preferenze verranno evidenziati.
-                            </label>
-                        </div>
-                    </section>
+                        </section>
 
-                    <section class="mb-4 pb-4 border-b border-color">
-                        <h2 class="text-lg font-semibold mb-3">
-                            Preferenze allergie
-                        </h2>
-                        <div class="form-group">
-                            <div class="checkbox-group">
-                                <!--<template id="allergeni"></template>-->
-                                <label> <input type="checkbox" name="allergie" value="glutine">Glutine</label><br> 
-                                <label> <input type="checkbox" name="allergie" value="latte">Latte</label><br> 
-                                <label> <input type="checkbox" name="allergie" value="uova">Uova</label><br> 
-                                <label> <input type="checkbox" name="allergie" value="arachidi">Arachidi</label>
+                        <section class="mb-4 pb-4 border-b border-color">
+                            <h2 class="text-lg font-semibold mb-3">
+                                Preferenze menù
+                            </h2>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <label> <input type="checkbox" name="menu" value="vegano">Vegano</label><br>
+                                    <label> <input type="checkbox" name="menu" value="vegetariano">Vegetariano</label><br>
+                                    <label> <input type="checkbox" name="menu" value="halal">Halal</label><br>
+                                    <label> <input type="checkbox" name="menu" value="kosher">Kosher</label>
+                                </div>
+                                <label for="menu">
+                                    I piatti fuori dalle tue preferenze verranno evidenziati.
+                                </label>
                             </div>
-                            <label for="allergie">
-                                I pietti che contengono allergeni selezionati verranno evidenziati.
-                            </label>
-                        </div>
-                    </section>
+                        </section>
 
-                    <section class="mb-4 pb-4 border-b border-color">
-                        <h2 class="text-lg font-semibold mb-3">
-                            Accessibilità
-                        </h2>
+                        <section class="mb-4 pb-4 border-b border-color">
+                            <h2 class="text-lg font-semibold mb-3">
+                                Preferenze allergie
+                            </h2>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <!--<template id="allergeni"></template>-->
+                                    <label> <input type="checkbox" name="allergie" value="glutine">Glutine</label><br>
+                                    <label> <input type="checkbox" name="allergie" value="latte">Latte</label><br>
+                                    <label> <input type="checkbox" name="allergie" value="uova">Uova</label><br>
+                                    <label> <input type="checkbox" name="allergie" value="arachidi">Arachidi</label>
+                                </div>
+                                <label for="allergie">
+                                    I pietti che contengono allergeni selezionati verranno evidenziati.
+                                </label>
+                            </div>
+                        </section>
 
-                        <div class="flex items-center gap-3">
-                            <label for="theme-switch">Modifica tema:</label>
-                            <span class="text-secondary">Tema Chiaro</span>
-                            <label class="theme-switch">
-                                <input
-                                    type="checkbox"
-                                    id="theme-toggle"
-                                    class="visually-hidden"
-                                />
-                                <span class="slider"></span>
-                            </label>
-                            <span class="text-secondary">Tema Scuro</span>
-                        </div>
+                        <section class="mb-4 pb-4 border-b border-color">
+                            <h2 class="text-lg font-semibold mb-3">
+                                Accessibilità
+                            </h2>
+
+                            <div class="flex items-center gap-3">
+                                <label for="theme-switch">Modifica tema:</label>
+                                <span class="text-secondary">Tema Chiaro</span>
+                                <label class="theme-switch">
+                                    <input
+                                        type="checkbox"
+                                        id="theme-toggle"
+                                        class="visually-hidden"
+                                    />
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="text-secondary">Tema Scuro</span>
+                            </div>
 
 
-                        <div class="form-group">
-                            <label for="filtro-daltonici-select"></label>
-                                Filtro per daltonici:
-                            </label>
-                            <select class="form-select" id="filtro-daltonici-select">
-                                <option value="none">Nessuno</option>
-                                <option value="protanopia">Protanopia</option>
-                                <option value="deuteranopia">Deuteranopia</option>
-                                <option value="tritanopia">Tritanopia</option>
-                            </select>
-                        </div>
+                            <div class="form-group">
+                                <label for="filtro-daltonici-select"></label>
+                                    Filtro per daltonici:
+                                </label>
+                                <select class="form-select" id="filtro-daltonici-select">
+                                    <option value="none">Nessuno</option>
+                                    <option value="protanopia">Protanopia</option>
+                                    <option value="deuteranopia">Deuteranopia</option>
+                                    <option value="tritanopia">Tritanopia</option>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="dimensioni-testo-select"></label>
-                                Dimensioni testo:
-                            </label>
-                            <select class="form-select" id="dimensioni-testo-select">
-                                <option value="piccolo">Piccolo</option>
-                                <option value="medio" selected>Medio</option>
-                                <option value="grande">Grande</option>
-                                <option value="molto_grande">Molto grande</option>
-                            </select>
-                        </div>
+                            <div class="form-group">
+                                <label for="dimensioni-testo-select"></label>
+                                    Dimensioni testo:
+                                </label>
+                                <select class="form-select" id="dimensioni-testo-select">
+                                    <option value="piccolo">Piccolo</option>
+                                    <option value="medio" selected>Medio</option>
+                                    <option value="grande">Grande</option>
+                                    <option value="molto_grande">Molto grande</option>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="dimensioni-icone-select">
-                                Dimensioni icone:
-                            </label>
-                            <select class="form-select" id="dimensioni-icone-select">
-                                <option value="piccole">Piccole</option>
-                                <option value="medie" selected>Medie</option>
-                                <option value="grandi">Grandi</option>
-                                <option value="molto_grandi">Molto grandi</option>
-                            </select>
-                        </div>
+                            <div class="form-group">
+                                <label for="dimensioni-icone-select">
+                                    Dimensioni icone:
+                                </label>
+                                <select class="form-select" id="dimensioni-icone-select">
+                                    <option value="piccole">Piccole</option>
+                                    <option value="medie" selected>Medie</option>
+                                    <option value="grandi">Grandi</option>
+                                    <option value="molto_grandi">Molto grandi</option>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="font-select">Modifica font:</label>
-                            <select class="form-select" id="font-select">
-                                <option value="dislessic0">Normale</option>
-                                <option value="dislessic1">Dislessico pro</option>
-                                <option value="dislessic2">Dislessico pro max</option>
-                            </select>
-                        </div>
-                    </section>
+                            <div class="form-group">
+                                <label for="font-select">Modifica font:</label>
+                                <select class="form-select" id="font-select">
+                                    <option value="dislessic0">Normale</option>
+                                    <option value="dislessic1">Dislessico pro</option>
+                                    <option value="dislessic2">Dislessico pro max</option>
+                                </select>
+                            </div>
+                        </section>
+                    </form>
 
                     <section class="mb-4 pb-4 border-b border-color">
                         <h2 class="text-lg font-semibold mb-3">
@@ -159,8 +161,8 @@
                                 background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
                                 background-position: 12px center;
                                 background-repeat: no-repeat;
-                            "> 
-                    
+                            ">
+
                             <label for="confirm_password">Conferma password</label>
                             <input type="password" id="confirm_password" name="confirm_password" class="form-input"
                             style="
@@ -168,7 +170,7 @@
                                 background-position: 12px center;
                                 background-repeat: no-repeat;
                                 ">
-                            
+
                             <button type="submit" class="form-button">Salva</button>
 
                             <div class="form-group">
@@ -180,12 +182,34 @@
                                 <button type="submit" class="form-button">Salva</button>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label for="delete-account">Cancella l'account</label>
+                            <button type="submit" id="delete-account-button" class="danger form-button">Elimina Account</button>
+
+                            <div class="modal" id="myModal">
+                                <div class="modal-content card card-expanded mb-4">
+                                    <div class="card-content">
+                                        <h2 class="card-title">Conferma l'eliminazione dell'account</h2>
+                                        <button class="close-button" id="close-modal">&times;</button>
+                                        <p>Sei sicuro di volere cancellare il tuo account? Questa azione è irreversibile.</p>
+                                        <form id="delete-account-form" method="POST" action="settings.php">
+                                            <span class="center">
+                                                <button type="submit" name="delete_account" class="confirmation-button">YES</button>
+                                                <button class="cancel-button">NO</button>
+                                            </span>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         </main>
 
         <template id="footer-template"></template>
-
+        <script src="scripts/user-settings.js"></script>
         <script src="scripts/theme-switcher.js"></script>
     </body>
 </html>

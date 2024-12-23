@@ -1,6 +1,8 @@
 <?php
+
 namespace Models;
 
+use DateTimeImmutable;
 use Models\Database;
 
 class RecensioneModel
@@ -11,6 +13,7 @@ class RecensioneModel
     private string|null $descrizione;
     private string|null $utente;
     private string|null $piatto;
+    private string|DateTimeImmutable|null $data;
 
     /**
      * @param array<int,string> $data
@@ -41,6 +44,9 @@ class RecensioneModel
         }
         if (isset($data["piatto"])) {
             $this->piatto = $data["piatto"];
+        }
+        if (isset($data["data"])) {
+            $this->data = new DateTimeImmutable($data["data"]);
         }
     }
 
@@ -103,6 +109,25 @@ class RecensioneModel
     {
         $this->piatto = $piatto;
     }
+
+    public function getData(): ?DateTimeImmutable
+    {
+        if (is_string($this->data)) {
+            try {
+                $this->data = new DateTimeImmutable($this->data);
+            } catch (\Exception $e) {
+                $this->data = null;
+            }
+        }
+
+        return $this->data;
+    }
+
+    /** @param string $value */
+    public function setData($value): void
+    {
+        $this->data = new DateTimeImmutable($value);
+    }
     //-----------------Relationals methods----------------
 
     //-----------------Database methods----------------
@@ -116,23 +141,25 @@ class RecensioneModel
         $exists = self::findByFields($this->utente, $this->piatto);
         if (!$exists) {
             $stmt = $this->db->prepare(
-                "INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (:voto, :descrizione, :utente, :piatto)"
+                "INSERT INTO recensione (voto, descrizione, utente, piatto, data) VALUES (:voto, :descrizione, :utente, :piatto, :data)"
             );
             return $stmt->execute([
                 "voto" => $this->voto,
                 "descrizione" => $this->descrizione,
                 "utente" => $this->utente,
                 "piatto" => $this->piatto,
+                "data" => $this->data->format("Y-m-d"),
             ]);
         } else {
             $stmt = $this->db->prepare(
-                "UPDATE recensione SET voto = :voto AND descrizione = :descrizione WHERE utente = :utente AND piatto = :piatto"
+                "UPDATE recensione SET voto = :voto AND descrizione = :descrizione WHERE utente = :utente AND piatto = :piatto AND data = :data"
             );
             return $stmt->execute([
                 "voto" => $this->voto,
                 "descrizione" => $this->descrizione,
                 "utente" => $this->utente,
                 "piatto" => $this->piatto,
+                "data" => $this->data->format("Y-m-d"),
             ]);
         }
     }
@@ -159,7 +186,7 @@ class RecensioneModel
     @param string $utente
     @param string string
     @return RecensioneModel|null
-    */
+     */
     public static function findByFields(
         string $utente,
         string $piatto

@@ -1,4 +1,5 @@
 <?php
+
 namespace Views;
 
 use Models\MenseModel;
@@ -26,23 +27,26 @@ class ForYouPageView extends BaseView
         $menseContent = "";
         $piattiContent = "";
 
-        foreach (MenseModel::findAll() as $mensa) {
+        $count = 0;
+        $mense = MenseModel::findAll();
+        $tot = count($mense);
+        foreach ($mense as $mensa) {
+
             $menseContent .=
                 "<option value=\"" . $mensa->getNome() . "\"></option>";
+
+            $piattiContent .= "<datalist class=\"dynamic-datalist\" data-mensa-name=\"" . $mensa->getNome() . "\">";
             $currentMenu = $mensa->getCurrentMenu();
             $piatti = $currentMenu->getPiatti();
             foreach ($piatti as $piatto) {
                 $piattiContent .=
                     "<option value=\"" .
                     $piatto->getNome() .
-                    "\" data-mensa-name=\"" .
-                    $mensa->getNome() .
                     "\"></option>";
             }
+            $piattiContent .= "</datalist>";
         }
 
-        foreach ($piatti as $piatto) {
-        }
         Utils::replaceTemplateContent(
             $this->dom,
             "suggerimenti-mense-template",
@@ -114,4 +118,3 @@ class ForYouPageView extends BaseView
         echo $this->dom->saveHTML();
     }
 }
-?>

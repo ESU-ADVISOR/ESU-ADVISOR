@@ -86,6 +86,7 @@ CREATE TABLE recensione (
     descrizione TEXT,
     utente VARCHAR(50) NOT NULL,
     piatto VARCHAR(100) NOT NULL,
+    data DATE DEFAULT CURRENT_DATE,
     CHECK (
         voto >= 1
         AND voto <= 5
@@ -128,28 +129,35 @@ CREATE TABLE piatto_allergeni (
 CREATE TABLE preferenze_utente (
     email VARCHAR(50) NOT NULL,
     mensa_preferita VARCHAR(50),
+    allergene_arachidi BOOLEAN,
+    allergene_glutine BOOLEAN,
+    allergene_lattosio BOOLEAN,
+    allergene_uova BOOLEAN,
+    filtro_daltonici ENUM ('deuteranopia', 'protanopia', 'tritanopia'),
+    dimensione_testo ENUM ('piccolo', 'medio', 'grande', 'molto grande'),
+    dimensione_icone ENUM ('piccolo', 'medio', 'grande', 'molto grande'),
+    modifica_font ENUM ('normale', 'dislessia'),
     dark_mode BOOLEAN,
     PRIMARY KEY (email),
     FOREIGN KEY (email) REFERENCES utente (email) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (mensa_preferita) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE VIEW piatto_recensioni_foto AS
-SELECT
-    p.nome AS piatto,
-    AVG(r.voto) AS media_stelle,
-    GROUP_CONCAT (
-        DISTINCT pf.foto
-        ORDER BY
-            RAND () SEPARATOR ', '
-    ) AS foto_casuali
-FROM
-    piatto p
-    JOIN recensione r ON p.nome = r.piatto
-    LEFT JOIN piatto_foto pf ON p.nome = pf.piatto
-GROUP BY
-    p.nome;
-
+-- CREATE VIEW piatto_recensioni_foto AS
+-- SELECT
+--     p.nome AS piatto,
+--     AVG(r.voto) AS media_stelle,
+--     GROUP_CONCAT (
+--         DISTINCT pf.foto
+--         ORDER BY
+--             pf.foto SEPARATOR ', '
+--     ) AS foto_casuali
+-- FROM
+--     piatto p
+--     JOIN recensione r ON p.nome = r.piatto
+--     LEFT JOIN piatto_foto pf ON p.nome = pf.piatto
+-- GROUP BY
+--     p.nome;
 CREATE VIEW mensa_orari_apertura AS
 SELECT
     m.nome AS mensa,

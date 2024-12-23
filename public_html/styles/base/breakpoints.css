@@ -56,14 +56,6 @@
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
     :root:not(.theme-light) {
-        /*
-        --background: #1f2937;
-        --background-card: #374151;
-        --text-primary: #f9fafb;
-        --text-secondary: #d1d5db;
-        --border-color: #4b5563;
-*/
-        /* cuda dark */
         --text-primary: #ffffff;
         --text-secondary: #efefef;
         --background: #0d0d0d;

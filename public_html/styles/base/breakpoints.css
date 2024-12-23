@@ -56,11 +56,23 @@
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
     :root:not(.theme-light) {
+        /*
         --background: #1f2937;
         --background-card: #374151;
         --text-primary: #f9fafb;
         --text-secondary: #d1d5db;
         --border-color: #4b5563;
+*/
+        /* cuda dark */
+        --text-primary: #ffffff;
+        --text-secondary: #efefef;
+        --background: #0d0d0d;
+        --background-card: #1b1b1b;
+        --primary: #56b4e9;
+        --primary-hover: #64b9ea;
+        --danger: #d55e00;
+        --danger-hover: #d66c18;
+        --border-color: #efefef;
     }
 }
 

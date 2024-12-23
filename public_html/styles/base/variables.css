@@ -1,21 +1,23 @@
 /* base/variables.css */
 :root {
     /* Colors - Light theme default */
-    --primary: #4F46E5;
-    --primary-hover: #4338CA;
-    --danger: #ef4444;
-    --danger-hover: #dc2626;
-    
+    --primary: #0072b2;
+    --primary-hover: #167eb9;
+    --danger: #d55e00;
+    --danger-hover: #d66c18;
+
     /* Text colors */
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-    
+    --text-primary: #000000;
+    --text-secondary: #333333;
+
     /* Background colors */
-    --background: #F3F4F6;
+    --background: #efefef;
     --background-card: #FFFFFF;
-    
+
+
     /* Border colors */
-    --border-color: #e5e7eb;
+    --border-color: #333333;
+
     
     /* Shadows */
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -56,20 +58,28 @@
 
 /* Dark theme */
 .theme-dark {
-    --text-primary: #F9FAFB;
-    --text-secondary: #D1D5DB;
-    --background: #1F2937;
-    --background-card: #374151;
-    --border-color: #4B5563;
+    --text-primary: #ffffff;
+    --text-secondary: #efefef;
+    --background: #0d0d0d;
+    --background-card: #1b1b1b;
+    --primary: #56b4e9;
+    --primary-hover: #64b9ea;
+    --danger: #d55e00;
+    --danger-hover: #d66c18;
+    --border-color: #efefef;
 }
 
 /* Optional: System preference dark mode override */
 @media (prefers-color-scheme: dark) {
     :root:not(.theme-light) {
-        --text-primary: #F9FAFB;
-        --text-secondary: #D1D5DB;
-        --background: #1F2937;
-        --background-card: #374151;
-        --border-color: #4B5563;
+        --text-primary: #000000;
+        --text-secondary: #333333;
+        --background: #efefef;
+        --background-card: #ffffff;
+        --border-color: #333333;
+        --primary: #0072b2;
+        --primary-hover: #167eb9;
+        --danger: #d55e00;
+        --danger-hover: #d66c18;
     }
 }

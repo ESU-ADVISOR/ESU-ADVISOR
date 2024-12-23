@@ -55,6 +55,42 @@ class ForYouPageView extends BaseView
             $piattiContent
         );
 
+        $starSVG = file_get_contents(
+            __DIR__ . "/../../public_html/images/star.svg"
+        );
+        $starFilledSVG = file_get_contents(
+            __DIR__ . "/../../public_html/images/star_filled.svg"
+        );
+        $starRatingSVG = file_get_contents(
+            __DIR__ . "/../../public_html/images/star_form.svg"
+        );
+
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "star-template-5",
+            $starRatingSVG
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "star-template-4",
+            $starRatingSVG
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "star-template-3",
+            $starRatingSVG
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "star-template-2",
+            $starRatingSVG
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "star-template-1",
+            $starRatingSVG
+        );
+
         if (isset($data["errors"])) {
             $errorHtml = "";
             foreach ($data["errors"] as $error) {

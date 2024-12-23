@@ -174,16 +174,33 @@ textarea.form-input {
 
 .rating label {
     cursor: pointer;
-    font-size: 2rem;
-    color: var(--border-color);
-    transition: color var(--transition);
+    font-size: 4rem;
+    /*transition: color var(--transition);*/
+    transition: stroke var(--transition), fill var(--transition);
+    stroke : var(--border-color);
+    fill: transparent;
 }
+
+/*
+.rating label svg {
+    fill: none;
+    stroke: var(--border-color);
+    stroke-width: 2;
+}*/
 
 .rating input:checked ~ label,
 .rating label:hover,
 .rating label:hover ~ label {
-    color: #fbbf24;
+    /*color: #ffb24f;*/
+    fill: var(--primary);
+    stroke: var(--primary);
 }
+
+.rating .star{
+    width: 32px;
+    height: 32px;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

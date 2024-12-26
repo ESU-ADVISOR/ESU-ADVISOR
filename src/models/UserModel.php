@@ -1,4 +1,5 @@
 <?php
+
 namespace Models;
 
 use Models\Database;
@@ -7,6 +8,7 @@ use DateTimeImmutable;
 class UserModel
 {
     private $db;
+
 
     // table fields
     private string|null $username;
@@ -136,7 +138,7 @@ class UserModel
     //-----------------Database methods----------------
     public function saveToDB(): bool
     {
-        if ($this->email == null) {
+        if ($this->email == null || $this->username == "") {
             return false;
         }
         $exists = self::findByEmail($this->email);
@@ -150,7 +152,7 @@ class UserModel
                 "password" => $this->hashedPassword,
                 "dataNascita" => $this->dataNascita->format("Y-m-d"),
             ]);
-        } elseif ($this->username != "") {
+        } else {
             $stmt = $this->db->prepare(
                 "UPDATE utente SET username = :username, password = :password, dataNascita = :dataNascita WHERE email = :email"
             );
@@ -158,7 +160,7 @@ class UserModel
                 "username" => $this->username,
                 "email" => $this->email,
                 "password" => $this->hashedPassword,
-                "dataNascita" => $this->dataNascita,
+                "dataNascita" => $this->dataNascita->format("Y-m-d"),
             ]);
         }
     }
@@ -253,4 +255,3 @@ class UserModel
         return $users;
     }
 }
-?>

@@ -128,16 +128,21 @@ CREATE TABLE piatto_allergeni (
 
 CREATE TABLE preferenze_utente (
     email VARCHAR(50) NOT NULL,
-    mensa_preferita VARCHAR(50),
-    allergene_arachidi BOOLEAN,
-    allergene_glutine BOOLEAN,
-    allergene_lattosio BOOLEAN,
-    allergene_uova BOOLEAN,
-    filtro_daltonici ENUM ('deuteranopia', 'protanopia', 'tritanopia'),
-    dimensione_testo ENUM ('piccolo', 'medio', 'grande', 'molto grande'),
-    dimensione_icone ENUM ('piccolo', 'medio', 'grande', 'molto grande'),
-    modifica_font ENUM ('normale', 'dislessia'),
-    dark_mode BOOLEAN,
+    mensa_preferita VARCHAR(50) DEFAULT NULL,
+    allergene_arachidi BOOLEAN NOT NULL DEFAULT FALSE,
+    allergene_glutine BOOLEAN NOT NULL DEFAULT FALSE,
+    allergene_lattosio BOOLEAN NOT NULL DEFAULT FALSE,
+    allergene_uova BOOLEAN NOT NULL DEFAULT FALSE,
+    filtro_daltonici ENUM (
+        'deuteranopia',
+        'protanopia',
+        'tritanopia',
+        'None'
+    ) DEFAULT NULL,
+    dimensione_testo ENUM ('piccolo', 'medio', 'grande', 'molto grande') NOT NULL DEFAULT 'medio',
+    dimensione_icone ENUM ('piccolo', 'medio', 'grande', 'molto grande') NOT NULL DEFAULT 'medio',
+    modifica_font ENUM ('normale', 'dislessia') NOT NULL DEFAULT 'normale',
+    dark_mode BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (email),
     FOREIGN KEY (email) REFERENCES utente (email) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (mensa_preferita) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE CASCADE

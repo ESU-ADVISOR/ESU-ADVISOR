@@ -33,7 +33,7 @@ class ForYouPageView extends BaseView
         foreach ($mense as $mensa) {
 
             $menseContent .=
-                "<option value=\"" . $mensa->getNome() . "\"></option>";
+                "<option value=\"" . $mensa->getNome() . "\">" . $mensa->getNome() . "</option>";
 
             $piattiContent .= "<datalist class=\"dynamic-datalist\" data-mensa-name=\"" . $mensa->getNome() . "\">";
             $currentMenu = $mensa->getCurrentMenu();
@@ -45,11 +45,24 @@ class ForYouPageView extends BaseView
                     "\"></option>";
             }
             $piattiContent .= "</datalist>";
+            // if ($count + 1 < $tot) {
+            //     //    $piattiContent .= "<template id=\"suggerimenti-piatti-template\"></template>";
+            //     Utils::replaceTemplateContent(
+            //         $this->dom,
+            //         "suggerimenti-piatti-template",
+            //         $piattiContent
+            //     );
+            // }
         }
 
         Utils::replaceTemplateContent(
             $this->dom,
-            "suggerimenti-mense-template",
+            "mense-select-template",
+            $menseContent
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "mense-select-2-template",
             $menseContent
         );
 

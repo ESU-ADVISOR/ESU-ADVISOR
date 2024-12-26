@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Models\UserModel;
@@ -17,7 +18,7 @@ class LoginController implements BaseController
 
     public function handleGETRequest(array $get = []): void
     {
-        $this->view->render();
+        $this->view->render($get);
     }
 
     public function handlePOSTRequest(array $post = []): void

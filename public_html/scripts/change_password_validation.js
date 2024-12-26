@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("login-form");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
+  const form = document.getElementById("change_password_form");
+  const currentPasswordInput = document.getElementById("current_password");
+  const passwordInput = document.getElementById("new_password");
+  const confirmPasswordInput = document.getElementById("new_password_confirm");
 
   form.addEventListener("submit", function (event) {
     let isValid = true;
@@ -9,17 +10,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelectorAll(".error").forEach((el) => el.remove());
 
-    const email = emailInput.value.trim();
-    if (!email) {
-      isValid = false;
-      errors.push("Email is required.");
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      isValid = false;
-      errors.push("Email is invalid.");
-    }
-
+    const currentPassword = currentPasswordInput.value.trim();
     const password = passwordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
+
+    if (password !== confirmPassword) {
+      isValid = false;
+      errors.push("Passwords do not match.");
+    }
+    if (currentPassword === password) {
+      isValid = false;
+      errors.push("New password must be different from the current password.");
+    }
     if (password.length < 8) {
       isValid = false;
       errors.push("Password must be at least 8 characters long.");

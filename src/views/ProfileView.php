@@ -1,4 +1,5 @@
 <?php
+
 namespace Views;
 
 use Models\UserModel;
@@ -19,6 +20,11 @@ class ProfileView extends BaseView
             return;
         }
         $user = UserModel::findByEmail($_SESSION["email"]);
+
+        if ($user === null) {
+            self::renderError("User not found");
+            return;
+        }
 
         $username = $user->getUsername();
 
@@ -48,4 +54,3 @@ class ProfileView extends BaseView
         echo $this->dom->saveHTML();
     }
 }
-?>

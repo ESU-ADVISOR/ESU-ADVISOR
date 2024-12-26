@@ -2,6 +2,11 @@
 
 namespace Controllers;
 
+use Models\DimensioneIcone;
+use Models\DimensioneTesto;
+use Models\FiltroDaltonici;
+use Models\ModificaFont;
+use Models\PreferenzeUtenteModel;
 use Models\UserModel;
 use Views\SettingsView;
 
@@ -16,8 +21,7 @@ class SettingsController implements BaseController
     public function handlePOSTRequest(array $post = []): void
     {
         $view = new SettingsView();
-        print_r($post);
-        if (isset($_POST['delete_account']) && isset($_SESSION["email"])) {
+        if (isset($post['delete_account'])) {
             $user = UserModel::findByEmail($_SESSION["email"]);
             if ($user === null) {
                 $view->render([
@@ -33,6 +37,143 @@ class SettingsController implements BaseController
             } else {
                 $view->render([
                     "errors" => ["Registration failed: Could not remove from the database"],
+                ]);
+                exit();
+            }
+        } else if (isset($post['preferences'])) {
+
+            $preferences = PreferenzeUtenteModel::findByEmail($_SESSION["email"]) ?? new PreferenzeUtenteModel();
+
+            // Set mensa_preferita
+            $preferences->setMensaPreferita($post['mensa_preferita'] ?? null);
+
+            // Set allergene flags
+            $preferences->setAllergeneGlutine(isset($post['allergia_glutine']));
+            $preferences->setAllergeneLattosio(isset($post['allergia_lattosio']));
+            $preferences->setAllergeneArachidi(isset($post['allergia_arachidi']));
+            $preferences->setAllergeneUova(isset($post['allergia_uova']));
+
+            // Set dark_mode
+            $preferences->setDarkMode(isset($post['dark_mode']));
+
+            if (isset($post['daltonismo'])) {
+                $preferences->setFiltroDaltonici(FiltroDaltonici::tryFrom($post['daltonismo']));
+            } else {
+                $preferences->setFiltroDaltonici(FiltroDaltonici::NONE);
+            }
+            if (isset($post['dimensione_testo'])) {
+                $preferences->setDimensioneTesto(DimensioneTesto::tryFrom($post['dimensione_testo']));
+            } else {
+                $preferences->setDimensioneTesto(DimensioneTesto::MEDIO);
+            }
+            if (isset($post['dimensione_icone'])) {
+                $preferences->setDimensioneIcone(DimensioneIcone::tryFrom($post['dimensione_icone']));
+            } else {
+                $preferences->setDimensioneIcone(DimensioneIcone::MEDIO);
+            }
+            if (isset($post['font'])) {
+                $preferences->setModificaFont(ModificaFont::tryFrom($post['font']));
+            } else {
+                $preferences->setModificaFont(ModificaFont::NORMALE);
+            }
+            $preferences->setEmail($_SESSION["email"]);
+
+            if ($preferences->saveToDB()) {
+                $view->render([
+                    "success" => ["Preferences saved successfully"],
+                ]);
+                exit();
+            } else {
+                $view->render([
+                    "errors" => ["Preferences not saved"],
+                ]);
+                exit();
+            }
+        } else if (isset($post['change_username'])) {
+            print_r($post);
+
+            $user = UserModel::findByEmail($_SESSION["email"]);
+            if ($user === null) {
+                $view->render([
+                    "errors" => ["User not found"],
+                ]);
+                exit();
+            }
+
+
+            if (empty($post['new_username'])) {
+                $view->render([
+                    "success" => "Username changed successfully",
+                ]);
+                exit();
+            } else {
+                if (strlen($post['new_username']) < 3 || strlen($post['new_username']) > 50) {
+                    $view->render([
+                        "errors" => ["Username must be between 3 and 50 characters long."],
+                    ]);
+                    exit();
+                }
+                if (!preg_match('/^[a-zA-Z0-9_-]+$/', $post['new_username'])) {
+                    $view->render([
+                        "errors" => ["Username can only contain letters, numbers, underscores, and hyphens."],
+                    ]);
+                    exit();
+                }
+            }
+
+            $user->setUsername($post['new_username']);
+
+            if ($user->saveToDB()) {
+                $view->render([
+                    "success" => "Username changed successfully",
+                ]);
+                exit();
+            } else {
+                $view->render([
+                    "errors" => ["Username not changed"],
+                ]);
+                exit();
+            }
+        } else if (isset($post['change_password'])) {
+            $user = UserModel::findByEmail($_SESSION["email"]);
+            if ($user === null) {
+                $view->render([
+                    "errors" => ["User not found"],
+                ]);
+                exit();
+            }
+
+            if (!UserModel::authenticate($user->getEmail(), $post['password'])) {
+                $view->render([
+                    "errors" => ["Old password is incorrect"],
+                ]);
+                exit();
+            }
+
+            if ($post['new_password'] !== $post['new_password_confirm']) {
+                $view->render([
+                    "errors" => ["New passwords do not match"],
+                ]);
+                exit();
+            }
+
+            if ($post['new_password'] === $post['password']) {
+                $view->render([
+                    "errors" => ["New password must be different from the old one"],
+                ]);
+                exit();
+            }
+
+            $user->setPassword($post['new_password']);
+
+            if ($user->saveToDB()) {
+                $view->render([
+                    "success" => "Password changed successfully"
+                ]);
+                exit();
+            } else {
+                $view->render([
+                    "errors" => ["Password not changed"],
                 ]);
                 exit();
             }

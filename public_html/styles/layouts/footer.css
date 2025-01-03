@@ -29,6 +29,8 @@
     align-items: center;
     text-decoration: none;
     color: var(--text-secondary);
+    stroke: var(--text-secondary);
+    fill: transparent;
     gap: var(--spacing-xs);
     padding: var(--spacing-xs);
     width: 64px; /* Larghezza fissa per uniformità */
@@ -50,6 +52,8 @@
 
 .nav-item.active {
     color: var(--primary);
+    stroke: var(--primary);
+    fill: var(--primary);
 }
 
 /* Aggiunge spazio in fondo al contenuto principale per evitare che venga nascosto dalla navbar */

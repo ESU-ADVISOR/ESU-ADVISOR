@@ -57,3 +57,22 @@
         margin: 2cm;
     }
 }
+.progress {
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 3px;
+    border-radius: 3px;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    display: block;
+    height: 20px;
+    background-color: #4caf50;
+    border-radius: 3px;
+    transition: width 300ms ease-in-out;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+}

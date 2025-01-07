@@ -75,7 +75,6 @@ CREATE TABLE recensione (
         descrizione TEXT,
         utente VARCHAR(50) NOT NULL,
         piatto VARCHAR(100) NOT NULL,
-    data DATE DEFAULT CURRENT_DATE,
         data DATE DEFAULT CURRENT_DATE,
         CHECK (
             voto >= 1
@@ -97,7 +96,7 @@ CREATE TABLE menu_piatto (
 
 CREATE TABLE piatto_foto (
         photoid INT AUTO_INCREMENT,
-        foto TEXT NOT NULL,
+        foto    BLOB        NOT NULL,      
         piatto VARCHAR(100) NOT NULL,
         PRIMARY KEY (photoid, piatto),
         FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE

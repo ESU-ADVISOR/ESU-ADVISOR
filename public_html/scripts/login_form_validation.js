@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("login-form");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
+  const usernameInput = document.getElementById("username");
 
   form.addEventListener("submit", function (event) {
     let isValid = true;
@@ -9,30 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelectorAll(".error").forEach((el) => el.remove());
 
-    const email = emailInput.value.trim();
-    if (!email) {
+    const username = usernameInput.value.trim();
+    if (!username) {
       isValid = false;
-      errors.push("Email is required.");
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      isValid = false;
-      errors.push("Email is invalid.");
-    }
-
-    const password = passwordInput.value.trim();
-    if (password.length < 8) {
-      isValid = false;
-      errors.push("Password must be at least 8 characters long.");
-    }
-    if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
-        password,
-      )
-    ) {
-      isValid = false;
-      errors.push(
-        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).",
-      );
+      errors.push("Username is required.");
     }
 
     if (!isValid) {

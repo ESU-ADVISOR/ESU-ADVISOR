@@ -80,5 +80,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 } else {
     $controller->handleGETRequest($_GET);
 }
-
-?>

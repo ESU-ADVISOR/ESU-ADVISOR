@@ -32,35 +32,18 @@
 
             <article class="card card-expanded">
                 <div class="card-media mb-4">
-                    <img
-                        src="images/logo.png"
-                        alt="Immagine del piatto"
-                        class="w-full h-auto"
-                    />
+                    <template id="piatto-image-template"></template>
                 </div>
 
                 <div class="card-body">
-                    <!-- <h1 class="card-title">Nome del piatto</h1> -->
                     <template id="piatto-title-template"></template>
                     <section class="mb-4">
                         <h2 class="text-lg font-semibold mb-2">Dettagli</h2>
                         <template id="piatto-description-template"></template>
-                        <!-- <div class="card-description">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minim veniam, quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat.
-                            </p>
-                        </div> -->
                     </section>
 
                     <section>
-                        <h2 class="text-lg font-semibold mb-2">
-                            Rating e reviews
-                        </h2>
+                        <h2 class="text-lg font-semibold mb-2">Rating e reviews</h2>
                         <div class="cards-stack">
                             <template id="review-template"></template>
                         </div>

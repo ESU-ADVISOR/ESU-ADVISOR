@@ -9,15 +9,15 @@
     /* Text colors */
     --text-primary: #000000;
     --text-secondary: #333333;
+    --text-on-primary: #ffffff;
+    --text-on-danger: #000000;
 
     /* Background colors */
-    --background: #efefef;
-    --background-card: #FFFFFF;
-
-
+    --background: #ffffff;
+    --background-card: #ffffff;
+    
     /* Border colors */
-    --border-color: #333333;
-
+    --border-color: #e5e7eb;
     
     /* Shadows */
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -64,9 +64,9 @@
     --background-card: #1b1b1b;
     --primary: #56b4e9;
     --primary-hover: #64b9ea;
-    --danger: #d55e00;
-    --danger-hover: #d66c18;
-    --border-color: #efefef;
+    --text-on-primary: #000000;
+    --text-on-danger: #000000;
+    --border-color: #333333;
 }
 
 /* Optional: System preference dark mode override */

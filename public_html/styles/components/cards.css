@@ -4,7 +4,7 @@
 .card {
     background-color: var(--background-card);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
     transition: box-shadow var(--transition);
 }
 
@@ -101,8 +101,8 @@
     padding: var(--spacing-md);
     background-color: var(--background-card);
     border-radius: var(--radius);
+    border: 1px solid var(--border-color);
     margin-bottom: var(--spacing-sm);
-    box-shadow: var(--shadow);
 }
 
 .menu-item figure {

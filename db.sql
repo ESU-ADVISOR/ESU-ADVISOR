@@ -36,10 +36,6 @@ CREATE TABLE utente (
         PRIMARY KEY (email),
         UNIQUE (username),
         CHECK (email LIKE '%@%.%'),
-        -- CHECK (
-        --     LENGTH (password) <= 12
-        --     AND LENGTH (password) >= 8
-        -- ),
         CHECK (username REGEXP '^[a-zA-Z0-9_]+$'),
         CHECK (
             email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -103,7 +99,7 @@ CREATE TABLE piatto_foto (
     );
 
 -- CREATE TRIGGER check_menu_date BEFORE INSERT ON menu FOR EACH ROW BEGIN IF NEW.data > CURDATE () THEN SIGNAL SQLSTATE '45000'
--- SET
+-- SET>
 --     MESSAGE_TEXT = 'Date cannot be in the future';
 -- END IF;
 -- END;
@@ -116,24 +112,12 @@ CREATE TABLE piatto_allergeni (
 
 CREATE TABLE preferenze_utente (
     email VARCHAR(50) NOT NULL,
-    mensa_preferita VARCHAR(50) DEFAULT NULL,
-    allergene_arachidi BOOLEAN NOT NULL DEFAULT FALSE,
-    allergene_glutine BOOLEAN NOT NULL DEFAULT FALSE,
-    allergene_lattosio BOOLEAN NOT NULL DEFAULT FALSE,
-    allergene_uova BOOLEAN NOT NULL DEFAULT FALSE,
-    filtro_daltonici ENUM (
-        'deuteranopia',
-        'protanopia',
-        'tritanopia',
-        'None'
-    ) DEFAULT NULL,
     dimensione_testo ENUM ('piccolo', 'medio', 'grande', 'molto grande') NOT NULL DEFAULT 'medio',
     dimensione_icone ENUM ('piccolo', 'medio', 'grande', 'molto grande') NOT NULL DEFAULT 'medio',
     modifica_font ENUM ('normale', 'dislessia') NOT NULL DEFAULT 'normale',
     dark_mode BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (email),
-    FOREIGN KEY (email) REFERENCES utente  (email) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (mensa_preferita) REFERENCES mensa  (nome) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (email) REFERENCES utente  (email) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE VIEW piatto_recensioni_foto AS
@@ -149,21 +133,22 @@ GROUP BY
     p.nome;
 
 INSERT INTO utente (email, password, dataNascita, username)
-VALUES ("user@example.com", "password", "1990-01-01", "user"),
-       ("roberto@example.com", "password", "1990-01-01", "roberto"),
+VALUES ("roberto@example.com", "password", "1990-01-01", "roberto"),
        ("angela@example.com", "password", "1990-01-01", "angela"),
        ("jane.doe@example.com", "password123", "1985-05-20", "janedoe"),
        ("john.smith@example.com", "password456", "1988-08-15", "johnsmith"),
        ("alice.jones@example.com", "password789", "1992-11-30", "alicejones"),
-       ("admin@example.com", "password", "1995-02-15", "admin");
+       ("admin@example.com", "password", "1995-02-15", "admin"),
+       ("user@example.com", "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1970-01-01", "user"); -- password: user
+     
 
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link)VALUES ('RistorESU Agripolis', "Viale dell'Università, 6 - Legnaro (PD)", '04 97430607', 'https://www.google.com/maps/place/Mensa+Agripolis/@45.3474897,11.9577471,17z/data=!4m6!3m5!1s0x477ec378b59940cf:0x5b21dfbc8034b869!8m2!3d45.346961!4d11.9586004!16s%2Fg%2F11h9__56t4?entry=tts');
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link)VALUES ('RistorESU Nord Piovego', 'Viale Giuseppe Colombo, 1 - Padova', '049 7430811', 'https://www.google.com/maps/place/RistorEsu+Nord+Piovego/@45.4110432,11.887099,17z/data=!3m1!4b1!4m6!3m5!1s0x477edaf60d6b6371:0x2c00159331ead3d8!8m2!3d45.4110432!4d11.8896739!16s%2Fg%2F1pp2tjhxw?entry=tts');
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link)VALUES ('Mensa Murialdo', 'Via Antonio Grassi, 42 - Padova', '049 772011', 'https://www.google.com/maps/place/Mensa+Murialdo/@45.4130884,11.8994815,17z/data=!3m1!4b1!4m6!3m5!1s0x477edaed17825579:0x39ac780af76d258d!8m2!3d45.4130885!4d11.9043524!16s%2Fg%2F11g5zwxl4z?entry=tts');
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link)VALUES ('Mensa Azienda Ospedaliera di Padova', 'Via Nicolò Giustiniani, 1 - Padova', '049 8211111', 'https://www.google.com/maps/place/Azienda+Ospedale+Universit%C3%A0+Padova/@45.4029354,11.88911,19z/data=!4m6!3m5!1s0x477edaf91e846ae5:0x19313e029e7efd8a!8m2!3d45.4028873!4d11.8891995!16s%2Fg%2F11c6wm6888?entry=tts');
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link)VALUES ('Mensa Ciels', 'Via Sebastiano Venier, 200 - Padova', '049 774152', 'https://www.google.com/maps/place/Campus+CIELS+-+Sede+di+Padova/@45.3760046,11.8877834,17z/data=!3m2!4b1!5s0x477edb6d735b8e83:0xcc35839005059d33!4m6!3m5!1s0x477edb6d0ab7afc9:0xaef45488826e9515!8m2!3d45.3760046!4d11.8877834!16s%2Fg%2F1tgq5h7z?entry=ttu&g_ep=EgoyMDI0MTIwOS4wIKXMDSoASAFQAw%3D%3D');
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link)VALUES ('Casa del Fanciullo', 'Vicolo Santonini, 12 - Padova', '049 8751075', 'https://www.google.com/maps/place/Associazione+Casa+Del+Fanciullo/@45.3997459,11.879446,17z/data=!3m1!4b1!4m6!3m5!1s0x477eda55078d6023:0xf616c3a03d554e82!8m2!3d45.3997459!4d11.8820209!16s%2Fg%2F1pv5v58wj?entry=tts');
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link)VALUES ('Pio X', 'Via Bonporti, 20 - Padova', '049 6895862', 'https://www.google.com/maps/place/Mensa+Pio+X/@45.4053724,11.8688651,17z/data=!3m1!4b1!4m6!3m5!1s0x477eda4e563f1161:0x135b6ab250952049!8m2!3d45.4053724!4d11.87144!16s%2Fg%2F11cjk2k92p?entry=tts');
+INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ('RistorESU Agripolis', "Viale dell'Università, 6 - Legnaro (PD)", '04 97430607', 'https://www.google.com/maps/place/Mensa+Agripolis/@45.3474897,11.9577471,17z/data=!4m6!3m5!1s0x477ec378b59940cf:0x5b21dfbc8034b869!8m2!3d45.346961!4d11.9586004!16s%2Fg%2F11h9__56t4?entry=tts');
+INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ('RistorESU Nord Piovego', 'Viale Giuseppe Colombo, 1 - Padova', '049 7430811', 'https://www.google.com/maps/place/RistorEsu+Nord+Piovego/@45.4110432,11.887099,17z/data=!3m1!4b1!4m6!3m5!1s0x477edaf60d6b6371:0x2c00159331ead3d8!8m2!3d45.4110432!4d11.8896739!16s%2Fg%2F1pp2tjhxw?entry=tts');
+INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ('Mensa Murialdo', 'Via Antonio Grassi, 42 - Padova', '049 772011', 'https://www.google.com/maps/place/Mensa+Murialdo/@45.4130884,11.8994815,17z/data=!3m1!4b1!4m6!3m5!1s0x477edaed17825579:0x39ac780af76d258d!8m2!3d45.4130885!4d11.9043524!16s%2Fg%2F11g5zwxl4z?entry=tts');
+INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ('Mensa Azienda Ospedaliera di Padova', 'Via Nicolò Giustiniani, 1 - Padova', '049 8211111', 'https://www.google.com/maps/place/Azienda+Ospedale+Universit%C3%A0+Padova/@45.4029354,11.88911,19z/data=!4m6!3m5!1s0x477edaf91e846ae5:0x19313e029e7efd8a!8m2!3d45.4028873!4d11.8891995!16s%2Fg%2F11c6wm6888?entry=tts');
+INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ('Mensa Ciels', 'Via Sebastiano Venier, 200 - Padova', '049 774152', 'https://www.google.com/maps/place/Campus+CIELS+-+Sede+di+Padova/@45.3760046,11.8877834,17z/data=!3m2!4b1!5s0x477edb6d735b8e83:0xcc35839005059d33!4m6!3m5!1s0x477edb6d0ab7afc9:0xaef45488826e9515!8m2!3d45.3760046!4d11.8877834!16s%2Fg%2F1tgq5h7z?entry=ttu&g_ep=EgoyMDI0MTIwOS4wIKXMDSoASAFQAw%3D%3D');
+INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ('Casa del Fanciullo', 'Vicolo Santonini, 12 - Padova', '049 8751075', 'https://www.google.com/maps/place/Associazione+Casa+Del+Fanciullo/@45.3997459,11.879446,17z/data=!3m1!4b1!4m6!3m5!1s0x477eda55078d6023:0xf616c3a03d554e82!8m2!3d45.3997459!4d11.8820209!16s%2Fg%2F1pv5v58wj?entry=tts');
+INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ('Pio X', 'Via Bonporti, 20 - Padova', '049 6895862', 'https://www.google.com/maps/place/Mensa+Pio+X/@45.4053724,11.8688651,17z/data=!3m1!4b1!4m6!3m5!1s0x477eda4e563f1161:0x135b6ab250952049!8m2!3d45.4053724!4d11.87144!16s%2Fg%2F11cjk2k92p?entry=tts');
 
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, '11:45', '14:30', 'RistorESU Agripolis');
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, '11:45', '14:30', 'RistorESU Agripolis');
@@ -200,11 +185,7 @@ INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, '11:45', '14:30', 'Pio X');
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, '11:45', '14:30', 'Pio X');
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, '11:45', '14:30', 'Pio X');
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, '18:45', '21:00', 'Pio X');
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, '18:45', '21:00', 'Pio X');
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, '18:45', '21:00', 'Pio X');
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, '18:45', '21:00', 'Pio X');
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, '18:45', '21:00', 'Pio X');
+
 
 INSERT INTO menu (DATA, mensa)VALUES ('2024-12-10', 'RistorESU Agripolis');
 INSERT INTO menu (DATA, mensa)VALUES ('2024-12-10', 'RistorESU Nord Piovego');
@@ -409,13 +390,13 @@ INSERT INTO piatto_foto (piatto, foto) VALUES ('Patate al basilico', 'images/upl
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Frittata con verdure e formaggio', 'images/uploads/frittata-con-verdure-e-formaggio-+-tris-di-verdure.jpg');
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Tris di verdure', 'images/uploads/frittata-con-verdure-e-formaggio-+-tris-di-verdure.jpg');
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Gnocchi al pomodoro', 'images/uploads/gnocchi-al-pomodoro.jpg');
-INSERT INTO piatto_foto (piatto, foto) VALUES ('Insalata vegana con ceci, patate, carote e melanzane', 'images/uploads/insalata-vegana-con-fagioli,-carote,-zucchine-e-mais-+-tris-di-verdure.jpg');
-INSERT INTO piatto_foto (piatto, foto) VALUES ('Tris di verdure', 'images/uploads/insalata-vegana-con-fagioli,-carote,-zucchine-e-mais-+-tris-di-verdure.jpg');
-INSERT INTO piatto_foto (piatto, foto) VALUES ('Insalata vegana con carote, zucchine, fagioli e mais', 'images/uploads/insalata-vegana-con-fagioli,-carote,-zucchine-e-mais-+-carote-al-vapore.jpg');
-INSERT INTO piatto_foto (piatto, foto) VALUES ('Carote al vapore', 'images/uploads/insalata-vegana-con-fagioli,-carote,-zucchine-e-mais-+-carote-al-vapore.jpg');
+INSERT INTO piatto_foto (piatto, foto) VALUES ('Insalata vegana con ceci, patate, carote e melanzane', 'images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-tris-di-verdure.jpg');
+INSERT INTO piatto_foto (piatto, foto) VALUES ('Tris di verdure', 'images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-tris-di-verdure.jpg');
+INSERT INTO piatto_foto (piatto, foto) VALUES ('Insalata vegana con carote, zucchine, fagioli e mais', 'images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-carote-al-vapore.jpg');
+INSERT INTO piatto_foto (piatto, foto) VALUES ('Carote al vapore', 'images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-carote-al-vapore.jpg');
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Melanzana alla siciliana', 'images/uploads/melanzana-alla-siciliana.jpg');
-INSERT INTO piatto_foto (piatto, foto) VALUES ('Melanzana con pomodoro, capperi e olive', 'images/uploads/melanzana-con-pomodoro,-capperi-e-olive-+-fagioli-in-umido.jpg');
-INSERT INTO piatto_foto (piatto, foto) VALUES ('Fagioli in umido', 'images/uploads/melanzana-con-pomodoro,-capperi-e-olive-+-fagioli-in-umido.jpg');
+INSERT INTO piatto_foto (piatto, foto) VALUES ('Melanzana con pomodoro, capperi e olive', 'images/uploads/melanzana-con-pomodoro-capperi-e-olive-+-fagioli-in-umido.jpg');
+INSERT INTO piatto_foto (piatto, foto) VALUES ('Fagioli in umido', 'images/uploads/melanzana-con-pomodoro-capperi-e-olive-+-fagioli-in-umido.jpg');
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Minestra di verdure', 'images/uploads/minestra-di-verdure.jpg');
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Orzo con pomodorini e basilico', 'images/uploads/orzo-con-pomodorini-e-basilico.jpg');
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Pasta al ragù', 'images/uploads/pasta-al-ragu.jpg');

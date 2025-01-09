@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Models\UserModel;
 use Models\RecensioneModel;
 use Views\ForYouPageView;
 
@@ -20,7 +21,7 @@ class ForYouPageController implements BaseController
         $recensione = new RecensioneModel([
             "voto" => $post["rating"],
             "descrizione" => $post["review"],
-            "utente" => $_SESSION["email"],
+            "utente" => UserModel::findByUsername($_SESSION["username"])->getEmail(),
             "piatto" => $post["piatto"],
             "data" => date("Y-m-d H:i:s"),
         ]);

@@ -8,14 +8,6 @@ use Models\MensaModel;
 use PDO;
 use DateTimeImmutable;
 
-enum FiltroDaltonici: string
-{
-    case PROTANOPIA = "protanopia";
-    case DEUTERANOPIA = "deuteranopia";
-    case TRITANOPIA = "tritanopia";
-    case NONE = "none";
-}
-
 enum DimensioneTesto: string
 {
     case PICCOLO = "piccolo";
@@ -40,14 +32,7 @@ class PreferenzeUtenteModel
 {
     private $db;
 
-    // Table fields
     private string|null $email = null;
-    private string|null $mensaPreferita = null;
-    private bool|null $allergeneArachidi = null;
-    private bool|null $allergeneGlutine = null;
-    private bool|null $allergeneLattosio = null;
-    private bool|null $allergeneUova = null;
-    private FiltroDaltonici|null $filtroDaltonici = null;
     private DimensioneTesto|null $dimensioneTesto = null;
     private DimensioneIcone|null $dimensioneIcone = null;
     private ModificaFont|null $modificaFont = null;
@@ -74,24 +59,6 @@ class PreferenzeUtenteModel
         if (isset($data["email"])) {
             $this->email = $data["email"];
         }
-        if (isset($data["mensa_preferita"])) {
-            $this->mensaPreferita = $data["mensa_preferita"];
-        }
-        if (isset($data["allergene_arachidi"])) {
-            $this->allergeneArachidi = (bool)$data["allergene_arachidi"];
-        }
-        if (isset($data["allergene_glutine"])) {
-            $this->allergeneGlutine = (bool)$data["allergene_glutine"];
-        }
-        if (isset($data["allergene_lattosio"])) {
-            $this->allergeneLattosio = (bool)$data["allergene_lattosio"];
-        }
-        if (isset($data["allergene_uova"])) {
-            $this->allergeneUova = (bool)$data["allergene_uova"];
-        }
-        if (isset($data["filtro_daltonici"])) {
-            $this->filtroDaltonici = FiltroDaltonici::tryFrom($data["filtro_daltonici"]);
-        }
         if (isset($data["dimensione_testo"])) {
             $this->dimensioneTesto = DimensioneTesto::tryFrom($data["dimensione_testo"]);
         }
@@ -116,66 +83,6 @@ class PreferenzeUtenteModel
     public function setEmail(string $email): void
     {
         $this->email = $email;
-    }
-
-    public function getMensaPreferita(): ?string
-    {
-        return $this->mensaPreferita;
-    }
-
-    public function setMensaPreferita(?string $mensaPreferita): void
-    {
-        $this->mensaPreferita = $mensaPreferita;
-    }
-
-    public function isAllergeneArachidi(): ?bool
-    {
-        return $this->allergeneArachidi;
-    }
-
-    public function setAllergeneArachidi(?bool $allergeneArachidi): void
-    {
-        $this->allergeneArachidi = $allergeneArachidi;
-    }
-
-    public function isAllergeneGlutine(): ?bool
-    {
-        return $this->allergeneGlutine;
-    }
-
-    public function setAllergeneGlutine(?bool $allergeneGlutine): void
-    {
-        $this->allergeneGlutine = $allergeneGlutine;
-    }
-
-    public function isAllergeneLattosio(): ?bool
-    {
-        return $this->allergeneLattosio;
-    }
-
-    public function setAllergeneLattosio(?bool $allergeneLattosio): void
-    {
-        $this->allergeneLattosio = $allergeneLattosio;
-    }
-
-    public function isAllergeneUova(): ?bool
-    {
-        return $this->allergeneUova;
-    }
-
-    public function setAllergeneUova(?bool $allergeneUova): void
-    {
-        $this->allergeneUova = $allergeneUova;
-    }
-
-    public function getFiltroDaltonici(): ?FiltroDaltonici
-    {
-        return $this->filtroDaltonici;
-    }
-
-    public function setFiltroDaltonici(FiltroDaltonici $filtroDaltonici): void
-    {
-        $this->filtroDaltonici = $filtroDaltonici;
     }
 
     public function getDimensioneTesto(): ?DimensioneTesto
@@ -226,18 +133,10 @@ class PreferenzeUtenteModel
             return false;
         }
 
-        // Check if the record exists
         $existing = self::findByEmail($this->email);
         if ($existing) {
-            // Update existing record
             $stmt = $this->db->prepare(
                 "UPDATE preferenze_utente SET
-                    mensa_preferita = :mensa_preferita,
-                    allergene_arachidi = :allergene_arachidi,
-                    allergene_glutine = :allergene_glutine,
-                    allergene_lattosio = :allergene_lattosio,
-                    allergene_uova = :allergene_uova,
-                    filtro_daltonici = :filtro_daltonici,
                     dimensione_testo = :dimensione_testo,
                     dimensione_icone = :dimensione_icone,
                     modifica_font = :modifica_font,
@@ -246,12 +145,6 @@ class PreferenzeUtenteModel
             );
 
             return $stmt->execute([
-                "mensa_preferita" => $this->mensaPreferita,
-                "allergene_arachidi" => $this->allergeneArachidi ? 1 : 0,
-                "allergene_glutine"  => $this->allergeneGlutine ? 1 : 0,
-                "allergene_lattosio" => $this->allergeneLattosio ? 1 : 0,
-                "allergene_uova"     => $this->allergeneUova ? 1 : 0,
-                "filtro_daltonici" => $this->filtroDaltonici->value,
                 "dimensione_testo" => $this->dimensioneTesto->value,
                 "dimensione_icone" => $this->dimensioneIcone->value,
                 "modifica_font" => $this->modificaFont->value,
@@ -259,20 +152,13 @@ class PreferenzeUtenteModel
                 "email" => $this->email,
             ]);
         } else {
-            // Insert new record
             $stmt = $this->db->prepare(
                 "INSERT INTO preferenze_utente (
-                    email, mensa_preferita,
-                    allergene_arachidi, allergene_glutine,
-                    allergene_lattosio, allergene_uova,
-                    filtro_daltonici, dimensione_testo,
+                    email, dimensione_testo,
                     dimensione_icone, modifica_font,
                     dark_mode
                 ) VALUES (
-                    :email, :mensa_preferita,
-                    :allergene_arachidi, :allergene_glutine,
-                    :allergene_lattosio, :allergene_uova,
-                    :filtro_daltonici, :dimensione_testo,
+                    :email, :dimensione_testo,
                     :dimensione_icone, :modifica_font,
                     :dark_mode
                 )"
@@ -280,12 +166,6 @@ class PreferenzeUtenteModel
 
             return $stmt->execute([
                 "email" => $this->email,
-                "mensa_preferita" => $this->mensaPreferita,
-                "allergene_arachidi" => $this->allergeneArachidi ? 1 : 0,
-                "allergene_glutine"  => $this->allergeneGlutine ? 1 : 0,
-                "allergene_lattosio" => $this->allergeneLattosio ? 1 : 0,
-                "allergene_uova"     => $this->allergeneUova ? 1 : 0,
-                "filtro_daltonici"  =>  $this->filtroDaltonici->value,
                 "dimensione_testo"  =>  $this->dimensioneTesto->value,
                 "dimensione_icone"  =>  $this->dimensioneIcone->value,
                 "modifica_font"  =>  $this->modificaFont->value,
@@ -324,7 +204,7 @@ class PreferenzeUtenteModel
         if ($data) {
             return  new  PreferenzeUtenteModel($data);
         }
-        return  null;
+        return null;
     }
 
     /**
@@ -355,18 +235,5 @@ class PreferenzeUtenteModel
     public  function  getUtente(): ?UserModel
     {
         return  UserModel::findByEmail($this->email);
-    }
-
-    /**
-     * Get the associated MensaModel
-     *
-     * @return MensaModel|null
-     */
-    public  function  getMensaPreferitaModel(): ?MenseModel
-    {
-        if ($this->mensaPreferita  ===  null) {
-            return  null;
-        }
-        return  MenseModel::findByName($this->mensaPreferita);
     }
 }

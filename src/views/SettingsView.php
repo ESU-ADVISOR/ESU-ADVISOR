@@ -23,80 +23,20 @@ class SettingsView extends BaseView
     {
         parent::render();
 
-        if (empty($_SESSION["email"])) {
+        if (empty($_SESSION["username"])) {
             self::renderError("You're not logged in");
             return;
         }
 
         $menseContent = "";
         $mense = MenseModel::findAll();
-        $user = UserModel::findByEmail($_SESSION["email"]);
-        $userPreferences = PreferenzeUtenteModel::findByEmail($_SESSION["email"]);
+        $user = UserModel::findByUsername($_SESSION["username"]);
+        $userPreferences = PreferenzeUtenteModel::findByEmail($user->getEmail());
 
         if ($user === null) {
             self::renderError("User not found");
             return;
         }
-
-        // ======== Mensa =========
-
-        $hasMensa = false;
-        foreach ($mense as $mensa) {
-            if ($userPreferences != null && $userPreferences->getMensaPreferita() == $mensa->getNome()) {
-                $hasMensa = true;
-                $menseContent .= "<option value=\"" . $mensa->getNome() . "\" selected>" . $mensa->getNome() . "</option>";
-            } else {
-                $menseContent .= "<option value=\"" . $mensa->getNome() . "\">" . $mensa->getNome() . "</option>";
-            }
-        }
-
-        if (!$hasMensa) {
-            $menseContent = "<option value=\"none\" selected>None</option>" . $menseContent;
-        }
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "mensa-options-template",
-            $menseContent
-        );
-
-
-        // ======== Preferenze Menù (nothing to implement rn, so its gonna be empty) =========
-
-        // ======== Preferenze Allergeni =========
-
-        $allergeniContent = "";
-
-        if ($userPreferences != null && $userPreferences->isAllergeneGlutine()) {
-            $allergeniContent .= '<input type="checkbox" name="allergia_glutine" value="glutine" checked/> <label> Glutine</label><br>';
-        } else {
-            $allergeniContent .= '<input type="checkbox" name="allergia_glutine" value="glutine"/> <label> Glutine</label><br>';
-        }
-
-        if ($userPreferences != null && $userPreferences->isAllergeneLattosio()) {
-            $allergeniContent .= '<input type="checkbox" name="allergia_latte" value="latte" checked/> <label> Latte</label><br>';
-        } else {
-            $allergeniContent .= '<input type="checkbox" name="allergia_latte" value="latte"/> <label> Latte</label><br>';
-        }
-
-        if ($userPreferences != null && $userPreferences->isAllergeneUova()) {
-            $allergeniContent .= '<input type="checkbox" name="allergia_uova" value="uova" checked/><label> Uova</label><br>';
-        } else {
-            $allergeniContent .= '<input type="checkbox" name="allergia_uova" value="uova"/><label> Uova</label><br>';
-        }
-
-        if ($userPreferences != null && $userPreferences->isAllergeneArachidi()) {
-            $allergeniContent .= '<input type="checkbox" name="allergia_arachidi" value="arachidi" checked/><label> Arachidi</label>';
-        } else {
-            $allergeniContent .= '<input type="checkbox" name="allergia_arachidi" value="arachidi"/><label> Arachidi</label>';
-        }
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "allergeni-options-template",
-            $allergeniContent
-        );
-
 
         // ======== Dark Mode =========
 
@@ -111,30 +51,6 @@ class SettingsView extends BaseView
             $this->dom,
             "dark-mode-option-template",
             $darkModeContent
-        );
-
-        // ======== Daltonismo =========
-
-        $daltonismoContent = "";
-
-        $opzioniDaltonici = FiltroDaltonici::cases();
-        $isDaltonico = false;
-
-        foreach ($opzioniDaltonici as $opzione) {
-            if ($userPreferences != null && $userPreferences->getFiltroDaltonici()->value == $opzione->value) {
-                $isDaltonico = true;
-                $daltonismoContent .= '<option value="' . $opzione->value . '" selected>' . $opzione->value . '</option>';
-            } else {
-                $daltonismoContent .= '<option value="' . $opzione->value . '">' . $opzione->value . '</option>';
-            }
-        }
-
-
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "daltonismo-options-template",
-            $daltonismoContent
         );
 
         // ======== Dimensione Testo =========

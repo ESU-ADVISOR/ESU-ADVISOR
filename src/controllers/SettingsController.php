@@ -22,7 +22,7 @@ class SettingsController implements BaseController
     {
         $view = new SettingsView();
         if (isset($post['delete_account'])) {
-            $user = UserModel::findByEmail($_SESSION["email"]);
+            $user = UserModel::findByUsername($_SESSION["username"]);
             if ($user === null) {
                 $view->render([
                     "errors" => ["User not found"],
@@ -41,26 +41,12 @@ class SettingsController implements BaseController
                 exit();
             }
         } else if (isset($post['preferences'])) {
+            $email = UserModel::findByUsername($_SESSION["username"])->getEmail();
 
-            $preferences = PreferenzeUtenteModel::findByEmail($_SESSION["email"]) ?? new PreferenzeUtenteModel();
+            $preferences = PreferenzeUtenteModel::findByEmail($email) ?? new PreferenzeUtenteModel();
 
-            // Set mensa_preferita
-            $preferences->setMensaPreferita($post['mensa_preferita'] ?? null);
-
-            // Set allergene flags
-            $preferences->setAllergeneGlutine(isset($post['allergia_glutine']));
-            $preferences->setAllergeneLattosio(isset($post['allergia_lattosio']));
-            $preferences->setAllergeneArachidi(isset($post['allergia_arachidi']));
-            $preferences->setAllergeneUova(isset($post['allergia_uova']));
-
-            // Set dark_mode
             $preferences->setDarkMode(isset($post['dark_mode']));
 
-            if (isset($post['daltonismo'])) {
-                $preferences->setFiltroDaltonici(FiltroDaltonici::tryFrom($post['daltonismo']));
-            } else {
-                $preferences->setFiltroDaltonici(FiltroDaltonici::NONE);
-            }
             if (isset($post['dimensione_testo'])) {
                 $preferences->setDimensioneTesto(DimensioneTesto::tryFrom($post['dimensione_testo']));
             } else {
@@ -76,7 +62,7 @@ class SettingsController implements BaseController
             } else {
                 $preferences->setModificaFont(ModificaFont::NORMALE);
             }
-            $preferences->setEmail($_SESSION["email"]);
+            $preferences->setEmail($email);
 
             if ($preferences->saveToDB()) {
                 $view->render([
@@ -92,7 +78,7 @@ class SettingsController implements BaseController
         } else if (isset($post['change_username'])) {
             print_r($post);
 
-            $user = UserModel::findByEmail($_SESSION["email"]);
+            $user = UserModel::findByUsername($_SESSION["username"]);
             if ($user === null) {
                 $view->render([
                     "errors" => ["User not found"],
@@ -135,9 +121,10 @@ class SettingsController implements BaseController
                 exit();
             }
         } else if (isset($post['change_password'])) {
-            $user = UserModel::findByEmail($_SESSION["email"]);
+            $user = UserModel::findByUsername($_SESSION["username"]);
             if ($user === null) {
                 $view->render([
+
                     "errors" => ["User not found"],
                 ]);
                 exit();

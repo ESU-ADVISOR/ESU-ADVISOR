@@ -1,4 +1,5 @@
 <?php
+
 namespace Views;
 
 use Views\Utils;
@@ -37,7 +38,7 @@ abstract class BaseView
             "footer-template",
             $footerContent
         );
-        if (isset($_SESSION["email"]) && !empty($_SESSION["email"])) {
+        if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",

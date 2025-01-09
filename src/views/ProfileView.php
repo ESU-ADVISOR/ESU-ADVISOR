@@ -15,12 +15,11 @@ class ProfileView extends BaseView
     public function render(array $data = []): void
     {
         parent::render();
-        if (empty($_SESSION["email"])) {
+        if (empty($_SESSION["username"])) {
             self::renderError("You're not logged in");
             return;
         }
-        $user = UserModel::findByEmail($_SESSION["email"]);
-
+        $user = UserModel::findByUsername($_SESSION["username"]);
         if ($user === null) {
             self::renderError("User not found");
             return;

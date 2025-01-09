@@ -19,7 +19,7 @@ class ForYouPageView extends BaseView
     {
         parent::render();
 
-        if (empty($_SESSION["email"])) {
+        if (empty($_SESSION["username"])) {
             self::renderError("You're not logged in");
             return;
         }

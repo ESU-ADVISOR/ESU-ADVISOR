@@ -225,7 +225,26 @@ class UserModel
     }
 
     /**
-     * @param mixed $email @param string $$email */
+     * @param mixed $email @param string $$email
+     */
+    public static function findByUsername($username): ?UserModel
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM utente WHERE username = :username");
+        $stmt->execute([
+            "username" => $username,
+        ]);
+        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, UserModel::class)[0];
+
+        if (!empty($data)) {
+            return $data;
+        }
+        return null;
+    }
+
+    /**
+     * @param mixed $email @param string $$email
+     */
     public static function findByEmail($email): ?UserModel
     {
         $db = Database::getInstance();
@@ -233,10 +252,10 @@ class UserModel
         $stmt->execute([
             "email" => $email,
         ]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, UserModel::class)[0];
 
-        if ($data) {
-            return new UserModel($data);
+        if (!empty($data)) {
+            return $data;
         }
         return null;
     }

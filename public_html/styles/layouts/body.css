@@ -11,7 +11,8 @@
 }
 
 .mensa-select-container {
-    margin: -var(--spacing-md) -var(--spacing-md) var(--spacing-lg) -var(--spacing-md);
+    margin: -var(--spacing-md) -var(--spacing-md)
+        var(--spacing-lg) -var(--spacing-md);
     background: var(--background-card);
     padding: var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
@@ -35,12 +36,12 @@
 }
 
 .menu-section {
-    padding-top: 80px; 
+    padding-top: 80px;
 }
 
 .settings-page .page-content,
 .form-container {
-    padding-bottom: calc(var(--spacing-xl) * 4); 
+    padding-bottom: calc(var(--spacing-xl) * 4);
 }
 
 @media (min-width: 768px) {
@@ -50,7 +51,8 @@
     }
 
     .mensa-select-container {
-        margin: -var(--spacing-lg) -var(--spacing-lg) var(--spacing-lg) -var(--spacing-lg);
+        margin: -var(--spacing-lg) -var(--spacing-lg)
+            var(--spacing-lg) -var(--spacing-lg);
         padding: var(--spacing-lg);
     }
 

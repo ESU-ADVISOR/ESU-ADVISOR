@@ -7,27 +7,21 @@ use Controllers\LoginController;
 $controller = new LoginController();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = $email = "";
     $errors = [];
 
-    $email = trim($_POST["email"] ?? "");
+    $username = trim($_POST["username"] ?? "");
     $password = trim($_POST["password"] ?? "");
 
-    if (empty($email)) {
-        $errors[] = "Email address is required.";
-    } else {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Please enter a valid email address.";
-        }
+    if (empty($username)) {
+        $errors[] = "Username is required.";
     }
-
     if (empty($password)) {
         $errors[] = "Password is required.";
     }
 
     if (empty($errors)) {
         $data = [
-            "email" => $email,
+            "username" => $username,
             "password" => $password,
         ];
         $controller->handlePOSTRequest($data);

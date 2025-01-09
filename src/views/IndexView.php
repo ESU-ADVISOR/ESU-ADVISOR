@@ -1,4 +1,5 @@
 <?php
+
 namespace Views;
 
 use Models\MenseModel;
@@ -119,10 +120,17 @@ class IndexView extends BaseView
                             "<article class=\"menu-item\" hidden data-mensa-id=\"" .
                             htmlspecialchars($id) .
                             "\">";
-                        $piattiContent .=
-                            "<figure><img src=\"images/logo.png\" alt=\"" .
-                            htmlspecialchars($piatto->getNome()) .
-                            "\" width=\"auto\" height=\"50\"></figure>";
+                        if ($piatto->getImage()) {
+                            $piattiContent .=
+                                "<figure><img src=\"" . $piatto->getImage() . "\" alt=\"" .
+                                htmlspecialchars($piatto->getNome()) .
+                                "\" width=\"auto\" height=\"50\"></figure>";
+                        } else {
+                            $piattiContent .=
+                                "<figure><img src=\"images/logo.png\" alt=\"" .
+                                htmlspecialchars($piatto->getNome()) .
+                                "\" width=\"auto\" height=\"50\"></figure>";
+                        }
                         $piattiContent .=
                             "<div class=\"menu-item-content\">" .
                             "<h3>" .
@@ -247,4 +255,3 @@ class IndexView extends BaseView
         echo $html;
     }
 }
-?>

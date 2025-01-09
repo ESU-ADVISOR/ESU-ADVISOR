@@ -1,4 +1,5 @@
 <?php
+
 namespace Views;
 
 class Utils
@@ -14,13 +15,18 @@ class Utils
             $newDom = new \DOMDocument();
             libxml_use_internal_errors(true);
 
+            if (empty($newContent))
+                return;
+
             $newDom->loadHTML(
                 mb_convert_encoding(
-                    "<div>" . $newContent . "</div>",
+                    $newContent,
                     "HTML-ENTITIES",
                     "UTF-8"
                 )
             );
+
+
             libxml_clear_errors();
 
             $newContentFragment = $dom->createDocumentFragment();

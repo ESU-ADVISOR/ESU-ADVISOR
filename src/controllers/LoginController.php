@@ -23,15 +23,15 @@ class LoginController implements BaseController
 
     public function handlePOSTRequest(array $post = []): void
     {
-        $email = $post["email"];
+        $username = $post["username"];
         $password = $post["password"];
 
-        if (!$this->model->isEmailTaken($email)) {
-            $this->view->render(["errors" => ["Email is not registered"]]);
+        if (!$this->model->findByUsername($username)) {
+            $this->view->render(["errors" => ["User is not registered"]]);
             return;
         }
 
-        if (!$this->model->authenticate($email, $password)) {
+        if (!$this->model->authenticate($this->model->findByUsername($username)->getEmail(), $password)) {
             $this->view->render(["errors" => ["Invalid username or password"]]);
             echo "Invalid username or password";
             return;
@@ -39,7 +39,7 @@ class LoginController implements BaseController
 
         session_regenerate_id(true);
 
-        $_SESSION["email"] = $email;
+        $_SESSION["username"] = $username;
 
         header("Location: index.php");
     }

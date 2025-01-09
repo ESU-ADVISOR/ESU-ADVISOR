@@ -1,5 +1,7 @@
 <?php
+
 namespace Models;
+
 use Models\RecensioneModel;
 use Models\Database;
 
@@ -79,6 +81,22 @@ class PiattoModel
     }
 
     //-----------------Relationals methods----------------
+
+    public function getImage(): ?string
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM piatto_foto WHERE piatto = :piatto");
+        $stmt->execute([
+            "piatto" => $this->nome,
+        ]);
+
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if (!empty($data[0])) {
+
+            return $data[0]["foto"];
+        }
+        return null;
+    }
 
     /** @return RecensioneModel[] */
     public function getRecensioni(): array
@@ -185,4 +203,3 @@ class PiattoModel
         return [];
     }
 }
-?>

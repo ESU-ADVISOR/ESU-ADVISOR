@@ -3,14 +3,14 @@
     /* Colors - Light theme default */
     --primary: #0072b2;
     --primary-hover: #167eb9;
-    --danger: #d55e00;
-    --danger-hover: #d66c18;
+    --danger: #d43900;
+    --danger-hover: #d33901;
 
     /* Text colors */
     --text-primary: #000000;
     --text-secondary: #333333;
     --text-on-primary: #ffffff;
-    --text-on-danger: #000000;
+    --text-on-danger: #ffffff;
 
     /* Background colors */
     --background: #ffffff;
@@ -67,6 +67,8 @@
     --text-on-primary: #000000;
     --text-on-danger: #000000;
     --border-color: #333333;
+    --danger: #d55e00;
+    --danger-hover: #d66c18;
 }
 
 /* Optional: System preference dark mode override */
@@ -79,7 +81,7 @@
         --border-color: #333333;
         --primary: #0072b2;
         --primary-hover: #167eb9;
-        --danger: #d55e00;
-        --danger-hover: #d66c18;
+        --danger: #d43900;
+        --danger-hover: #d33901;
     }
 }

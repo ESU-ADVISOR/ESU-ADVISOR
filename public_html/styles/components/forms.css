@@ -125,7 +125,7 @@ textarea.form-input {
     width: 100%;
     height: 48px;
     background-color: var(--primary);
-    color: white;
+    color: var(--background);
     border: none;
     border-radius: var(--radius);
     font-weight: 500;
@@ -137,6 +137,7 @@ textarea.form-input {
     justify-content: center;
     gap: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
+    
 }
 
 .form-button:hover {
@@ -151,12 +152,12 @@ textarea.form-input {
 
 .form-button.secondary:hover {
     background-color: var(--primary);
-    color: white;
+    color: var(--background);
 }
 
 .form-button.danger {
     background-color: var(--danger);
-    color: white;
+    color: var(--background);
 }
 
 .form-button.danger:hover {

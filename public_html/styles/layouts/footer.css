@@ -36,6 +36,18 @@
     width: 64px; /* Larghezza fissa per uniformità */
 }
 
+.nav-item.active>a{
+    font-weight: bold;
+}
+
+.nav-item>a{
+    text-decoration: none;
+}
+
+.nav-item>a :hover{
+    text-decoration: underline;   
+}
+
 .nav-item span {
     display: flex;
     flex-direction: column;
@@ -54,6 +66,10 @@
     color: var(--primary);
     stroke: var(--primary);
     fill: var(--primary);
+}
+
+.nav-item>a {
+    color: var(--text-secondary)
 }
 
 /* Aggiunge spazio in fondo al contenuto principale per evitare che venga nascosto dalla navbar */

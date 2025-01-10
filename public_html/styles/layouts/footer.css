@@ -36,16 +36,29 @@
     width: 64px; /* Larghezza fissa per uniformità */
 }
 
-.nav-item.active>a{
+.nav-item:hover{
+    text-decoration: underline;
+    stroke: var(--primary);
+    color: var(--primary);
+}
+
+.nav-item.active {
+    color: var(--primary);
+    stroke: var(--primary);
+    fill: var(--primary);
     font-weight: bold;
+}
+
+.nav-item.active:hover{
+    text-decoration: none;
 }
 
 .nav-item>a{
     text-decoration: none;
 }
 
-.nav-item>a :hover{
-    text-decoration: underline;   
+.nav-item>a:hover{
+    color: var(--primary);
 }
 
 .nav-item span {
@@ -62,11 +75,7 @@
     margin-bottom: 2px;
 }
 
-.nav-item.active {
-    color: var(--primary);
-    stroke: var(--primary);
-    fill: var(--primary);
-}
+
 
 .nav-item>a {
     color: var(--text-secondary)

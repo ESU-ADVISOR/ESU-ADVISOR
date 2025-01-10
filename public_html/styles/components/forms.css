@@ -189,7 +189,7 @@ textarea.form-input {
     font-size: 4rem;
     /*transition: color var(--transition);*/
     transition: stroke var(--transition), fill var(--transition);
-    stroke : var(--border-color);
+    stroke : var(--text-primary);
     fill: transparent;
 }
 

@@ -136,6 +136,7 @@ textarea.form-input {
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
 }
 
 .form-button:hover {

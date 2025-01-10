@@ -32,7 +32,7 @@
     stroke: var(--text-secondary);
     fill: transparent;
     gap: var(--spacing-xs);
-    padding: var(--spacing-xs);
+    padding: 0/*var(--spacing-xs)*/;
     width: 64px; /* Larghezza fissa per uniformità */
 }
 

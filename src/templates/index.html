@@ -9,25 +9,7 @@
         <script src="scripts/menu_select.js" defer></script>
     </head>
     <body>
-        <!--<template id="header-template"></template>-->
-        <header class="header">
-            <div class="header-container">
-                <div class="logo-container">
-                    <!--<a href="index.php">-->
-                        <img
-                            src="images/logo.svg"
-                            alt="ESUADVISOR (logo)"
-                            class="logo"
-                        />
-                    </a>
-                </div>
-                <nav class="nav-buttons">
-                    <template id="session-buttons-template"></template>
-                </nav>
-            </div>
-        </header>
-
-
+        <template id="header-template"></template>
 
         <main class="page-content">
             <div class="mensa-select-container">
@@ -43,7 +25,6 @@
                     <h2 class="card-title">Menu del giorno</h2>
                     <ul>
                         <template id="piatti-template"></template>
-                        <!--ogni piatto è un dt con dd e due immagini (stelle e img)-->
                     </ul>
                 </div>
             </section>
@@ -62,9 +43,7 @@
                         <div class="card-content">
                             <div class="card-info">
                                 <ul>
-                                    <template
-                                        id="mense-info-template"
-                                    ></template>
+                                    <template id="mense-info-template"></template>
                                 </ul>
                             </div>
                         </div>
@@ -72,111 +51,7 @@
                 </div>
             </section>
         </main>
-        <!--<template id="footer-template"></template>-->
 
-        <footer class="bottom-nav">
-            <nav class="nav">
-                <ul>
-                    <li class="nav-item active">
-                        <!--<a href="index.php" class="nav-item active">-->
-                            <span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    width="24"
-                                    height="24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="m0 12 11.254-11c.44-.439 1.152-.439 1.591 0L24 12M0.75 12v10.1c0 .621.504 1.125 1.125 1.125H8v-10c0-.621.504-1.125 1.125-1.125h5.75c.621 0 1.125.504 1.125 1.125V23.25h6.125c.621 0 1.125-.504 1.125-1.125V12M8.25 21M8.25"
-                                        
-                                    />
-                                </svg>
-                                Home
-                            </span>
-                        </a>
-                    </li>
-                    <li  class="nav-item">
-                        <a href="fyp.php">
-                            <span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    width="24"
-                                    height="24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M12 0.75 l3.476 7.0425 L23.25 8.929 l-5.625 5.4785 L18.9525 23.25 12 19.054 5.0475 23.25 6.375 14.4075 0.75 8.929 l7.774-1.1365 L12 0.75z"
-                                    />
-                                </svg>
-                                Review
-                            </span>
-                        </a>
-                    </li>
-                    <li  class="nav-item">
-                        <a href="profile.php">
-                            <span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 512 512"
-                                    stroke-width="32"
-                                    width="24"
-                                    height="24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        fill="none"
-                                        d="M0 240C0 107.452 107.452 0 240 0C372.548 0 480 107.452 480 240C480 372.548 372.548 480 240 480C107.452 480 0 372.548 0 240Z"
-                                        transform="translate(16 16)"
-                                    />
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round" 
-                                        d="M0 62.5C0 27.9822 27.9822 0 62.5 0C97.0178 0 125 27.9822 125 62.5C125 97.0178 97.0178 125 62.5 125C27.9822 125 0 97.0178 0 62.5Z"
-                                        transform="translate(194 82)" 
-                                    />
-                                    <path 
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M0 118.001C0 118.001 76.4526 0 209.003 0C341.554 0 418.002 118.001 418.002 118.001C418.002 118.001 358.004 239.998 209.002 240.001C60.0011 240.005 0 118.001 0 118.001Z"
-                                        transform="translate(47 256)"
-                                        
-                                    />
-                                </svg>
-                                Profilo
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="settings.php">
-                            <span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 512 512"
-                                    stroke-width="32"
-                                    width="24"
-                                    height="24"
-                                >
-                                    <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M179.228 0C179.228 0 167.457 59.9316 167.457 59.9316C147.828 67.3028 129.678 77.6008 113.74 90.5933C113.74 90.5933 55.7722 70.7397 55.7722 70.7397L0 166.76C0 166.76 46.3834 206.792 46.3834 206.792C44.7388 216.813 43.6742 227.017 43.6742 237.5C43.6742 247.983 44.7388 258.187 46.3834 268.208C46.3834 268.208 0 308.24 0 308.24L55.7722 404.26C55.7722 404.26 113.74 384.407 113.74 384.407C129.678 397.399 147.828 407.697 167.457 415.068C167.457 415.068 179.228 475 179.228 475L290.772 475C290.772 475 302.543 415.068 302.543 415.068C322.172 407.697 340.322 397.399 356.26 384.407C356.26 384.407 414.228 404.26 414.228 404.26L470 308.24C470 308.24 423.617 268.208 423.617 268.208C425.261 258.187 426.326 247.983 426.326 237.5C426.326 227.017 425.261 216.813 423.617 206.792C423.617 206.792 470 166.76 470 166.76L414.228 70.7397C414.228 70.7397 356.26 90.5933 356.26 90.5933C340.322 77.6008 322.172 67.3028 302.543 59.9316C302.543 59.9316 290.772 0 290.772 0L179.228 0L179.228 0ZM235 142.5C287.83 142.5 330.663 185.036 330.663 237.5C330.663 289.964 287.83 332.5 235 332.5C182.17 332.5 139.337 289.964 139.337 237.5C139.337 185.036 182.17 142.5 235 142.5C235 142.5 235 142.5 235 142.5Z"
-                                    transform="translate(21 19)"
-                                    />
-                                </svg>
-                                Impostazioni
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </footer>
-        
+        <template id="footer-template"></template>
     </body>
 </html>

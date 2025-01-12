@@ -1,4 +1,5 @@
--- DATABSE DI PROVA | NON FINALE
+SET GLOBAL event_scheduler = ON;
+
 DROP TABLE IF EXISTS mensa;
 DROP TABLE IF EXISTS piatto;
 DROP TABLE IF EXISTS utente;
@@ -98,11 +99,6 @@ CREATE TABLE piatto_foto (
         FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
     );
 
--- CREATE TRIGGER check_menu_date BEFORE INSERT ON menu FOR EACH ROW BEGIN IF NEW.data > CURDATE () THEN SIGNAL SQLSTATE '45000'
--- SET>
---     MESSAGE_TEXT = 'Date cannot be in the future';
--- END IF;
--- END;
 CREATE TABLE piatto_allergeni (
         allergeni VARCHAR(30) NOT NULL,
         piatto VARCHAR(100) NOT NULL,
@@ -418,3 +414,63 @@ INSERT INTO piatto_foto (piatto, foto) VALUES ('Trancio di pizza margherita', 'i
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Patate al basilico', 'images/uploads/trancio-di-pizza-margherita+patate-al-basilico.jpg');
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Patate al basilico', 'images/uploads/trancio-di-pizza-margherita+patate-al-basilico+fagiolini.jpg');
 INSERT INTO piatto_foto (piatto, foto) VALUES ('Fagiolini', 'images/uploads/trancio-di-pizza-margherita+patate-al-basilico+fagiolini.jpg');
+
+-- DA QUA SOTTO NON TOCCARE ED ESCLUDERE DALLA FORMATTAZIONE DEL DOCUMENTO
+
+DELIMITER //
+
+CREATE EVENT IF NOT EXISTS create_weekly_menu
+ON SCHEDULE EVERY 1 WEEK
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE mensa_nome VARCHAR(50);
+    DECLARE data_corrente DATE;
+    DECLARE i INT DEFAULT 0;
+    DECLARE data_increment DATE;
+
+    DECLARE mensa_cursor CURSOR FOR 
+        SELECT nome FROM mensa;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    SET done = 0;
+    SET data_corrente = CURDATE();
+
+    OPEN mensa_cursor;
+
+    menu_loop: LOOP
+        FETCH mensa_cursor INTO mensa_nome;
+        
+        IF done = 1 THEN
+            LEAVE menu_loop;
+        END IF;
+        
+        SET i = 0;
+        SET data_increment = 0;
+        
+        WHILE i < 7 DO
+            SET data_increment = DATE_ADD(data_corrente, INTERVAL i DAY);
+            INSERT IGNORE INTO menu (data, mensa) VALUES (data_increment, mensa_nome);
+            
+
+            INSERT IGNORE INTO menu_piatto (piatto, data, mensa)
+            SELECT p.nome, data_increment, mensa_nome
+            FROM piatto p
+            ORDER BY RAND()
+            LIMIT 6;
+            
+            SET i = i + 1;
+        END WHILE;
+    END LOOP menu_loop;
+    
+        
+
+    SET done = 1;
+
+    CLOSE mensa_cursor;
+END
+//
+
+DELIMITER ;

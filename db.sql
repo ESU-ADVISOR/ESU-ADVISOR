@@ -1,18 +1,18 @@
-SET GLOBAL event_scheduler = ON;
+SET GLOBAL event_scheduler = "ON";
 
-DROP TABLE IF EXISTS mensa;
-DROP TABLE IF EXISTS piatto;
-DROP TABLE IF EXISTS utente;
-DROP TABLE IF EXISTS menu;
-DROP TABLE IF EXISTS orarioapertura;
-DROP TABLE IF EXISTS recensione;
-DROP TABLE IF EXISTS menu_piatto;
-DROP TABLE IF EXISTS piatto_foto;
-DROP TABLE IF EXISTS piatto_allergeni;
-DROP TABLE IF EXISTS preferenze_utente;
-DROP TRIGGER IF EXISTS check_menu_date;
-DROP VIEW IF EXISTS piatto_recensioni_foto;
 DROP VIEW IF EXISTS mensa_orari_apertura;
+DROP VIEW IF EXISTS piatto_recensioni_foto;
+DROP EVENT IF EXISTS crea_menu_settimanale;
+DROP TABLE IF EXISTS preferenze_utente;
+DROP TABLE IF EXISTS piatto_allergeni;
+DROP TABLE IF EXISTS piatto_foto;
+DROP TABLE IF EXISTS menu_piatto;
+DROP TABLE IF EXISTS recensione;
+DROP TABLE IF EXISTS orarioapertura;
+DROP TABLE IF EXISTS menu;
+DROP TABLE IF EXISTS utente;
+DROP TABLE IF EXISTS piatto;
+DROP TABLE IF EXISTS mensa;
 
 CREATE TABLE mensa (
         nome VARCHAR(50) NOT NULL,
@@ -208,7 +208,7 @@ INSERT INTO piatto (nome, descrizione) VALUES ('Frittata con verdure e formaggio
 INSERT INTO piatto (nome, descrizione) VALUES ('Pollo al forno', 'Pollo arrosto con erbe aromatiche.');
 INSERT INTO piatto (nome, descrizione) VALUES ('Pizza pomodorini, rucola e grana', 'Pizza con pomodorini freschi, rucola e scaglie di grana.');
 INSERT INTO piatto (nome, descrizione) VALUES ('Pasta alla Norma (melanzane e ricotta)', 'Pasta con melanzane fritte e ricotta salata.');
-INSERT INTO piatto (nome, descrizione) VALUES ('Pasta al ragù', 'Pasta con ragù di carne.');
+INSERT INTO piatto (nome, descrizione) VALUES ("Pasta al ragù", "Pasta con ragù di carne.");
 INSERT INTO piatto (nome, descrizione) VALUES ('Riso al curry', 'Riso basmati con curry e verdure.');
 INSERT INTO piatto (nome, descrizione) VALUES ('Riso pilaw con piselli', 'Riso pilaw con piselli freschi.');
 INSERT INTO piatto (nome, descrizione) VALUES ('Crema di funghi', 'Vellutata di funghi porcini.');
@@ -419,7 +419,7 @@ INSERT INTO piatto_foto (piatto, foto) VALUES ('Fagiolini', 'images/uploads/tran
 
 DELIMITER //
 
-CREATE EVENT IF NOT EXISTS create_weekly_menu
+CREATE EVENT IF NOT EXISTS crea_menu_settimanale
 ON SCHEDULE EVERY 1 WEEK
 STARTS CURRENT_TIMESTAMP
 DO

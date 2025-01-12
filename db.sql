@@ -1,9 +1,9 @@
 SET CHARACTER SET utf8mb4;
-SET GLOBAL event_scheduler = "ON";
 
 DROP VIEW IF EXISTS mensa_orari_apertura;
 DROP VIEW IF EXISTS piatto_recensioni_foto;
-DROP EVENT IF EXISTS crea_menu_settimanale;
+DROP EVENT IF EXISTS crea_menu_settimanale_event;
+DROP PROCEDURE IF EXISTS crea_menu_settimanale;
 DROP TABLE IF EXISTS preferenze_utente;
 DROP TABLE IF EXISTS piatto_allergeni;
 DROP TABLE IF EXISTS piatto_foto;
@@ -16,95 +16,95 @@ DROP TABLE IF EXISTS piatto;
 DROP TABLE IF EXISTS mensa;
 
 CREATE TABLE mensa (
-        nome VARCHAR(50) NOT NULL,
-        indirizzo VARCHAR(100) NOT NULL,
-        telefono VARCHAR(15) NOT NULL,
-        maps_link TEXT NOT NULL,
-        PRIMARY KEY (nome)
+    nome VARCHAR(50) NOT NULL,
+    indirizzo VARCHAR(100) NOT NULL,
+    telefono VARCHAR(15) NOT NULL,
+    maps_link TEXT NOT NULL,
+    PRIMARY KEY (nome)
     );
 
 CREATE TABLE piatto (
-        nome VARCHAR(100) NOT NULL,
-        descrizione TEXT NOT NULL,
-        PRIMARY KEY (nome),
-        CHECK (LENGTH (descrizione) <= 500)
+    nome VARCHAR(100) NOT NULL,
+    descrizione TEXT NOT NULL,
+    PRIMARY KEY (nome),
+    CHECK (LENGTH (descrizione) <= 500)
     );
 
 CREATE TABLE utente (
-        email VARCHAR(50) NOT NULL,
-        password VARCHAR(100) NOT NULL,
-        dataNascita DATE NOT NULL,
-        username VARCHAR(50) NOT NULL,
-        PRIMARY KEY (email),
-        UNIQUE (username),
-        CHECK (email LIKE "%@%.%"),
-        CHECK (username REGEXP "^[a-zA-Z0-9_]+$"),
-        CHECK (
-            email REGEXP "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        ),
-        INDEX (username),
-        UNIQUE (username)
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    dataNascita DATE NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    PRIMARY KEY (email),
+    UNIQUE (username),
+    CHECK (email LIKE "%@%.%"),
+    CHECK (username REGEXP "^[a-zA-Z0-9_]+$"),
+    CHECK (
+        email REGEXP "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    ),
+    INDEX (username),
+    UNIQUE (username)
     );
 
 CREATE TABLE menu (
-        data DATE NOT NULL,
-        mensa VARCHAR(50) NOT NULL,
-        PRIMARY KEY (data, mensa),
-        FOREIGN KEY (mensa) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE CASCADE
+    data DATE NOT NULL,
+    mensa VARCHAR(50) NOT NULL,
+    PRIMARY KEY (data, mensa),
+    FOREIGN KEY (mensa) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE CASCADE
     );
 
 CREATE TABLE orarioapertura (
-        giornoSettimana INT NOT NULL,
-        orainizio VARCHAR(5) NOT NULL,
-        orafine VARCHAR(5) NOT NULL,
-        mensa VARCHAR(50) NOT NULL,
-        PRIMARY KEY (giornoSettimana, orainizio,  orafine, mensa),
-        FOREIGN KEY (mensa) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE CASCADE,
-        CHECK (
-            giornoSettimana >= 1
-            AND giornoSettimana <= 7
-        ),
-        CHECK (orainizio REGEXP "^[0-2][0-9]:[0-5][0-9]$"),
-        CHECK (orafine REGEXP "^[0-2][0-9]:[0-5][0-9]$")
+    giornoSettimana INT NOT NULL,
+    orainizio VARCHAR(5) NOT NULL,
+    orafine VARCHAR(5) NOT NULL,
+    mensa VARCHAR(50) NOT NULL,
+    PRIMARY KEY (giornoSettimana, orainizio,  orafine, mensa),
+    FOREIGN KEY (mensa) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE CASCADE,
+    CHECK (
+        giornoSettimana >= 1
+        AND giornoSettimana <= 7
+    ),
+    CHECK (orainizio REGEXP "^[0-2][0-9]:[0-5][0-9]$"),
+    CHECK (orafine REGEXP "^[0-2][0-9]:[0-5][0-9]$")
     );
 
 CREATE TABLE recensione (
-        voto INT NOT NULL,
-        descrizione TEXT,
-        utente VARCHAR(50) NOT NULL,
-        piatto VARCHAR(100) NOT NULL,
-        data DATE DEFAULT CURRENT_DATE,
-        CHECK (
-            voto >= 1
-            AND voto <= 5
-        ),
-        PRIMARY KEY (utente, piatto),
-        FOREIGN KEY (utente) REFERENCES utente (email) ON UPDATE CASCADE ON DELETE CASCADE,
-        FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
+    voto INT NOT NULL,
+    descrizione TEXT,
+    utente VARCHAR(50) NOT NULL,
+    piatto VARCHAR(100) NOT NULL,
+    data DATE DEFAULT CURRENT_DATE,
+    CHECK (
+        voto >= 1
+        AND voto <= 5
+    ),
+    PRIMARY KEY (utente, piatto),
+    FOREIGN KEY (utente) REFERENCES utente (email) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
     );
 
 CREATE TABLE menu_piatto (
-        piatto VARCHAR(100) NOT NULL,
-        data DATE NOT NULL,
-        mensa VARCHAR(50) NOT NULL,
-        PRIMARY KEY (piatto, data, mensa),
-        FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE,
-        FOREIGN KEY (data, mensa) REFERENCES menu (data, mensa) ON UPDATE CASCADE ON DELETE CASCADE
+    piatto VARCHAR(100) NOT NULL,
+    data DATE NOT NULL,
+    mensa VARCHAR(50) NOT NULL,
+    PRIMARY KEY (piatto, data, mensa),
+    FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (data, mensa) REFERENCES menu (data, mensa) ON UPDATE CASCADE ON DELETE CASCADE
     );
 
 CREATE TABLE piatto_foto (
-        photoid INT AUTO_INCREMENT,
-        foto    BLOB        NOT NULL,      
-        piatto VARCHAR(100) NOT NULL,
-        PRIMARY KEY (photoid, piatto),
-        FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
+    photoid INT AUTO_INCREMENT,
+    foto BLOB NOT NULL,      
+    piatto VARCHAR(100) NOT NULL,
+    PRIMARY KEY (photoid, piatto),
+    FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
     );
 
 CREATE TABLE piatto_allergeni (
-        allergeni VARCHAR(30) NOT NULL,
-        piatto VARCHAR(100) NOT NULL,
-        PRIMARY KEY (allergeni, piatto),
-        FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
+    allergeni VARCHAR(30) NOT NULL,
+    piatto VARCHAR(100) NOT NULL,
+    PRIMARY KEY (allergeni, piatto),
+    FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
     );
 
 CREATE TABLE preferenze_utente (
@@ -416,14 +416,9 @@ INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/upl
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/uploads/trancio-di-pizza-margherita+patate-al-basilico+fagiolini.jpg");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagiolini", "images/uploads/trancio-di-pizza-margherita+patate-al-basilico+fagiolini.jpg");
 
--- DA QUA SOTTO NON TOCCARE ED ESCLUDERE DALLA FORMATTAZIONE DEL DOCUMENTO
-
 DELIMITER //
 
-CREATE EVENT IF NOT EXISTS crea_menu_settimanale
-ON SCHEDULE EVERY 1 WEEK
-STARTS CURRENT_TIMESTAMP
-DO
+CREATE PROCEDURE crea_menu_settimanale()
 BEGIN
     DECLARE done INT DEFAULT 0;
     DECLARE mensa_nome VARCHAR(50);
@@ -434,44 +429,66 @@ BEGIN
     DECLARE mensa_cursor CURSOR FOR 
         SELECT nome FROM mensa;
 
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        -- Rollback any changes
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Errore durante la creazione del menu settimanale';
+    END;
 
-    SET done = 0;
-    SET data_corrente = CURDATE();
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    
+    SET data_corrente = CURRENT_DATE();
+    SET data_increment = data_corrente;
 
     OPEN mensa_cursor;
+    START TRANSACTION;
 
-    menu_loop: LOOP
+    REPEAT
         FETCH mensa_cursor INTO mensa_nome;
-        
-        IF done = 1 THEN
-            LEAVE menu_loop;
-        END IF;
-        
-        SET i = 0;
-        SET data_increment = 0;
-        
-        WHILE i < 7 DO
+        IF NOT done THEN
+            SET i = 0;
+            WHILE i < 7 DO
             SET data_increment = DATE_ADD(data_corrente, INTERVAL i DAY);
-            INSERT IGNORE INTO menu (data, mensa) VALUES (data_increment, mensa_nome);
             
-
-            INSERT IGNORE INTO menu_piatto (piatto, data, mensa)
-            SELECT p.nome, data_increment, mensa_nome
-            FROM piatto p
-            ORDER BY RAND()
-            LIMIT 6;
+            IF DAYOFWEEK(data_increment) BETWEEN 2 AND 6 THEN
+                IF (SELECT COUNT(*) FROM menu_piatto WHERE data = data_increment AND mensa = mensa_nome) < 6 THEN
+                
+                    INSERT IGNORE INTO menu (data, mensa) 
+                    VALUES (data_increment, mensa_nome);
+                    
+                    INSERT IGNORE INTO menu_piatto (piatto, data, mensa) 
+                    SELECT p.nome, data_increment, mensa_nome 
+                    FROM piatto p 
+                    ORDER BY RAND() 
+                    LIMIT 6;
+                END IF;
+            END IF;
             
             SET i = i + 1;
-        END WHILE;
-    END LOOP menu_loop;
-    
-        
-
-    SET done = 1;
+            END WHILE;
+        END IF;
+        UNTIL done END REPEAT;
+        COMMIT;
 
     CLOSE mensa_cursor;
-END
-//
+END //
+
+CREATE EVENT IF NOT EXISTS crea_menu_settimanale_event
+ON SCHEDULE 
+    EVERY 1 WEEK
+    STARTS CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
+    ON COMPLETION PRESERVE
+ENABLE
+DO
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+    END;
+    
+    CALL crea_menu_settimanale();
+END //
+
 
 DELIMITER ;

@@ -387,8 +387,8 @@ INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/upl
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Frittata con verdure e formaggio", "images/uploads/frittata-con-verdure-e-formaggio-+-tris-di-verdure.jpg");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Tris di verdure", "images/uploads/frittata-con-verdure-e-formaggio-+-tris-di-verdure.jpg");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Gnocchi al pomodoro", "images/uploads/gnocchi-al-pomodoro.jpg");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-tris-di-verdure.jpg");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Tris di verdure", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-tris-di-verdure.jpg");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "images/uploads/insalata-vegana-con-ceci-patate-carote-e-melanzare-+-tris-di-verdure.jpg");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Tris di verdure", "images/uploads/insalata-vegana-con-ceci-patate-carote-e-melanzare-+-tris-di-verdure.jpg");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con carote, zucchine, fagioli e mais", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-carote-al-vapore.jpg");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote al vapore", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-carote-al-vapore.jpg");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana alla siciliana", "images/uploads/melanzana-alla-siciliana.jpg");

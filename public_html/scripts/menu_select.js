@@ -37,5 +37,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   selectElement.addEventListener("change", edit_list);
 
+  document.addEventListener("pagehide", function () {
+    selectElement.removeEventListener("change", edit_list);
+  });
+
   edit_list({ target: { value: selectElement.value } });
 });

@@ -39,22 +39,27 @@ class IndexView extends BaseView
                     htmlspecialchars($mensa["nome"]) .
                     "</option>";
 
-                // Start menseInfoContent for each mensa
-                $menseInfoContent .=
-                    "<div class=\"mense-info-item\" hidden data-mensa-id=\"" .
-                    htmlspecialchars($id) .
-                    "\">";
-                $menseInfoContent .=
-                    "<dt>" . htmlspecialchars($mensa["nome"]) . "</dt>";
-                $menseInfoContent .=
-                    "<dd>Indirizzo: " .
-                    htmlspecialchars($mensa["indirizzo"]) .
-                    "</dd>";
-                $menseInfoContent .=
-                    "<dd>Telefono mensa: " .
-                    htmlspecialchars($mensa["telefono"]) .
-                    "</dd>";
+                $menseInfoContent .= "<li class=\"mense-info-item\" hidden data-mensa-id=\"" .
+                    htmlspecialchars($id) . "\">";
 
+                // Heading for the mensa section
+                $menseInfoContent .= "<h3>" . htmlspecialchars($mensa["nome"]) . "</h3>";
+
+                // Contact information list
+                $menseInfoContent .= "<dl class=\"contact-info\">";
+                $menseInfoContent .= "<div class=\"contact-group\">";
+                $menseInfoContent .= "<dt>Indirizzo:</dt>";
+                $menseInfoContent .= "<dd>" . htmlspecialchars($mensa["indirizzo"]) . "</dd>";
+                $menseInfoContent .= "</div>";
+
+                $menseInfoContent .= "<div class=\"contact-group\">";
+                $menseInfoContent .= "<dt>Telefono mensa:</dt>";
+                $menseInfoContent .= "<dd>" . htmlspecialchars($mensa["telefono"]) . "</dd>";
+                $menseInfoContent .= "</div>";
+                $menseInfoContent .= "</dl>";
+
+                // The table will be appended here later
+                $menseInfoContent .= "<div class=\"schedule-container\">";
                 // Fetch orari
                 $orari = MenseModel::findByName(
                     $mensa["nome"]
@@ -103,7 +108,7 @@ class IndexView extends BaseView
                         <td>{$orafine}</td>
                     </tr>";
                 }
-                $menseInfoContent .= "</tbody></table>";
+                $menseInfoContent .= "</tbody></table></div>";
 
                 // Add maps link
                 $menseInfoContent .=
@@ -111,25 +116,25 @@ class IndexView extends BaseView
                     htmlspecialchars($mensa["maps_link"]) .
                     "\">
                     <button class=\"nav-button secondary\">Direzioni</button>
-                </a></div>";
+                </a></li>";
 
                 // Handle piatti
                 if (isset($mensa["piatti"]) && is_array($mensa["piatti"])) {
                     foreach ($mensa["piatti"] as $piatto) {
                         $piattiContent .=
-                            "<article class=\"menu-item\" hidden data-mensa-id=\"" .
+                            "<li><article class=\"menu-item\" hidden data-mensa-id=\"" .
                             htmlspecialchars($id) .
                             "\">";
                         if ($piatto->getImage()) {
                             $piattiContent .=
                                 "<figure><img src=\"" . $piatto->getImage() . "\" alt=\"" .
                                 htmlspecialchars($piatto->getNome()) .
-                                "\" width=\"auto\" height=\"50\"></figure>";
+                                "\" width=\"150\" height=\"80\"></figure>";
                         } else {
                             $piattiContent .=
-                                "<figure><img src=\"images/logo.png\" alt=\"" .
+                                "<figure><img src=\"\" alt=\"" .
                                 htmlspecialchars($piatto->getNome()) .
-                                "\" width=\"auto\" height=\"50\"></figure>";
+                                "\" width=\"150\" height=\"80\"></figure>";
                         }
                         $piattiContent .=
                             "<div class=\"menu-item-content\">" .
@@ -159,7 +164,7 @@ class IndexView extends BaseView
                             ) .
                             "\">Vedi recensioni</a>" .
                             "</div>" .
-                            "</article>";
+                            "</article></li>";
                     }
                 }
 
@@ -172,11 +177,11 @@ class IndexView extends BaseView
                         htmlspecialchars($id) .
                         "\">";
                     $dishOfTheDayContent .=
-                        "<figure><img src=\"images/logo.png\" alt=\"" .
+                        "<figure><img src=\"\" alt=\"" .
                         htmlspecialchars(
                             $mensa["piatto_del_giorno"]->getNome()
                         ) .
-                        "\" width=\"auto\" height=\"50\"></figure>";
+                        "\" width=\"150\" height=\"80\"></figure>";
                     $dishOfTheDayContent .= "<div class=\"menu-item-content\">";
                     $dishOfTheDayContent .=
                         "<h3>" .

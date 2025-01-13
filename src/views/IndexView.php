@@ -129,12 +129,12 @@ class IndexView extends BaseView
                             $piattiContent .=
                                 "<figure><img src=\"" . $piatto->getImage() . "\" alt=\"" .
                                 htmlspecialchars($piatto->getNome()) .
-                                "\" width=\"150\" height=\"80\"></figure>";
+                                "\" width=\"150\" height=\"150\"></figure>";
                         } else {
                             $piattiContent .=
                                 "<figure><img src=\"\" alt=\"" .
                                 htmlspecialchars($piatto->getNome()) .
-                                "\" width=\"150\" height=\"80\"></figure>";
+                                "\" width=\"150\" height=\"150\"></figure>";
                         }
                         $piattiContent .=
                             "<div class=\"menu-item-content\">" .

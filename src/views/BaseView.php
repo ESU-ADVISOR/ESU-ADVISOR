@@ -52,7 +52,7 @@ abstract class BaseView
                         if ($parentNode instanceof DOMElement && $parentNode->nodeName === 'li') {
                             $currentClass = $parentNode->getAttribute('class') ?? '';
                             $parentNode->setAttribute('class', trim($currentClass . ' active'));
-                            $link->removeAttribute('href');
+                            // $link->removeAttribute('href');
                         }
                     }
                 }

@@ -93,13 +93,13 @@ abstract class BaseView
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
-                '<a href="logout.php" class="nav-button danger">Logout</a>'
+                '<a href="logout.php" class="nav-button danger" lang="en">Logout</a>'
             );
         } else {
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
-                '<a href="login.php" class="nav-button primary">Login</a><a href="register.php" class="nav-button secondary">Register</a>'
+                '<a href="login.php" class="nav-button primary" lang="en">Login</a><a href="register.php" class="nav-button secondary">Registrati</a>'
             );
         }
     }

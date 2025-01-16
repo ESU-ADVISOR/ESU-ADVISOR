@@ -13,7 +13,7 @@ class UserModel
     // table fields
     private string|null $username;
     private string|null $email;
-    private string|null $hashedPassword;
+    private string|null $password;
     private string|DateTimeImmutable|null $dataNascita;
 
     /**
@@ -41,7 +41,7 @@ class UserModel
             $this->email = $data["email"];
         }
         if (isset($data["password"])) {
-            $this->hashedPassword = password_hash(
+            $this->password = password_hash(
                 $data["password"],
                 PASSWORD_DEFAULT
             );
@@ -93,16 +93,16 @@ class UserModel
     }
 
     /** @param string $password */
-    public function setPassword($password): void
+    public function setClearPassword($password): void
     {
-        $this->hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
     /**
      * @param mixed $value @param string $password */
-    public function setHashedPassword($value): void
+    public function setPassword($value): void
     {
-        $this->hashedPassword = $value;
+        $this->password = $value;
     }
 
     /** @return DateTimeImmutable */
@@ -149,7 +149,7 @@ class UserModel
             return $stmt->execute([
                 "username" => $this->username,
                 "email" => $this->email,
-                "password" => $this->hashedPassword,
+                "password" => $this->password,
                 "dataNascita" => $this->dataNascita->format("Y-m-d"),
             ]);
         } else {
@@ -159,7 +159,7 @@ class UserModel
             return $stmt->execute([
                 "username" => $this->username,
                 "email" => $this->email,
-                "password" => $this->hashedPassword,
+                "password" => $this->password,
                 "dataNascita" => $this->dataNascita->format("Y-m-d"),
             ]);
         }
@@ -199,16 +199,16 @@ class UserModel
         return $stmt->fetchColumn() > 0;
     }
 
-    public static function authenticate(string $email, string $password): bool
+    public static function authenticate(string $email, string $clearPassword): bool
     {
         $db = Database::getInstance();
         $stmt = $db->prepare(
             "SELECT password FROM utente WHERE email = :email"
         );
         $stmt->execute(["email" => $email]);
-        $hashedPassword = $stmt->fetchColumn();
-        if ($hashedPassword && password_verify($password, $hashedPassword)) {
-            if (password_needs_rehash($hashedPassword, PASSWORD_DEFAULT)) {
+        $password = $stmt->fetchColumn();
+        if ($password && password_verify($clearPassword, $password)) {
+            if (password_needs_rehash($password, PASSWORD_DEFAULT)) {
                 $newHash = password_hash($password, PASSWORD_DEFAULT);
                 $updateSql =
                     "UPDATE utente SET password = :password WHERE email = :email";

@@ -151,7 +151,7 @@ class SettingsController implements BaseController
                 exit();
             }
 
-            $user->setPassword($post['new_password']);
+            $user->setClearPassword($post['new_password']);
 
             if ($user->saveToDB()) {
                 $view->render([

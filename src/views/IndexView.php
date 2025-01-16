@@ -78,12 +78,12 @@ class IndexView extends BaseView
 
                 // Initialize table
                 $menseInfoContent .= "<table> <caption>Orari Mensa</caption><thead>
-                    <tr>
-                        <th>Giorno</th>
-                        <th>Inizio</th>
-                        <th>Fine</th>
-                    </tr>
-                </thead><tbody>";
+                        <tr>
+                            <th>Giorno</th>
+                            <th>Inizio</th>
+                            <th>Fine</th>
+                        </tr>
+                    </thead><tbody>";
 
                 foreach ($orari as $orario) {
                     $giornoSettimanaIndex =
@@ -103,10 +103,10 @@ class IndexView extends BaseView
                     $orafine = htmlspecialchars($orario["orafine"]);
 
                     $menseInfoContent .= "<tr>
-                        <th>{$giorno}</th>
-                        <td>{$orainizio}</td>
-                        <td>{$orafine}</td>
-                    </tr>";
+                            <th>{$giorno}</th>
+                            <td>{$orainizio}</td>
+                            <td>{$orafine}</td>
+                        </tr>";
                 }
                 $menseInfoContent .= "</tbody></table></div>";
 
@@ -115,8 +115,8 @@ class IndexView extends BaseView
                     "<a href=\"" .
                     htmlspecialchars($mensa["maps_link"]) .
                     "\">
-                    <button class=\"nav-button secondary\">Direzioni</button>
-                </a></li>";
+                        <button class=\"nav-button secondary\">Direzioni</button>
+                    </a></li>";
 
                 // Handle piatti
                 if (isset($mensa["piatti"]) && is_array($mensa["piatti"])) {
@@ -253,8 +253,6 @@ class IndexView extends BaseView
         );
         // Save the HTML from DOMDocument
         $html = $this->dom->saveHTML();
-
-        $html = mb_convert_encoding($html, "UTF-8", "HTML-ENTITIES");
 
         // Output the HTML
         echo $html;

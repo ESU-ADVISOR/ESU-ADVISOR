@@ -222,7 +222,7 @@ class IndexView extends BaseView
                                 )
                             )
                         ) .
-                        "\">Vedi recensioni</a>" .
+                        "\">Vedi <span lang=\"en\">reviews</span></a>" .
                         "</div>" .
                         "</article>";
                 }

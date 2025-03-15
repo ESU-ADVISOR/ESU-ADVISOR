@@ -112,7 +112,7 @@ CREATE TABLE preferenze_utente (
     dimensione_testo ENUM ("piccolo", "medio", "grande", "molto grande") NOT NULL DEFAULT "medio",
     dimensione_icone ENUM ("piccolo", "medio", "grande", "molto grande") NOT NULL DEFAULT "medio",
     modifica_font ENUM ("normale", "dislessia") NOT NULL DEFAULT "normale",
-    dark_mode BOOLEAN NOT NULL DEFAULT FALSE,
+    modifica_tema ENUM ("chiaro", "scuro", "sistema") NOT NULL DEFAULT "sistema",
     PRIMARY KEY (email),
     FOREIGN KEY (email) REFERENCES utente  (email) ON UPDATE CASCADE ON DELETE CASCADE
 );

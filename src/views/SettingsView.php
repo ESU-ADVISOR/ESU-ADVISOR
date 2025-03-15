@@ -9,6 +9,7 @@ use Models\RecensioneModel;
 use Models\UserModel;
 use Models\MenseModel;
 use Models\ModificaFont;
+use Models\ModificaTema;
 use Models\PreferenzeUtenteModel;
 use Views\Utils;
 
@@ -40,17 +41,26 @@ class SettingsView extends BaseView
 
         // ======== Dark Mode =========
 
-        $darkModeContent = "";
+        $temaContent = "";
 
-        if ($userPreferences != null && $userPreferences->isDarkMode()) {
-            $darkModeContent .= '<input type="checkbox" id="theme-toggle" name="dark_mode" class="visually-hidden" checked/>';
-        } else {
-            $darkModeContent .= '<input type="checkbox" id="theme-toggle" name="dark_mode" class="visually-hidden"/>';
+        $opzioniTema = ModificaTema::cases();
+        $hasOpzioneTema = false;
+
+        foreach ($opzioniTema as $opzione) {
+            if ($userPreferences != null && $userPreferences->getTema()->value == $opzione->value) {
+                $hasOpzioneTema = true;
+                $temaContent .= '<option value="' . $opzione->value . '" selected>' . $opzione->value . '</option>';
+            } else if (!$hasOpzioneTema && $opzione->value == "sistema") {
+                $temaContent .= '<option value="' . $opzione->value . '" selected>' . $opzione->value . '</option>';
+            } else {
+                $temaContent .= '<option value="' . $opzione->value . '">' . $opzione->value . '</option>';
+            }
         }
+
         Utils::replaceTemplateContent(
             $this->dom,
-            "dark-mode-option-template",
-            $darkModeContent
+            "tema-option-template",
+            $temaContent
         );
 
         // ======== Dimensione Testo =========

@@ -28,6 +28,13 @@ enum ModificaFont: string
     case DISLESSIA = "dislessia";
 }
 
+enum ModificaTema: string
+{
+    case CHIARO = "chiaro";
+    case SCURO = "scuro";
+    case SISTEMA = "sistema";
+}
+
 class PreferenzeUtenteModel
 {
     private $db;
@@ -36,7 +43,7 @@ class PreferenzeUtenteModel
     private DimensioneTesto|null $dimensioneTesto = null;
     private DimensioneIcone|null $dimensioneIcone = null;
     private ModificaFont|null $modificaFont = null;
-    private bool|null $darkMode = null;
+    private ModificaTema|null $modificaTema = null;
 
     /**
      * @param array<string, mixed> $data
@@ -68,8 +75,8 @@ class PreferenzeUtenteModel
         if (isset($data["modifica_font"])) {
             $this->modificaFont = ModificaFont::tryFrom($data["modifica_font"]);
         }
-        if (isset($data["dark_mode"])) {
-            $this->darkMode = (bool)$data["dark_mode"];
+        if (isset($data["modifica_tema"])) {
+            $this->modificaTema = ModificaTema::tryFrom($data["modifica_tema"]);
         }
     }
 
@@ -115,14 +122,14 @@ class PreferenzeUtenteModel
         $this->modificaFont = $modificaFont;
     }
 
-    public function isDarkMode(): ?bool
+    public function getTema(): ?ModificaTema
     {
-        return $this->darkMode;
+        return $this->modificaTema;
     }
 
-    public function setDarkMode(?bool $darkMode): void
+    public function setTema(?ModificaTema $modificaTema): void
     {
-        $this->darkMode = $darkMode;
+        $this->modificaTema = $modificaTema;
     }
 
     //-------------Database methods----------------
@@ -140,7 +147,7 @@ class PreferenzeUtenteModel
                     dimensione_testo = :dimensione_testo,
                     dimensione_icone = :dimensione_icone,
                     modifica_font = :modifica_font,
-                    dark_mode = :dark_mode
+                    modifica_tema = :modifica_tema
                 WHERE email = :email"
             );
 
@@ -148,7 +155,7 @@ class PreferenzeUtenteModel
                 "dimensione_testo" => $this->dimensioneTesto->value,
                 "dimensione_icone" => $this->dimensioneIcone->value,
                 "modifica_font" => $this->modificaFont->value,
-                "dark_mode" => $this->darkMode ? 1 : 0,
+                "modifica_tema" => $this->modificaTema->value,
                 "email" => $this->email,
             ]);
         } else {
@@ -156,11 +163,11 @@ class PreferenzeUtenteModel
                 "INSERT INTO preferenze_utente (
                     email, dimensione_testo,
                     dimensione_icone, modifica_font,
-                    dark_mode
+                    modifica_tema
                 ) VALUES (
                     :email, :dimensione_testo,
                     :dimensione_icone, :modifica_font,
-                    :dark_mode
+                    :modifica_tema
                 )"
             );
 
@@ -169,7 +176,7 @@ class PreferenzeUtenteModel
                 "dimensione_testo"  =>  $this->dimensioneTesto->value,
                 "dimensione_icone"  =>  $this->dimensioneIcone->value,
                 "modifica_font"  =>  $this->modificaFont->value,
-                "dark_mode"  =>  $this->darkMode ? 1 : 0,
+                "modifica_tema"  =>  $this->modificaTema->value
             ]);
         }
     }

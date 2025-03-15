@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Models\ModificaTema;
 use Models\DimensioneIcone;
 use Models\DimensioneTesto;
 use Models\FiltroDaltonici;
@@ -14,7 +15,7 @@ class SettingsController implements BaseController
 {
     public function handleGETRequest(array $get = []): void
     {
-        $view = new SettingsView();
+        $view = new \Views\SettingsView();
         $view->render($get);
     }
 
@@ -45,34 +46,59 @@ class SettingsController implements BaseController
 
             $preferences = PreferenzeUtenteModel::findByEmail($email) ?? new PreferenzeUtenteModel();
 
-            $preferences->setDarkMode(isset($post['dark_mode']));
-
-            if (isset($post['dimensione_testo'])) {
+            if (isset($post['modifica_tema']) && $post['modifica_tema'] !== "none") {
+                $preferences->setTema(ModificaTema::tryFrom($post['modifica_tema']));
+            } else {
+                $preferences->setTema(ModificaTema::SISTEMA);
+            }
+            if (isset($post['dimensione_testo']) && $post['dimensione_testo'] !== "none") {
                 $preferences->setDimensioneTesto(DimensioneTesto::tryFrom($post['dimensione_testo']));
             } else {
                 $preferences->setDimensioneTesto(DimensioneTesto::MEDIO);
             }
-            if (isset($post['dimensione_icone'])) {
+            if (isset($post['dimensione_icone']) && $post['dimensione_icone'] !== "none") {
                 $preferences->setDimensioneIcone(DimensioneIcone::tryFrom($post['dimensione_icone']));
             } else {
                 $preferences->setDimensioneIcone(DimensioneIcone::MEDIO);
             }
-            if (isset($post['font'])) {
-                $preferences->setModificaFont(ModificaFont::tryFrom($post['font']));
+            if (isset($post['modifica_font']) && $post['modifica_font'] !== "none") {
+                $preferences->setModificaFont(ModificaFont::tryFrom($post['modifica_font']));
             } else {
                 $preferences->setModificaFont(ModificaFont::NORMALE);
             }
             $preferences->setEmail($email);
 
+            $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+
             if ($preferences->saveToDB()) {
-                $view->render([
-                    "success" => ["Preferences saved successfully"],
-                ]);
+                // Eccezione per evitare il flash del tema opposto
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Preferenze salvate con successo'
+                    ]);
+                } else {
+                    // Fallback
+                    $view->render([
+                        "success" => "Preferenze salvate con successo",
+                    ]);
+                }
                 exit();
             } else {
-                $view->render([
-                    "errors" => ["Preferences not saved"],
-                ]);
+                // Eccezione per evitare il flash del tema opposto
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Impossibile salvare le preferenze'
+                    ]);
+                } else {
+                    $view->render([
+                        "errors" => ["Impossibile salvare le preferenze"],
+                    ]);
+                }
                 exit();
             }
         } else if (isset($post['change_username'])) {

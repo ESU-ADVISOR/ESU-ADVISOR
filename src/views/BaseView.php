@@ -89,23 +89,46 @@ abstract class BaseView
             $footerContent
         );
 
+        // Pagine che richiedono login ma sono accessibili anche senza login
+        $publicPages = ['settings.php', 'index.php'];
+        $currentPage = basename($_SERVER['PHP_SELF']);
+        
         if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
+            // Utente loggato
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
                 '<a href="logout.php" class="nav-button danger" lang="en">Logout</a>'
             );
         } else {
+            // Utente non loggato
+            
+            // Per pagine protette, aggiungiamo un parametro di redirect
+            $loginRedirect = '';
+            if (!in_array($currentPage, $publicPages) && $currentPage !== 'login.php' && $currentPage !== 'register.php') {
+                $loginRedirect = "?redirect={$currentPage}";
+            }
+            
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
-                '<a href="login.php" class="nav-button primary" lang="en">Login</a><a href="register.php" class="nav-button secondary">Registrati</a>'
+                '<a href="login.php'.$loginRedirect.'" class="nav-button primary" lang="en">Login</a><a href="register.php" class="nav-button secondary">Registrati</a>'
             );
         }
     }
 
     public function renderError(string $error): void
     {
+        // Per pagine protette che richiedono login (ad eccezione di settings.php)
+        $protectedPages = ['profile.php', 'fyp.php'];
+        $currentPage = basename($_SERVER['PHP_SELF']);
+        
+        if (in_array($currentPage, $protectedPages) && $error === "You're not logged in") {
+            // Redirect alla pagina di login con parametro di redirect
+            header("Location: login.php?redirect={$currentPage}");
+            exit();
+        }
+        
         $this->template = file_get_contents(
             __DIR__ . "/../templates/error.html"
         );

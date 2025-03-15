@@ -20,6 +20,53 @@
                 <template id="server-response-template"></template>
 
                 <div class="card-body">
+                    <!-- Sezione Preferenze generali (visibile a tutti) -->
+                    <section class="mb-4 pb-4 border-b border-color">
+                        <h2 class="text-lg font-semibold mb-3">Preferenze</h2>
+                        <form action="settings.php" id="preferenze-generali" method="post" class="base-form">
+                            <div class="form-group">
+                                <label for="mensa-preferita-select">Seleziona la tua mensa preferita:</label>
+                                <select class="form-select" id="mensa-preferita-select" name="mensa_preferita">
+                                    <template id="mense-options-template"></template>
+                                </select>
+                                <p class="text-secondary mt-2 text-sm">
+                                    La mensa selezionata verrà visualizzata automaticamente all'apertura del menu.
+                                </p>
+                            </div>
+                            
+                            <!-- Implementazione per ora solo statica, dopo verrà creata dinamicamente tramite collegamento a db -->
+                            <div class="form-group">
+                                <fieldset>
+                                    <legend>Allergeni da segnalare:</legend>
+                                    <div class="checkbox-grid">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="allergene-glutine" name="allergeni[]" value="glutine">
+                                            <label for="allergene-glutine">Glutine</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="allergene-lattosio" name="allergeni[]" value="lattosio">
+                                            <label for="allergene-lattosio">Lattosio</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="allergene-frutta_a_guscio" name="allergeni[]" value="frutta_a_guscio">
+                                            <label for="allergene-frutta_a_guscio">Frutta a guscio</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="allergene-crostacei" name="allergeni[]" value="crostacei">
+                                            <label for="allergene-crostacei">Crostacei</label>
+                                        </div>
+                                    </div>
+                                    <p class="text-secondary mt-2 text-sm">
+                                        I piatti contenenti questi allergeni verranno segnalati durante la navigazione.
+                                    </p>
+                                </fieldset>
+                            </div>
+
+                            <button type="submit" name="save_preferenze_generali" class="form-button">Salva preferenze</button>
+                        </form>
+                    </section>
+
+                    <!-- Sezione Accessibilità (visibile a tutti) -->
                     <section class="mb-4 pb-4 border-b border-color">
                         <h2 class="text-lg font-semibold mb-3">Accessibilità</h2>
                         <form action="settings.php" id="preferenze-accessibilità" method="post" class="base-form">
@@ -54,101 +101,8 @@
                         </form>
                     </section>
 
-                    <section class="mb-4 pb-4 border-b border-color">
-                        <h2 class="text-lg font-semibold mb-3">Informazioni <span lang="en">account</span></h2>
-                        <form action="settings.php" id="change_username_form" method="post" class="base-form">
-                            <div class="form-group">
-                                <label for="username">Modifica <span lang="en">username</span></label>
-                                <input
-                                    type="username"
-                                    id="new_username"
-                                    name="new_username"
-                                    class="form-input"
-                                    style="
-                                        background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z%22/><path d=%22m3 7 9 6 9-6%22/></svg>&quot;);
-                                        background-position: 12px center;
-                                        background-repeat: no-repeat;
-                                    "
-                                />
-                                <button type="submit" class="form-button" name="change_username">Salva</button>
-                            </div>
-                        </form>
-
-                        <form action="settings.php" id="change_password_form" method="post" class="base-form">
-                            <div class="form-group">
-                                <label for="old_password"><span lang="en">Password</span> attuale</label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    class="form-input"
-                                    style="
-                                        background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                                        background-position: 12px center;
-                                        background-repeat: no-repeat;
-                                    "
-                                />
-
-                                <label for="password">Modifica <span lang="en">password</span></label>
-                                <input
-                                    type="password"
-                                    id="new_password"
-                                    name="new_password"
-                                    class="form-input"
-                                    style="
-                                        background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                                        background-position: 12px center;
-                                        background-repeat: no-repeat;
-                                    "
-                                />
-
-                                <label for="confirm_password">Conferma <span lang="en">password</span></label>
-                                <input
-                                    type="password"
-                                    id="new_password_confirm"
-                                    name="new_password_confirm"
-                                    class="form-input"
-                                    style="
-                                        background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                                        background-position: 12px center;
-                                        background-repeat: no-repeat;
-                                    "
-                                />
-
-                                <button type="submit" class="form-button" name="change_password">Salva</button>
-                            </div>
-                        </form>
-
-                        <div class="form-group">
-                            <label for="delete-account">Elimina l'<span lang="en">account</span></label>
-                            <button type="submit" id="delete-account-button" class="danger form-button">
-                                Elimina <span lang="en">Account</span>
-                            </button>
-
-                            <div class="modal" id="myModal">
-                                <div class="modal-content card card-expanded mb-4">
-                                    <div class="card-content">
-                                        <h2 class="card-title">
-                                            Conferma l'eliminazione dell'<span lang="en">account</span>
-                                        </h2>
-                                        <button class="close-button" id="close-modal">&times;</button>
-                                        <p>
-                                            Sei sicuro di volere cancellare il tuo <span lang="en">account</span>?
-                                            Questa azione è irreversibile.
-                                        </p>
-                                        <form id="delete-account-form" method="POST" action="settings.php">
-                                            <span class="center">
-                                                <button type="submit" name="delete_account" class="confirmation-button">
-                                                    Sì
-                                                </button>
-                                                <button class="cancel-button">No</button>
-                                            </span>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    <!-- Sezione Account (visibile solo agli utenti loggati) -->
+                    <template id="account-settings-template"></template>
                 </div>
             </div>
 

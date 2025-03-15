@@ -25,3 +25,31 @@
         transition: transform var(--transition);
     }
 }
+
+/* Revisione del sistema di rating per supportare l'ordine corretto 1-5 */
+.rating {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.rating label {
+    cursor: pointer;
+    font-size: 4rem;
+    transition: stroke var(--transition), fill var(--transition);
+    stroke: var(--text-primary);
+    fill: transparent;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    fill: var(--primary);
+    stroke: var(--primary);
+}
+
+.rating .star {
+    width: 32px;
+    height: 32px;
+}

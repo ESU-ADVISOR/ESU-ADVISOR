@@ -113,8 +113,10 @@ CREATE TABLE preferenze_utente (
     dimensione_icone ENUM ("piccolo", "medio", "grande", "molto grande") NOT NULL DEFAULT "medio",
     modifica_font ENUM ("normale", "dislessia") NOT NULL DEFAULT "normale",
     modifica_tema ENUM ("chiaro", "scuro", "sistema") NOT NULL DEFAULT "sistema",
+    mensa_preferita VARCHAR(50) NULL DEFAULT NULL,
     PRIMARY KEY (email),
-    FOREIGN KEY (email) REFERENCES utente  (email) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (email) REFERENCES utente (email) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (mensa_preferita) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE VIEW piatto_recensioni_foto AS

@@ -44,6 +44,7 @@ class PreferenzeUtenteModel
     private DimensioneIcone|null $dimensioneIcone = null;
     private ModificaFont|null $modificaFont = null;
     private ModificaTema|null $modificaTema = null;
+    private string|null $mensaPreferita = null;
 
     /**
      * @param array<string, mixed> $data
@@ -77,6 +78,9 @@ class PreferenzeUtenteModel
         }
         if (isset($data["modifica_tema"])) {
             $this->modificaTema = ModificaTema::tryFrom($data["modifica_tema"]);
+        }
+        if (isset($data["mensa_preferita"])) {
+            $this->mensaPreferita = $data["mensa_preferita"];
         }
     }
 
@@ -131,6 +135,16 @@ class PreferenzeUtenteModel
     {
         $this->modificaTema = $modificaTema;
     }
+    
+    public function getMensaPreferita(): ?string
+    {
+        return $this->mensaPreferita;
+    }
+    
+    public function setMensaPreferita(?string $mensaPreferita): void
+    {
+        $this->mensaPreferita = $mensaPreferita;
+    }
 
     //-------------Database methods----------------
 
@@ -147,15 +161,17 @@ class PreferenzeUtenteModel
                     dimensione_testo = :dimensione_testo,
                     dimensione_icone = :dimensione_icone,
                     modifica_font = :modifica_font,
-                    modifica_tema = :modifica_tema
+                    modifica_tema = :modifica_tema,
+                    mensa_preferita = :mensa_preferita
                 WHERE email = :email"
             );
 
             return $stmt->execute([
-                "dimensione_testo" => $this->dimensioneTesto->value,
-                "dimensione_icone" => $this->dimensioneIcone->value,
-                "modifica_font" => $this->modificaFont->value,
-                "modifica_tema" => $this->modificaTema->value,
+                "dimensione_testo" => $this->dimensioneTesto ? $this->dimensioneTesto->value : DimensioneTesto::MEDIO->value,
+                "dimensione_icone" => $this->dimensioneIcone ? $this->dimensioneIcone->value : DimensioneIcone::MEDIO->value,
+                "modifica_font" => $this->modificaFont ? $this->modificaFont->value : ModificaFont::NORMALE->value,
+                "modifica_tema" => $this->modificaTema ? $this->modificaTema->value : ModificaTema::SISTEMA->value,
+                "mensa_preferita" => $this->mensaPreferita,
                 "email" => $this->email,
             ]);
         } else {
@@ -163,33 +179,34 @@ class PreferenzeUtenteModel
                 "INSERT INTO preferenze_utente (
                     email, dimensione_testo,
                     dimensione_icone, modifica_font,
-                    modifica_tema
+                    modifica_tema, mensa_preferita
                 ) VALUES (
                     :email, :dimensione_testo,
                     :dimensione_icone, :modifica_font,
-                    :modifica_tema
+                    :modifica_tema, :mensa_preferita
                 )"
             );
 
             return $stmt->execute([
                 "email" => $this->email,
-                "dimensione_testo"  =>  $this->dimensioneTesto->value,
-                "dimensione_icone"  =>  $this->dimensioneIcone->value,
-                "modifica_font"  =>  $this->modificaFont->value,
-                "modifica_tema"  =>  $this->modificaTema->value
+                "dimensione_testo" => $this->dimensioneTesto ? $this->dimensioneTesto->value : DimensioneTesto::MEDIO->value,
+                "dimensione_icone" => $this->dimensioneIcone ? $this->dimensioneIcone->value : DimensioneIcone::MEDIO->value,
+                "modifica_font" => $this->modificaFont ? $this->modificaFont->value : ModificaFont::NORMALE->value,
+                "modifica_tema" => $this->modificaTema ? $this->modificaTema->value : ModificaTema::SISTEMA->value,
+                "mensa_preferita" => $this->mensaPreferita
             ]);
         }
     }
 
-    public  function  deleteFromDB(): bool
+    public function deleteFromDB(): bool
     {
         if (empty($this->email)) {
-            return  false;
+            return false;
         }
 
-        $stmt  =  $this->db->prepare("DELETE FROM preferenze_utente WHERE email = :email");
-        return  $stmt->execute([
-            "email"  =>  $this->email,
+        $stmt = $this->db->prepare("DELETE FROM preferenze_utente WHERE email = :email");
+        return $stmt->execute([
+            "email" => $this->email,
         ]);
     }
 
@@ -199,17 +216,17 @@ class PreferenzeUtenteModel
      * @param string $email
      * @return PreferenzeUtenteModel|null
      */
-    public  static  function  findByEmail(string  $email): ?PreferenzeUtenteModel
+    public static function findByEmail(string $email): ?PreferenzeUtenteModel
     {
-        $db  =  Database::getInstance();
-        $stmt  =  $db->prepare("SELECT * FROM preferenze_utente WHERE email = :email");
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM preferenze_utente WHERE email = :email");
         $stmt->execute([
-            "email"  =>  $email,
+            "email" => $email,
         ]);
-        $data  =  $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($data) {
-            return  new  PreferenzeUtenteModel($data);
+            return new PreferenzeUtenteModel($data);
         }
         return null;
     }
@@ -217,19 +234,19 @@ class PreferenzeUtenteModel
     /**
      * @return PreferenzeUtenteModel[]
      */
-    public  static  function  findAll(): array
+    public static function findAll(): array
     {
-        $db  =  Database::getInstance();
-        $stmt  =  $db->prepare("SELECT * FROM preferenze_utente");
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM preferenze_utente");
         $stmt->execute();
-        $data  =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $preferenze  =  [];
-        foreach ($data  as  $row) {
-            $preferenze[]  =  new  PreferenzeUtenteModel($row);
+        $preferenze = [];
+        foreach ($data as $row) {
+            $preferenze[] = new PreferenzeUtenteModel($row);
         }
 
-        return  $preferenze;
+        return $preferenze;
     }
 
     //-----------------Relationals methods----------------
@@ -239,8 +256,22 @@ class PreferenzeUtenteModel
      *
      * @return UserModel|null
      */
-    public  function  getUtente(): ?UserModel
+    public function getUtente(): ?UserModel
     {
-        return  UserModel::findByEmail($this->email);
+        return UserModel::findByEmail($this->email);
+    }
+    
+    /**
+     * Get the associated MensaModel
+     *
+     * @return MenseModel|null
+     */
+    public function getMensa(): ?MenseModel
+    {
+        if (!$this->mensaPreferita) {
+            return null;
+        }
+        
+        return MenseModel::findByName($this->mensaPreferita);
     }
 }

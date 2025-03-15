@@ -18,6 +18,11 @@ class LoginController implements BaseController
 
     public function handleGETRequest(array $get = []): void
     {
+        // Salva la pagina originale se fornita come parametro 'redirect'
+        if (isset($get['redirect']) && !empty($get['redirect'])) {
+            $_SESSION['login_redirect'] = $get['redirect'];
+        }
+        
         $this->view->render($get);
     }
 
@@ -33,7 +38,6 @@ class LoginController implements BaseController
 
         if (!$this->model->authenticate($this->model->findByUsername($username)->getEmail(), $password)) {
             $this->view->render(["errors" => ["Invalid username or password"]]);
-            echo "Invalid username or password";
             return;
         }
 
@@ -41,6 +45,17 @@ class LoginController implements BaseController
 
         $_SESSION["username"] = $username;
 
-        header("Location: index.php");
+        // Debug - stampa il valore di login_redirect se esiste
+        error_log("Redirect value: " . (isset($_SESSION['login_redirect']) ? $_SESSION['login_redirect'] : 'none'));
+
+        // Reindirizza alla pagina originale se disponibile, altrimenti alla home
+        if (isset($_SESSION['login_redirect']) && !empty($_SESSION['login_redirect'])) {
+            $redirectPage = $_SESSION['login_redirect'];
+            unset($_SESSION['login_redirect']); // Pulizia
+            header("Location: $redirectPage");
+        } else {
+            header("Location: index.php");
+        }
+        exit();
     }
 }

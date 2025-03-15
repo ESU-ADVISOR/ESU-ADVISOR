@@ -4,13 +4,9 @@ require_once "../src/config.php";
 use Controllers\SettingsController;
 
 $controller = new SettingsController();
-if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $controller->handlePOSTRequest($_POST);
-    } else {
-        $controller->handleGETRequest($_GET);
-    }
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $controller->handlePOSTRequest($_POST);
 } else {
-    header("Location: login.php");
-    exit();
+    $controller->handleGETRequest($_GET);
 }

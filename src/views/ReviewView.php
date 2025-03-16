@@ -8,11 +8,11 @@ use Models\RecensioneModel;
 use Models\UserModel;
 use Views\Utils;
 
-class ForYouPageView extends BaseView
+class ReviewView extends BaseView
 {
     public function __construct()
     {
-        parent::__construct(__DIR__ . "/../templates/fyp.html");
+        parent::__construct(__DIR__ . "/../templates/review.html");
     }
 
     public function render(array $data = []): void

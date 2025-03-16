@@ -4,19 +4,19 @@ namespace Controllers;
 
 use Models\UserModel;
 use Models\RecensioneModel;
-use Views\ForYouPageView;
+use Views\ReviewView;
 
-class ForYouPageController implements BaseController
+class ReviewController implements BaseController
 {
     public function handleGETRequest(array $get = []): void
     {
-        $view = new ForYouPageView();
+        $view = new ReviewView();
         $view->render($get);
     }
 
     public function handlePOSTRequest(array $post = []): void
     {
-        $view = new ForYouPageView();
+        $view = new ReviewView();
 
         $recensione = new RecensioneModel([
             "voto" => $post["rating"],

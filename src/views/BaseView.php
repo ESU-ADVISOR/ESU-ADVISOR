@@ -117,32 +117,95 @@ abstract class BaseView
         }
     }
 
-    public function renderError(string $error): void
+    public function renderError(string $error, int $errorCode = 500): void
     {
         // Per pagine protette che richiedono login (ad eccezione di settings.php)
-        $protectedPages = ['profile.php', 'fyp.php'];
+        $protectedPages = ['profile.php', 'review.php'];
         $currentPage = basename($_SERVER['PHP_SELF']);
         
-        if (in_array($currentPage, $protectedPages) && $error === "You're not logged in") {
-            // Redirect alla pagina di login con parametro di redirect
-            header("Location: login.php?redirect={$currentPage}");
+        // Se è un errore di accesso non autorizzato
+        $isAccessError = in_array($currentPage, $protectedPages) && 
+                        ($error === "You're not logged in" || $error === "Devi effettuare il login per accedere");
+        
+        // Se si tratta di tentativo di accesso a pagina protetta, reindirizza alla pagina di errore
+        if ($isAccessError) {
+            header("Location: error.php?code=401&page=" . urlencode($currentPage));
             exit();
         }
         
-        $this->template = file_get_contents(
-            __DIR__ . "/../templates/error.html"
-        );
+        // Per gli errori 404 (pagina non trovata)
+        if ($errorCode === 404) {
+            $this->template = file_get_contents(__DIR__ . "/../templates/error.html");
+            $this->dom = new \DOMDocument();
+            libxml_use_internal_errors(true);
+            $this->dom->loadHTML($this->template);
+            libxml_clear_errors();
+            
+            // Imposta titolo specifico per errore 404
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "error-title-template",
+                "<h1>Pagina non trovata</h1>"
+            );
+            
+            // Imposta messaggio di errore specifico
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "error-message-template",
+                "<h3>La pagina che stai cercando non esiste</h3>"
+            );
+            
+            // Svuota i placeholder per i contenuti di altri tipi di errore
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "access-error-content",
+                ""
+            );
+            
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "generic-error-content",
+                ""
+            );
+            
+            echo $this->dom->saveHTML();
+            return;
+        }
+        
+        // Per tutti gli altri errori generici
+        $this->template = file_get_contents(__DIR__ . "/../templates/error.html");
         $this->dom = new \DOMDocument();
         libxml_use_internal_errors(true);
         $this->dom->loadHTML($this->template);
         libxml_clear_errors();
-
+        
+        // Per errori generici, lascia il titolo predefinito
+        
+        // Imposta il messaggio di errore specifico
         Utils::replaceTemplateContent(
             $this->dom,
             "error-message-template",
             "<h3>" . htmlspecialchars($error) . "</h3>"
         );
-
+        
+        // Svuota i placeholder per i contenuti di altri tipi di errore
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "access-error-content",
+            ""
+        );
+        
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "not-found-error-content",
+            ""
+        );
+        
         echo $this->dom->saveHTML();
+    }
+
+    public function getDom(): \DOMDocument
+    {
+        return $this->dom;
     }
 }

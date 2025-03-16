@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
         $controller->handleGETRequest($_GET);
     } else {
-        header("Location: login.php?redirect=profile.php");
+        header("Location: error.php?code=401&page=profile.php");
         exit();
     }
 }

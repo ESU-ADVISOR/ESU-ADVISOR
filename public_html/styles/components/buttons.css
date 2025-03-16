@@ -78,11 +78,11 @@
     height: 48px;
 }
 
+/* Stili per il pulsante "Torna su" (aggiornati) */
+
 .back-to-top {
-    background-color: var(--background);
-    color: var(--primary);
-    border: 1px solid var(--border-color);
-    border-color: var(--primary);
+    background-color: var(--primary);
+    color: var(--text-on-primary);
     position: fixed;
     bottom: 130px;
     right: var(--spacing-md);
@@ -92,9 +92,21 @@
     border-radius: var(--radius);
     padding: var(--spacing-sm) var(--spacing-md);
     cursor: pointer;
+    z-index: 10;
+    border: none;
+    font-weight: 500;
+    transition: transform var(--transition), opacity var(--transition);
+}
+
+.back-to-top.visible {
+    opacity: 1;
 }
 
 .back-to-top:hover {
-    background-color: var(--primary);
-    color: var(--text-on-primary);
+    transform: translateY(-3px);
+}
+
+.back-to-top:focus {
+    outline: 2px solid var(--primary-dark);
+    outline-offset: 2px;
 }

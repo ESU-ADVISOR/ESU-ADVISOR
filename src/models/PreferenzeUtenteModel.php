@@ -10,29 +10,29 @@ use DateTimeImmutable;
 
 enum DimensioneTesto: string
 {
-    case PICCOLO = "piccolo";
-    case MEDIO = "medio";
-    case GRANDE = "grande";
+    case PICCOLO = "Piccolo";
+    case MEDIO = "Medio";
+    case GRANDE = "Grande";
 }
 
 enum DimensioneIcone: string
 {
-    case PICCOLO = "piccolo";
-    case MEDIO = "medio";
-    case GRANDE = "grande";
+    case PICCOLO = "Piccolo";
+    case MEDIO = "Medio";
+    case GRANDE = "Grande";
 }
 
 enum ModificaFont: string
 {
-    case NORMALE = "normale";
-    case DISLESSIA = "dislessia";
+    case NORMALE = "Normale";
+    case DISLESSIA = "Dislessia";
 }
 
 enum ModificaTema: string
 {
-    case CHIARO = "chiaro";
-    case SCURO = "scuro";
-    case SISTEMA = "sistema";
+    case CHIARO = "Chiaro";
+    case SCURO = "Scuro";
+    case SISTEMA = "Sistema";
 }
 
 class PreferenzeUtenteModel

@@ -52,7 +52,13 @@ abstract class BaseView
                         if ($parentNode instanceof DOMElement && $parentNode->nodeName === 'li') {
                             $currentClass = $parentNode->getAttribute('class') ?? '';
                             $parentNode->setAttribute('class', trim($currentClass . ' active'));
-                            // $link->removeAttribute('href');
+                            
+                            // Rimuove l'attributo href per disabilitare il link circolare
+                            $link->removeAttribute('href');
+                            // Aggiunge aria-current per accessibilità
+                            $link->setAttribute('aria-current', 'page');
+                            // Aggiunge tabindex -1 per rimuoverlo dall'ordine di tabulazione
+                            $link->setAttribute('tabindex', '-1');
                         }
                     }
                 }
@@ -93,6 +99,10 @@ abstract class BaseView
         $publicPages = ['settings.php', 'index.php'];
         $currentPage = basename($_SERVER['PHP_SELF']);
         
+        // Controlla se è la pagina di login o register per non mostrare i rispettivi pulsanti
+        $isLoginPage = ($currentPage === 'login.php');
+        $isRegisterPage = ($currentPage === 'register.php');
+        
         if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
             // Utente loggato
             Utils::replaceTemplateContent(
@@ -109,10 +119,23 @@ abstract class BaseView
                 $loginRedirect = "?redirect={$currentPage}";
             }
             
+            // Costruisce i pulsanti in base alla pagina corrente
+            $buttonsHtml = '';
+            
+            // Mostra il pulsante login solo se non siamo nella pagina di login
+            if (!$isLoginPage) {
+                $buttonsHtml .= '<a href="login.php'.$loginRedirect.'" class="nav-button primary" lang="en">Login</a>';
+            }
+            
+            // Mostra il pulsante register solo se non siamo nella pagina di register
+            if (!$isRegisterPage) {
+                $buttonsHtml .= '<a href="register.php" class="nav-button secondary">Registrati</a>';
+            }
+            
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
-                '<a href="login.php'.$loginRedirect.'" class="nav-button primary" lang="en">Login</a><a href="register.php" class="nav-button secondary">Registrati</a>'
+                $buttonsHtml
             );
         }
     }

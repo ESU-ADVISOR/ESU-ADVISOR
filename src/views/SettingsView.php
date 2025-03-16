@@ -204,9 +204,9 @@ class SettingsView extends BaseView
         } catch (\Throwable $e) {
             // Fallback in caso l'enum non sia disponibile
             $opzioniTema = [
-                (object)['value' => 'chiaro'], 
-                (object)['value' => 'scuro'], 
-                (object)['value' => 'sistema']
+                (object)['value' => 'Chiaro'], 
+                (object)['value' => 'Scuro'], 
+                (object)['value' => 'Sistema']
             ];
         }
         
@@ -223,7 +223,7 @@ class SettingsView extends BaseView
         foreach ($opzioniTema as $opzione) {
             $opzioneValue = is_object($opzione) ? $opzione->value : $opzione;
             $selected = ($temaScelto === $opzioneValue) ? 'selected' : '';
-            if (empty($selected) && $opzioneValue == "sistema" && $temaScelto === null) {
+            if (empty($selected) && $opzioneValue == "Sistema" && $temaScelto === null) {
                 $selected = 'selected'; // Default to sistema
             }
             $temaContent .= '<option value="' . $opzioneValue . '" ' . $selected . '>' . $opzioneValue . '</option>';
@@ -243,9 +243,9 @@ class SettingsView extends BaseView
         } catch (\Throwable $e) {
             // Fallback in caso l'enum non sia disponibile
             $opzioniDimensioneTesto = [
-                (object)['value' => 'piccolo'], 
-                (object)['value' => 'medio'], 
-                (object)['value' => 'grande']
+                (object)['value' => 'Piccolo'], 
+                (object)['value' => 'Medio'], 
+                (object)['value' => 'Grande']
             ];
         }
         
@@ -262,8 +262,8 @@ class SettingsView extends BaseView
         foreach ($opzioniDimensioneTesto as $opzione) {
             $opzioneValue = is_object($opzione) ? $opzione->value : $opzione;
             $selected = ($dimensioneTestoScelta === $opzioneValue) ? 'selected' : '';
-            if (empty($selected) && $opzioneValue == "medio" && $dimensioneTestoScelta === null) {
-                $selected = 'selected'; // Default to medio
+            if (empty($selected) && $opzioneValue == "Medio" && $dimensioneTestoScelta === null) {
+                $selected = 'selected'; // Default to Medio
             }
             $dimensioneTestoContent .= '<option value="' . $opzioneValue . '" ' . $selected . '>' . $opzioneValue . '</option>';
         }
@@ -282,9 +282,9 @@ class SettingsView extends BaseView
         } catch (\Throwable $e) {
             // Fallback in caso l'enum non sia disponibile
             $opzioniDimensioneIcone = [
-                (object)['value' => 'piccolo'], 
-                (object)['value' => 'medio'], 
-                (object)['value' => 'grande']
+                (object)['value' => 'Piccolo'], 
+                (object)['value' => 'Medio'], 
+                (object)['value' => 'Grande']
             ];
         }
         
@@ -301,8 +301,8 @@ class SettingsView extends BaseView
         foreach ($opzioniDimensioneIcone as $opzione) {
             $opzioneValue = is_object($opzione) ? $opzione->value : $opzione;
             $selected = ($dimensioneIconeScelta === $opzioneValue) ? 'selected' : '';
-            if (empty($selected) && $opzioneValue == "medio" && $dimensioneIconeScelta === null) {
-                $selected = 'selected'; // Default to medio
+            if (empty($selected) && $opzioneValue == "Medio" && $dimensioneIconeScelta === null) {
+                $selected = 'selected'; // Default to Medio
             }
             $dimensioneIconeContent .= '<option value="' . $opzioneValue . '" ' . $selected . '>' . $opzioneValue . '</option>';
         }
@@ -321,8 +321,8 @@ class SettingsView extends BaseView
         } catch (\Throwable $e) {
             // Fallback in caso l'enum non sia disponibile
             $opzioniFont = [
-                (object)['value' => 'normale'], 
-                (object)['value' => 'dislessia']
+                (object)['value' => 'Normale'], 
+                (object)['value' => 'Dislessia']
             ];
         }
         
@@ -339,8 +339,8 @@ class SettingsView extends BaseView
         foreach ($opzioniFont as $opzione) {
             $opzioneValue = is_object($opzione) ? $opzione->value : $opzione;
             $selected = ($fontScelto === $opzioneValue) ? 'selected' : '';
-            if (empty($selected) && $opzioneValue == "normale" && $fontScelto === null) {
-                $selected = 'selected'; // Default to normale
+            if (empty($selected) && $opzioneValue == "Normale" && $fontScelto === null) {
+                $selected = 'selected'; // Default to Normale
             }
             $fontContent .= '<option value="' . $opzioneValue . '" ' . $selected . '>' . $opzioneValue . '</option>';
         }

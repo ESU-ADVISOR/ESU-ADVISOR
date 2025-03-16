@@ -23,13 +23,13 @@
                 <div class="form-group">
                     <label for="username" lang="en">Username</label>
                     <input
-                        type="username"
+                        type="text"
                         id="username"
                         name="username"
                         required
                         class="form-input"
                         style="
-                            background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z%22/><path d=%22m3 7 9 6 9-6%22/></svg>&quot;);
+                            background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2%22></path><circle cx=%2212%22 cy=%227%22 r=%224%22></circle></svg>&quot;);
                             background-position: 12px center;
                             background-repeat: no-repeat;
                         "
@@ -111,5 +111,9 @@
         </main>
 
         <template id="footer-template"></template>
+        <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+    Torna su <span aria-hidden="true">&uarr;</span>
+</button>
+        <script src="scripts/back-to-top.js"></script>
     </body>
 </html>

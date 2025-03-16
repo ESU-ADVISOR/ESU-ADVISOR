@@ -46,9 +46,9 @@ function sendAJAXRequest(event) {
           const themeSelect = document.getElementById("modifica-tema-select");
           const selectedTheme = themeSelect.value;
 
-          if (selectedTheme === "scuro") {
+          if (selectedTheme === "Scuro") {
             localStorage.setItem("theme", "dark");
-          } else if (selectedTheme === "chiaro") {
+          } else if (selectedTheme === "Chiaro") {
             localStorage.setItem("theme", "light");
           } else {
             localStorage.removeItem("theme");
@@ -84,8 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const savedTheme = localStorage.getItem("theme");
 
   // L'utente non ha il cookie ma ha una preferenza nel db e bisogna riassegnare il cookie
-  if (themeSelect.value != "sistema" && !savedTheme) {
-    if (themeSelect.value == "scuro") {
+  if (themeSelect.value != "Sistema" && !savedTheme) {
+    if (themeSelect.value == "Scuro") {
       document.documentElement.classList.add("theme-dark");
       document.documentElement.classList.remove("theme-light");
       localStorage.setItem("theme", "dark");
@@ -101,10 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
       "(prefers-color-scheme: dark)",
     ).matches;
 
-    if (event.target.value == "scuro") {
+    if (event.target.value == "Scuro") {
       document.documentElement.classList.add("theme-dark");
       document.documentElement.classList.remove("theme-light");
-    } else if (event.target.value == "chiaro") {
+    } else if (event.target.value == "Chiaro") {
       document.documentElement.classList.remove("theme-dark");
       document.documentElement.classList.add("theme-light");
     } else {

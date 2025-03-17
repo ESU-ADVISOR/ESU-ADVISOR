@@ -12,7 +12,6 @@ class UserModel
 
     // table fields
     private string|null $username;
-    private string|null $email;
     private string|null $password;
     private string|DateTimeImmutable|null $dataNascita;
 
@@ -37,9 +36,6 @@ class UserModel
         if (isset($data["username"])) {
             $this->username = $data["username"];
         }
-        if (isset($data["email"])) {
-            $this->email = $data["email"];
-        }
         if (isset($data["password"])) {
             $this->password = password_hash(
                 $data["password"],
@@ -53,16 +49,16 @@ class UserModel
 
     public function validate(): bool
     {
-        return $this->email != "";
+        return $this->username != "";
     }
 
     public function refresh(): bool
     {
-        if ($this->email === null) {
+        if ($this->username === null) {
             return false;
         }
 
-        $data = self::findByEmail($this->email);
+        $data = self::findByUsername($this->username);
         if ($data) {
             self::__construct($data);
             return true;
@@ -81,16 +77,7 @@ class UserModel
         $this->username = $value;
     }
 
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
 
-    /** @param string $value */
-    public function setEmail($value): void
-    {
-        $this->email = $value;
-    }
 
     /** @param string $password */
     public function setClearPassword($password): void
@@ -126,7 +113,7 @@ class UserModel
             "SELECT * FROM recensione WHERE utente = :utente"
         );
         $stmt->execute([
-            "utente" => $this->email,
+            "utente" => $this->username,
         ]);
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, RecensioneModel::class);
         if (!empty($data)) {
@@ -138,27 +125,25 @@ class UserModel
     //-----------------Database methods----------------
     public function saveToDB(): bool
     {
-        if ($this->email == null || $this->username == "") {
+        if ($this->username == "") {
             return false;
         }
-        $exists = self::findByEmail($this->email);
+        $exists = self::findByUsername($this->username);
         if (!$exists) {
             $stmt = $this->db->prepare(
-                "INSERT INTO utente (username, email, password, dataNascita) VALUES (:username, :email, :password, :dataNascita)"
+                "INSERT INTO utente (username, password, dataNascita) VALUES (:username, :password, :dataNascita)"
             );
             return $stmt->execute([
                 "username" => $this->username,
-                "email" => $this->email,
                 "password" => $this->password,
                 "dataNascita" => $this->dataNascita->format("Y-m-d"),
             ]);
         } else {
             $stmt = $this->db->prepare(
-                "UPDATE utente SET username = :username, password = :password, dataNascita = :dataNascita WHERE email = :email"
+                "UPDATE utente SET username = :username, password = :password, dataNascita = :dataNascita WHERE username = :username"
             );
             return $stmt->execute([
                 "username" => $this->username,
-                "email" => $this->email,
                 "password" => $this->password,
                 "dataNascita" => $this->dataNascita->format("Y-m-d"),
             ]);
@@ -167,55 +152,55 @@ class UserModel
 
     public function deleteFromDB(): bool
     {
-        if ($this->email == null) {
+        if ($this->username == null) {
             return false;
         }
 
-        $stmt = $this->db->prepare("DELETE FROM utente WHERE email = :email");
+        $stmt = $this->db->prepare("DELETE FROM utente WHERE username = :username");
         return $stmt->execute([
-            "email" => $this->email,
+            "username" => $this->username,
         ]);
     }
 
     //-----------------Stateless methods----------------
 
-    public static function isEmailTaken(string $email): bool
+    public static function isUsernameTaken(string $username): bool
     {
         $db = Database::getInstance();
         $stmt = $db->prepare(
-            "SELECT COUNT(*) FROM utente WHERE email = :email"
+            "SELECT COUNT(*) FROM utente WHERE username = :username"
         );
-        $stmt->execute(["email" => $email]);
+        $stmt->execute(["username" => $username]);
         return $stmt->fetchColumn() > 0;
     }
 
-    public static function isUserValid(string $email): bool
+    public static function isUserValid(string $username): bool
     {
         $db = Database::getInstance();
         $stmt = $db->prepare(
-            "SELECT COUNT(*) FROM utente WHERE email = :email"
+            "SELECT COUNT(*) FROM utente WHERE username = :username"
         );
-        $stmt->execute(["email" => $email]);
+        $stmt->execute(["username" => $username]);
         return $stmt->fetchColumn() > 0;
     }
 
-    public static function authenticate(string $email, string $clearPassword): bool
+    public static function authenticate(string $username, string $clearPassword): bool
     {
         $db = Database::getInstance();
         $stmt = $db->prepare(
-            "SELECT password FROM utente WHERE email = :email"
+            "SELECT password FROM utente WHERE username = :username"
         );
-        $stmt->execute(["email" => $email]);
+        $stmt->execute(["username" => $username]);
         $password = $stmt->fetchColumn();
         if ($password && password_verify($clearPassword, $password)) {
             if (password_needs_rehash($password, PASSWORD_DEFAULT)) {
                 $newHash = password_hash($password, PASSWORD_DEFAULT);
                 $updateSql =
-                    "UPDATE utente SET password = :password WHERE email = :email";
+                    "UPDATE utente SET password = :password WHERE username = :username";
                 $updateStmt = $db->prepare($updateSql);
                 $updateStmt->execute([
                     ":password" => $newHash,
-                    ":email" => $email,
+                    ":username" => $username,
                 ]);
             }
             return true;
@@ -225,7 +210,7 @@ class UserModel
     }
 
     /**
-     * @param mixed $email @param string $$email
+     * @param mixed $username @param string $$username
      */
     public static function findByUsername($username): ?UserModel
     {
@@ -233,24 +218,6 @@ class UserModel
         $stmt = $db->prepare("SELECT * FROM utente WHERE username = :username");
         $stmt->execute([
             "username" => $username,
-        ]);
-        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, UserModel::class)[0];
-
-        if (!empty($data)) {
-            return $data;
-        }
-        return null;
-    }
-
-    /**
-     * @param mixed $email @param string $$email
-     */
-    public static function findByEmail($email): ?UserModel
-    {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM utente WHERE email = :email");
-        $stmt->execute([
-            "email" => $email,
         ]);
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, UserModel::class)[0];
 

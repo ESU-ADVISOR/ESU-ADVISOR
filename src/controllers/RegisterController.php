@@ -16,19 +16,13 @@ class RegisterController implements BaseController
     public function handlePOSTRequest(array $post = []): void
     {
         $username = $post["username"];
-        $email = $post["email"];
         $password = $post["password"];
         $dataNascita = $post["dataNascita"];
         $view = new RegisterView();
-        if (UserModel::isEmailTaken($email)) {
-            $view->render(["errors" => ["Email is already taken"]]);
-            return;
-        }
 
         try {
             $new_user = new UserModel([
                 "username" => $username,
-                "email" => $email,
                 "password" => $password,
                 "dataNascita" => $dataNascita,
             ]);

@@ -21,7 +21,7 @@ class ReviewController implements BaseController
         $recensione = new RecensioneModel([
             "voto" => $post["rating"],
             "descrizione" => $post["review"],
-            "utente" => UserModel::findByUsername($_SESSION["username"])->getEmail(),
+            "utente" => UserModel::findByUsername($_SESSION["username"])->getUsername(),
             "piatto" => $post["piatto"],
             "data" => date("Y-m-d H:i:s"),
         ]);

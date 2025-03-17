@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector(".base-form");
   const usernameInput = document.getElementById("username");
-  const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
 
   form.addEventListener("submit", function (event) {
@@ -20,12 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
       errors.push(
         "Username can only contain letters, numbers, underscores, and hyphens.",
       );
-    }
-
-    const email = emailInput.value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      isValid = false;
-      errors.push("Please enter a valid email address.");
     }
 
     const password = passwordInput.value.trim();

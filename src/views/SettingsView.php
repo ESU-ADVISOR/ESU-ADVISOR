@@ -42,7 +42,7 @@ class SettingsView extends BaseView
         if ($isLoggedIn) {
             $user = UserModel::findByUsername($_SESSION["username"]);
             if ($user !== null) {
-                $userPreferences = PreferenzeUtenteModel::findByEmail($user->getEmail());
+                $userPreferences = PreferenzeUtenteModel::findByUsername($user->getUsername());
                 
                 // Determina la mensa preferita dall'utente loggato
                 if ($userPreferences && method_exists($userPreferences, 'getMensaPreferita') && $userPreferences->getMensaPreferita()) {

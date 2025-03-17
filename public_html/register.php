@@ -6,11 +6,10 @@ use Controllers\RegisterController;
 $controller = new RegisterController();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = $email = $password = "";
+    $username = $password = "";
     $errors = [];
 
     $username = trim($_POST["username"] ?? "");
-    $email = trim($_POST["email"] ?? "");
     $password = trim($_POST["password"] ?? "");
     $dataNascita = trim($_POST["birth_date"] ?? "");
 
@@ -26,12 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    if (empty($email)) {
-        $errors[] = "Email address is required.";
-    } else {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Please enter a valid email address.";
-        }
+    if (empty($username)) {
+        $errors[] = "Username is required.";
     }
 
     if (empty($password)) {
@@ -62,7 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($errors)) {
         $data = [
             "username" => $username,
-            "email" => $email,
             "password" => $password,
             "dataNascita" => $dataNascita,
         ];

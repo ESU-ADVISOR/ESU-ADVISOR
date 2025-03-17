@@ -21,37 +21,29 @@ CREATE TABLE mensa (
     telefono VARCHAR(15) NOT NULL,
     maps_link TEXT NOT NULL,
     PRIMARY KEY (nome)
-    );
+);
 
 CREATE TABLE piatto (
     nome VARCHAR(100) NOT NULL,
     descrizione TEXT NOT NULL,
     PRIMARY KEY (nome),
     CHECK (LENGTH (descrizione) <= 500)
-    );
+);
 
 CREATE TABLE utente (
-    email VARCHAR(50) NOT NULL,
     password VARCHAR(100) NOT NULL,
     dataNascita DATE NOT NULL,
     username VARCHAR(50) NOT NULL,
-    PRIMARY KEY (email),
-    UNIQUE (username),
-    CHECK (email LIKE "%@%.%"),
-    CHECK (username REGEXP "^[a-zA-Z0-9_]+$"),
-    CHECK (
-        email REGEXP "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-    ),
-    INDEX (username),
-    UNIQUE (username)
-    );
+    PRIMARY KEY (username),
+    CHECK (username REGEXP "^[a-zA-Z0-9_]+$")
+);
 
 CREATE TABLE menu (
     data DATE NOT NULL,
     mensa VARCHAR(50) NOT NULL,
     PRIMARY KEY (data, mensa),
     FOREIGN KEY (mensa) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE CASCADE
-    );
+);
 
 CREATE TABLE orarioapertura (
     giornoSettimana INT NOT NULL,
@@ -66,7 +58,7 @@ CREATE TABLE orarioapertura (
     ),
     CHECK (orainizio REGEXP "^[0-2][0-9]:[0-5][0-9]$"),
     CHECK (orafine REGEXP "^[0-2][0-9]:[0-5][0-9]$")
-    );
+);
 
 CREATE TABLE recensione (
     voto INT NOT NULL,
@@ -79,9 +71,9 @@ CREATE TABLE recensione (
         AND voto <= 5
     ),
     PRIMARY KEY (utente, piatto),
-    FOREIGN KEY (utente) REFERENCES utente (email) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (utente) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
-    );
+);
 
 CREATE TABLE menu_piatto (
     piatto VARCHAR(100) NOT NULL,
@@ -90,7 +82,7 @@ CREATE TABLE menu_piatto (
     PRIMARY KEY (piatto, data, mensa),
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (data, mensa) REFERENCES menu (data, mensa) ON UPDATE CASCADE ON DELETE CASCADE
-    );
+);
 
 CREATE TABLE piatto_foto (
     photoid INT AUTO_INCREMENT,
@@ -98,24 +90,24 @@ CREATE TABLE piatto_foto (
     piatto VARCHAR(100) NOT NULL,
     PRIMARY KEY (photoid, piatto),
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
-    );
+);
 
 CREATE TABLE piatto_allergeni (
     allergeni VARCHAR(30) NOT NULL,
     piatto VARCHAR(100) NOT NULL,
     PRIMARY KEY (allergeni, piatto),
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
-    );
+);
 
 CREATE TABLE preferenze_utente (
-    email VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL,
     dimensione_testo ENUM ("Piccolo", "Medio", "Grande", "molto Grande") NOT NULL DEFAULT "Medio",
     dimensione_icone ENUM ("Piccolo", "Medio", "Grande", "molto Grande") NOT NULL DEFAULT "Medio",
     modifica_font ENUM ("Normale", "Dislessia") NOT NULL DEFAULT "Normale",
     modifica_tema ENUM ("Chiaro", "Scuro", "Sistema") NOT NULL DEFAULT "Sistema",
     mensa_preferita VARCHAR(50) NULL DEFAULT NULL,
-    PRIMARY KEY (email),
-    FOREIGN KEY (email) REFERENCES utente (email) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (username),
+    FOREIGN KEY (username) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (mensa_preferita) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
@@ -131,14 +123,14 @@ FROM
 GROUP BY
     p.nome;
 
-INSERT INTO utente (email, password, dataNascita, username)
-VALUES ("roberto@example.com", "password", "1990-01-01", "roberto"),
-       ("angela@example.com", "password", "1990-01-01", "angela"),
-       ("jane.doe@example.com", "password123", "1985-05-20", "janedoe"),
-       ("john.smith@example.com", "password456", "1988-08-15", "johnsmith"),
-       ("alice.jones@example.com", "password789", "1992-11-30", "alicejones"),
-       ("admin@example.com", "password", "1995-02-15", "admin"),
-       ("user@example.com", "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1970-01-01", "user"); -- password: user
+INSERT INTO utente (password, dataNascita, username)
+VALUES ( "password", "1990-01-01", "roberto"),
+       ( "password", "1990-01-01", "angela"),
+       ( "password123", "1985-05-20", "janedoe"),
+       ( "password456", "1988-08-15", "johnsmith"),
+       ( "password789", "1992-11-30", "alicejones"),
+       ( "password", "1995-02-15", "admin"),
+       ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1970-01-01", "user"); -- password: user
      
 
 INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("RistorESU Agripolis", "Viale dell'Università, 6 - Legnaro (PD)", "04 97430607", "https://www.google.com/maps/place/Mensa+Agripolis/@45.3474897,11.9577471,17z/data=!4m6!3m5!1s0x477ec378b59940cf:0x5b21dfbc8034b869!8m2!3d45.346961!4d11.9586004!16s%2Fg%2F11h9__56t4?entry=tts");
@@ -299,85 +291,85 @@ INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Kebab di pollo", "2024-12
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Piselli", "2024-12-10", "Pio X");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Ceci", "2024-12-10", "Pio X");
 
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Alto assorbimento delle radiazioni elettromagnetiche, quasi al pari di un corpo nero. Densità alta ma non esagerata, conforme agli standard UNI ISO. Sapore buono, leggermente salato, temperatura leggermente al di sopra di quella ambientale. Frazione in massa di pasta infima ma ciò è possibile che sia dovuto al fatto che il piatto servito fosse solo una delle prime mestolate. Pro: sapore, senso di sazietà raggiunto facilmente, ottimo materiale edile Contro: mancanza di nota piccante, produzione incontrollabile di metano gassoso da orifizi corporei.", "roberto@example.com", "Pasta e fagioli alla veneta");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Il sapore è buono ma la texture non mi è piaciuta. Ci sono troppi pezzi grossi, non è stata tritata bene.", "angela@example.com", "Crema di piselli");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Fredda e non frullata bene.", "jane.doe@example.com", "Crema di piselli");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona, ma calda sarebbe stata meglio.", "john.smith@example.com", "Pasta alla Norma (melanzane e ricotta)");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Mangiabile.", "alice.jones@example.com", "Pasta alla Norma (melanzane e ricotta)");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Melanzaneun po' acide ma buona.", "roberto@example.com", "Pasta alla Norma (melanzane e ricotta)");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Nulla da dire, è buona. Magari calda sarebbe stata più gradita.", "angela@example.com", "Pasta alla Norma (melanzane e ricotta)");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Pasta troppo cotta, il sugo però era buono.", "jane.doe@example.com", "Pasta al ragù");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Pasta cotta giusta e ragù molto saporito, classica ma molto buona.", "john.smith@example.com", "Pasta al ragù");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, riso non stracotto,un po' al dente.", "alice.jones@example.com", "Riso al curry");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Riso un po' al dente ma rimane comunque buono.", "roberto@example.com", "Riso pilaw con piselli");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono, riso al dente ma non crudo.", "angela@example.com", "Riso pilaw con piselli");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Personalmente preferisco le minestre frullate, però il gusto era buono.", "jane.doe@example.com", "Minestra di verdure");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Eccellente, nulla da dire se non buonissima.", "john.smith@example.com", "Crema di funghi");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Sugo molto saporito.", "alice.jones@example.com", "Pasta all'arrabbiata");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buona, il sugo è piccante al punto giusto.", "roberto@example.com", "Pasta all'arrabbiata");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Troppo salato, cereali un po' troppo al dente e basilico inesistente.", "angela@example.com", "Orzo con pomodorini e basilico");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buona e gustosa, il sugo era abbondante e saporito, si mangia molto volentieri. Peccato per la pasta un po' al dente.", "jane.doe@example.com", "Pasta alla carbonara");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Dose buona, condimento abbondante e quantità di pancetta giusta, ma il sugo me lo aspettavo un po' più saporito.", "john.smith@example.com", "Pasta alla carbonara");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Gli gnocchi erano della consistenza giusta e non molli, e il sugo molto saporito, nel complesso davvero buoni.", "alice.jones@example.com", "Gnocchi al pomodoro");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Ottimo considerando anche la mancanza di spine. Tramite analisi olfattiva e degustativa è possibile affermare l'assenza di olio di palma e di cadmio.", "roberto@example.com", "Filetto di platessa alla marchigiana");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, la panatura è croccante e asciutta.", "angela@example.com", "Filetto di merluzzo");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, la panatura è asciutta e croccante.", "jane.doe@example.com", "Filetto di merluzzo");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Il gusto era buono ma c'era troppo olio sulla melanzana.", "john.smith@example.com", "Melanzana con pomodoro e funghi");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Il sapore è buono, la carne non è secca.", "alice.jones@example.com", "Arrosto di tacchino");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono il ripieno, la pasta sfoglia però è un po' dura e difficile da tagliare.", "roberto@example.com", "Tortino ricotta e spinaci");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto saporito, forse un po' salato ma molto buono.", "angela@example.com", "Tortino ricotta e spinaci");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona ma impasta un po' in bocca.", "jane.doe@example.com", "Mozzarella alla romana");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona, il pomodoro le dà quel tocco in più che ci sta. Arrivi alla fine che sei sazio.", "john.smith@example.com", "Mozzarella alla romana");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Cotto bene, aromatizzato bene, buono.", "alice.jones@example.com", "Pollo al forno");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Si lascia mangiare, bene.", "roberto@example.com", "Pollo al forno");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buono, non c'è tanto da dire, il nome coincide con il prodotto, l'unica pecca è che secondo me sono assenti totalmente le proteine, ci sono solo verdure.", "angela@example.com", "Hamburger vegano");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Tutto buono tranne i pomodorini che erano amari.", "jane.doe@example.com", "Insalatona vegetariana");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Le patate erano crude, le verdure fredde e i ceci erano pochi. Apporto proteico molto basso per essere un secondo.", "john.smith@example.com", "Insalata vegana con ceci, patate, carote e melanzane");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Saporito, i cereali cotti al punto giusto. Ottimo anche per variare la fonte di carboidrati e non mangiare sempre grano.", "alice.jones@example.com", "Bis di cereali con verdure");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Il gusto di per sé era buono, anche se erano zuppi di acqua. Inoltre, la mozzarella sopra ai peperoni era palesemente la mozzarella alla romana avanzata dai giorni scorsi.", "roberto@example.com", "Peperoni alla partenopea");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (1, "Più bagnata dell'oceano, ha la consistenza di una spugna. Nel complesso il sapore è orribile.", "angela@example.com", "Frittata con verdure e formaggio");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buona, ma il rapporto capperi/topping è troppo alto.", "jane.doe@example.com", "Melanzana con pomodoro, capperi e olive");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono, i funghi ci stanno molto bene.", "john.smith@example.com", "Roast beef con funghi");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, riempie molto, il problema è la distribuzione di mozzarella tra i vari tranci che non è per nulla uniforme.", "alice.jones@example.com", "Trancio di pizza margherita");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buonO, l'impasto era morbiDo e soffice e nel complesso molto gustosa.", "roberto@example.com", "Trancio di pizza margherita");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buona anche da fredda, buon apporto di legumi.", "angela@example.com", "Insalata vegana con carote, zucchine, fagioli e mais");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Letteralmente il pezzo di formaggio più duro che io abbia mangiato, impossibile da tagliare, pesante. Nel complesso non è stata un’esperienza piacevole mangiarla.", "jane.doe@example.com", "Melanzana alla siciliana");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "La consistenza della carne faceva invidia al cartongesso e mi viene sinceramente da chiedermi con quale parte del manzo abbiano fatto questo hamburger, ma scommetterei sulle corna. Per fortuna le cipolle caramellate facevano un ottimo lavoro di distrazione al gusto ambiguo del prodotto animale. Punti bonus per le cose di consistenza strana che ogni tanto ti trovavi in bocca a sorpresa dopo un boccone. Citando yotobi “è come aprire un uovo di Pasqua e trovarci dentro il virus del vaiolo.”", "john.smith@example.com", "Hamburger di manzo BIO con cipolle caramellate");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Buonissimi, poco da aggiungere.", "alice.jones@example.com", "Fagiolini");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buoni ma freddi.", "roberto@example.com", "Fagiolini");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buoni, ma leggermente crudi.", "angela@example.com", "Fagiolini");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni, nulla da dire.", "jane.doe@example.com", "Fagiolini");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Gusto medio, abbastanza buoni ma sempre freddi.", "john.smith@example.com", "Fagiolini");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Non sono croccanti, sono infatti un po' molli, però almeno non sono troppo salate.", "alice.jones@example.com", "Patate fritte");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone, peccato siano un po' fredde e molli.", "roberto@example.com", "Patate fritte");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Sono patate fritte, sono standard, nulla da aggiungere.", "angela@example.com", "Patate fritte");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono anche se avrei preferito mangiarlo caldo.", "jane.doe@example.com", "Tris di verdure");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Un buon contorno, forse le verdure erano un po' troppo bagnate.", "john.smith@example.com", "Tris di verdure");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone, l'unica pecca sono i cavolfiori poco cotti.", "alice.jones@example.com", "Tris di verdure");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (1, "Mix tra crude e cotte, non si riescono a mangiare.", "roberto@example.com", "Patate all'olio extravergine");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Cotte, aromatizzate poco, due erbette potevano metterle (non basilico, grazie).", "angela@example.com", "Patate all'olio extravergine");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Metà dei bocconi sono crudi e l'altra metà cotti, non hanno tutti la stessa consistenza. Sanno di poco e sono completamente scondite, consiglio di prendere sale e olio.", "jane.doe@example.com", "Patate all'olio extravergine");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Spesso alcune sono crude, ma in questo caso erano tutte apposto.", "john.smith@example.com", "Patate all'olio extravergine");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Incredibilmente quasi tutti i bocconi erano cotti, un miglioramento.", "alice.jones@example.com", "Patate all'olio extravergine");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (1, "Completamente crude, non si salvava nemmeno un boccone.", "roberto@example.com", "Patate al basilico");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Le carote sono abbastanza bagnate e non caldissime, comunque rimangono un buon contorno.", "angela@example.com", "Carote e piselli al vapore");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone ma un po' secche.", "jane.doe@example.com", "Carote al vapore");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buone, un po' secche.", "john.smith@example.com", "Carote al vapore");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni, rappresentativi della cultura veneta.", "alice.jones@example.com", "Fagioli in umido");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto gustosa, impasto sottile ma buono, alcune volte poco cotto in qualche punto. Farcitura buona e leggera.", "roberto@example.com", "Pizza pomodorini, rucola e grana");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "I funghi sovrastano un po' la zucca, che si sente meno, ma nel complesso molto buona e soddisfacente.", "angela@example.com", "Pasta zucca e funghi");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "La pasta era discretamente buona e di buona cottura, il pomodoro non è troppo acido (cosa rara).", "jane.doe@example.com", "Pasta al tonno e olive");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Solita, acida e insapore, pasta cotta troppo.", "john.smith@example.com", "Pasta pomodoro e piselli");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Sugo molto buono, si mangia di gusto. Peccato che le zucchine si sentano poco, ma nel complesso buono.", "alice.jones@example.com", "Pasta salmone e zucchine");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Arrosto di buona cottura e consistenza, unica pecca l'eccessiva salinità (troppo sale).", "roberto@example.com", "Arrosto di maiale");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Cotte bene.", "angela@example.com", "Coscette di pollo");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Insapori.", "jane.doe@example.com", "Polpettine vegane");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buone e saporite, accompagnate poi dal sugo di pomodoro si risolve anche il fatto che sono un po' secchi. In generale buonissime, ne mangerei tantissime.", "john.smith@example.com", "Polpettine vegane");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buoni e saporiti, si mangiano volentieri. Unica pecca, sono un po'granulosi all'interno, per il resto ottimi.", "alice.jones@example.com", "Falafel");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni e ben speziati, sanno proprio di falafel. Sono un po' asciutte, ma mangiati con la maionese sono top.", "roberto@example.com", "Falafel");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Normale, nulla da dire.", "angela@example.com", "Kebab di pollo");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Nulla da dire, buoni, standard.", "jane.doe@example.com", "Piselli");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Ceci di scarsa qualità, granulosi e di consistenza inadeguata.", "john.smith@example.com", "Ceci");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Alto assorbimento delle radiazioni elettromagnetiche, quasi al pari di un corpo nero. Densità alta ma non esagerata, conforme agli standard UNI ISO. Sapore buono, leggermente salato, temperatura leggermente al di sopra di quella ambientale. Frazione in massa di pasta infima ma ciò è possibile che sia dovuto al fatto che il piatto servito fosse solo una delle prime mestolate. Pro: sapore, senso di sazietà raggiunto facilmente, ottimo materiale edile Contro: mancanza di nota piccante, produzione incontrollabile di metano gassoso da orifizi corporei.", "roberto", "Pasta e fagioli alla veneta");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Il sapore è buono ma la texture non mi è piaciuta. Ci sono troppi pezzi grossi, non è stata tritata bene.", "angela", "Crema di piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Fredda e non frullata bene.", "janedoe", "Crema di piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona, ma calda sarebbe stata meglio.", "johnsmith", "Pasta alla Norma (melanzane e ricotta)");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Mangiabile.", "alicejones", "Pasta alla Norma (melanzane e ricotta)");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Melanzaneun po' acide ma buona.", "roberto", "Pasta alla Norma (melanzane e ricotta)");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Nulla da dire, è buona. Magari calda sarebbe stata più gradita.", "angela", "Pasta alla Norma (melanzane e ricotta)");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Pasta troppo cotta, il sugo però era buono.", "janedoe", "Pasta al ragù");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Pasta cotta giusta e ragù molto saporito, classica ma molto buona.", "johnsmith", "Pasta al ragù");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, riso non stracotto,un po' al dente.", "alicejones", "Riso al curry");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Riso un po' al dente ma rimane comunque buono.", "roberto", "Riso pilaw con piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono, riso al dente ma non crudo.", "angela", "Riso pilaw con piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Personalmente preferisco le minestre frullate, però il gusto era buono.", "janedoe", "Minestra di verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Eccellente, nulla da dire se non buonissima.", "johnsmith", "Crema di funghi");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Sugo molto saporito.", "alicejones", "Pasta all'arrabbiata");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buona, il sugo è piccante al punto giusto.", "roberto", "Pasta all'arrabbiata");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Troppo salato, cereali un po' troppo al dente e basilico inesistente.", "angela", "Orzo con pomodorini e basilico");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buona e gustosa, il sugo era abbondante e saporito, si mangia molto volentieri. Peccato per la pasta un po' al dente.", "janedoe", "Pasta alla carbonara");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Dose buona, condimento abbondante e quantità di pancetta giusta, ma il sugo me lo aspettavo un po' più saporito.", "johnsmith", "Pasta alla carbonara");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Gli gnocchi erano della consistenza giusta e non molli, e il sugo molto saporito, nel complesso davvero buoni.", "alicejones", "Gnocchi al pomodoro");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Ottimo considerando anche la mancanza di spine. Tramite analisi olfattiva e degustativa è possibile affermare l'assenza di olio di palma e di cadmio.", "roberto", "Filetto di platessa alla marchigiana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, la panatura è croccante e asciutta.", "angela", "Filetto di merluzzo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, la panatura è asciutta e croccante.", "janedoe", "Filetto di merluzzo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Il gusto era buono ma c'era troppo olio sulla melanzana.", "johnsmith", "Melanzana con pomodoro e funghi");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Il sapore è buono, la carne non è secca.", "alicejones", "Arrosto di tacchino");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono il ripieno, la pasta sfoglia però è un po' dura e difficile da tagliare.", "roberto", "Tortino ricotta e spinaci");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto saporito, forse un po' salato ma molto buono.", "angela", "Tortino ricotta e spinaci");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona ma impasta un po' in bocca.", "janedoe", "Mozzarella alla romana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona, il pomodoro le dà quel tocco in più che ci sta. Arrivi alla fine che sei sazio.", "johnsmith", "Mozzarella alla romana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Cotto bene, aromatizzato bene, buono.", "alicejones", "Pollo al forno");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Si lascia mangiare, bene.", "roberto", "Pollo al forno");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buono, non c'è tanto da dire, il nome coincide con il prodotto, l'unica pecca è che secondo me sono assenti totalmente le proteine, ci sono solo verdure.", "angela", "Hamburger vegano");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Tutto buono tranne i pomodorini che erano amari.", "janedoe", "Insalatona vegetariana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Le patate erano crude, le verdure fredde e i ceci erano pochi. Apporto proteico molto basso per essere un secondo.", "johnsmith", "Insalata vegana con ceci, patate, carote e melanzane");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Saporito, i cereali cotti al punto giusto. Ottimo anche per variare la fonte di carboidrati e non mangiare sempre grano.", "alicejones", "Bis di cereali con verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Il gusto di per sé era buono, anche se erano zuppi di acqua. Inoltre, la mozzarella sopra ai peperoni era palesemente la mozzarella alla romana avanzata dai giorni scorsi.", "roberto", "Peperoni alla partenopea");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (1, "Più bagnata dell'oceano, ha la consistenza di una spugna. Nel complesso il sapore è orribile.", "angela", "Frittata con verdure e formaggio");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buona, ma il rapporto capperi/topping è troppo alto.", "janedoe", "Melanzana con pomodoro, capperi e olive");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono, i funghi ci stanno molto bene.", "johnsmith", "Roast beef con funghi");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, riempie molto, il problema è la distribuzione di mozzarella tra i vari tranci che non è per nulla uniforme.", "alicejones", "Trancio di pizza margherita");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buonO, l'impasto era morbiDo e soffice e nel complesso molto gustosa.", "roberto", "Trancio di pizza margherita");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buona anche da fredda, buon apporto di legumi.", "angela", "Insalata vegana con carote, zucchine, fagioli e mais");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Letteralmente il pezzo di formaggio più duro che io abbia mangiato, impossibile da tagliare, pesante. Nel complesso non è stata un’esperienza piacevole mangiarla.", "janedoe", "Melanzana alla siciliana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "La consistenza della carne faceva invidia al cartongesso e mi viene sinceramente da chiedermi con quale parte del manzo abbiano fatto questo hamburger, ma scommetterei sulle corna. Per fortuna le cipolle caramellate facevano un ottimo lavoro di distrazione al gusto ambiguo del prodotto animale. Punti bonus per le cose di consistenza strana che ogni tanto ti trovavi in bocca a sorpresa dopo un boccone. Citando yotobi “è come aprire un uovo di Pasqua e trovarci dentro il virus del vaiolo.”", "johnsmith", "Hamburger di manzo BIO con cipolle caramellate");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Buonissimi, poco da aggiungere.", "alicejones", "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buoni ma freddi.", "roberto", "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buoni, ma leggermente crudi.", "angela", "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni, nulla da dire.", "janedoe", "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Gusto medio, abbastanza buoni ma sempre freddi.", "johnsmith", "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Non sono croccanti, sono infatti un po' molli, però almeno non sono troppo salate.", "alicejones", "Patate fritte");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone, peccato siano un po' fredde e molli.", "roberto", "Patate fritte");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Sono patate fritte, sono standard, nulla da aggiungere.", "angela", "Patate fritte");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono anche se avrei preferito mangiarlo caldo.", "janedoe", "Tris di verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Un buon contorno, forse le verdure erano un po' troppo bagnate.", "johnsmith", "Tris di verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone, l'unica pecca sono i cavolfiori poco cotti.", "alicejones", "Tris di verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (1, "Mix tra crude e cotte, non si riescono a mangiare.", "roberto", "Patate all'olio extravergine");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Cotte, aromatizzate poco, due erbette potevano metterle (non basilico, grazie).", "angela", "Patate all'olio extravergine");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Metà dei bocconi sono crudi e l'altra metà cotti, non hanno tutti la stessa consistenza. Sanno di poco e sono completamente scondite, consiglio di prendere sale e olio.", "janedoe", "Patate all'olio extravergine");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Spesso alcune sono crude, ma in questo caso erano tutte apposto.", "johnsmith", "Patate all'olio extravergine");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Incredibilmente quasi tutti i bocconi erano cotti, un miglioramento.", "alicejones", "Patate all'olio extravergine");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (1, "Completamente crude, non si salvava nemmeno un boccone.", "roberto", "Patate al basilico");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Le carote sono abbastanza bagnate e non caldissime, comunque rimangono un buon contorno.", "angela", "Carote e piselli al vapore");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone ma un po' secche.", "janedoe", "Carote al vapore");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buone, un po' secche.", "johnsmith", "Carote al vapore");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni, rappresentativi della cultura veneta.", "alicejones", "Fagioli in umido");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto gustosa, impasto sottile ma buono, alcune volte poco cotto in qualche punto. Farcitura buona e leggera.", "roberto", "Pizza pomodorini, rucola e grana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "I funghi sovrastano un po' la zucca, che si sente meno, ma nel complesso molto buona e soddisfacente.", "angela", "Pasta zucca e funghi");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "La pasta era discretamente buona e di buona cottura, il pomodoro non è troppo acido (cosa rara).", "janedoe", "Pasta al tonno e olive");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Solita, acida e insapore, pasta cotta troppo.", "johnsmith", "Pasta pomodoro e piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Sugo molto buono, si mangia di gusto. Peccato che le zucchine si sentano poco, ma nel complesso buono.", "alicejones", "Pasta salmone e zucchine");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Arrosto di buona cottura e consistenza, unica pecca l'eccessiva salinità (troppo sale).", "roberto", "Arrosto di maiale");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Cotte bene.", "angela", "Coscette di pollo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Insapori.", "janedoe", "Polpettine vegane");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buone e saporite, accompagnate poi dal sugo di pomodoro si risolve anche il fatto che sono un po' secchi. In generale buonissime, ne mangerei tantissime.", "johnsmith", "Polpettine vegane");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buoni e saporiti, si mangiano volentieri. Unica pecca, sono un po'granulosi all'interno, per il resto ottimi.", "alicejones", "Falafel");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni e ben speziati, sanno proprio di falafel. Sono un po' asciutte, ma mangiati con la maionese sono top.", "roberto", "Falafel");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Normale, nulla da dire.", "angela", "Kebab di pollo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Nulla da dire, buoni, standard.", "janedoe", "Piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Ceci di scarsa qualità, granulosi e di consistenza inadeguata.", "johnsmith", "Ceci");
 
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Bis di cereali con verdure", "images/uploads/bis-di-cereali-con-verdure.jpg");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Crema di funghi", "images/uploads/crema-di-funghi.jpg");

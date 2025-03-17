@@ -36,7 +36,7 @@ class LoginController implements BaseController
             return;
         }
 
-        if (!$this->model->authenticate($this->model->findByUsername($username)->getEmail(), $password)) {
+        if (!$this->model->authenticate($this->model->findByUsername($username)->getUsername(), $password)) {
             $this->view->render(["errors" => ["Invalid username or password"]]);
             return;
         }

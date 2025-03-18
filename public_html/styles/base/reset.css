@@ -1,10 +1,14 @@
-/* base/reset.css */
+/* base/reset.css - Reset CSS di base per normalizzare gli stili tra browser */
 *,
 *::before,
 *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -15,6 +19,7 @@ body {
         sans-serif;
     background-color: var(--background);
     color: var(--text-primary);
+    overflow-x: hidden;
 }
 
 ul,
@@ -25,9 +30,23 @@ ol {
 img,
 picture,
 svg {
-    width: auto;
-    max-height: 300px;
+    max-width: 100%;
     display: block;
+}
+
+img {
+    height: auto;
+    max-height: 300px;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: all var(--transition);
+}
+
+a:hover {
+    color: var(--primary-hover);
 }
 
 input,
@@ -35,4 +54,15 @@ button,
 textarea,
 select {
     font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

@@ -12,13 +12,13 @@
         <template id="header-template"></template>
 
         <main class="form-container">
-            <div class="profile-header">
-                <div class="header-container">
-                    <h1>Profilo</h1>
+            <div class="card card-expanded mb-4">
+                <div class="card-header">
+                    <h1 class="text-primary">Profilo</h1>
                 </div>
 
                 <div class="card-body">
-                    <section class="mb-4 pb-4 border-b border-color">
+                    <section class="mb-4 pb-4 border-b">
                         <h2 class="text-lg font-semibold mb-3">
                             <template id="profile-username-template"></template>
                         </h2>
@@ -26,7 +26,7 @@
 
                     <section>
                         <h2 class="text-lg font-semibold mb-3">Le tue Recensioni</h2>
-                        <ul>
+                        <ul class="cards-stack">
                             <template id="profile-recensioni-template"></template>
                         </ul>
                     </section>

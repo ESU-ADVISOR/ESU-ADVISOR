@@ -14,14 +14,14 @@
         <main class="form-container">
             <div class="card card-expanded">
                 <div class="form-header">
-                    <h1>Impostazioni</h1>
+                    <h1 class="text-primary">Impostazioni</h1>
                 </div>
 
                 <template id="server-response-template"></template>
 
                 <div class="card-body">
                     <!-- Sezione Preferenze generali (visibile a tutti) -->
-                    <section class="mb-4 pb-4 border-b border-color">
+                    <section class="mb-4 pb-4 border-b">
                         <h2 class="text-lg font-semibold mb-3">Preferenze</h2>
                         <form action="settings.php" id="preferenze-generali" method="post" class="base-form">
                             <div class="form-group">
@@ -34,24 +34,24 @@
                                 </p>
                             </div>
                             
-                            <!-- Implementazione per ora solo statica, dopo verrà creata dinamicamente tramite collegamento a db -->
+                            <!-- Implementazione allergeni migliorata -->
                             <div class="form-group">
                                 <fieldset>
                                     <legend>Allergeni da segnalare:</legend>
                                     <div class="checkbox-grid">
-                                        <div class="checkbox-item">
+                                        <div class="checkbox-group">
                                             <input type="checkbox" id="allergene-glutine" name="allergeni[]" value="glutine">
                                             <label for="allergene-glutine">Glutine</label>
                                         </div>
-                                        <div class="checkbox-item">
+                                        <div class="checkbox-group">
                                             <input type="checkbox" id="allergene-lattosio" name="allergeni[]" value="lattosio">
                                             <label for="allergene-lattosio">Lattosio</label>
                                         </div>
-                                        <div class="checkbox-item">
+                                        <div class="checkbox-group">
                                             <input type="checkbox" id="allergene-frutta_a_guscio" name="allergeni[]" value="frutta_a_guscio">
                                             <label for="allergene-frutta_a_guscio">Frutta a guscio</label>
                                         </div>
-                                        <div class="checkbox-item">
+                                        <div class="checkbox-group">
                                             <input type="checkbox" id="allergene-crostacei" name="allergeni[]" value="crostacei">
                                             <label for="allergene-crostacei">Crostacei</label>
                                         </div>
@@ -67,7 +67,7 @@
                     </section>
 
                     <!-- Sezione Accessibilità (visibile a tutti) -->
-                    <section class="mb-4 pb-4 border-b border-color">
+                    <section class="mb-4 pb-4 border-b">
                         <h2 class="text-lg font-semibold mb-3">Accessibilità</h2>
                         <form action="settings.php" id="preferenze-accessibilità" method="post" class="base-form">
                             <div class="form-group">

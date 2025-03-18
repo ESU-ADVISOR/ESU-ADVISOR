@@ -58,7 +58,7 @@ class IndexView extends BaseView
                 $menseInfoContent .= "</div>";
                 $menseInfoContent .= "</dl>";
 
-                // The table will be appended here later
+                // Add schedule table
                 $menseInfoContent .= "<div class=\"schedule-container\">";
                 // Fetch orari
                 $orari = MenseModel::findByName(
@@ -181,7 +181,7 @@ class IndexView extends BaseView
                         htmlspecialchars(
                             $mensa["piatto_del_giorno"]->getNome()
                         ) .
-                        "\" width=\"150\" height=\"80\"></figure>";
+                        "\" width=\"150\" height=\"150\"></figure>";
                     $dishOfTheDayContent .= "<div class=\"menu-item-content\">";
                     $dishOfTheDayContent .=
                         "<h3>" .

@@ -1,4 +1,4 @@
-/* base/variables.css */
+/* base/variables.css - Variabili globali del design system */
 :root {
     /* Colors - Light theme default */
     --primary: #0072b2;
@@ -55,6 +55,14 @@
 
     /* Transitions */
     --transition: 200ms ease-out;
+    --transition-fast: 150ms ease-out;
+    --transition-normal: 250ms ease-out;
+    --transition-slow: 350ms ease-out;
+
+    /* Layout */
+    --header-height: 60px;
+    --footer-height: 56px;
+    --mensa-selector-height: 64px;
 }
 
 /* Dark theme */
@@ -85,5 +93,62 @@
         --primary-hover: #167eb9;
         --danger: #d43900;
         --danger-hover: #d33901;
+    }
+}
+
+/* Media queries */
+/* Mobile first approach */
+/* Small devices (tablets, 640px and up) */
+@media (min-width: 640px) {
+    :root {
+        --container-width: 640px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    :root {
+        --container-width: 768px;
+        --text-base: 1rem;
+        --text-lg: 1.25rem;
+        --spacing-md: 1.25rem;
+        --footer-height: 64px;
+    }
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+    :root {
+        --container-width: 1024px;
+        --text-base: 1.125rem;
+        --text-lg: 1.5rem;
+        --spacing-md: 1.5rem;
+    }
+}
+
+/* Extra large devices (large desktops, 1280px and up) */
+@media (min-width: 1280px) {
+    :root {
+        --container-width: 1280px;
+    }
+}
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition: none !important;
+        --transition-fast: none !important;
+        --transition-normal: none !important;
+        --transition-slow: none !important;
+    }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+    :root {
+        --primary: CanvasText;
+        --background: Canvas;
+        --text-primary: CanvasText;
+        --border-color: CanvasText;
     }
 }

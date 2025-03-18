@@ -13,90 +13,92 @@
         <template id="header-template"></template>
 
         <main class="form-container">
-            <div class="form-header">
-                <h1>Registrati</h1>
+            <div class="card card-expanded mb-4">
+                <div class="form-header">
+                    <h1 class="text-primary">Registrati</h1>
+                </div>
+
+                <template id="server-response-template"></template>
+
+                <form action="register.php" method="POST" class="base-form">
+                    <div class="form-group">
+                        <label for="username" lang="en">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            required
+                            class="form-input"
+                            style="
+                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2%22></path><circle cx=%2212%22 cy=%227%22 r=%224%22></circle></svg>&quot;);
+                                background-position: 12px center;
+                                background-repeat: no-repeat;
+                            "
+                        />
+                        <small id="username-error" class="error"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birth_date">Data di nascita</label>
+                        <input
+                            type="date"
+                            id="birth_date"
+                            name="birth_date"
+                            required
+                            class="form-input"
+                            style="
+                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%224%22 width=%2218%22 height=%2218%22 rx=%222%22 ry=%222%22></rect><line x1=%2216%22 y1=%222%22 x2=%2216%22 y2=%226%22></line><line x1=%228%22 y1=%222%22 x2=%228%22 y2=%226%22></line><line x1=%223%22 y1=%2210%22 x2=%2221%22 y2=%2210%22></line></svg>&quot;);
+                                background-position: 12px center;
+                                background-repeat: no-repeat;
+                            "
+                        />
+                        <small id="birth_date-error" class="error"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" lang="en">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            class="form-input"
+                            style="
+                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
+                                background-position: 12px center;
+                                background-repeat: no-repeat;
+                            "
+                        />
+                        <small id="password-error" class="error"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Conferma <span lang="en">password</span></label>
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            required
+                            class="form-input"
+                            style="
+                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
+                                background-position: 12px center;
+                                background-repeat: no-repeat;
+                            "
+                        />
+                        <small id="confirm_password-error" class="error"></small>
+                    </div>
+
+                    <button type="submit" class="form-button mt-3">Registrati</button>
+                    <p class="text-secondary mt-3 text-center">Hai già un account? <a href="login.php">Accedi qui</a></p>
+                </form>
             </div>
-
-            <template id="server-response-template"></template>
-
-            <form action="register.php" method="POST" class="base-form">
-                <div class="form-group">
-                    <label for="username" lang="en">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        required
-                        class="form-input"
-                        style="
-                            background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2%22></path><circle cx=%2212%22 cy=%227%22 r=%224%22></circle></svg>&quot;);
-                            background-position: 12px center;
-                            background-repeat: no-repeat;
-                        "
-                    />
-                    <small id="username-error" class="error"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="birth_date">Data di nascita</label>
-                    <input
-                        type="date"
-                        id="birth_date"
-                        name="birth_date"
-                        required
-                        class="form-input"
-                        style="
-                            background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%224%22 width=%2218%22 height=%2218%22 rx=%222%22 ry=%222%22></rect><line x1=%2216%22 y1=%222%22 x2=%2216%22 y2=%226%22></line><line x1=%228%22 y1=%222%22 x2=%228%22 y2=%226%22></line><line x1=%223%22 y1=%2210%22 x2=%2221%22 y2=%2210%22></line></svg>&quot;);
-                            background-position: 12px center;
-                            background-repeat: no-repeat;
-                        "
-                    />
-                    <small id="birth_date-error" class="error"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="password" lang="en">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                        class="form-input"
-                        style="
-                            background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                            background-position: 12px center;
-                            background-repeat: no-repeat;
-                        "
-                    />
-                    <small id="password-error" class="error"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirm_password">Conferma <span lang="en">password</span></label>
-                    <input
-                        type="password"
-                        id="confirm_password"
-                        name="confirm_password"
-                        required
-                        class="form-input"
-                        style="
-                            background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                            background-position: 12px center;
-                            background-repeat: no-repeat;
-                        "
-                    />
-                    <small id="confirm_password-error" class="error"></small>
-                </div>
-
-                <button type="submit" class="form-button">Registrati</button>
-                <p class="text-secondary mt-3 text-center">Hai già un account? <a href="login.php">Accedi qui</a></p>
-            </form>
         </main>
 
         <template id="footer-template"></template>
         <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
-    Torna su <span aria-hidden="true">&uarr;</span>
-</button>
+            Torna su <span aria-hidden="true">&uarr;</span>
+        </button>
         <script src="scripts/back-to-top.js"></script>
     </body>
 </html>

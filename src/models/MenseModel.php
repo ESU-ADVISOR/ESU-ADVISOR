@@ -115,7 +115,7 @@ class MenseModel
     /**
      * @return MenuModel
      */
-    public function getCurrentMenu(): MenuModel
+    public function getCurrentMenu(): ?MenuModel
     {
         if ($this->nome === null) {
             return null;
@@ -141,7 +141,7 @@ class MenseModel
         return $currentMenu;
     }
 
-    public function getMenseOrari(): array
+    public function getMenseOrari(): ?array
     {
         if ($this->nome === null) {
             return null;
@@ -206,7 +206,7 @@ class MenseModel
     /**
     @param string $name
     @return MenseModel|null
-    */
+     */
     public static function findByName($name): ?MenseModel
     {
         $db = Database::getInstance();
@@ -239,4 +239,3 @@ class MenseModel
         return [];
     }
 }
-?>

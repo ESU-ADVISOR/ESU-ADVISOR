@@ -10,6 +10,7 @@ spl_autoload_register(function ($class) {
     $prefixes = [
         "Controllers\\" => __DIR__ . "/controllers/",
         "Models\\" => __DIR__ . "/models/",
+        "Models\\Enums" => __DIR__ . "/models/enums",
         "Views\\" => __DIR__ . "/views/",
     ];
 
@@ -20,7 +21,6 @@ spl_autoload_register(function ($class) {
         }
 
         $relative_class = substr($class, $len);
-
         $file = $base_dir . str_replace("\\", "/", $relative_class) . ".php";
 
         if (file_exists($file)) {

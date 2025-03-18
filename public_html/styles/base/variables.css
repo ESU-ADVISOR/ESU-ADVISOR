@@ -63,6 +63,26 @@
     --header-height: 60px;
     --footer-height: 56px;
     --mensa-selector-height: 64px;
+
+    /* Dynamic text sizes */
+    --dynamic-text-xs: var(--text-xs);
+    --dynamic-text-sm: var(--text-sm);
+    --dynamic-text-base: var(--text-base);
+    --dynamic-text-lg: var(--text-lg);
+    --dynamic-text-xl: var(--text-xl);
+    --dynamic-text-2xl: var(--text-2xl);
+
+    /* Default font family */
+    --font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* SVG sizing variables */
+    --svg-size-small: 20px;
+    --svg-size-medium: 24px;
+    --svg-size-large: 32px;
+
+    /* Default SVG size */
+    --svg-size: var(--svg-size-medium);
 }
 
 /* Dark theme */
@@ -79,6 +99,108 @@
     --border-color: #333333;
     --danger: #d55e00;
     --danger-hover: #d66c18;
+}
+
+/* Font size classes */
+/* .text-size-piccolo {
+    --dynamic-text-xs: calc(var(--text-xs) * 0.85);
+    --dynamic-text-sm: calc(var(--text-sm) * 0.85);
+    --dynamic-text-base: calc(var(--text-base) * 0.85);
+    --dynamic-text-lg: calc(var(--text-lg) * 0.85);
+    --dynamic-text-xl: calc(var(--text-xl) * 0.85);
+    --dynamic-text-2xl: calc(var(--text-2xl) * 0.85);
+} */
+html.text-size-piccolo {
+    --text-xs: 0.65rem; /* 10.4px */
+    --text-sm: 0.75rem; /* 12px */
+    --text-base: 0.875rem; /* 14px */
+    --text-lg: 1rem; /* 16px */
+    --text-xl: 1.125rem; /* 18px */
+    --text-2xl: 1.375rem; /* 22px */
+}
+.text-size-medio {
+    --dynamic-text-xs: var(--text-xs);
+    --dynamic-text-sm: var(--text-sm);
+    --dynamic-text-base: var(--text-base);
+    --dynamic-text-lg: var(--text-lg);
+    --dynamic-text-xl: var(--text-xl);
+    --dynamic-text-2xl: var(--text-2xl);
+}
+
+html.text-size-grande {
+    --text-xs: 0.875rem; /* 14px */
+    --text-sm: 1rem; /* 16px */
+    --text-base: 1.125rem; /* 18px */
+    --text-lg: 1.25rem; /* 20px */
+    --text-xl: 1.5rem; /* 24px */
+    --text-2xl: 1.75rem; /* 28px */
+}
+/* .text-size-grande {
+    --dynamic-text-xs: calc(var(--text-xs) * 1.25);
+    --dynamic-text-sm: calc(var(--text-sm) * 1.25);
+    --dynamic-text-base: calc(var(--text-base) * 1.25);
+    --dynamic-text-lg: calc(var(--text-lg) * 1.25);
+    --dynamic-text-xl: calc(var(--text-xl) * 1.25);
+    --dynamic-text-2xl: calc(var(--text-2xl) * 1.25);
+} */
+/* Font family classes - applied to the html element */
+html.font-normale {
+    --font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html.font-dislessia {
+    --font-family:
+        "OpenDyslexic", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        sans-serif;
+}
+/* Font family classes */
+/* .font-normale {
+    --font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.font-dislessia {
+    --font-family:
+        "OpenDyslexic", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        sans-serif;
+} */
+
+/* Size variations based on user preference */
+html.icon-size-piccolo {
+    --svg-size: var(--svg-size-small);
+}
+
+html.icon-size-medio {
+    --svg-size: var(--svg-size-medium);
+}
+
+html.icon-size-grande {
+    --svg-size: var(--svg-size-large);
+}
+
+/* components/svg.css */
+svg:not(.logo) {
+    width: var(--svg-size);
+    height: var(--svg-size);
+}
+
+/* Exception for logo SVG */
+.logo-container svg {
+    height: auto;
+    width: auto;
+    max-height: 40px;
+}
+
+/* Star ratings might need special handling */
+.ratings .star {
+    width: calc(var(--svg-size) * 0.8);
+    height: calc(var(--svg-size) * 0.8);
+}
+
+.rating label .star {
+    width: calc(var(--svg-size) * 1.5);
+    height: calc(var(--svg-size) * 1.5);
 }
 
 /* Optional: System preference dark mode override */

@@ -52,7 +52,7 @@ abstract class BaseView
                         if ($parentNode instanceof DOMElement && $parentNode->nodeName === 'li') {
                             $currentClass = $parentNode->getAttribute('class') ?? '';
                             $parentNode->setAttribute('class', trim($currentClass . ' active'));
-                            
+
                             // Rimuove l'attributo href per disabilitare il link circolare
                             $link->removeAttribute('href');
                             // Aggiunge aria-current per accessibilità
@@ -98,40 +98,40 @@ abstract class BaseView
         // Pagine che richiedono login ma sono accessibili anche senza login
         $publicPages = ['settings.php', 'index.php'];
         $currentPage = basename($_SERVER['PHP_SELF']);
-        
+
         // Controlla se è la pagina di login o register per non mostrare i rispettivi pulsanti
         $isLoginPage = ($currentPage === 'login.php');
         $isRegisterPage = ($currentPage === 'register.php');
-        
+
         if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
             // Utente loggato
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
-                '<a href="logout.php" class="nav-button danger" lang="en">Logout</a>'
+                '<a href="logout.php" class="nav-button danger" lang="en" id="logout">Logout</a>'
             );
         } else {
             // Utente non loggato
-            
+
             // Per pagine protette, aggiungiamo un parametro di redirect
             $loginRedirect = '';
             if (!in_array($currentPage, $publicPages) && $currentPage !== 'login.php' && $currentPage !== 'register.php') {
                 $loginRedirect = "?redirect={$currentPage}";
             }
-            
+
             // Costruisce i pulsanti in base alla pagina corrente
             $buttonsHtml = '';
-            
+
             // Mostra il pulsante login solo se non siamo nella pagina di login
             if (!$isLoginPage) {
-                $buttonsHtml .= '<a href="login.php'.$loginRedirect.'" class="nav-button primary" lang="en">Login</a>';
+                $buttonsHtml .= '<a href="login.php' . $loginRedirect . '" class="nav-button primary" lang="en">Login</a>';
             }
-            
+
             // Mostra il pulsante register solo se non siamo nella pagina di register
             if (!$isRegisterPage) {
                 $buttonsHtml .= '<a href="register.php" class="nav-button secondary">Registrati</a>';
             }
-            
+
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
@@ -145,17 +145,17 @@ abstract class BaseView
         // Per pagine protette che richiedono login (ad eccezione di settings.php)
         $protectedPages = ['profile.php', 'review.php'];
         $currentPage = basename($_SERVER['PHP_SELF']);
-        
+
         // Se è un errore di accesso non autorizzato
-        $isAccessError = in_array($currentPage, $protectedPages) && 
-                        ($error === "You're not logged in" || $error === "Devi effettuare il login per accedere");
-        
+        $isAccessError = in_array($currentPage, $protectedPages) &&
+            ($error === "You're not logged in" || $error === "Devi effettuare il login per accedere");
+
         // Se si tratta di tentativo di accesso a pagina protetta, reindirizza alla pagina di errore
         if ($isAccessError) {
             header("Location: error.php?code=401&page=" . urlencode($currentPage));
             exit();
         }
-        
+
         // Per gli errori 404 (pagina non trovata)
         if ($errorCode === 404) {
             $this->template = file_get_contents(__DIR__ . "/../templates/error.html");
@@ -163,67 +163,67 @@ abstract class BaseView
             libxml_use_internal_errors(true);
             $this->dom->loadHTML($this->template);
             libxml_clear_errors();
-            
+
             // Imposta titolo specifico per errore 404
             Utils::replaceTemplateContent(
                 $this->dom,
                 "error-title-template",
                 "<h1>Pagina non trovata</h1>"
             );
-            
+
             // Imposta messaggio di errore specifico
             Utils::replaceTemplateContent(
                 $this->dom,
                 "error-message-template",
                 "<h3>La pagina che stai cercando non esiste</h3>"
             );
-            
+
             // Svuota i placeholder per i contenuti di altri tipi di errore
             Utils::replaceTemplateContent(
                 $this->dom,
                 "access-error-content",
                 ""
             );
-            
+
             Utils::replaceTemplateContent(
                 $this->dom,
                 "generic-error-content",
                 ""
             );
-            
+
             echo $this->dom->saveHTML();
             return;
         }
-        
+
         // Per tutti gli altri errori generici
         $this->template = file_get_contents(__DIR__ . "/../templates/error.html");
         $this->dom = new \DOMDocument();
         libxml_use_internal_errors(true);
         $this->dom->loadHTML($this->template);
         libxml_clear_errors();
-        
+
         // Per errori generici, lascia il titolo predefinito
-        
+
         // Imposta il messaggio di errore specifico
         Utils::replaceTemplateContent(
             $this->dom,
             "error-message-template",
             "<h3>" . htmlspecialchars($error) . "</h3>"
         );
-        
+
         // Svuota i placeholder per i contenuti di altri tipi di errore
         Utils::replaceTemplateContent(
             $this->dom,
             "access-error-content",
             ""
         );
-        
+
         Utils::replaceTemplateContent(
             $this->dom,
             "not-found-error-content",
             ""
         );
-        
+
         echo $this->dom->saveHTML();
     }
 

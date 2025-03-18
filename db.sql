@@ -101,10 +101,10 @@ CREATE TABLE piatto_allergeni (
 
 CREATE TABLE preferenze_utente (
     username VARCHAR(50) NOT NULL,
-    dimensione_testo ENUM ("Piccolo", "Medio", "Grande", "molto Grande") NOT NULL DEFAULT "Medio",
-    dimensione_icone ENUM ("Piccolo", "Medio", "Grande", "molto Grande") NOT NULL DEFAULT "Medio",
-    modifica_font ENUM ("Normale", "Dislessia") NOT NULL DEFAULT "Normale",
-    modifica_tema ENUM ("Chiaro", "Scuro", "Sistema") NOT NULL DEFAULT "Sistema",
+    dimensione_testo ENUM ("piccolo", "medio", "grande") NOT NULL DEFAULT "medio",
+    dimensione_icone ENUM ("piccolo", "medio", "grande") NOT NULL DEFAULT "medio",
+    modifica_font ENUM ("normale", "dislessia") NOT NULL DEFAULT "normale",
+    modifica_tema ENUM ("chiaro", "scuro", "sistema") NOT NULL DEFAULT "sistema",
     mensa_preferita VARCHAR(50) NULL DEFAULT NULL,
     PRIMARY KEY (username),
     FOREIGN KEY (username) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE,

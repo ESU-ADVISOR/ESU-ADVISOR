@@ -60,6 +60,13 @@
     border-color: var(--danger-hover);
 }
 
+/* Full width button */
+.full-width {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 /* File input styling */
 .form-file {
     background-color: transparent;
@@ -214,7 +221,6 @@
     border-radius: var(--radius);
     background-color: var(--background-card);
     box-shadow: var(--shadow);
-    margin-bottom: var(--spacing-md);
     border: 1px solid var(--border-color);
 }
 
@@ -224,6 +230,14 @@
 
 .menu-item[hidden] {
     display: none;
+}
+
+.menu-item-container {
+    margin-bottom: var(--spacing-md);
+}
+
+.menu-item-container:last-child {
+    margin-bottom: 0;
 }
 
 .menu-item figure {
@@ -272,18 +286,32 @@
     text-decoration: underline;
 }
 
-/* Mense info card styles - MIGLIORATO E CORRETTO */
+/* Empty menu items */
+.empty-menu, .empty-dish {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+    background-color: var(--background-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: var(--spacing-md);
+}
+
+.empty-menu p, .empty-dish p {
+    color: var(--text-secondary);
+    font-style: italic;
+    margin: 0;
+}
+
+/* Mense info card styles - MODIFICATO */
 .mense-info-item {
-    border: none !important;
-    background: none;
-    box-shadow: none;
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color) !important;
 }
 
 .mense-info-item:last-child {
-    border-bottom: none !important;
     margin-bottom: 0;
 }
 
@@ -337,13 +365,34 @@
     background-color: rgba(0, 0, 0, 0.03);
 }
 
-/* Stile per le recensioni nel profilo - AGGIUNTO */
+/* Bottone direzioni - MODIFICATO */
+.directions-button {
+    display: block;
+    width: 100%;
+    margin-top: var(--spacing-md);
+}
+
+/* ===== REVIEWS STYLING ===== */
+/* Stili per le recensioni - utilizzati in profilo e piatto */
 .review-card {
     padding: var(--spacing-md);
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     background-color: var(--background-card);
     box-shadow: var(--shadow);
+    margin-bottom: var(--spacing-md);
+}
+
+.review-card:last-child {
+    margin-bottom: 0;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    flex-wrap: wrap;
 }
 
 .review-card h4 {
@@ -351,6 +400,7 @@
     font-size: var(--text-base);
     margin-bottom: var(--spacing-xs);
     color: var(--primary);
+    margin: 0;
 }
 
 .review-card p {
@@ -363,7 +413,7 @@
     margin-top: var(--spacing-xs);
 }
 
-.review-card .review-meta {
+.review-meta {
     font-size: var(--text-sm);
     color: var(--text-secondary);
     margin-top: var(--spacing-sm);
@@ -371,9 +421,142 @@
     border-top: 1px solid var(--border-color);
 }
 
+.review-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-sm);
+}
+
+/* ===== PIATTO PAGE STYLING ===== */
+/* Layout della pagina piatto */
+.piatto-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.piatto-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.piatto-meta {
+    display: flex;
+    align-items: center;
+    margin-top: var(--spacing-sm);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.piatto-ratings {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.piatto-media {
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.piatto-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--radius);
+    max-height: 300px;
+}
+
+.no-image {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    color: var(--text-secondary);
+    font-style: italic;
+    border-radius: var(--radius);
+}
+
+.piatto-details {
+    margin-top: var(--spacing-md);
+}
+
+/* ===== PROFILE PAGE STYLING ===== */
+/* Layout profilo */
+.profile-header {
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.profile-avatar {
+    flex-shrink: 0;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: var(--text-on-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.profile-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.profile-details {
+    flex: 1;
+}
+
+.profile-details h1 {
+    margin-bottom: var(--spacing-xs);
+}
+
+.profile-stats {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-number {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.stat-label {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.profile-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
 /* ===== FORMS ===== */
 /* Base form */
-.base-form {
+.base-form, .settings-form {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
@@ -401,15 +584,20 @@
 .form-input {
     width: 100%;
     height: 48px;
-    padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) calc(40px + var(--spacing-sm)); 
+    padding: var(--spacing-sm) var(--spacing-md);
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     background-color: var(--background-card);
     color: var(--text-primary);
     font-size: var(--text-base);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+/* Input con icona */
+.form-input-with-icon {
+    padding-left: calc(40px + var(--spacing-sm));
     background-position: var(--spacing-sm) center !important; 
     background-repeat: no-repeat;
-    transition: border-color var(--transition), box-shadow var(--transition);
 }
 
 .form-input:focus {
@@ -423,7 +611,7 @@ textarea.form-input {
     min-height: 120px;
     resize: vertical;
     height: auto;
-    padding-left: var(--spacing-sm);
+    padding-left: var(--spacing-md);
 }
 
 /* Select input - MIGLIORATO PER MOBILE */
@@ -546,7 +734,7 @@ fieldset legend {
 /* Rating form component - CORRETTO L'ORDINE DELLE STELLE */
 .rating {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse; /* Inverte l'ordine delle stelle */
     gap: 0.25rem;
     justify-content: center;
     width: 100%;
@@ -565,20 +753,12 @@ fieldset legend {
     transition: stroke var(--transition), fill var(--transition);
     stroke: var(--text-primary);
     fill: transparent;
-    order: 5; /* Default order per tutti i label */
 }
 
 .rating label .star {
     width: 32px;
     height: 32px;
 }
-
-/* Correzione dell'ordine per invertire la direzione delle stelle */
-.rating label[for="star1"] { order: 1; }
-.rating label[for="star2"] { order: 2; }
-.rating label[for="star3"] { order: 3; }
-.rating label[for="star4"] { order: 4; }
-.rating label[for="star5"] { order: 5; }
 
 /* Coloring di hover/selezione */
 .rating input:checked ~ label,
@@ -752,6 +932,14 @@ span.center {
         padding: var(--spacing-md);
     }
     
+    .profile-actions {
+        flex-direction: column;
+    }
+    
+    .profile-stats {
+        justify-content: space-around;
+    }
+    
     /* Migliora la dimensione dei selettori su mobile */
     .form-select, 
     .form-select option {
@@ -764,7 +952,7 @@ span.center {
         margin: 15% auto;
     }
     
-    .base-form {
+    .base-form, .settings-form {
         padding: var(--spacing-lg);
     }
     
@@ -772,5 +960,21 @@ span.center {
     .form-select, 
     .form-select option {
         font-size: var(--text-base);
+    }
+    
+    /* Layout piatto per desktop */
+    .piatto-content {
+        flex-direction: row;
+        gap: var(--spacing-lg);
+    }
+    
+    .piatto-media {
+        flex: 0 0 40%;
+        max-width: 40%;
+    }
+    
+    .piatto-details {
+        flex: 1;
+        margin-top: 0;
     }
 }

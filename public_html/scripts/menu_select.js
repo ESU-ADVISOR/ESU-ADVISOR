@@ -1,45 +1,27 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const selectElement = document.getElementById("mense-select");
-
-  function edit_list(event) {
-    const piatti = document.querySelectorAll(".menu-item");
-    const info = document.querySelectorAll(".mense-info-item");
-    const selectedMensaId = event.target.value;
-
-    let hasVisibleItems = false;
-
-    piatti.forEach(function (item) {
-      const mensaId = item.getAttribute("data-mensa-id");
-
-      if (selectedMensaId === "") {
-        item.setAttribute("hidden", "");
-      } else if (mensaId === selectedMensaId) {
-        item.removeAttribute("hidden");
-        hasVisibleItems = true;
-      } else {
-        item.setAttribute("hidden", "");
-      }
-    });
-
-    info.forEach(function (item) {
-      const mensaId = item.getAttribute("data-mensa-id");
-
-      if (selectedMensaId === "") {
-        item.setAttribute("hidden", "");
-      } else if (mensaId === selectedMensaId) {
-        item.removeAttribute("hidden");
-        hasVisibleItems = true;
-      } else {
-        item.setAttribute("hidden", "");
-      }
-    });
+document.addEventListener("DOMContentLoaded", function() {
+  const mensaSelect = document.getElementById("mense-select");
+  
+  const filterBySelectedMensa = (selectedId) => {
+      // Nascondi tutti gli elementi del menù
+      document.querySelectorAll("[data-mensa-id]").forEach(element => {
+          element.style.display = "none";
+      });
+      
+      // Mostra solo gli elementi della mensa selezionata
+      document.querySelectorAll(`[data-mensa-id="${selectedId}"]`).forEach(element => {
+          element.style.display = "";
+      });
+  };
+  
+  // Inizializza con la prima mensa selezionata
+  if (mensaSelect && mensaSelect.value) {
+      filterBySelectedMensa(mensaSelect.value);
   }
-
-  selectElement.addEventListener("change", edit_list);
-
-  document.addEventListener("pagehide", function () {
-    selectElement.removeEventListener("change", edit_list);
-  });
-
-  edit_list({ target: { value: selectElement.value } });
+  
+  // Gestisci il cambio di mensa
+  if (mensaSelect) {
+      mensaSelect.addEventListener("change", function() {
+          filterBySelectedMensa(this.value);
+      });
+  }
 });

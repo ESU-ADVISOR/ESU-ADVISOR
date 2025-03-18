@@ -33,6 +33,47 @@ class ProfileView extends BaseView
             $username
         );
 
+        // Ottieni la data di registrazione
+        $dataNascita = $user->getDataNascita();
+        $memberSince = "";
+        if ($dataNascita) {
+            $memberSince = "Membro dal <time>" . $dataNascita->format('Y') . "</time>";
+        } else {
+            $memberSince = "Membro";
+        }
+        
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "profile-member-since-template",
+            $memberSince
+        );
+
+        // Ottieni le recensioni e prepara le statistiche
+        $recensioni = $user->getRecensioni();
+        $recensioniCount = count($recensioni);
+        
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "profile-recensioni-count-template",
+            $recensioniCount
+        );
+        
+        // Calcola la media dei voti
+        $avgRating = 0;
+        if ($recensioniCount > 0) {
+            $totalRating = 0;
+            foreach ($recensioni as $recensione) {
+                $totalRating += $recensione->getVoto();
+            }
+            $avgRating = number_format($totalRating / $recensioniCount, 1);
+        }
+        
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "profile-avg-rating-template",
+            $avgRating
+        );
+
         // Miglioramento della visualizzazione delle recensioni con stelle e card
         $starSVG = file_get_contents(
             __DIR__ . "/../../public_html/images/star.svg"
@@ -43,17 +84,18 @@ class ProfileView extends BaseView
         );
 
         $recensioniContent = "";
-        $recensioni = $user->getRecensioni();
         
         if (empty($recensioni)) {
             $recensioniContent = "<p class='text-center text-secondary'>Non hai ancora scritto recensioni.</p>";
         } else {
             foreach ($recensioni as $recensione) {
                 $recensioniContent .= "<li class='review-card mb-3'>";
-                $recensioniContent .= "<h4>" . htmlspecialchars($recensione->getPiatto()) . "</h4>";
-                $recensioniContent .= "<p>" . htmlspecialchars($recensione->getDescrizione()) . "</p>";
                 
-                // Aggiungi stelle anziché numeri
+                // Aggiungi intestazione con titolo piatto e votazione
+                $recensioniContent .= "<div class='review-header'>";
+                $recensioniContent .= "<h4>" . htmlspecialchars($recensione->getPiatto()) . "</h4>";
+                
+                // Aggiungi stelle per la valutazione
                 $recensioniContent .= "<div class='ratings'>";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {
                     $recensioniContent .= $starFilledSVG;
@@ -62,12 +104,23 @@ class ProfileView extends BaseView
                     $recensioniContent .= $starSVG;
                 }
                 $recensioniContent .= "</div>";
+                $recensioniContent .= "</div>";
+                
+                // Aggiungi il testo della recensione
+                $recensioniContent .= "<p>" . htmlspecialchars($recensione->getDescrizione()) . "</p>";
                 
                 // Aggiungi metadati della recensione
                 if ($recensione->getData()) {
                     $data = $recensione->getData()->format('d/m/Y');
                     $recensioniContent .= "<div class='review-meta'>Recensione pubblicata il: " . $data . "</div>";
                 }
+                
+                // Aggiungi link per vedere la pagina del piatto
+                $recensioniContent .= "<div class='review-actions'>";
+                $recensioniContent .= "<a href='piatto.php?nome=" . 
+                    htmlspecialchars(str_replace(" ", "_", strtolower($recensione->getPiatto()))) . 
+                    "' class='text-primary'>Vedi dettagli piatto</a>";
+                $recensioniContent .= "</div>";
                 
                 $recensioniContent .= "</li>";
             }

@@ -92,9 +92,16 @@ class UserModel
         $this->password = $value;
     }
 
-    /** @return DateTimeImmutable */
+    /** @return DateTimeImmutable|null */
     public function getDataNascita(): ?DateTimeImmutable
     {
+        if (is_string($this->dataNascita)) {
+            try {
+                return new DateTimeImmutable($this->dataNascita);
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
         return $this->dataNascita;
     }
 

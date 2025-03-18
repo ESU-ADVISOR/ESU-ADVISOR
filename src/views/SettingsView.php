@@ -93,74 +93,63 @@ class SettingsView extends BaseView
         // ======== Renderizzazione sezione account (condizionale) ========
         if ($isLoggedIn) {
             $accountSettingsContent = '
-            <section class="mb-4 pb-4 border-b border-color">
+            <section class="mb-4 pb-4 border-b">
                 <h2 class="text-lg font-semibold mb-3">Informazioni <span lang="en">account</span></h2>
-                <form action="settings.php" id="change_username_form" method="post" class="base-form">
+                
+                <form action="settings.php" id="change_username_form" method="post" class="settings-form mb-4">
                     <div class="form-group">
-                        <label for="username">Modifica <span lang="en">username</span></label>
+                        <label for="new_username">Modifica <span lang="en">username</span></label>
                         <input
-                            type="username"
+                            type="text"
                             id="new_username"
                             name="new_username"
                             class="form-input"
-                            style="
-                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z%22/><path d=%22m3 7 9 6 9-6%22/></svg>&quot;);
-                                background-position: 12px center;
-                                background-repeat: no-repeat;
-                            "
+                            placeholder="Inserisci nuovo username"
                         />
-                        <button type="submit" class="form-button" name="change_username">Salva</button>
                     </div>
+                    <button type="submit" class="form-button" name="change_username">Salva</button>
                 </form>
 
-                <form action="settings.php" id="change_password_form" method="post" class="base-form">
+                <form action="settings.php" id="change_password_form" method="post" class="settings-form mb-4">
                     <div class="form-group">
-                        <label for="old_password"><span lang="en">Password</span> attuale</label>
+                        <label for="password"><span lang="en">Password</span> attuale</label>
                         <input
                             type="password"
                             id="password"
                             name="password"
                             class="form-input"
-                            style="
-                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                                background-position: 12px center;
-                                background-repeat: no-repeat;
-                            "
+                            placeholder="Inserisci password attuale"
                         />
-
-                        <label for="password">Modifica <span lang="en">password</span></label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="new_password">Nuova <span lang="en">password</span></label>
                         <input
                             type="password"
                             id="new_password"
                             name="new_password"
                             class="form-input"
-                            style="
-                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                                background-position: 12px center;
-                                background-repeat: no-repeat;
-                            "
+                            placeholder="Inserisci nuova password"
                         />
+                    </div>
 
-                        <label for="confirm_password">Conferma <span lang="en">password</span></label>
+                    <div class="form-group">
+                        <label for="new_password_confirm">Conferma <span lang="en">password</span></label>
                         <input
                             type="password"
                             id="new_password_confirm"
                             name="new_password_confirm"
                             class="form-input"
-                            style="
-                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                                background-position: 12px center;
-                                background-repeat: no-repeat;
-                            "
+                            placeholder="Conferma nuova password"
                         />
-
-                        <button type="submit" class="form-button" name="change_password">Salva</button>
                     </div>
+
+                    <button type="submit" class="form-button" name="change_password">Salva password</button>
                 </form>
 
                 <div class="form-group">
-                    <label for="delete-account">Elimina l\'<span lang="en">account</span></label>
-                    <button type="submit" id="delete-account-button" class="danger form-button">
+                    <label for="delete-account">Elimina <span lang="en">account</span></label>
+                    <button type="button" id="delete-account-button" class="danger form-button">
                         Elimina <span lang="en">Account</span>
                     </button>
 
@@ -180,7 +169,7 @@ class SettingsView extends BaseView
                                         <button type="submit" name="delete_account" class="confirmation-button">
                                             Sì
                                         </button>
-                                        <button class="cancel-button">No</button>
+                                        <button type="button" class="cancel-button">No</button>
                                     </span>
                                 </form>
                             </div>

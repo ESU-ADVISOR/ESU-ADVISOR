@@ -84,15 +84,15 @@
 /* Optional: System preference dark mode override */
 @media (prefers-color-scheme: dark) {
     :root:not(.theme-light) {
-        --text-primary: #000000;
-        --text-secondary: #333333;
-        --background: #efefef;
-        --background-card: #ffffff;
+        --text-primary: #ffffff;
+        --text-secondary: #efefef;
+        --background: #0d0d0d;
+        --background-card: #1b1b1b;
+        --primary: #56b4e9;
+        --primary-hover: #64b9ea;
+        --danger: #d55e00;
+        --danger-hover: #d66c18;
         --border-color: #333333;
-        --primary: #0072b2;
-        --primary-hover: #167eb9;
-        --danger: #d43900;
-        --danger-hover: #d33901;
     }
 }
 

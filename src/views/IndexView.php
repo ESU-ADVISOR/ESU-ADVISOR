@@ -28,6 +28,7 @@ class IndexView extends BaseView
         $menseInfoContent = "";
         $piattiContent = "";
         $dishOfTheDayContent = "";
+        
         if (isset($data["mense"]) && is_array($data["mense"])) {
             $id = 0;
             foreach ($data["mense"] as $mensa) {
@@ -39,7 +40,8 @@ class IndexView extends BaseView
                     htmlspecialchars($mensa["nome"]) .
                     "</option>";
 
-                $menseInfoContent .= "<li class=\"mense-info-item\" hidden data-mensa-id=\"" .
+                // Build menseInfoContent (always included but hidden based on selection)
+                $menseInfoContent .= "<li class=\"mense-info-item\" data-mensa-id=\"" .
                     htmlspecialchars($id) . "\">";
 
                 // Heading for the mensa section
@@ -114,46 +116,45 @@ class IndexView extends BaseView
                 $menseInfoContent .=
                     "<a href=\"" .
                     htmlspecialchars($mensa["maps_link"]) .
-                    "\">
-                        <button class=\"nav-button secondary\">Direzioni</button>
+                    "\" class=\"directions-button\">
+                        <button class=\"nav-button secondary full-width\">Direzioni</button>
                     </a></li>";
 
-                // Handle piatti
-                if (isset($mensa["piatti"]) && is_array($mensa["piatti"])) {
+                // =========== Corrected Logic for Menu Items ============
+                // Per ogni mensa, crea un placeholder che verrà mostrato solo per la mensa selezionata
+                if (isset($mensa["piatti"]) && is_array($mensa["piatti"]) && !empty($mensa["piatti"])) {
+                    $piattiForThisMensa = "";
                     foreach ($mensa["piatti"] as $piatto) {
-                        $piattiContent .=
-                            "<li><article class=\"menu-item\" hidden data-mensa-id=\"" .
-                            htmlspecialchars($id) .
-                            "\">";
+                        $piattiForThisMensa .= "<article class=\"menu-item\">";
                         if ($piatto->getImage()) {
-                            $piattiContent .=
+                            $piattiForThisMensa .=
                                 "<figure><img src=\"" . $piatto->getImage() . "\" alt=\"" .
                                 htmlspecialchars($piatto->getNome()) .
                                 "\" width=\"150\" height=\"150\"></figure>";
                         } else {
-                            $piattiContent .=
-                                "<figure><img src=\"\" alt=\"" .
+                            $piattiForThisMensa .=
+                                "<figure><img src=\"images/placeholder.png\" alt=\"" .
                                 htmlspecialchars($piatto->getNome()) .
                                 "\" width=\"150\" height=\"150\"></figure>";
                         }
-                        $piattiContent .=
+                        $piattiForThisMensa .=
                             "<div class=\"menu-item-content\">" .
                             "<h3>" .
                             htmlspecialchars($piatto->getNome()) .
                             "</h3>";
-                        $piattiContent .=
+                        $piattiForThisMensa .=
                             "<p>" .
                             htmlspecialchars($piatto->getDescrizione()) .
                             "</p>";
-                        $piattiContent .= "<div class=\"ratings\">";
+                        $piattiForThisMensa .= "<div class=\"ratings\">";
                         for ($i = 0; $i < $piatto->getAvgVote(); $i++) {
-                            $piattiContent .= $starFilledSVG;
+                            $piattiForThisMensa .= $starFilledSVG;
                         }
                         for ($i = 0; $i < 5 - $piatto->getAvgVote(); $i++) {
-                            $piattiContent .= $starSVG;
+                            $piattiForThisMensa .= $starSVG;
                         }
-                        $piattiContent .= "</div>";
-                        $piattiContent .=
+                        $piattiForThisMensa .= "</div>";
+                        $piattiForThisMensa .=
                             "<a href=\"./piatto.php?nome=" .
                             htmlspecialchars(
                                 str_replace(
@@ -164,24 +165,40 @@ class IndexView extends BaseView
                             ) .
                             "\">Vedi recensioni</a>" .
                             "</div>" .
-                            "</article></li>";
+                            "</article>";
                     }
+                    
+                    // Aggiungiamo i piatti come un unico elemento di lista con attributo data-mensa-id
+                    $piattiContent .= "<li class=\"menu-item-container\" data-mensa-id=\"" . 
+                        htmlspecialchars($id) . "\">" . $piattiForThisMensa . "</li>";
+                } else {
+                    // Se non ci sono piatti, creiamo un singolo messaggio per questa mensa
+                    $piattiContent .= "<li class=\"menu-item-container\" data-mensa-id=\"" . 
+                        htmlspecialchars($id) . 
+                        "\"><div class=\"empty-menu\"><p class=\"text-center\">Nessun piatto disponibile per questa mensa</p></div></li>";
                 }
 
-                if (
-                    isset($mensa["piatto_del_giorno"]) &&
-                    $mensa["piatto_del_giorno"]
-                ) {
-                    $dishOfTheDayContent .=
-                        "<article class=\"menu-item\" hidden data-mensa-id=\"" .
-                        htmlspecialchars($id) .
-                        "\">";
-                    $dishOfTheDayContent .=
-                        "<figure><img src=\"\" alt=\"" .
-                        htmlspecialchars(
-                            $mensa["piatto_del_giorno"]->getNome()
-                        ) .
-                        "\" width=\"150\" height=\"150\"></figure>";
+                // =========== Corrected Logic for Dish of the Day ============
+                // Per ogni mensa, crea un elemento per il piatto del giorno che verrà mostrato solo per la mensa selezionata
+                if (isset($mensa["piatto_del_giorno"]) && $mensa["piatto_del_giorno"]) {
+                    $dishOfTheDayContent .= "<div class=\"menu-item-container\" data-mensa-id=\"" . 
+                        htmlspecialchars($id) . "\">";
+                    
+                    $dishOfTheDayContent .= "<article class=\"menu-item\">";
+                    
+                    // Aggiunto controllo per l'immagine
+                    if ($mensa["piatto_del_giorno"]->getImage()) {
+                        $dishOfTheDayContent .=
+                            "<figure><img src=\"" . $mensa["piatto_del_giorno"]->getImage() . "\" alt=\"" .
+                            htmlspecialchars($mensa["piatto_del_giorno"]->getNome()) .
+                            "\" width=\"150\" height=\"150\"></figure>";
+                    } else {
+                        $dishOfTheDayContent .=
+                            "<figure><img src=\"images/placeholder.png\" alt=\"" .
+                            htmlspecialchars($mensa["piatto_del_giorno"]->getNome()) .
+                            "\" width=\"150\" height=\"150\"></figure>";
+                    }
+                    
                     $dishOfTheDayContent .= "<div class=\"menu-item-content\">";
                     $dishOfTheDayContent .=
                         "<h3>" .
@@ -225,7 +242,14 @@ class IndexView extends BaseView
                         "\">Vedi <span lang=\"en\">reviews</span></a>" .
                         "</div>" .
                         "</article>";
+                    
+                    $dishOfTheDayContent .= "</div>";
+                } else {
+                    $dishOfTheDayContent .= "<div class=\"menu-item-container\" data-mensa-id=\"" . 
+                        htmlspecialchars($id) . 
+                        "\"><div class=\"empty-dish\"><p class=\"text-center\">Nessun piatto del giorno disponibile</p></div></div>";
                 }
+                
                 $id++;
             }
         }

@@ -40,6 +40,7 @@
 /* ===== BODY / MAIN CONTENT ===== */
 body {
     padding-top: var(--header-height);
+    margin: 0;
 }
 
 .page-content {
@@ -53,10 +54,10 @@ body {
     margin-bottom: var(--spacing-lg);
 }
 
-/* Menu selector (navbar) - CORRECTED */
+/* Menu selector (navbar) - CORRETTO PADDING */
 .mensa-select-container {
     background: var(--background-card);
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-xs) 0;
     border-bottom: 1px solid var(--border-color);
     position: fixed;
     top: var(--header-height);
@@ -89,8 +90,10 @@ body {
     flex: 1;
 }
 
+/* Corretto il calcolo del padding */
 .menu-section {
-    padding-top: calc(var(--header-height) + var(--mensa-selector-height) + var(--spacing-sm));
+    padding-top: calc(var(--header-height) + var(--mensa-selector-height));
+    margin-top: var(--spacing-sm);
 }
 
 /* ===== FOOTER ===== */
@@ -265,7 +268,6 @@ body {
 
 .piatti-list .menu-item {
     height: auto;
-    margin-bottom: var(--spacing-md);
     display: flex;
 }
 
@@ -299,7 +301,7 @@ body {
     }
 
     .mensa-select-container {
-        padding: var(--spacing-md) 0;
+        padding: var(--spacing-xs) 0;
     }
 
     .mensa-select-container .mense-section {

@@ -99,7 +99,7 @@ class SettingsController implements BaseController
             exit();
         }
 
-        if (!UserModel::authenticate($user->getEmail(), $post['password'])) {
+        if (!UserModel::authenticate($user->getUsername(), $post['password'])) {
             $view->render([
                 "errors" => ["Old password is incorrect"],
             ]);
@@ -162,11 +162,11 @@ class SettingsController implements BaseController
 
         // Se l'utente è loggato
         if ($isLoggedIn) {
-            $email = UserModel::findByUsername($_SESSION["username"])->getEmail();
-            $preferences = PreferenzeUtenteModel::findByEmail($email) ?? new PreferenzeUtenteModel();
+            $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
+            $preferences = PreferenzeUtenteModel::findByUsername($username) ?? new PreferenzeUtenteModel();
 
             // Aggiorna o imposta le preferenze
-            $preferences->setEmail($email);
+            $preferences->setUsername($username);
             if ($mensaPreferita) {
                 $preferences->setMensaPreferita($mensaPreferita);
             }
@@ -232,10 +232,10 @@ class SettingsController implements BaseController
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
         // Se l'utente è loggato, salva anche nel database
         if ($isLoggedIn) {
-            $email = UserModel::findByUsername($_SESSION["username"])->getEmail();
-            $preferences = PreferenzeUtenteModel::findByEmail($email) ?? new PreferenzeUtenteModel();
+            $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
+            $preferences = PreferenzeUtenteModel::findByUsername($username) ?? new PreferenzeUtenteModel();
 
-            $preferences->setEmail($email);
+            $preferences->setUsername($username);
             $preferences->setTema($tema);
             $preferences->setDimensioneTesto($dimensioneTesto);
             $preferences->setDimensioneIcone($dimensioneIcone);

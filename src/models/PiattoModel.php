@@ -99,7 +99,7 @@ class PiattoModel
     }
 
     /** @return RecensioneModel[] */
-    public function getRecensioni(): array
+    public function getRecensioni(): ?array
     {
         if ($this->nome == null) {
             return null;

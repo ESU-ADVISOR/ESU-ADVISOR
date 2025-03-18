@@ -93,10 +93,10 @@ class MenuModel
     //-----------------Relationals methods----------------
 
     /** @return PiattoModel[] */
-    public function getPiatti(): array
+    public function getPiatti(): ?array
     {
         if ($this->data === null || $this->mensa === null) {
-            return false;
+            return null;
         }
         $stmt = $this->db->prepare(
             "SELECT * FROM menu_piatto WHERE mensa = :mensa"
@@ -195,7 +195,7 @@ class MenuModel
     }
 
     /** @return MenuModel[] */
-    public function findAll(): array
+    public function findAll(): ?array
     {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT * FROM menu");
@@ -205,5 +205,6 @@ class MenuModel
         if (!empty($menus)) {
             return $menus;
         }
+        return null;
     }
 }

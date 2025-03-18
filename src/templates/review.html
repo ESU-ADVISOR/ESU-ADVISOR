@@ -6,7 +6,9 @@
         <link rel="stylesheet" href="styles/main.css" />
         <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
         <title>Recensione Piatto | ESU Advisor</title>
-        <script src="scripts/theme.js"></script>
+        <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
+        <script src="scripts/accessibility-settings.js"></script>
     </head>
     <body>
         <template id="header-template"></template>
@@ -50,20 +52,20 @@
                     <div class="form-group">
                         <label>Valutazione:</label>
                         <div class="rating">
-                            <input type="radio" id="star5" name="rating" value="5" class="visually-hidden" required />
-                            <label for="star5" title="5 stelle"><template id="star-template-5"></template></label>
-                            
-                            <input type="radio" id="star4" name="rating" value="4" class="visually-hidden" />
-                            <label for="star4" title="4 stelle"><template id="star-template-4"></template></label>
-                            
-                            <input type="radio" id="star3" name="rating" value="3" class="visually-hidden" />
-                            <label for="star3" title="3 stelle"><template id="star-template-3"></template></label>
-                            
+                            <input type="radio" id="star1" name="rating" value="1" class="visually-hidden" required />
+                            <label for="star1" title="1 stella"><template id="star-template-1"></template></label>
+
                             <input type="radio" id="star2" name="rating" value="2" class="visually-hidden" />
                             <label for="star2" title="2 stelle"><template id="star-template-2"></template></label>
-                            
-                            <input type="radio" id="star1" name="rating" value="1" class="visually-hidden" />
-                            <label for="star1" title="1 stella"><template id="star-template-1"></template></label>
+
+                            <input type="radio" id="star3" name="rating" value="3" class="visually-hidden" />
+                            <label for="star3" title="3 stelle"><template id="star-template-3"></template></label>
+
+                            <input type="radio" id="star4" name="rating" value="4" class="visually-hidden" />
+                            <label for="star4" title="4 stelle"><template id="star-template-4"></template></label>
+
+                            <input type="radio" id="star5" name="rating" value="5" class="visually-hidden" />
+                            <label for="star5" title="5 stelle"><template id="star-template-5"></template></label>
                         </div>
                     </div>
                     <button type="submit" class="form-button">Invia Recensione</button>

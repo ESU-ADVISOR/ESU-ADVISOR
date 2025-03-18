@@ -46,12 +46,41 @@ function sendAJAXRequest(event) {
           const themeSelect = document.getElementById("modifica-tema-select");
           const selectedTheme = themeSelect.value;
 
-          if (selectedTheme === "Scuro") {
+          if (selectedTheme === "scuro") {
             localStorage.setItem("theme", "dark");
-          } else if (selectedTheme === "Chiaro") {
+          } else if (selectedTheme === "chiaro") {
             localStorage.setItem("theme", "light");
           } else {
             localStorage.removeItem("theme");
+          }
+
+          // Text size handling
+          const textSizeSelect = document.getElementById(
+            "dimensioni-testo-select",
+          );
+          const selectedTextSize = textSizeSelect.value;
+          if (selectedTextSize !== "none") {
+            localStorage.setItem("textSize", selectedTextSize);
+            document.documentElement.classList.remove(
+              "text-size-piccolo",
+              "text-size-medio",
+              "text-size-grande",
+            );
+            document.documentElement.classList.add(
+              "text-size-" + selectedTextSize,
+            );
+          }
+
+          // Font family handling
+          const fontSelect = document.getElementById("modifica-font-select");
+          const selectedFont = fontSelect.value;
+          if (selectedFont !== "none") {
+            localStorage.setItem("fontFamily", selectedFont);
+            document.documentElement.classList.remove(
+              "font-normale",
+              "font-dislessia",
+            );
+            document.documentElement.classList.add("font-" + selectedFont);
           }
         } else {
           showMessage(
@@ -60,7 +89,7 @@ function sendAJAXRequest(event) {
           );
         }
       } catch (e) {
-        showMessage("error", "Si è verificato un errore sconosciuto");
+        showMessage("error", "Si è verificato un errore: " + e.message);
       }
     } else {
       showMessage("error", "Richiesta fallita. Riprova più tardi.");
@@ -84,8 +113,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const savedTheme = localStorage.getItem("theme");
 
   // L'utente non ha il cookie ma ha una preferenza nel db e bisogna riassegnare il cookie
-  if (themeSelect.value != "Sistema" && !savedTheme) {
-    if (themeSelect.value == "Scuro") {
+  if (themeSelect.value != "sistema" && !savedTheme) {
+    if (themeSelect.value == "scuro") {
       document.documentElement.classList.add("theme-dark");
       document.documentElement.classList.remove("theme-light");
       localStorage.setItem("theme", "dark");
@@ -101,10 +130,10 @@ document.addEventListener("DOMContentLoaded", function () {
       "(prefers-color-scheme: dark)",
     ).matches;
 
-    if (event.target.value == "Scuro") {
+    if (event.target.value == "scuro") {
       document.documentElement.classList.add("theme-dark");
       document.documentElement.classList.remove("theme-light");
-    } else if (event.target.value == "Chiaro") {
+    } else if (event.target.value == "chiaro") {
       document.documentElement.classList.remove("theme-dark");
       document.documentElement.classList.add("theme-light");
     } else {
@@ -117,4 +146,60 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
+  const textSizeSelect = document.getElementById("dimensioni-testo-select");
+  if (textSizeSelect) {
+    textSizeSelect.addEventListener("change", function (event) {
+      document.documentElement.classList.remove(
+        "text-size-piccolo",
+        "text-size-medio",
+        "text-size-grande",
+      );
+      document.documentElement.classList.add("text-size-" + event.target.value);
+    });
+
+    // Set initial value from localStorage if available
+    const savedTextSize = localStorage.getItem("textSize");
+    if (savedTextSize) {
+      document.documentElement.classList.add("text-size-" + savedTextSize);
+    }
+  }
+
+  const fontSelect = document.getElementById("modifica-font-select");
+  if (fontSelect) {
+    fontSelect.addEventListener("change", function (event) {
+      document.documentElement.classList.remove(
+        "font-normale",
+        "font-dislessia",
+      );
+      document.documentElement.classList.add("font-" + event.target.value);
+    });
+
+    // Set initial value from localStorage if available
+    const savedFont = localStorage.getItem("fontFamily");
+    if (savedFont) {
+      document.documentElement.classList.add("font-" + savedFont);
+    }
+  }
+
+  const iconSizeSelect = document.getElementById("dimensioni-icone-select");
+  if (iconSizeSelect) {
+    iconSizeSelect.addEventListener("change", function (event) {
+      document.documentElement.classList.remove(
+        "icon-size-piccolo",
+        "icon-size-medio",
+        "icon-size-grande",
+      );
+      document.documentElement.classList.add("icon-size-" + event.target.value);
+
+      // Store the preference
+      localStorage.setItem("iconSize", event.target.value);
+    });
+
+    // Set initial value from localStorage if available
+    const savedIconSize = localStorage.getItem("iconSize");
+    if (savedIconSize) {
+      document.documentElement.classList.add("icon-size-" + savedIconSize);
+    }
+  }
 });

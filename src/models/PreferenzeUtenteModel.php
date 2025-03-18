@@ -4,36 +4,13 @@ namespace Models;
 
 use Models\Database;
 use Models\UserModel;
-use Models\MensaModel;
+use Models\MenseModel;
 use PDO;
 use DateTimeImmutable;
-
-enum DimensioneTesto: string
-{
-    case PICCOLO = "Piccolo";
-    case MEDIO = "Medio";
-    case GRANDE = "Grande";
-}
-
-enum DimensioneIcone: string
-{
-    case PICCOLO = "Piccolo";
-    case MEDIO = "Medio";
-    case GRANDE = "Grande";
-}
-
-enum ModificaFont: string
-{
-    case NORMALE = "Normale";
-    case DISLESSIA = "Dislessia";
-}
-
-enum ModificaTema: string
-{
-    case CHIARO = "Chiaro";
-    case SCURO = "Scuro";
-    case SISTEMA = "Sistema";
-}
+use Models\Enums\DimensioneTesto;
+use Models\Enums\DimensioneIcone;
+use Models\Enums\ModificaFont;
+use Models\Enums\ModificaTema;
 
 class PreferenzeUtenteModel
 {
@@ -135,12 +112,12 @@ class PreferenzeUtenteModel
     {
         $this->modificaTema = $modificaTema;
     }
-    
+
     public function getMensaPreferita(): ?string
     {
         return $this->mensaPreferita;
     }
-    
+
     public function setMensaPreferita(?string $mensaPreferita): void
     {
         $this->mensaPreferita = $mensaPreferita;
@@ -260,7 +237,7 @@ class PreferenzeUtenteModel
     {
         return UserModel::findByusername($this->username);
     }
-    
+
     /**
      * Get the associated MensaModel
      *
@@ -271,7 +248,7 @@ class PreferenzeUtenteModel
         if (!$this->mensaPreferita) {
             return null;
         }
-        
+
         return MenseModel::findByName($this->mensaPreferita);
     }
 }

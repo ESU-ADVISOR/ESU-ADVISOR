@@ -6,7 +6,9 @@
         <link rel="stylesheet" href="styles/main.css" />
         <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
         <title>Impostazioni | ESU Advisor</title>
-        <script src="scripts/theme.js"></script>
+        <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
+        <script src="scripts/accessibility-settings.js"></script>
     </head>
     <body>
         <template id="header-template"></template>
@@ -101,8 +103,7 @@
                         </form>
                     </section>
 
-                    <!-- Sezione Account (visibile solo agli utenti loggati) -->
-                    <template id="account-settings-template"></template>
+                    <template id="settings-account-template"></template>
                 </div>
             </div>
 
@@ -112,9 +113,8 @@
         </main>
 
         <template id="footer-template"></template>
-
         <script src="scripts/user-settings.js"></script>
-        <script src="scripts/theme-switcher.js"></script>
+        <script src="scripts/accessibility-switcher.js"></script>
         <script src="scripts/change_password_validation.js"></script>
         <script src="scripts/change_username_validation.js"></script>
         <script src="scripts/back-to-top.js"></script>

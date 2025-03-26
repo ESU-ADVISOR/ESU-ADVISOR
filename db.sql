@@ -166,16 +166,22 @@ INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "Mensa Ciels");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "Mensa Ciels");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "Mensa Ciels");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "Casa del Fanciullo");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "08:00", "19:00", "Casa del Fanciullo");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "08:00", "19:00", "Casa del Fanciullo");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "08:00", "19:00", "Casa del Fanciullo");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "08:00", "19:00", "Casa del Fanciullo");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "08:00", "19:00", "Casa del Fanciullo");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (6, "08:00", "12:30", "Casa del Fanciullo");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "Pio X");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "Pio X");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "Pio X");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "Pio X");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "Pio X");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "18:45", "21:00", "Pio X");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "18:45", "21:00", "Pio X");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "18:45", "21:00", "Pio X");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "18:45", "21:00", "Pio X");
+INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "18:45", "21:00", "Pio X");
 
 
 INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "RistorESU Agripolis");

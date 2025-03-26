@@ -77,40 +77,34 @@ class IndexView extends BaseView
                     "Sabato",
                     "Domenica",
                 ];
+                
+                //aggiungere caption e aria-label in modo che siano nascosti
+                //aggiunggere abbr "dalle alle" per orari
 
                 // Initialize table
-                $menseInfoContent .= "<table> <caption>Orari Mensa</caption><thead>
+                $menseInfoContent .= "<table aria-labelledby=\"orari-mensa-caption\"> <caption id=\"orari-mensa-caption\">Orari Mensa</caption><thead>
                         <tr>
-                            <th>Giorno</th>
-                            <th>Inizio</th>
-                            <th>Fine</th>
+                            <th scope=\"col\">Giorno</th>
+                            <th scope=\"col\">Orari</th>
                         </tr>
                     </thead><tbody>";
 
-                foreach ($orari as $orario) {
-                    $giornoSettimanaIndex =
-                        intval($orario["giornoSettimana"]) - 1;
-                    if (
-                        $giornoSettimanaIndex >= 0 &&
-                        $giornoSettimanaIndex < count($giorniSettimana)
-                    ) {
-                        $giorno = htmlspecialchars(
-                            $giorniSettimana[$giornoSettimanaIndex]
-                        );
-                    } else {
-                        $giorno = "N/A";
-                    }
-
-                    $orainizio = htmlspecialchars($orario["orainizio"]);
-                    $orafine = htmlspecialchars($orario["orafine"]);
-
+                // Fetch orari from the database
+                foreach ($giorniSettimana as $giorno) {
                     $menseInfoContent .= "<tr>
-                            <th>{$giorno}</th>
-                            <td>{$orainizio}</td>
-                            <td>{$orafine}</td>
-                        </tr>";
+                            <th scope=\"row\">" . htmlspecialchars($giorno) . "</th><td>";
+                    if ($orari) {
+                        $orariPerGiorno = [];
+                        foreach ($orari as $orario) {
+                            if ($orario["Giorno"] === $giorno) {
+                                $orariPerGiorno[] = "<time datetime=\"" . htmlspecialchars($orario["orainizio"]) . "\">" . htmlspecialchars($orario["orainizio"]) . "</time> - <time datetime=\"" . htmlspecialchars($orario["orafine"]) . "\">" . htmlspecialchars($orario["orafine"]) . "</time>";
+                            }
+                        }
+                        $menseInfoContent .= implode(", ", $orariPerGiorno);
+                    }
+                    $menseInfoContent .= "</td></tr>";
                 }
-                $menseInfoContent .= "</tbody></table></div>";
+                $menseInfoContent .= "</tbody></table>";
 
                 // Add maps link
                 $menseInfoContent .=

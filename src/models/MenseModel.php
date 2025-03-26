@@ -141,6 +141,10 @@ class MenseModel
         return $currentMenu;
     }
 
+    /** 
+     * @return array<string,string>
+     * @return null
+     */
     public function getMenseOrari(): ?array
     {
         if ($this->nome === null) {
@@ -148,7 +152,17 @@ class MenseModel
         }
 
         $stmt = $this->db->prepare(
-            "SELECT * FROM orarioapertura WHERE mensa = :mensa"
+            "SELECT CASE 
+                WHEN giornoSettimana = 1 THEN 'Lunedì'
+                WHEN giornoSettimana = 2 THEN 'Martedì'
+                WHEN giornoSettimana = 3 THEN 'Mercoledì'
+                WHEN giornoSettimana = 4 THEN 'Giovedì'
+                WHEN giornoSettimana = 5 THEN 'Venerdì'
+                WHEN giornoSettimana = 6 THEN 'Sabato'
+                WHEN giornoSettimana = 7 THEN 'Domenica'
+            END AS Giorno, orainizio, orafine, mensa
+            FROM orarioapertura
+            WHERE mensa = :mensa"
         );
         $stmt->execute([
             "mensa" => $this->nome,
@@ -204,8 +218,8 @@ class MenseModel
     //-----------------Stateless methods----------------
 
     /**
-    @param string $name
-    @return MenseModel|null
+    * @param string $name
+    * @return MenseModel|null
      */
     public static function findByName($name): ?MenseModel
     {

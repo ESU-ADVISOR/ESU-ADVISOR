@@ -16,7 +16,7 @@ class PiattoView extends BaseView
     {
         parent::render();
 
-        $piattoTitle = "<h1 class=\"card-title\">" . htmlspecialchars($data["nome"]) . "</h1>";
+        $piattoTitle = "<h1 class=\"card-title\" id=\"primoContenuto\">" . htmlspecialchars($data["nome"]) . "</h1>";
         $piattoDescription =
             "<div class=\"card-description\"><p>" .
             htmlspecialchars($data["descrizione"]) .

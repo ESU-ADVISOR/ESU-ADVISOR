@@ -82,17 +82,22 @@ class IndexView extends BaseView
                 //aggiunggere abbr "dalle alle" per orari
 
                 // Initialize table
-                $menseInfoContent .= "<table aria-labelledby=\"orari-mensa-caption\"> <caption id=\"orari-mensa-caption\">Orari Mensa</caption><thead>
-                        <tr>
-                            <th scope=\"col\">Giorno</th>
-                            <th scope=\"col\">Orari</th>
-                        </tr>
-                    </thead><tbody>";
+                $menseInfoContent .= "
+                        <p id='orari-mensa-description' class='nascosto'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
+                        <table aria-describedby=\"orari-mensa-description\"> 
+                            <caption id=\"orari-mensa-caption\">Orari:</caption>
+                            <thead>
+                                <tr>
+                                    <th scope=\"col\">Giorno</th>
+                                    <th scope=\"col\">Orari</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
 
                 // Fetch orari from the database
                 foreach ($giorniSettimana as $giorno) {
                     $menseInfoContent .= "<tr>
-                            <th scope=\"row\">" . htmlspecialchars($giorno) . "</th><td>";
+                            <th scope=\"row\" abbr=\"" . htmlspecialchars(substr($giorno, 0, 3)) . "\">" . htmlspecialchars($giorno) . "</th><td>";
                     if ($orari) {
                         $orariPerGiorno = [];
                         foreach ($orari as $orario) {
@@ -100,7 +105,12 @@ class IndexView extends BaseView
                                 $orariPerGiorno[] = "<time datetime=\"" . htmlspecialchars($orario["orainizio"]) . "\">" . htmlspecialchars($orario["orainizio"]) . "</time> - <time datetime=\"" . htmlspecialchars($orario["orafine"]) . "\">" . htmlspecialchars($orario["orafine"]) . "</time>";
                             }
                         }
-                        $menseInfoContent .= implode(", ", $orariPerGiorno);
+                        if(!empty($orariPerGiorno)){
+                            $menseInfoContent .= implode(", ", $orariPerGiorno);
+                        } else {
+                            $menseInfoContent .= "Chiuso";
+                        }
+                        
                     }
                     $menseInfoContent .= "</td></tr>";
                 }

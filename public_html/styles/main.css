@@ -15,6 +15,7 @@
 @import "base/utilities.css";
 
 /* Accessibility utilities */
+/*NB: clip: rect(...) non piace troppo alla Gaggi-> da rivedere gli elementi di classe visibility-hidden*/
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -25,6 +26,13 @@
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+.nascosto{
+    position: absolute;
+    left: -9999em;
+}
+
+
 
 [hidden] {
     display: none !important;

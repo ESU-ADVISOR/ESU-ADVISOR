@@ -32,6 +32,18 @@
     left: -9999em;
 }
 
+.logo-container h1{
+    background-image: url("../images/logo.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    line-height: 1.6em;
+    margin: var(--spacing-sm);
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 
 
 [hidden] {

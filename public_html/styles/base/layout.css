@@ -10,7 +10,7 @@
     right: 0;
     z-index: var(--z-header);
     width: 100%;
-    height: var(--header-height);
+    height: auto /*var(--header-height)*/;
 }
 
 .header-container {
@@ -20,14 +20,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100%;
+    height: auto; /*100%*/
 }
 
 .logo-container {
-    height: 2rem;
+    height: /*2rem*/ auto;
 }
 
 .logo-container img {
+    /*si può rimuovere se viene confermato l'image replacement*/
     height: 100%;
     width: auto;
 }
@@ -288,7 +289,7 @@ body {
     }
 
     .logo-container {
-        height: 2.5rem;
+        height: auto /*2.5rem*/;
     }
 
     .page-content {

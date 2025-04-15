@@ -34,11 +34,26 @@ abstract class BaseView
             __DIR__ . "/../templates/footer.html"
         );
 
-        $footerDOM = new \DOMDocument();
+        //manipolare headerDOM per togliere il link alla home dall'header quando siamo nella home (link circolare)
+        $headerDOM= new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $headerDOM->loadHTML('<?xml encoding="UTF-8">' . $headerContent);
+        libxml_clear_errors();
+
+        $xpathHeader = new DOMXpath($headerDOM);
+        $headerLink = $xpathHeader->query('//a[@href="index.php"]')->item(0);
+        if($headerLink && $this->currentPage === 'index'){            
+            /** @var DOMElement $headerLink */
+            $headerLink->removeAttribute('href'); // Rimuove il link
+        }
+        $headerContent = $headerDOM->saveHTML();
+
+        //manipolare footerDOM per togliere il link alla pagina attuale dal nav (link circolare)
+        $footerDOM = new \DOMDocument();    
         libxml_use_internal_errors(true);
         $footerDOM->loadHTML($footerContent);
         libxml_clear_errors();
-
+    
         $xpath = new DOMXPath($footerDOM);
         $links = $xpath->query('//a');
         if ($links) {

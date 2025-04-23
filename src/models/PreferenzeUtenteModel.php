@@ -251,4 +251,45 @@ class PreferenzeUtenteModel
 
         return MenseModel::findByName($this->mensaPreferita);
     }
+
+    /**
+     * @return string[]
+     */
+    public function getAllergeni(): array
+    {
+        if (!$this->username) {
+            return [];
+        }
+
+        $stmt = $this->db->prepare("SELECT allergene FROM allergeni_utente WHERE username = :username");
+        $stmt->execute(["username" => $this->username]);
+
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    /**
+     * @param string[] $allergeni
+     * @return bool
+     */
+    public function saveAllergeni(array $allergeni): bool
+    {
+        if (!$this->username) {
+            return false;
+        }
+
+        $deleteStmt = $this->db->prepare("DELETE FROM allergeni_utente WHERE username = :username");
+        $deleteStmt->execute(["username" => $this->username]);
+
+        if (!empty($allergeni)) {
+            $insertStmt = $this->db->prepare("INSERT INTO allergeni_utente (username, allergene) VALUES (:username, :allergene)");
+            foreach ($allergeni as $allergene) {
+                $insertStmt->execute([
+                    "username" => $this->username,
+                    "allergene" => $allergene
+                ]);
+            }
+            return true;
+        }
+        return false;
+    }
 }

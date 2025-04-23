@@ -142,14 +142,33 @@ class IndexView extends BaseView
                                 "\" width=\"150\" height=\"150\"></figure>";
                         }
                         $piattiForThisMensa .=
-                            "<div class=\"menu-item-content\">" .
-                            "<h3>" .
+                            "<div class=\"menu-item-content\">";
+
+                        // Check for allergens
+                        $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
+                        $hasAllergens = $piatto->containsAllergens($userAllergeni);
+                        
+                        if ($hasAllergens) {
+                            $piattiForThisMensa .= "<div class=\"allergen-warning\" role=\"alert\">
+                                <strong>Attenzione:</strong> Questo piatto contiene allergeni da te segnalati.
+                            </div>";
+                        }
+
+                        $piattiForThisMensa .= "<h3>" .
                             htmlspecialchars($piatto->getNome()) .
                             "</h3>";
                         $piattiForThisMensa .=
                             "<p>" .
                             htmlspecialchars($piatto->getDescrizione()) .
                             "</p>";
+
+                        $allergeni = $piatto->getAllergeni();
+                        if (!empty($allergeni)) {
+                            $piattiForThisMensa .= "<div class=\"allergens-list\">
+                                <p><strong>Allergeni:</strong> " . htmlspecialchars(implode(", ", $allergeni)) . "</p>
+                            </div>";
+                        }
+
                         $piattiForThisMensa .= "<div class=\"ratings\">";
                         for ($i = 0; $i < $piatto->getAvgVote(); $i++) {
                             $piattiForThisMensa .= $starFilledSVG;
@@ -204,6 +223,16 @@ class IndexView extends BaseView
                     }
                     
                     $dishOfTheDayContent .= "<div class=\"menu-item-content\">";
+
+                    $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
+                    $hasAllergens = $mensa["piatto_del_giorno"]->containsAllergens($userAllergeni);
+                    
+                    if ($hasAllergens) {
+                        $dishOfTheDayContent .= "<div class=\"allergen-warning\" role=\"alert\">
+                            <strong>Attenzione:</strong> Questo piatto contiene allergeni da te segnalati.
+                        </div>";
+                    }
+
                     $dishOfTheDayContent .=
                         "<h3>" .
                         htmlspecialchars(
@@ -216,6 +245,14 @@ class IndexView extends BaseView
                             $mensa["piatto_del_giorno"]->getDescrizione()
                         ) .
                         "</p>";
+                        
+                    $allergeni = $mensa["piatto_del_giorno"]->getAllergeni();
+                    if (!empty($allergeni)) {
+                        $dishOfTheDayContent .= "<div class=\"allergens-list\">
+                            <p><strong>Allergeni:</strong> " . htmlspecialchars(implode(", ", $allergeni)) . "</p>
+                        </div>";
+                    }
+
                     $dishOfTheDayContent .= "<div class=\"ratings\">";
                     for (
                         $i = 0;

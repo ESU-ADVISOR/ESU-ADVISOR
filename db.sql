@@ -5,6 +5,7 @@ DROP VIEW IF EXISTS piatto_recensioni_foto;
 DROP EVENT IF EXISTS crea_menu_settimanale_event;
 DROP PROCEDURE IF EXISTS crea_menu_settimanale;
 DROP TABLE IF EXISTS preferenze_utente;
+DROP TABLE IF EXISTS allergeni_utente;
 DROP TABLE IF EXISTS piatto_allergeni;
 DROP TABLE IF EXISTS piatto_foto;
 DROP TABLE IF EXISTS menu_piatto;
@@ -86,16 +87,17 @@ CREATE TABLE menu_piatto (
 
 CREATE TABLE piatto_foto (
     photoid INT AUTO_INCREMENT,
-    foto BLOB NOT NULL,      
+    foto BLOB NOT NULL,
     piatto VARCHAR(100) NOT NULL,
     PRIMARY KEY (photoid, piatto),
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+-- Lista allergeni dall'EU https://www.salute.gov.it/imgs/C_17_pagineAree_1460_0_file.pdf
 CREATE TABLE piatto_allergeni (
-    allergeni VARCHAR(30) NOT NULL,
+    allergene ENUM ("Nessuno", "Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta a guscio", "Sedano", "Senape", "Sesamo", "Anidride solforosa", "Lupini", "Molluschi") NOT NULL DEFAULT "Nessuno",
     piatto VARCHAR(100) NOT NULL,
-    PRIMARY KEY (allergeni, piatto),
+    PRIMARY KEY (allergene, piatto),
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -109,6 +111,13 @@ CREATE TABLE preferenze_utente (
     PRIMARY KEY (username),
     FOREIGN KEY (username) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (mensa_preferita) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE allergeni_utente (
+    username VARCHAR(50) NOT NULL,
+    allergene ENUM ("Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta a guscio", "Sedano", "Senape", "Sesamo", "Anidride solforosa", "Lupini", "Molluschi") NOT NULL,
+    PRIMARY KEY (username, allergene),
+    FOREIGN KEY (username) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE VIEW piatto_recensioni_foto AS
@@ -131,47 +140,47 @@ VALUES ( "password", "1990-01-01", "roberto"),
        ( "password789", "1992-11-30", "alicejones"),
        ( "password", "1995-02-15", "admin"),
        ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1970-01-01", "user"); -- password: user
-     
 
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("RistorESU Agripolis", "Viale dell'Università, 6 - Legnaro (PD)", "04 97430607", "https://www.google.com/maps/place/Mensa+Agripolis/@45.3474897,11.9577471,17z/data=!4m6!3m5!1s0x477ec378b59940cf:0x5b21dfbc8034b869!8m2!3d45.346961!4d11.9586004!16s%2Fg%2F11h9__56t4?entry=tts");
+
+-- INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("RistorESU Agripolis", "Viale dell'Università, 6 - Legnaro (PD)", "04 97430607", "https://www.google.com/maps/place/Mensa+Agripolis/@45.3474897,11.9577471,17z/data=!4m6!3m5!1s0x477ec378b59940cf:0x5b21dfbc8034b869!8m2!3d45.346961!4d11.9586004!16s%2Fg%2F11h9__56t4?entry=tts");
 INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("RistorESU Nord Piovego", "Viale Giuseppe Colombo, 1 - Padova", "049 7430811", "https://www.google.com/maps/place/RistorEsu+Nord+Piovego/@45.4110432,11.887099,17z/data=!3m1!4b1!4m6!3m5!1s0x477edaf60d6b6371:0x2c00159331ead3d8!8m2!3d45.4110432!4d11.8896739!16s%2Fg%2F1pp2tjhxw?entry=tts");
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Mensa Murialdo", "Via Antonio Grassi, 42 - Padova", "049 772011", "https://www.google.com/maps/place/Mensa+Murialdo/@45.4130884,11.8994815,17z/data=!3m1!4b1!4m6!3m5!1s0x477edaed17825579:0x39ac780af76d258d!8m2!3d45.4130885!4d11.9043524!16s%2Fg%2F11g5zwxl4z?entry=tts");
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Mensa Azienda Ospedaliera di Padova", "Via Nicolò Giustiniani, 1 - Padova", "049 8211111", "https://www.google.com/maps/place/Azienda+Ospedale+Universit%C3%A0+Padova/@45.4029354,11.88911,19z/data=!4m6!3m5!1s0x477edaf91e846ae5:0x19313e029e7efd8a!8m2!3d45.4028873!4d11.8891995!16s%2Fg%2F11c6wm6888?entry=tts");
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Mensa Ciels", "Via Sebastiano Venier, 200 - Padova", "049 774152", "https://www.google.com/maps/place/Campus+CIELS+-+Sede+di+Padova/@45.3760046,11.8877834,17z/data=!3m2!4b1!5s0x477edb6d735b8e83:0xcc35839005059d33!4m6!3m5!1s0x477edb6d0ab7afc9:0xaef45488826e9515!8m2!3d45.3760046!4d11.8877834!16s%2Fg%2F1tgq5h7z?entry=ttu&g_ep=EgoyMDI0MTIwOS4wIKXMDSoASAFQAw%3D%3D");
-INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Casa del Fanciullo", "Vicolo Santonini, 12 - Padova", "049 8751075", "https://www.google.com/maps/place/Associazione+Casa+Del+Fanciullo/@45.3997459,11.879446,17z/data=!3m1!4b1!4m6!3m5!1s0x477eda55078d6023:0xf616c3a03d554e82!8m2!3d45.3997459!4d11.8820209!16s%2Fg%2F1pv5v58wj?entry=tts");
+-- INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Mensa Murialdo", "Via Antonio Grassi, 42 - Padova", "049 772011", "https://www.google.com/maps/place/Mensa+Murialdo/@45.4130884,11.8994815,17z/data=!3m1!4b1!4m6!3m5!1s0x477edaed17825579:0x39ac780af76d258d!8m2!3d45.4130885!4d11.9043524!16s%2Fg%2F11g5zwxl4z?entry=tts");
+-- INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Mensa Azienda Ospedaliera di Padova", "Via Nicolò Giustiniani, 1 - Padova", "049 8211111", "https://www.google.com/maps/place/Azienda+Ospedale+Universit%C3%A0+Padova/@45.4029354,11.88911,19z/data=!4m6!3m5!1s0x477edaf91e846ae5:0x19313e029e7efd8a!8m2!3d45.4028873!4d11.8891995!16s%2Fg%2F11c6wm6888?entry=tts");
+-- INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Mensa Ciels", "Via Sebastiano Venier, 200 - Padova", "049 774152", "https://www.google.com/maps/place/Campus+CIELS+-+Sede+di+Padova/@45.3760046,11.8877834,17z/data=!3m2!4b1!5s0x477edb6d735b8e83:0xcc35839005059d33!4m6!3m5!1s0x477edb6d0ab7afc9:0xaef45488826e9515!8m2!3d45.3760046!4d11.8877834!16s%2Fg%2F1tgq5h7z?entry=ttu&g_ep=EgoyMDI0MTIwOS4wIKXMDSoASAFQAw%3D%3D");
+-- INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Casa del Fanciullo", "Vicolo Santonini, 12 - Padova", "049 8751075", "https://www.google.com/maps/place/Associazione+Casa+Del+Fanciullo/@45.3997459,11.879446,17z/data=!3m1!4b1!4m6!3m5!1s0x477eda55078d6023:0xf616c3a03d554e82!8m2!3d45.3997459!4d11.8820209!16s%2Fg%2F1pv5v58wj?entry=tts");
 INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("Pio X", "Via Bonporti, 20 - Padova", "049 6895862", "https://www.google.com/maps/place/Mensa+Pio+X/@45.4053724,11.8688651,17z/data=!3m1!4b1!4m6!3m5!1s0x477eda4e563f1161:0x135b6ab250952049!8m2!3d45.4053724!4d11.87144!16s%2Fg%2F11cjk2k92p?entry=tts");
 
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "RistorESU Agripolis");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "RistorESU Agripolis");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "RistorESU Agripolis");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "RistorESU Agripolis");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "RistorESU Agripolis");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "RistorESU Agripolis");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "RistorESU Agripolis");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "RistorESU Agripolis");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "RistorESU Agripolis");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "RistorESU Agripolis");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:30", "14:30", "RistorESU Nord Piovego");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:30", "14:30", "RistorESU Nord Piovego");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:30", "14:30", "RistorESU Nord Piovego");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:30", "14:30", "RistorESU Nord Piovego");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:30", "14:30", "RistorESU Nord Piovego");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "Mensa Murialdo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "Mensa Murialdo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "Mensa Murialdo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "Mensa Murialdo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "Mensa Murialdo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "Mensa Ciels");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "Mensa Ciels");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "Mensa Ciels");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "Mensa Ciels");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "Mensa Ciels");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "08:00", "19:00", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "08:00", "19:00", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "08:00", "19:00", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "08:00", "19:00", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "08:00", "19:00", "Casa del Fanciullo");
-INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (6, "08:00", "12:30", "Casa del Fanciullo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "Mensa Murialdo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "Mensa Murialdo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "Mensa Murialdo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "Mensa Murialdo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "Mensa Murialdo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "12:00", "15:00", "Mensa Azienda Ospedaliera di Padova");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "Mensa Ciels");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "Mensa Ciels");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "Mensa Ciels");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "11:45", "14:30", "Mensa Ciels");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "11:45", "14:30", "Mensa Ciels");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "08:00", "19:00", "Casa del Fanciullo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "08:00", "19:00", "Casa del Fanciullo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "08:00", "19:00", "Casa del Fanciullo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "08:00", "19:00", "Casa del Fanciullo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "08:00", "19:00", "Casa del Fanciullo");
+-- INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (6, "08:00", "12:30", "Casa del Fanciullo");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (1, "11:45", "14:30", "Pio X");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (2, "11:45", "14:30", "Pio X");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (3, "11:45", "14:30", "Pio X");
@@ -184,12 +193,12 @@ INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "18:45", "21:00", "Pio X");
 
 
-INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "RistorESU Agripolis");
+-- INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "RistorESU Agripolis");
 INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Mensa Murialdo");
-INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Mensa Azienda Ospedaliera di Padova");
-INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Mensa Ciels");
-INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Casa del Fanciullo");
+-- INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Mensa Murialdo");
+-- INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Mensa Azienda Ospedaliera di Padova");
+-- INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Mensa Ciels");
+-- INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Casa del Fanciullo");
 INSERT INTO menu (DATA, mensa)VALUES ("2024-12-10", "Pio X");
 
 INSERT INTO piatto (nome, descrizione) VALUES ("Fagioli in umido", "Fagioli cotti lentamente in umido con pomodoro e spezie.");
@@ -198,28 +207,39 @@ INSERT INTO piatto (nome, descrizione) VALUES ("Orzo con pomodorini e basilico",
 INSERT INTO piatto (nome, descrizione) VALUES ("Patate al basilico", "Patate al forno aromatizzate con basilico fresco.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Carote al vapore", "Carote cotte al vapore, condite con un filo d’olio.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Fagiolini", "Fagiolini freschi cotti al vapore.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Polpettine vegane", "Polpettine a base di legumi e verdure.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta alla carbonara", "Pasta condita con uova, guanciale e pecorino.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta all'arrabbiata", "Pasta con sugo di pomodoro piccante.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta salmone e zucchine", "Pasta condita con salmone affumicato e zucchine.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta e fagioli alla veneta", "Pasta e fagioli preparata secondo la tradizione veneta.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Mozzarella alla romana", "Mozzarella impanata e fritta.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Minestra di verdure", "Zuppa di verdure miste.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Frittata con verdure e formaggio", "Frittata con verdure miste e formaggio.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Pollo al forno", "Pollo arrosto con erbe aromatiche.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Pizza pomodorini, rucola e grana", "Pizza con pomodorini freschi, rucola e scaglie di grana.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta alla Norma (melanzane e ricotta)", "Pasta con melanzane fritte e ricotta salata.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta al ragù", "Pasta con ragù di carne.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Riso al curry", "Riso basmati con curry e verdure.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Riso pilaw con piselli", "Riso pilaw con piselli freschi.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Crema di funghi", "Vellutata di funghi porcini.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Gnocchi al pomodoro", "Gnocchi di patate con sugo di pomodoro.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Filetto di platessa alla marchigiana", "Filetto di platessa con pomodoro e olive.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Filetto di merluzzo", "Filetto di merluzzo impanato e fritto.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Melanzana con pomodoro e funghi", "Melanzana ripiena di pomodoro e funghi.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Arrosto di tacchino", "Arrosto di tacchino con erbe aromatiche.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Tortino ricotta e spinaci", "Tortino di pasta sfoglia ripieno di ricotta e spinaci.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Insalatona vegetariana", "Insalata mista con verdure fresche.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "Insalata vegana con ceci, patate, carote e melanzane grigliate.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Bis di cereali con verdure", "Mix di cereali con verdure di stagione.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Peperoni alla partenopea", "Peperoni ripieni alla napoletana.");
@@ -228,13 +248,20 @@ INSERT INTO piatto (nome, descrizione) VALUES ("Roast beef con funghi", "Roast b
 INSERT INTO piatto (nome, descrizione) VALUES ("Trancio di pizza margherita", "Trancio di pizza margherita con mozzarella e pomodoro.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Insalata vegana con carote, zucchine, fagioli e mais", "Insalata vegana con carote, zucchine, fagioli e mais.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Melanzana alla siciliana", "Melanzana ripiena alla siciliana.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Hamburger di manzo BIO con cipolle caramellate", "Hamburger di manzo biologico con cipolle caramellate.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Patate fritte", "Patate fritte croccanti.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Tris di verdure", "Mix di verdure cotte al vapore.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Patate all'olio extravergine", "Patate condite con olio extravergine di oliva.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Carote e piselli al vapore", "Carote e piselli cotti al vapore.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta zucca e funghi", "Pasta con zucca e funghi.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta al tonno e olive", "Pasta con tonno e olive.");
+
 INSERT INTO piatto (nome, descrizione) VALUES ("Pasta pomodoro e piselli", "Pasta con sugo di pomodoro e piselli.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Arrosto di maiale", "Arrosto di maiale con erbe aromatiche.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Coscette di pollo", "Coscette di pollo arrosto.");
@@ -244,34 +271,113 @@ INSERT INTO piatto (nome, descrizione) VALUES ("Kebab di pollo", "Kebab di pollo
 INSERT INTO piatto (nome, descrizione) VALUES ("Piselli", "Piselli freschi cotti al vapore.");
 INSERT INTO piatto (nome, descrizione) VALUES ("Ceci", "Ceci lessati.");
 
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Arrosto di maiale");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Arrosto di tacchino");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Bis di cereali con verdure");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote al vapore");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote e piselli al vapore");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Ceci");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Coscette di pollo");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di funghi");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di piselli");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Fagioli in umido");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Fagiolini");
+
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Glutine", "Falafel");
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Sesamo", "Falafel");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Filetto di merluzzo");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Filetto di merluzzo");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Filetto di platessa alla marchigiana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Frittata con verdure e formaggio");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Frittata con verdure e formaggio");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Gnocchi al pomodoro");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Hamburger di manzo BIO con cipolle caramellate");
+
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Glutine", "Hamburger vegano");
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Soia", "Hamburger vegano");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con carote, zucchine, fagioli e mais");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con ceci, patate, carote e melanzane");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalatona vegetariana");
+
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Glutine", "Kebab di pollo");
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Glutine", "Melanzana alla siciliana");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana con pomodoro, capperi e olive");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana con pomodoro e funghi");
+
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Sedano", "Minestra di verdure");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Mozzarella alla romana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Mozzarella alla romana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Orzo con pomodorini e basilico");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta al ragù");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta al tonno e olive");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Pasta al tonno e olive");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta all'arrabbiata");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta alla carbonara");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Pasta alla carbonara");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla carbonara");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta alla Norma (melanzane e ricotta)");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla Norma (melanzane e ricotta)");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta e fagioli alla veneta");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta pomodoro e piselli");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta salmone e zucchine");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Pasta salmone e zucchine");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta zucca e funghi");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate al basilico");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate all'olio extravergine");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate fritte");
+
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Glutine", "Peperoni alla partenopea");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Piselli");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pizza pomodorini, rucola e grana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pizza pomodorini, rucola e grana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Pollo al forno");
+
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Glutine", "Polpettine vegane");
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Soia", "Polpettine vegane");
+-- INSERT INTO piatto_allergeni (allergeni, piatto) VALUES ("Senape", "Riso al curry");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Riso pilaw con piselli");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Roast beef con funghi");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Tortino ricotta e spinaci");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Tortino ricotta e spinaci");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Tortino ricotta e spinaci");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Trancio di pizza margherita");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Trancio di pizza margherita");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Tris di verdure");
+
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Fagioli in umido", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Crema di piselli", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Orzo con pomodorini e basilico", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Patate al basilico", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Carote al vapore", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Fagiolini", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Polpettine vegane", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Polpettine vegane", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta alla carbonara", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta all'arrabbiata", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta salmone e zucchine", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta e fagioli alla veneta", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Mozzarella alla romana", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta salmone e zucchine", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta e fagioli alla veneta", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Mozzarella alla romana", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Minestra di verdure", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Frittata con verdure e formaggio", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pollo al forno", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pizza pomodorini, rucola e grana", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta alla Norma (melanzane e ricotta)", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pollo al forno", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pizza pomodorini, rucola e grana", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta alla Norma (melanzane e ricotta)", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta al ragù", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Riso al curry", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Riso al curry", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Riso pilaw con piselli", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Crema di funghi", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Gnocchi al pomodoro", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Filetto di platessa alla marchigiana", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Filetto di merluzzo", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Melanzana con pomodoro e funghi", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Arrosto di tacchino", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Melanzana con pomodoro e funghi", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Arrosto di tacchino", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Tortino ricotta e spinaci", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Insalatona vegetariana", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Insalatona vegetariana", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Bis di cereali con verdure", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Peperoni alla partenopea", "2024-12-10", "RistorESU Nord Piovego");
@@ -280,22 +386,22 @@ INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Roast beef con funghi", "
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Trancio di pizza margherita", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Insalata vegana con carote, zucchine, fagioli e mais", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Melanzana alla siciliana", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Hamburger di manzo BIO con cipolle caramellate", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Hamburger di manzo BIO con cipolle caramellate", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Patate fritte", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Tris di verdure", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Patate all'olio extravergine", "2024-12-10", "RistorESU Nord Piovego");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Patate all'olio extravergine", "2024-12-10", "RistorESU Nord Piovego");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Carote e piselli al vapore", "2024-12-10", "RistorESU Nord Piovego");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta zucca e funghi", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Polpettine vegane", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta salmone e zucchine", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Falafel", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta zucca e funghi", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Polpettine vegane", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta salmone e zucchine", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Falafel", "2024-12-10", "Pio X");
 INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta al tonno e olive", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta pomodoro e piselli", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Arrosto di maiale", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Coscette di pollo", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Kebab di pollo", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Piselli", "2024-12-10", "Pio X");
-INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Ceci", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Pasta pomodoro e piselli", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Arrosto di maiale", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Coscette di pollo", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Kebab di pollo", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Piselli", "2024-12-10", "Pio X");
+-- INSERT INTO menu_piatto (piatto, DATA, mensa) VALUES ("Ceci", "2024-12-10", "Pio X");
 
 INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Alto assorbimento delle radiazioni elettromagnetiche, quasi al pari di un corpo nero. Densità alta ma non esagerata, conforme agli standard UNI ISO. Sapore buono, leggermente salato, temperatura leggermente al di sopra di quella ambientale. Frazione in massa di pasta infima ma ciò è possibile che sia dovuto al fatto che il piatto servito fosse solo una delle prime mestolate. Pro: sapore, senso di sazietà raggiunto facilmente, ottimo materiale edile Contro: mancanza di nota piccante, produzione incontrollabile di metano gassoso da orifizi corporei.", "roberto", "Pasta e fagioli alla veneta");
 INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Il sapore è buono ma la texture non mi è piaciuta. Ci sono troppi pezzi grossi, non è stata tritata bene.", "angela", "Crema di piselli");

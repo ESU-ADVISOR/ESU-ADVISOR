@@ -83,7 +83,7 @@ class IndexView extends BaseView
 
                 // Initialize table
                 $menseInfoContent .= "
-                        <p id='orari-mensa-description' class='nascosto'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
+                        <p id='orari-mensa-description'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
                         <table aria-describedby=\"orari-mensa-description\"> 
                             <caption id=\"orari-mensa-caption\">Orari:</caption>
                             <thead>

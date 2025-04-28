@@ -27,7 +27,12 @@
     border: 0;
 }
 
-.nascosto{
+.navigationHelp{
+    position: absolute;
+    left: -9999em;
+}
+
+#orari-mensa-description{
     position: absolute;
     left: -9999em;
 }

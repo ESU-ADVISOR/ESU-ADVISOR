@@ -92,10 +92,48 @@ class PiattoModel
 
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         if (!empty($data[0])) {
-
             return $data[0]["foto"];
         }
         return null;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllergeni(): array
+    {
+
+        $stmt = $this->db->prepare("SELECT allergene FROM piatto_allergeni WHERE piatto = :piatto");
+        $stmt->execute([
+            "piatto" => $this->nome,
+        ]);
+
+        $data = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+
+        if (!empty($data)) {
+            return $data;
+        }
+
+        return [];
+    }
+
+    /**
+     * @param string[] $allergeni
+     * @return bool
+     */
+    public function containsAllergens(array $allergeni): bool
+    {
+        if (empty($allergeni)) {
+            return false;
+        }
+        
+        $piattoAllergeni = $this->getAllergeni();
+        
+        // Normalize both arrays for case-insensitive comparison
+        $normalizedUserAllergeni = array_map('strtolower', $allergeni);
+        $normalizedPiattoAllergeni = array_map('strtolower', $piattoAllergeni);
+        
+        return !empty(array_intersect($normalizedUserAllergeni, $normalizedPiattoAllergeni));
     }
 
     /** @return RecensioneModel[] */

@@ -21,6 +21,13 @@ class RegisterController implements BaseController
         $view = new RegisterView();
 
         try {
+            if (UserModel::isUsernameTaken($username)) {
+                $view->render([
+                    "errors" => ["Registration failed: Username already exists"]
+                ]);
+                return;
+            }
+
             $new_user = new UserModel([
                 "username" => $username,
                 "password" => $password,

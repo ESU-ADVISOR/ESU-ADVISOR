@@ -36,27 +36,129 @@
                                     La mensa selezionata verrà visualizzata automaticamente all'apertura del menu.
                                 </p>
                             </div>
-                            
+
                             <!-- Implementazione allergeni migliorata -->
                             <div class="form-group">
                                 <fieldset>
                                     <legend>Allergeni da segnalare:</legend>
                                     <div class="checkbox-grid">
                                         <div class="checkbox-group">
-                                            <input type="checkbox" id="allergene-glutine" name="allergeni[]" value="glutine">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-glutine"
+                                                name="allergeni[]"
+                                                value="glutine"
+                                            />
                                             <label for="allergene-glutine">Glutine</label>
                                         </div>
                                         <div class="checkbox-group">
-                                            <input type="checkbox" id="allergene-lattosio" name="allergeni[]" value="lattosio">
-                                            <label for="allergene-lattosio">Lattosio</label>
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-crostacei"
+                                                name="allergeni[]"
+                                                value="crostacei"
+                                            />
+                                            <label for="allergene-crostacei">Crostacei</label>
                                         </div>
                                         <div class="checkbox-group">
-                                            <input type="checkbox" id="allergene-frutta_a_guscio" name="allergeni[]" value="frutta_a_guscio">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-uova"
+                                                name="allergeni[]"
+                                                value="uova"
+                                            />
+                                            <label for="allergene-uova">Uova</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-Pesce"
+                                                name="allergeni[]"
+                                                value="Pesce"
+                                            />
+                                            <label for="allergene-Pesce">Pesce</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-arachidi"
+                                                name="allergeni[]"
+                                                value="arachidi"
+                                            />
+                                            <label for="allergene-arachidi">Arachidi</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-soia"
+                                                name="allergeni[]"
+                                                value="soia"
+                                            />
+                                            <label for="allergene-soia">Soia</label>
+                                        </div>
+
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-latte"
+                                                name="allergeni[]"
+                                                value="latte"
+                                            />
+                                            <label for="allergene-latte">Latte</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-frutta_a_guscio"
+                                                name="allergeni[]"
+                                                value="frutta_a_guscio"
+                                            />
                                             <label for="allergene-frutta_a_guscio">Frutta a guscio</label>
                                         </div>
                                         <div class="checkbox-group">
-                                            <input type="checkbox" id="allergene-crostacei" name="allergeni[]" value="crostacei">
-                                            <label for="allergene-crostacei">Crostacei</label>
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-sedano"
+                                                name="allergeni[]"
+                                                value="sedano"
+                                            />
+                                            <label for="allergene-sedano">Sedano</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-senape"
+                                                name="allergeni[]"
+                                                value="senape"
+                                            />
+                                            <label for="allergene-senape">Senape</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-anidride-solforosa"
+                                                name="allergeni[]"
+                                                value="anidride-solforosa"
+                                            />
+                                            <label for="allergene-anidride-solforosa">Anidride solforosa</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-lupini"
+                                                name="allergeni[]"
+                                                value="lupini"
+                                            />
+                                            <label for="allergene-lupini">Lupini</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input
+                                                type="checkbox"
+                                                id="allergene-molluschi"
+                                                name="allergeni[]"
+                                                value="molluschi"
+                                            />
+                                            <label for="allergene-molluschi">Molluschi</label>
                                         </div>
                                     </div>
                                     <p class="text-secondary mt-2 text-sm">
@@ -65,7 +167,9 @@
                                 </fieldset>
                             </div>
 
-                            <button type="submit" name="save_preferenze_generali" class="form-button">Salva preferenze</button>
+                            <button type="submit" name="save_preferenze_generali" class="form-button">
+                                Salva preferenze
+                            </button>
                         </form>
                     </section>
 
@@ -113,7 +217,6 @@
             </button>
         </main>
 
-        
         <script src="scripts/user-settings.js"></script>
         <script src="scripts/accessibility-switcher.js"></script>
         <script src="scripts/change_password_validation.js"></script>

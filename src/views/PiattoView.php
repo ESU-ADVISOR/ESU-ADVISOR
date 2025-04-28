@@ -17,12 +17,32 @@ class PiattoView extends BaseView
         parent::render();
 
         $piattoTitle = "<h1 class=\"card-title\" id=\"primoContenuto\">" . htmlspecialchars($data["nome"]) . "</h1>";
-        $piattoDescription =
-            "<div class=\"card-description\"><p>" .
-            htmlspecialchars($data["descrizione"]) .
-            "</p></div>";
 
         $piatto = PiattoModel::findByName($data["nome"]);
+
+        // Check for allergens
+        $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
+        $hasAllergens = $piatto->containsAllergens($userAllergeni);
+        
+        $piattoDescription = "<div class=\"card-description\">";
+        
+        if ($hasAllergens) {
+            $piattoDescription .= "<div class=\"allergen-warning\" role=\"alert\">
+                <strong>Attenzione:</strong> Questo piatto contiene allergeni da te segnalati.
+            </div>";
+        }
+        
+        $piattoDescription .= "<p>" . htmlspecialchars($data["descrizione"]) . "</p>";
+
+        // List allergens if present
+        $allergeni = $piatto->getAllergeni();
+        if (!empty($allergeni)) {
+            $piattoDescription .= "<div class=\"allergens-list\">
+                <p><strong>Allergeni:</strong> " . htmlspecialchars(implode(", ", $allergeni)) . "</p>
+            </div>";
+        }
+        
+        $piattoDescription .= "</div>";
 
         // Ottieni l'immagine del piatto
         $piattoImage = "";

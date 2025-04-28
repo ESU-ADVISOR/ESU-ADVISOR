@@ -28,7 +28,8 @@ class SettingsView extends BaseView
         $mense = MenseModel::findAll();
 
         $mensaPreferita = null;
-        $allergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
+        // Inizializza gli allergeni dalla sessione prima di tutto
+        $allergeni = isset($_SESSION["allergeni"]) && is_array($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
 
         $userPreferences = null;
         if ($isLoggedIn) {
@@ -36,13 +37,21 @@ class SettingsView extends BaseView
             if ($user !== null) {
                 $userPreferences = PreferenzeUtenteModel::findByUsername($user->getUsername());
 
-                // Determina la mensa preferita dall'utente loggato
+                // Determina la mensa preferita e allergeni dall'utente loggato
                 if ($userPreferences) {
-
+                    // Recupera allergeni dal DB (hanno priorità sulla sessione per utenti loggati)
+                    $dbAllergeni = $userPreferences->getAllergeni();
+                    if (!empty($dbAllergeni)) {
+                        $allergeni = $dbAllergeni;
+                        $_SESSION["allergeni"] = $allergeni; // Sincronizza la sessione con il DB
+                    }
                     $mensaPreferita = $userPreferences->getMensaPreferita();
                 }
             }
-        } elseif (isset($_SESSION["mensa_preferita"])) {
+        }
+        
+        // Recupera mensa preferita dalla sessione per utenti non loggati
+        if (!$isLoggedIn && isset($_SESSION["mensa_preferita"])) {
             $mensaPreferita = $_SESSION["mensa_preferita"];
         }
 
@@ -68,10 +77,17 @@ class SettingsView extends BaseView
 
         $allergeniCheckboxes = $this->dom->getElementsByTagName('input');
         foreach ($allergeniCheckboxes as $checkbox) {
-            if ($checkbox->getAttribute('type') === 'checkbox' && strpos($checkbox->getAttribute('id'), 'allergene-') === 0) {
+            if ($checkbox->getAttribute('type') === 'checkbox' && $checkbox->getAttribute('name') === 'allergeni[]') {
                 $allergeneValue = $checkbox->getAttribute('value');
-                if (in_array($allergeneValue, $allergeni)) {
+                // Ensure consistent casing for comparison
+                $allergeneValueNormalized = ucfirst($allergeneValue);
+                if (in_array($allergeneValueNormalized, $allergeni, true) || 
+                    in_array($allergeneValue, $allergeni, true)) { // Check both normalized and original value
                     $checkbox->setAttribute('checked', 'checked');
+                } else {
+                    if ($checkbox->hasAttribute('checked')) {
+                        $checkbox->removeAttribute('checked');
+                    }
                 }
             }
         }

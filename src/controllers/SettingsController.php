@@ -159,7 +159,17 @@ class SettingsController implements BaseController
         }
 
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
-
+        
+        // Converti tutti gli elementi in prima lettera maiuscola per consistenza
+        if (!empty($allergeni)) {
+            $allergeni = array_map('ucfirst', $allergeni);
+        } else {
+            // Se non sono selezionati allergeni, assicuriamoci di avere un array vuoto
+            $allergeni = [];
+        }
+        
+        $_SESSION["allergeni"] = $allergeni;
+        
         // Se l'utente è loggato
         if ($isLoggedIn) {
             $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
@@ -171,18 +181,21 @@ class SettingsController implements BaseController
                 $preferences->setMensaPreferita($mensaPreferita);
             }
 
-            // Gestione degli allergeni nel database - da implementare con una tabella separata
-            // per ora lo memorizziamo solo in sessione
-            $_SESSION["allergeni"] = $allergeni;
+            try {
+                if (!$preferences->saveToDB()) {
+                    throw new \Exception("Impossibile salvare le preferenze");
+                }
 
-            if ($preferences->saveToDB()) {
+                $preferences->saveAllergeni($allergeni);
+                
                 $view->render([
                     "success" => "Preferenze salvate con successo",
                 ]);
                 exit();
-            } else {
+                
+            } catch (\Exception $e) {
                 $view->render([
-                    "errors" => ["Impossibile salvare le preferenze"],
+                    "errors" => ["Impossibile salvare le preferenze: " . $e->getMessage()],
                 ]);
                 exit();
             }
@@ -191,8 +204,7 @@ class SettingsController implements BaseController
             if ($mensaPreferita) {
                 $_SESSION["mensa_preferita"] = $mensaPreferita;
             }
-            $_SESSION["allergeni"] = $allergeni;
-
+            
             $view->render([
                 "success" => "Preferenze salvate per questa sessione",
             ]);

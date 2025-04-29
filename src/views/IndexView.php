@@ -16,6 +16,14 @@ class IndexView extends BaseView
     {
         parent::render();
 
+        //breadcrumbs
+        $breadcrumbContent = '<p>Ti trovi in: <span lang="en">Home</span></p>';
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "breadcrumb-template",
+            $breadcrumbContent
+        );
+
         $starSVG = file_get_contents(
             __DIR__ . "/../../public_html/images/star.svg"
         );

@@ -22,6 +22,14 @@ class SettingsView extends BaseView
     {
         parent::render();
 
+        //breadcrumbs
+        $breadcrumbContent = '<p>Ti trovi in: Impostazioni';
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "breadcrumb-template",
+            $breadcrumbContent
+        );
+
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
 
         $menseContent = "";

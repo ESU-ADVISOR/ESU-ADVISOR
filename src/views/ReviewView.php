@@ -24,6 +24,14 @@ class ReviewView extends BaseView
             return;
         }
 
+        //breadcrumbs
+        $breadcrumbContent = '<p>Ti trovi in: <span lang="en">Review</span></p>';
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "breadcrumb-template",
+            $breadcrumbContent
+        );
+
         $menseContent = "";
         $piattiContent = "";
 

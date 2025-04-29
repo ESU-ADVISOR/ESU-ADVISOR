@@ -19,6 +19,15 @@ class ProfileView extends BaseView
             self::renderError("You're not logged in");
             return;
         }
+
+        //breadcrumbs
+        $breadcrumbContent = '<p>Ti trovi in: Profilo</p>';
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "breadcrumb-template",
+            $breadcrumbContent
+        );
+
         $user = UserModel::findByUsername($_SESSION["username"]);
         if ($user === null) {
             self::renderError("User not found");

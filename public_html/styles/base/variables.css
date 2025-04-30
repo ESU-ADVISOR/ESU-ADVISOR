@@ -45,7 +45,7 @@
     --text-2xl: 1.5rem; /* 24px */
 
     /* Container */
-    --container-max: 1200px;
+    --container-max: 1000px;
 
     /* Z-index */
     --z-header: 30;
@@ -60,7 +60,7 @@
     --transition-slow: 350ms ease-out;
 
     /* Layout */
-    --header-height: 60px;
+    --header-height: 88px;
     --footer-height: 56px;
     --mensa-selector-height: 64px;
 

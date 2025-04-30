@@ -10,7 +10,7 @@
     right: 0;
     z-index: var(--z-header);
     width: 100%;
-    height: auto /*var(--header-height)*/;
+    height: var(--header-height);
 }
 
 .header-container {
@@ -45,10 +45,10 @@ body {
 }
 
 .page-content {
-    padding: var(--spacing-md);
+    padding: 0 var(--spacing-md);
     max-width: var(--container-max);
     margin: 0 auto;
-    padding-bottom: calc(var(--footer-height) + var(--spacing-xl) * 2);
+    padding-bottom: 2.8rem;
 }
 
 .section {
@@ -58,7 +58,6 @@ body {
 /* Menu selector (navbar) - CORRETTO PADDING */
 .mensa-select-container {
     background: var(--background-card);
-    padding: var(--spacing-xs) 0;
     border-bottom: 1px solid var(--border-color);
     position: fixed;
     top: var(--header-height);
@@ -93,7 +92,7 @@ body {
 
 /* Corretto il calcolo del padding */
 .menu-section {
-    padding-top: calc(var(--header-height) + var(--mensa-selector-height));
+    padding-top: calc(16px + var(--mensa-selector-height));
     margin-top: var(--spacing-sm);
 }
 
@@ -105,10 +104,8 @@ body {
     right: 0;
     background: var(--background-card);
     border-top: 1px solid var(--border-color);
-    padding: var(--spacing-xs) 0;
-    padding-bottom: calc(var(--spacing-xs) + env(safe-area-inset-bottom));
+    padding: var(--spacing-sm) 0;
     z-index: var(--z-navigation);
-    height: var(--footer-height);
 }
 
 .bottom-nav .nav {
@@ -250,10 +247,10 @@ body {
 
 /* Stile per le pagine con form full-page */
 .form-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: var(--spacing-md);
-    padding-bottom: calc(var(--footer-height) + var(--spacing-xl) * 2);
+    max-width: var(--container-max);
+    margin: var(--spacing-md) auto;
+    padding: 0 var(--spacing-md);
+    padding-bottom: 2.8rem;
 }
 
 .form-header {
@@ -293,16 +290,12 @@ body {
     }
 
     .page-content {
-        padding: var(--spacing-lg);
-        padding-bottom: calc(var(--footer-height) + var(--spacing-xl) * 2);
+        /* padding: 0 var(--spacing-lg); */
+        /* padding-bottom: calc(var(--footer-height) + var(--spacing-xl) * 2); */
     }
 
     .section {
         margin-bottom: var(--spacing-xl);
-    }
-
-    .mensa-select-container {
-        padding: var(--spacing-xs) 0;
     }
 
     .mensa-select-container .mense-section {
@@ -310,7 +303,7 @@ body {
     }
 
     .bottom-nav {
-        padding: var(--spacing-xs) 0;
+        padding-top: var(--spacing-sm);
     }
 
     .nav-item {
@@ -331,9 +324,9 @@ body {
     }
 
     /* Form container responsive */
-    .form-container {
-        padding: var(--spacing-lg);
-    }
+    /* .form-container {
+        padding-bottom: var(--spacing-xs);
+    } */
 }
 
 @media (min-width: 1024px) {

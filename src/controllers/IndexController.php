@@ -67,7 +67,7 @@ class IndexController implements BaseController
         http_response_code(400);
         echo json_encode([
             "status" => "error",
-            "error" => "POST request not allowed",
+            "error" => "Richiesta POST non consentita",
         ]);
         exit();
     }

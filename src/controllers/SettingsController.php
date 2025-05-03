@@ -2,10 +2,10 @@
 
 namespace Controllers;
 
+use Models\Enums\ModificaTema;
 use Models\Enums\DimensioneTesto;
 use Models\Enums\DimensioneIcone;
 use Models\Enums\ModificaFont;
-use Models\Enums\ModificaTema;
 use Models\MenseModel;
 use Models\PreferenzeUtenteModel;
 use Models\UserModel;
@@ -25,7 +25,7 @@ class SettingsController implements BaseController
         $user = UserModel::findByUsername($_SESSION["username"]);
         if ($user === null) {
             $view->render([
-                "errors" => ["User not found"],
+                "errors" => ["Utente non trovato"],
             ]);
             exit();
         }
@@ -36,7 +36,7 @@ class SettingsController implements BaseController
             exit();
         } else {
             $view->render([
-                "errors" => ["Registration failed: Could not remove from the database"],
+                "errors" => ["Eliminazione account fallita: impossibile rimuovere dal database"],
             ]);
             exit();
         }
@@ -48,26 +48,29 @@ class SettingsController implements BaseController
         $user = UserModel::findByUsername($_SESSION["username"]);
         if ($user === null) {
             $view->render([
-                "errors" => ["User not found"],
+                "errors" => ["Utente non trovato"],
             ]);
             exit();
         }
 
         if (empty($post['new_username'])) {
             $view->render([
-                "success" => "Username changed successfully",
+                "errors" => ["Username non può essere vuoto"],
+                "formData" => $post
             ]);
             exit();
         } else {
             if (strlen($post['new_username']) < 3 || strlen($post['new_username']) > 50) {
                 $view->render([
-                    "errors" => ["Username must be between 3 and 50 characters long."],
+                    "errors" => ["L'username deve essere compreso tra 3 e 50 caratteri"],
+                    "formData" => $post
                 ]);
                 exit();
             }
             if (!preg_match('/^[a-zA-Z0-9_-]+$/', $post['new_username'])) {
                 $view->render([
-                    "errors" => ["Username can only contain letters, numbers, underscores, and hyphens."],
+                    "errors" => ["L'username può contenere solo lettere, numeri, underscore e trattini"],
+                    "formData" => $post
                 ]);
                 exit();
             }
@@ -77,12 +80,13 @@ class SettingsController implements BaseController
 
         if ($user->saveToDB()) {
             $view->render([
-                "success" => "Username changed successfully",
+                "success" => "Username modificato con successo",
             ]);
             exit();
         } else {
             $view->render([
-                "errors" => ["Username not changed"],
+                "errors" => ["Modifica username non riuscita"],
+                "formData" => $post
             ]);
             exit();
         }
@@ -94,28 +98,34 @@ class SettingsController implements BaseController
         $user = UserModel::findByUsername($_SESSION["username"]);
         if ($user === null) {
             $view->render([
-                "errors" => ["User not found"],
+                "errors" => ["Utente non trovato"],
             ]);
             exit();
         }
 
         if (!UserModel::authenticate($user->getUsername(), $post['password'])) {
             $view->render([
-                "errors" => ["Old password is incorrect"],
+                "errors" => ["La password attuale è errata"],
+                "formData" => [
+                    "new_password" => $post['new_password'],
+                    "new_password_confirm" => $post['new_password_confirm']
+                ]
             ]);
             exit();
         }
 
         if ($post['new_password'] !== $post['new_password_confirm']) {
             $view->render([
-                "errors" => ["New passwords do not match"],
+                "errors" => ["Le nuove password non corrispondono"],
+                "formData" => []
             ]);
             exit();
         }
 
         if ($post['new_password'] === $post['password']) {
             $view->render([
-                "errors" => ["New password must be different from the old one"],
+                "errors" => ["La nuova password deve essere diversa da quella attuale"],
+                "formData" => []
             ]);
             exit();
         }
@@ -124,12 +134,13 @@ class SettingsController implements BaseController
 
         if ($user->saveToDB()) {
             $view->render([
-                "success" => "Password changed successfully"
+                "success" => "Password modificata con successo"
             ]);
             exit();
         } else {
             $view->render([
-                "errors" => ["Password not changed"],
+                "errors" => ["Modifica password non riuscita"],
+                "formData" => []
             ]);
             exit();
         }
@@ -138,21 +149,19 @@ class SettingsController implements BaseController
     private function savePreferences(array $post = []): void
     {
         $view = new SettingsView();
-        // Gestione della mensa preferita
         $mensaPreferita = null;
         if (isset($post['mensa_preferita']) && !empty($post['mensa_preferita'])) {
-            // Verifica se la mensa esiste
             $mensa = MenseModel::findByName($post['mensa_preferita']);
             if ($mensa === null) {
                 $view->render([
                     "errors" => ["Mensa non trovata nel database"],
+                    "formData" => $post
                 ]);
                 exit();
             }
             $mensaPreferita = $post['mensa_preferita'];
         }
 
-        // Gestione degli allergeni
         $allergeni = [];
         if (isset($post['allergeni']) && is_array($post['allergeni'])) {
             $allergeni = $post['allergeni'];
@@ -160,22 +169,18 @@ class SettingsController implements BaseController
 
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
         
-        // Converti tutti gli elementi in prima lettera maiuscola per consistenza
         if (!empty($allergeni)) {
             $allergeni = array_map('ucfirst', $allergeni);
         } else {
-            // Se non sono selezionati allergeni, assicuriamoci di avere un array vuoto
             $allergeni = [];
         }
         
         $_SESSION["allergeni"] = $allergeni;
         
-        // Se l'utente è loggato
         if ($isLoggedIn) {
             $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
             $preferences = PreferenzeUtenteModel::findByUsername($username) ?? new PreferenzeUtenteModel();
 
-            // Aggiorna o imposta le preferenze
             $preferences->setUsername($username);
             if ($mensaPreferita) {
                 $preferences->setMensaPreferita($mensaPreferita);
@@ -194,13 +199,15 @@ class SettingsController implements BaseController
                 exit();
                 
             } catch (\Exception $e) {
+                error_log("Errore nel salvataggio preferenze: " . $e->getMessage());
+                
                 $view->render([
                     "errors" => ["Impossibile salvare le preferenze: " . $e->getMessage()],
+                    "formData" => $post
                 ]);
                 exit();
             }
         } else {
-            // Se l'utente non è loggato, salva le preferenze nella sessione
             if ($mensaPreferita) {
                 $_SESSION["mensa_preferita"] = $mensaPreferita;
             }
@@ -216,87 +223,95 @@ class SettingsController implements BaseController
     {
         $view = new SettingsView();
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
-        // Elaborazione delle preferenze di accessibilità
-        $tema = null;
-        $dimensioneTesto = null;
-        $dimensioneIcone = null;
-        $font = null;
-        // try {
-        $tema = isset($post['tema']) && $post['tema'] !== "none" ?
-            ModificaTema::tryFrom($post['tema']) : ModificaTema::CHIARO;
+        
+        try {
+            $tema = isset($post['tema']) && $post['tema'] !== "none" ?
+                ModificaTema::tryFrom($post['tema']) : ModificaTema::CHIARO;
 
-        $dimensioneTesto = isset($post['dimensione_testo']) && $post['dimensione_testo'] !== "none" ?
-            DimensioneTesto::tryFrom($post['dimensione_testo']) : DimensioneTesto::MEDIO;
+            $dimensioneTesto = isset($post['dimensione_testo']) && $post['dimensione_testo'] !== "none" ?
+                DimensioneTesto::tryFrom($post['dimensione_testo']) : DimensioneTesto::MEDIO;
 
-        $dimensioneIcone = isset($post['dimensione_icone']) && $post['dimensione_icone'] !== "none" ?
-            DimensioneIcone::tryFrom($post['dimensione_icone']) : DimensioneIcone::MEDIO;
+            $dimensioneIcone = isset($post['dimensione_icone']) && $post['dimensione_icone'] !== "none" ?
+                DimensioneIcone::tryFrom($post['dimensione_icone']) : DimensioneIcone::MEDIO;
 
-        $font = isset($post['modifica_font']) && $post['modifica_font'] !== "none" ?
-            ModificaFont::tryFrom($post['modifica_font']) : ModificaFont::NORMALE;
+            $font = isset($post['modifica_font']) && $post['modifica_font'] !== "none" ?
+                ModificaFont::tryFrom($post['modifica_font']) : ModificaFont::NORMALE;
 
-        // Memorizza sempre in sessione
-        $_SESSION["tema"] = $tema->value;
-        $_SESSION["dimensione_testo"] = $dimensioneTesto->value;
-        $_SESSION["dimensione_icone"] = $dimensioneIcone->value;
-        $_SESSION["modifica_font"] = $font->value;
+            $_SESSION["tema"] = $tema->value;
+            $_SESSION["dimensione_testo"] = $dimensioneTesto->value;
+            $_SESSION["dimensione_icone"] = $dimensioneIcone->value;
+            $_SESSION["modifica_font"] = $font->value;
 
-        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
-        // Se l'utente è loggato, salva anche nel database
-        if ($isLoggedIn) {
-            $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
-            $preferences = PreferenzeUtenteModel::findByUsername($username) ?? new PreferenzeUtenteModel();
+            $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+                
+            if ($isLoggedIn) {
+                $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
+                $preferences = PreferenzeUtenteModel::findByUsername($username) ?? new PreferenzeUtenteModel();
 
-            $preferences->setUsername($username);
-            $preferences->setTema($tema);
-            $preferences->setDimensioneTesto($dimensioneTesto);
-            $preferences->setDimensioneIcone($dimensioneIcone);
-            $preferences->setModificaFont($font);
+                $preferences->setUsername($username);
+                $preferences->setTema($tema);
+                $preferences->setDimensioneTesto($dimensioneTesto);
+                $preferences->setDimensioneIcone($dimensioneIcone);
+                $preferences->setModificaFont($font);
 
-            if ($preferences->saveToDB()) {
-                // Eccezione per evitare il flash del tema opposto
+                if ($preferences->saveToDB()) {
+                    if ($isAjax) {
+                        header('Content-Type: application/json');
+                        echo json_encode([
+                            'success' => true,
+                            'message' => 'Tema salvato con successo'
+                        ]);
+                    } else {
+                        $view->render([
+                            "success" => "Tema salvato con successo",
+                        ]);
+                    }
+                    exit();
+                } else {
+                    if ($isAjax) {
+                        header('Content-Type: application/json');
+                        echo json_encode([
+                            'success' => false,
+                            'message' => 'Impossibile salvare il tema'
+                        ]);
+                    } else {
+                        $view->render([
+                            "errors" => ["Impossibile salvare il tema"],
+                            "formData" => $post
+                        ]);
+                    }
+                    exit();
+                }
+            } else {
                 if ($isAjax) {
                     header('Content-Type: application/json');
                     echo json_encode([
                         'success' => true,
-                        'message' => 'Preferenze salvate con successo'
-                    ]);
-                } else {
-                    // Fallback
-                    $view->render([
-                        "success" => "Preferenze salvate con successo",
-                    ]);
-                }
-                exit();
-            } else {
-                // Eccezione per evitare il flash del tema opposto
-                if ($isAjax) {
-                    header('Content-Type: application/json');
-                    echo json_encode([
-                        'success' => false,
-                        'message' => 'Impossibile salvare le preferenze'
+                        'message' => 'Tema salvato con successo'
                     ]);
                 } else {
                     $view->render([
-                        "errors" => ["Impossibile salvare le preferenze"],
+                        "success" => "Tema salvato con successo",
                     ]);
                 }
-                exit();
             }
-        } else {
-            // Utente non loggato
+        } catch (\Exception $e) {
+            error_log("Errore nel salvataggio tema: " . $e->getMessage());
+            
             if ($isAjax) {
                 header('Content-Type: application/json');
                 echo json_encode([
-                    'success' => true,
-                    'message' => 'Preferenze salvate con successo'
+                    'success' => false,
+                    'message' => 'Impossibile salvare il tema: ' . $e->getMessage()
                 ]);
             } else {
-                // Fallback
                 $view->render([
-                    "success" => "Preferenze salvate con successo",
+                    "errors" => ["Impossibile salvare il tema: " . $e->getMessage()],
+                    "formData" => $post
                 ]);
             }
+            exit();
         }
     }
 
@@ -305,7 +320,6 @@ class SettingsController implements BaseController
         $view = new SettingsView();
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
 
-        // Gestione account (richiede login)
         if ($isLoggedIn) {
             if (isset($post['delete_account'])) {
                 $this->deleteAccount($post);
@@ -316,7 +330,6 @@ class SettingsController implements BaseController
             }
         }
 
-        // Gestione preferenze generali (accessibile a tutti)
         if (isset($post['save_preferenze_generali']))
             $this->savePreferences($post);
         else if (isset($post['preferences'])) {
@@ -325,7 +338,7 @@ class SettingsController implements BaseController
             http_response_code(400);
             echo json_encode([
                 "status" => "error",
-                "error" => "POST request not allowed",
+                "error" => "Richiesta POST non consentita",
             ]);
             exit();
         }

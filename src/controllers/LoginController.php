@@ -18,7 +18,6 @@ class LoginController implements BaseController
 
     public function handleGETRequest(array $get = []): void
     {
-        // Salva la pagina originale se fornita come parametro 'redirect'
         if (isset($get['redirect']) && !empty($get['redirect'])) {
             $_SESSION['login_redirect'] = $get['redirect'];
         }
@@ -32,26 +31,27 @@ class LoginController implements BaseController
         $password = $post["password"];
 
         if (!$this->model->findByUsername($username)) {
-            $this->view->render(["errors" => ["User is not registered"]]);
+            $this->view->render([
+                "errors" => ["Utente non registrato"],
+                "formData" => $post
+            ]);
             return;
         }
 
         if (!$this->model->authenticate($this->model->findByUsername($username)->getUsername(), $password)) {
-            $this->view->render(["errors" => ["Invalid username or password"]]);
+            $this->view->render([
+                "errors" => ["Username o password non validi"],
+                "formData" => ["username" => $username]
+            ]);
             return;
         }
 
         session_regenerate_id(true);
-
         $_SESSION["username"] = $username;
 
-        // Debug - stampa il valore di login_redirect se esiste
-        error_log("Redirect value: " . (isset($_SESSION['login_redirect']) ? $_SESSION['login_redirect'] : 'none'));
-
-        // Reindirizza alla pagina originale se disponibile, altrimenti alla home
         if (isset($_SESSION['login_redirect']) && !empty($_SESSION['login_redirect'])) {
             $redirectPage = $_SESSION['login_redirect'];
-            unset($_SESSION['login_redirect']); // Pulizia
+            unset($_SESSION['login_redirect']);
             header("Location: $redirectPage");
         } else {
             header("Location: index.php");

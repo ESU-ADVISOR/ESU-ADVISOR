@@ -16,7 +16,6 @@ class PiattoView extends BaseView
     {
         parent::render();
 
-        //breadcrumbs
         $breadcrumbContent = '<p>Ti trovi in: <a href="index.php" lang="en">Home</a> &gt; &gt; '. htmlspecialchars($data["nome"]);
         Utils::replaceTemplateContent(
             $this->dom,
@@ -28,7 +27,6 @@ class PiattoView extends BaseView
 
         $piatto = PiattoModel::findByName($data["nome"]);
 
-        // Check for allergens
         $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
         $hasAllergens = $piatto->containsAllergens($userAllergeni);
         
@@ -42,7 +40,6 @@ class PiattoView extends BaseView
         
         $piattoDescription .= "<p>" . htmlspecialchars($data["descrizione"]) . "</p>";
 
-        // List allergens if present
         $allergeni = $piatto->getAllergeni();
         if (!empty($allergeni)) {
             $piattoDescription .= "<div class=\"allergens-list\">
@@ -52,15 +49,13 @@ class PiattoView extends BaseView
         
         $piattoDescription .= "</div>";
 
-        // Ottieni l'immagine del piatto
         $piattoImage = "";
         if ($piatto->getImage()) {
-            $piattoImage = "<img src=\"" . $piatto->getImage() . "\" alt=\"" . htmlspecialchars($data["nome"]) . "\" class=\"piatto-img\">";
+            $piattoImage = "<img src=\"" . $piatto->getImage() . "\" alt=\"Piatto " . htmlspecialchars($data["nome"]) . " della mensa ESU\" class=\"piatto-img\">";
         } else {
             $piattoImage = "<div class=\"no-image\">Immagine non disponibile</div>";
         }
 
-        // Prepara le stelle per la valutazione
         $starSVG = file_get_contents(
             __DIR__ . "/../../public_html/images/star.svg"
         );
@@ -79,7 +74,6 @@ class PiattoView extends BaseView
         }
         $piattoRating .= "</div>";
 
-        // Genera la lista di recensioni in un formato migliore
         $piattoReview = "";
         $recensioni = $piatto->getRecensioni();
         
@@ -91,7 +85,6 @@ class PiattoView extends BaseView
                 $piattoReview .= "<div class=\"review-header\">";
                 $piattoReview .= "<h4 class=\"review-author\">" . htmlspecialchars($recensione->getUtente()) . "</h4>";
                 
-                // Aggiungi stelle per la valutazione
                 $piattoReview .= "<div class=\"ratings\">";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {
                     $piattoReview .= $starFilledSVG;
@@ -102,10 +95,8 @@ class PiattoView extends BaseView
                 $piattoReview .= "</div>";
                 $piattoReview .= "</div>";
                 
-                // Aggiungi il testo della recensione
                 $piattoReview .= "<p class=\"review-text\">" . htmlspecialchars($recensione->getDescrizione()) . "</p>";
                 
-                // Aggiungi metadati della recensione come la data
                 if ($recensione->getData()) {
                     $data = $recensione->getData()->format('d/m/Y');
                     $piattoReview .= "<div class=\"review-meta\">Recensione pubblicata il: " . $data . "</div>";

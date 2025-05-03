@@ -16,11 +16,10 @@ class ProfileView extends BaseView
     {
         parent::render();
         if (empty($_SESSION["username"])) {
-            self::renderError("You're not logged in");
+            self::renderError("Devi effettuare il login per accedere");
             return;
         }
 
-        //breadcrumbs
         $breadcrumbContent = '<p>Ti trovi in: Profilo</p>';
         Utils::replaceTemplateContent(
             $this->dom,
@@ -30,7 +29,7 @@ class ProfileView extends BaseView
 
         $user = UserModel::findByUsername($_SESSION["username"]);
         if ($user === null) {
-            self::renderError("User not found");
+            self::renderError("Utente non trovato");
             return;
         }
 
@@ -42,7 +41,6 @@ class ProfileView extends BaseView
             $username
         );
 
-        // Ottieni la data di registrazione
         $dataNascita = $user->getDataNascita();
         $memberSince = "";
         if ($dataNascita) {
@@ -57,7 +55,6 @@ class ProfileView extends BaseView
             $memberSince
         );
 
-        // Ottieni le recensioni e prepara le statistiche
         $recensioni = $user->getRecensioni();
         $recensioniCount = count($recensioni);
         
@@ -67,7 +64,6 @@ class ProfileView extends BaseView
             $recensioniCount
         );
         
-        // Calcola la media dei voti
         $avgRating = 0;
         if ($recensioniCount > 0) {
             $totalRating = 0;
@@ -83,7 +79,6 @@ class ProfileView extends BaseView
             $avgRating
         );
 
-        // Miglioramento della visualizzazione delle recensioni con stelle e card
         $starSVG = file_get_contents(
             __DIR__ . "/../../public_html/images/star.svg"
         );
@@ -100,11 +95,9 @@ class ProfileView extends BaseView
             foreach ($recensioni as $recensione) {
                 $recensioniContent .= "<li class='review-card mb-3'>";
                 
-                // Aggiungi intestazione con titolo piatto e votazione
                 $recensioniContent .= "<div class='review-header'>";
                 $recensioniContent .= "<h4>" . htmlspecialchars($recensione->getPiatto()) . "</h4>";
                 
-                // Aggiungi stelle per la valutazione
                 $recensioniContent .= "<div class='ratings'>";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {
                     $recensioniContent .= $starFilledSVG;
@@ -115,16 +108,13 @@ class ProfileView extends BaseView
                 $recensioniContent .= "</div>";
                 $recensioniContent .= "</div>";
                 
-                // Aggiungi il testo della recensione
                 $recensioniContent .= "<p>" . htmlspecialchars($recensione->getDescrizione()) . "</p>";
                 
-                // Aggiungi metadati della recensione
                 if ($recensione->getData()) {
                     $data = $recensione->getData()->format('d/m/Y');
                     $recensioniContent .= "<div class='review-meta'>Recensione pubblicata il: " . $data . "</div>";
                 }
                 
-                // Aggiungi link per vedere la pagina del piatto
                 $recensioniContent .= "<div class='review-actions'>";
                 $recensioniContent .= "<a href='piatto.php?nome=" . 
                     htmlspecialchars(str_replace(" ", "_", strtolower($recensione->getPiatto()))) . 

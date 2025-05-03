@@ -23,7 +23,8 @@ class RegisterController implements BaseController
         try {
             if (UserModel::isUsernameTaken($username)) {
                 $view->render([
-                    "errors" => ["Registration failed: Username already exists"]
+                    "errors" => ["Registrazione fallita: Username già in uso"],
+                    "formData" => $post
                 ]);
                 return;
             }
@@ -35,16 +36,20 @@ class RegisterController implements BaseController
             ]);
 
             if ($new_user->saveToDB()) {
-                $view->render(["success" => "Registration successful!"]);
+                $view->render(["success" => "Registrazione completata con successo!"]);
                 return;
             } else {
                 $view->render([
-                    "errors" => ["Registration failed: Could not save to the database"],
+                    "errors" => ["Registrazione fallita: Impossibile salvare nel database"],
+                    "formData" => $post
                 ]);
             }
         } catch (\Exception $e) {
+            error_log("Errore di registrazione: " . $e->getMessage());
+            
             $view->render([
-                "errors" => ["Registration failed: " . $e->getMessage()],
+                "errors" => ["Registrazione fallita: " . $e->getMessage()],
+                "formData" => $post
             ]);
         }
     }

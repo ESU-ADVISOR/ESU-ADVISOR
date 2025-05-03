@@ -28,16 +28,20 @@ class ReviewController implements BaseController
 
         try {
             if ($recensione->saveToDB()) {
-                $view->render(["success" => "Review successfully submitted!"]);
+                $view->render(["success" => "Recensione inviata con successo!"]);
                 return;
             } else {
                 $view->render([
-                    "errors" => ["Review submission failed: could not save to database"],
+                    "errors" => ["Invio recensione fallito: impossibile salvare nel database"],
+                    "formData" => $post
                 ]);
             }
         } catch (\Exception $e) {
+            error_log("Errore di recensione: " . $e->getMessage());
+            
             $view->render([
-                "errors" => ["Review submission failed: " . $e->getMessage()],
+                "errors" => ["Invio recensione fallito: " . $e->getMessage()],
+                "formData" => $post
             ]);
         }
     }

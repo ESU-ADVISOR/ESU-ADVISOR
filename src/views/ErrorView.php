@@ -4,10 +4,6 @@ namespace Views;
 
 use Views\Utils;
 
-/**
- * Classe concreta ErrorView che estende BaseView
- * Gestisce la visualizzazione delle pagine di errore
- */
 class ErrorView extends BaseView
 {
     public function __construct()
@@ -15,11 +11,6 @@ class ErrorView extends BaseView
         parent::__construct(__DIR__ . "/../templates/error.html");
     }
     
-    /**
-     * Renderizza la pagina di errore con un messaggio personalizzato
-     * 
-     * @param array $data Dati da visualizzare, inclusi codice di errore e messaggio
-     */
     public function render(array $data = []): void
     {
         parent::render();
@@ -27,7 +18,6 @@ class ErrorView extends BaseView
         $errorCode = isset($data['code']) ? intval($data['code']) : 500;
         $errorMessage = isset($data['message']) ? $data['message'] : 'Si è verificato un errore';
         
-        // Gestione di errori specifici
         if ($errorCode === 401 || $errorCode === 403) {
             $this->renderUnauthorizedError($data);
         } else if ($errorCode === 404) {
@@ -37,26 +27,20 @@ class ErrorView extends BaseView
         }
     }
     
-    /**
-     * Renderizza un errore di accesso non autorizzato
-     */
     public function renderUnauthorizedError(array $data = []): void
     {
-        // Imposta titolo specifico per errore di accesso
         Utils::replaceTemplateContent(
             $this->dom,
             "error-title-template",
             "<h1>Accesso richiesto</h1>"
         );
         
-        // Imposta messaggio di errore specifico
         Utils::replaceTemplateContent(
             $this->dom,
             "error-message-template",
             "<h3>È necessario effettuare l'accesso per visualizzare questa pagina</h3>"
         );
         
-        // Svuota i placeholder per i contenuti di altri tipi di errore
         Utils::replaceTemplateContent(
             $this->dom,
             "not-found-error-content",
@@ -69,7 +53,6 @@ class ErrorView extends BaseView
             ""
         );
         
-        // Prepara i link di login/register con redirect
         $redirectTo = '';
         if (isset($_SESSION['login_redirect'])) {
             $redirectTo = '?redirect=' . urlencode($_SESSION['login_redirect']);
@@ -99,14 +82,12 @@ class ErrorView extends BaseView
             </div>
         </div>';
         
-        // Inserisci contenuto per l'errore di accesso
         Utils::replaceTemplateContent(
             $this->dom,
             "access-error-content", 
             $loginButtons
         );
         
-        // Aggiungi un'azione aggiuntiva per tornare alla pagina precedente
         Utils::replaceTemplateContent(
             $this->dom,
             "error-additional-action",
@@ -122,26 +103,20 @@ class ErrorView extends BaseView
         echo $this->dom->saveHTML();
     }
     
-    /**
-     * Renderizza un errore 404 (pagina non trovata)
-     */
     public function renderNotFoundError(array $data = []): void
     {
-        // Imposta titolo specifico per errore 404
         Utils::replaceTemplateContent(
             $this->dom,
             "error-title-template",
             "<h1>Pagina non trovata</h1>"
         );
         
-        // Imposta messaggio di errore specifico
         Utils::replaceTemplateContent(
             $this->dom,
             "error-message-template",
             "<h3>La pagina che stai cercando non esiste</h3>"
         );
         
-        // Svuota i placeholder per i contenuti di altri tipi di errore
         Utils::replaceTemplateContent(
             $this->dom,
             "access-error-content",
@@ -157,19 +132,14 @@ class ErrorView extends BaseView
         echo $this->dom->saveHTML();
     }
     
-    /**
-     * Renderizza un errore generico
-     */
     public function renderGenericError(string $message, int $code = 500): void
     {
-        // Imposta messaggio di errore specifico
         Utils::replaceTemplateContent(
             $this->dom,
             "error-message-template",
             "<h3>" . htmlspecialchars($message) . "</h3>"
         );
         
-        // Svuota i placeholder per i contenuti di altri tipi di errore
         Utils::replaceTemplateContent(
             $this->dom,
             "access-error-content",

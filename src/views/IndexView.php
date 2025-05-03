@@ -40,7 +40,6 @@ class IndexView extends BaseView
         if (isset($data["mense"]) && is_array($data["mense"])) {
             $id = 0;
             foreach ($data["mense"] as $mensa) {
-                // Build menseContent
                 $menseContent .=
                     "<option value=\"" .
                     htmlspecialchars($id) .
@@ -48,14 +47,11 @@ class IndexView extends BaseView
                     htmlspecialchars($mensa["nome"]) .
                     "</option>";
 
-                // Build menseInfoContent (always included but hidden based on selection)
                 $menseInfoContent .= "<li class=\"mense-info-item\" data-mensa-id=\"" .
                     htmlspecialchars($id) . "\">";
 
-                // Heading for the mensa section
                 $menseInfoContent .= "<h3>" . htmlspecialchars($mensa["nome"]) . "</h3>";
 
-                // Contact information list
                 $menseInfoContent .= "<dl class=\"contact-info\">";
                 $menseInfoContent .= "<div class=\"contact-group\">";
                 $menseInfoContent .= "<dt>Indirizzo:</dt>";
@@ -68,14 +64,11 @@ class IndexView extends BaseView
                 $menseInfoContent .= "</div>";
                 $menseInfoContent .= "</dl>";
 
-                // Add schedule table
                 $menseInfoContent .= "<div class=\"schedule-container\">";
-                // Fetch orari
                 $orari = MenseModel::findByName(
                     $mensa["nome"]
                 )->getMenseOrari();
 
-                // Weekdays
                 $giorniSettimana = [
                     "Lunedì",
                     "Martedì",
@@ -86,10 +79,6 @@ class IndexView extends BaseView
                     "Domenica",
                 ];
                 
-                //aggiungere caption e aria-label in modo che siano nascosti
-                //aggiunggere abbr "dalle alle" per orari
-
-                // Initialize table
                 $menseInfoContent .= "
                         <p id='orari-mensa-description'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
                         <table aria-describedby=\"orari-mensa-description\"> 
@@ -102,7 +91,6 @@ class IndexView extends BaseView
                             </thead>
                             <tbody>";
 
-                // Fetch orari from the database
                 foreach ($giorniSettimana as $giorno) {
                     $menseInfoContent .= "<tr>
                             <th scope=\"row\" abbr=\"" . htmlspecialchars(substr($giorno, 0, 3)) . "\">" . htmlspecialchars($giorno) . "</th><td>";
@@ -128,12 +116,20 @@ class IndexView extends BaseView
                 $menseInfoContent .=
                     "<a href=\"" .
                     htmlspecialchars($mensa["maps_link"]) .
-                    "\" class=\"directions-button\">
-                        <button class=\"nav-button secondary full-width\">Direzioni</button>
-                    </a></li>";
+                    "\" class=\"directions-button\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Indicazioni per " . htmlspecialchars($mensa["nome"]) . " su Google Maps (si apre in una nuova finestra)\">
+                        <button class=\"nav-button secondary full-width\">
+                            Direzioni su Google Maps
+                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"external-link-icon\" aria-hidden=\"true\">
+                                <path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"></path>
+                                <polyline points=\"15 3 21 3 21 9\"></polyline>
+                                <line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\"></line>
+                            </svg>
+                        </button>
+                    </a>";
+                
+                $menseInfoContent .= "</li>";
 
                 // =========== Corrected Logic for Menu Items ============
-                // Per ogni mensa, crea un placeholder che verrà mostrato solo per la mensa selezionata
                 if (isset($mensa["piatti"]) && is_array($mensa["piatti"]) && !empty($mensa["piatti"])) {
                     $piattiForThisMensa = "";
                     foreach ($mensa["piatti"] as $piatto) {
@@ -142,12 +138,12 @@ class IndexView extends BaseView
                             $piattiForThisMensa .=
                                 "<figure><img src=\"" . $piatto->getImage() . "\" alt=\"" .
                                 htmlspecialchars($piatto->getNome()) .
-                                "\" width=\"150\" height=\"150\"></figure>";
+                                "\" width=\"150\" height=\"150\" loading=\"lazy\"></figure>";
                         } else {
                             $piattiForThisMensa .=
                                 "<figure><img src=\"images/placeholder.png\" alt=\"" .
                                 htmlspecialchars($piatto->getNome()) .
-                                "\" width=\"150\" height=\"150\"></figure>";
+                                "\" width=\"150\" height=\"150\" loading=\"lazy\"></figure>";
                         }
                         $piattiForThisMensa .=
                             "<div class=\"menu-item-content\">";
@@ -199,35 +195,31 @@ class IndexView extends BaseView
                             "</article>";
                     }
                     
-                    // Aggiungiamo i piatti come un unico elemento di lista con attributo data-mensa-id
                     $piattiContent .= "<li class=\"menu-item-container\" data-mensa-id=\"" . 
                         htmlspecialchars($id) . "\">" . $piattiForThisMensa . "</li>";
                 } else {
-                    // Se non ci sono piatti, creiamo un singolo messaggio per questa mensa
                     $piattiContent .= "<li class=\"menu-item-container\" data-mensa-id=\"" . 
                         htmlspecialchars($id) . 
                         "\"><div class=\"empty-menu\"><p class=\"text-center\">Nessun piatto disponibile per questa mensa</p></div></li>";
                 }
 
                 // =========== Corrected Logic for Dish of the Day ============
-                // Per ogni mensa, crea un elemento per il piatto del giorno che verrà mostrato solo per la mensa selezionata
                 if (isset($mensa["piatto_del_giorno"]) && $mensa["piatto_del_giorno"]) {
                     $dishOfTheDayContent .= "<div class=\"menu-item-container\" data-mensa-id=\"" . 
                         htmlspecialchars($id) . "\">";
                     
                     $dishOfTheDayContent .= "<article class=\"menu-item\">";
                     
-                    // Aggiunto controllo per l'immagine
                     if ($mensa["piatto_del_giorno"]->getImage()) {
                         $dishOfTheDayContent .=
                             "<figure><img src=\"" . $mensa["piatto_del_giorno"]->getImage() . "\" alt=\"" .
                             htmlspecialchars($mensa["piatto_del_giorno"]->getNome()) .
-                            "\" width=\"150\" height=\"150\"></figure>";
+                            "\" width=\"150\" height=\"150\" loading=\"lazy\"></figure>";
                     } else {
                         $dishOfTheDayContent .=
                             "<figure><img src=\"images/placeholder.png\" alt=\"" .
                             htmlspecialchars($mensa["piatto_del_giorno"]->getNome()) .
-                            "\" width=\"150\" height=\"150\"></figure>";
+                            "\" width=\"150\" height=\"150\" loading=\"lazy\"></figure>";
                     }
                     
                     $dishOfTheDayContent .= "<div class=\"menu-item-content\">";

@@ -395,6 +395,13 @@
     margin-top: var(--spacing-md);
 }
 
+.directions-button .external-link-icon {
+    width: 16px;
+    height: 16px;
+    margin-left: var(--spacing-xs);
+    vertical-align: middle;
+}
+
 /* ===== REVIEWS STYLING ===== */
 /* Stili per le recensioni - utilizzati in profilo e piatto */
 .review-card {

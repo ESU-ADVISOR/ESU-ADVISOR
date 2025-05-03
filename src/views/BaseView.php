@@ -161,7 +161,7 @@ abstract class BaseView
         $currentPage = basename($_SERVER['PHP_SELF']);
 
         $isAccessError = in_array($currentPage, $protectedPages) &&
-            ($error === "You're not logged in" || $error === "Devi effettuare il login per accedere");
+            $error === "Devi effettuare il login per accedere";
 
         if ($isAccessError) {
             header("Location: error.php?code=401&page=" . urlencode($currentPage));

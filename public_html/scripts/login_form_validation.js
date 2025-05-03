@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const username = usernameInput.value.trim();
     if (!username) {
       isValid = false;
-      errors.push("Username is required.");
+      errors.push("Username obbligatorio.");
     }
 
     if (!isValid) {

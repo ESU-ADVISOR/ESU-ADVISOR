@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const username = usernameInput.value.trim();
     if (username.length < 3 || username.length > 50) {
       isValid = false;
-      errors.push("Username must be between 3 and 50 characters long.");
+      errors.push("L'username deve essere compreso tra 3 e 50 caratteri.");
     }
     if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
       isValid = false;
       errors.push(
-        "Username can only contain letters, numbers, underscores, and hyphens.",
+        "L'username può contenere solo lettere, numeri, underscore e trattini."
       );
     }
 

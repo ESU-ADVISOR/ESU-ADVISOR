@@ -16,24 +16,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (password !== confirmPassword) {
       isValid = false;
-      errors.push("Passwords do not match.");
+      errors.push("Le password non corrispondono.");
     }
     if (currentPassword === password) {
       isValid = false;
-      errors.push("New password must be different from the current password.");
+      errors.push("La nuova password deve essere diversa da quella attuale.");
     }
     if (password.length < 8) {
       isValid = false;
-      errors.push("Password must be at least 8 characters long.");
+      errors.push("La password deve essere di almeno 8 caratteri.");
     }
     if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
-        password,
+        password
       )
     ) {
       isValid = false;
       errors.push(
-        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).",
+        "La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&)."
       );
     }
 

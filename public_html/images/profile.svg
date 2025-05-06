@@ -1,10 +1,13 @@
 <svg
+    role="img"
+    aria-labelledby="profile-icon-label"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
     stroke-width="32"
     width="24"
     height="24"
 >
+    <title id="profile-icon-label">Profile</title>
     <path
         stroke-linecap="round"
         stroke-linejoin="round"

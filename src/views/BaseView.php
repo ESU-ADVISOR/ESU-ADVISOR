@@ -35,25 +35,34 @@ abstract class BaseView
         );
 
         //manipolare headerDOM per togliere il link alla home dall'header quando siamo nella home (link circolare)
-        $headerDOM= new \DOMDocument();
+        $headerDOM = new \DOMDocument();
         libxml_use_internal_errors(true);
-        $headerDOM->loadHTML('<?xml encoding="UTF-8">' . $headerContent);
+        $headerDOM->loadHTML($headerContent);
         libxml_clear_errors();
 
         $xpathHeader = new DOMXpath($headerDOM);
         $headerLink = $xpathHeader->query('//a[@href="index.php"]')->item(0);
-        if($headerLink && $this->currentPage === 'index'){            
+        if ($headerLink && $this->currentPage === 'index') {
             /** @var DOMElement $headerLink */
-            $headerLink->removeAttribute('href'); // Rimuove il link
+            $span = $headerDOM->createElement('span');
+            foreach ($headerLink->attributes as $attr) {
+                if ($attr->name !== 'href') {
+                    $span->setAttribute($attr->name, $attr->value);
+                }
+            }
+            while ($headerLink->firstChild) {
+                $span->appendChild($headerLink->firstChild);
+            }
+            $headerLink->parentNode->replaceChild($span, $headerLink);
         }
         $headerContent = $headerDOM->saveHTML();
 
         //manipolare footerDOM per togliere il link alla pagina attuale dal nav (link circolare)
-        $footerDOM = new \DOMDocument();    
+        $footerDOM = new \DOMDocument();
         libxml_use_internal_errors(true);
         $footerDOM->loadHTML($footerContent);
         libxml_clear_errors();
-    
+
         $xpath = new DOMXPath($footerDOM);
         $links = $xpath->query('//a');
         if ($links) {
@@ -67,14 +76,20 @@ abstract class BaseView
                         if ($parentNode instanceof DOMElement && $parentNode->nodeName === 'li') {
                             $currentClass = $parentNode->getAttribute('class') ?? '';
                             $parentNode->setAttribute('class', trim($currentClass . ' active'));
-
-                            // Rimuove l'attributo href per disabilitare il link circolare
-                            $link->removeAttribute('href');
-                            // Aggiunge aria-current per accessibilità
-                            $link->setAttribute('aria-current', 'page');
-                            // Aggiunge tabindex -1 per rimuoverlo dall'ordine di tabulazione
-                            $link->setAttribute('tabindex', '-1');
                         }
+                        $span = $footerDOM->createElement('span');
+                        foreach ($link->attributes as $attr) {
+                            if ($attr->name !== 'href') {
+                                $span->setAttribute($attr->name, $attr->value);
+                            }
+                        }
+                        $span->setAttribute('aria-current', 'page');
+                        $span->setAttribute('tabindex', '-1');
+                        $span->setAttribute('rel', 'nofollow');
+                        while ($link->firstChild) {
+                            $span->appendChild($link->firstChild);
+                        }
+                        $link->parentNode->replaceChild($span, $link);
                     }
                 }
             }

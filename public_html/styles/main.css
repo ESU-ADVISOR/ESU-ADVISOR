@@ -27,17 +27,17 @@
     border: 0;
 }
 
-.navigationHelp{
+.navigationHelp {
     position: absolute;
     left: -9999em;
 }
 
-#orari-mensa-description{
+#orari-mensa-description {
     position: absolute;
     left: -9999em;
 }
 
-.logo-container h1{
+/* .logo-container h1{
     background-image: url("../images/logo.svg");
     background-size: contain;
     background-repeat: no-repeat;
@@ -47,9 +47,7 @@
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
-}
-
-
+} */
 
 [hidden] {
     display: none !important;

@@ -48,7 +48,7 @@ class ProfileView extends BaseView
         } else {
             $memberSince = "Membro";
         }
-        
+
         Utils::replaceTemplateContent(
             $this->dom,
             "profile-member-since-template",
@@ -57,13 +57,13 @@ class ProfileView extends BaseView
 
         $recensioni = $user->getRecensioni();
         $recensioniCount = count($recensioni);
-        
+
         Utils::replaceTemplateContent(
             $this->dom,
             "profile-recensioni-count-template",
             $recensioniCount
         );
-        
+
         $avgRating = 0;
         if ($recensioniCount > 0) {
             $totalRating = 0;
@@ -72,7 +72,7 @@ class ProfileView extends BaseView
             }
             $avgRating = number_format($totalRating / $recensioniCount, 1);
         }
-        
+
         Utils::replaceTemplateContent(
             $this->dom,
             "profile-avg-rating-template",
@@ -88,16 +88,16 @@ class ProfileView extends BaseView
         );
 
         $recensioniContent = "";
-        
+
         if (empty($recensioni)) {
-            $recensioniContent = "<p class='text-center text-secondary'>Non hai ancora scritto recensioni.</p>";
+            $recensioniContent = "<li><p class='text-center text-secondary'>Non hai ancora scritto recensioni.</p></li>";
         } else {
             foreach ($recensioni as $recensione) {
                 $recensioniContent .= "<li class='review-card mb-3'>";
-                
+
                 $recensioniContent .= "<div class='review-header'>";
                 $recensioniContent .= "<h4>" . htmlspecialchars($recensione->getPiatto()) . "</h4>";
-                
+
                 $recensioniContent .= "<div class='ratings'>";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {
                     $recensioniContent .= $starFilledSVG;
@@ -107,20 +107,20 @@ class ProfileView extends BaseView
                 }
                 $recensioniContent .= "</div>";
                 $recensioniContent .= "</div>";
-                
+
                 $recensioniContent .= "<p>" . htmlspecialchars($recensione->getDescrizione()) . "</p>";
-                
+
                 if ($recensione->getData()) {
                     $data = $recensione->getData()->format('d/m/Y');
                     $recensioniContent .= "<div class='review-meta'>Recensione pubblicata il: " . $data . "</div>";
                 }
-                
+
                 $recensioniContent .= "<div class='review-actions'>";
-                $recensioniContent .= "<a href='piatto.php?nome=" . 
-                    htmlspecialchars(str_replace(" ", "_", strtolower($recensione->getPiatto()))) . 
+                $recensioniContent .= "<a href='piatto.php?nome=" .
+                    htmlspecialchars(str_replace(" ", "_", strtolower($recensione->getPiatto()))) .
                     "' class='text-primary'>Vedi dettagli piatto</a>";
                 $recensioniContent .= "</div>";
-                
+
                 $recensioniContent .= "</li>";
             }
         }

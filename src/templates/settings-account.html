@@ -2,7 +2,7 @@
     <h2 class="text-lg font-semibold mb-3" id="primoContenuto">Informazioni <span lang="en">account</span></h2>
     <form action="settings.php" id="change_username_form" method="post" class="base-form">
         <div class="form-group">
-            <label for="username">Modifica <span lang="en">username</span></label>
+            <label for="new_username">Modifica <span lang="en">username</span></label>
             <input
                 type="username"
                 id="new_username"
@@ -20,7 +20,7 @@
 
     <form action="settings.php" id="change_password_form" method="post" class="base-form">
         <div class="form-group">
-            <label for="old_password"><span lang="en">Password</span> attuale</label>
+            <label for="password"><span lang="en">Password</span> attuale</label>
             <input
                 type="password"
                 id="password"
@@ -33,7 +33,7 @@
                 "
             />
 
-            <label for="password">Modifica <span lang="en">password</span></label>
+            <label for="new_password">Modifica <span lang="en">password</span></label>
             <input
                 type="password"
                 id="new_password"
@@ -46,7 +46,7 @@
                 "
             />
 
-            <label for="confirm_password">Conferma <span lang="en">password</span></label>
+            <label for="new_password_confirm">Conferma <span lang="en">password</span></label>
             <input
                 type="password"
                 id="new_password_confirm"
@@ -64,16 +64,15 @@
     </form>
 
     <div class="form-group">
-        <label for="delete-account">Elimina l\'<span lang="en">account</span></label>
-        <button type="submit" id="delete-account-button" class="danger form-button">
+        <button type="submit" id="delete-account-button" class="danger form-button" aria-label="Elimina Account">
             Elimina <span lang="en">Account</span>
         </button>
 
         <div class="modal" id="myModal">
             <div class="modal-content card card-expanded mb-4">
                 <div class="card-content">
-                    <h2 class="card-title">Conferma l'eliminazione dell\'<span lang="en">account</span></h2>
-                    <button class="close-button" id="close-modal">&times;</button>
+                    <h2 class="card-title">Conferma l'eliminazione dell'<span lang="en">account</span></h2>
+                    <button class="close-button" id="close-modal" aria-label="Chiudi finestra">&times;</button>
                     <p>
                         Sei sicuro di volere cancellare il tuo <span lang="en">account</span>? Questa azione è
                         irreversibile.
@@ -89,4 +88,3 @@
         </div>
     </div>
 </section>
-'

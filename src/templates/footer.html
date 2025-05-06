@@ -1,11 +1,13 @@
 <footer class="bottom-nav">
-    <nav class="nav" id="menu">
+    <nav class="nav" id="menu" aria-label="Menu di navigazione principale">
         <ul>
-            <li><a href="#content" class="navigationHelp">Salta il menu' di navigazione</a></li>
+            <li class="visually-hidden"><a href="#content" class="navigationHelp">Salta il menu' di navigazione</a></li>
             <li class="nav-item">
                 <a href="index.php">
                     <span lang="en">
-                        <template id="home-icon-template"></template>
+                        <span class="icon-container" aria-hidden="true">
+                            <template id="home-icon-template"></template>
+                        </span>
                         Home
                     </span>
                 </a>
@@ -13,7 +15,9 @@
             <li class="nav-item">
                 <a href="review.php">
                     <span lang="en">
-                        <template id="review-icon-template"></template>
+                        <span class="icon-container" aria-hidden="true">
+                            <template id="review-icon-template"></template>
+                        </span>
                         Review
                     </span>
                 </a>
@@ -21,7 +25,9 @@
             <li class="nav-item">
                 <a href="profile.php">
                     <span>
-                        <template id="profile-icon-template"></template>
+                        <span class="icon-container" aria-hidden="true">
+                            <template id="profile-icon-template"></template>
+                        </span>
                         Profilo
                     </span>
                 </a>
@@ -29,7 +35,9 @@
             <li class="nav-item">
                 <a href="settings.php">
                     <span>
-                        <template id="settings-icon-template"></template>
+                        <span class="icon-container" aria-hidden="true">
+                            <template id="settings-icon-template"></template>
+                        </span>
                         Impostazioni 
                     </span>
                 </a>

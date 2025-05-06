@@ -29,8 +29,8 @@
 
 .logo-container img {
     /*si può rimuovere se viene confermato l'image replacement*/
-    height: 100%;
-    width: auto;
+    /* height: 100%;
+    width: auto; */
 }
 
 .nav-buttons {
@@ -191,56 +191,6 @@ body {
     width: 100%;
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
-}
-
-/* Grid layouts */
-.grid {
-    display: grid;
-    gap: var(--spacing-md);
-}
-
-.grid-cols-1 {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
-.flex {
-    display: flex;
-}
-
-.flex-wrap {
-    flex-wrap: wrap;
-}
-
-.flex-col {
-    flex-direction: column;
-}
-
-.items-center {
-    align-items: center;
-}
-
-.justify-center {
-    justify-content: center;
-}
-
-.justify-between {
-    justify-content: space-between;
-}
-
-.gap-1 {
-    gap: var(--spacing-xs);
-}
-
-.gap-2 {
-    gap: var(--spacing-sm);
-}
-
-.gap-3 {
-    gap: var(--spacing-md);
-}
-
-.gap-4 {
-    gap: var(--spacing-lg);
 }
 
 /* ===== SPECIFICHE PER PAGINE PARTICOLARI ===== */

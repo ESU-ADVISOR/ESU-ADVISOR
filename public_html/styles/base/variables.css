@@ -91,14 +91,15 @@
     --text-secondary: #efefef;
     --background: #0d0d0d;
     --background-card: #1b1b1b;
-    --primary: #199eea;
+    --primary: #60c6ff;
     --primary-button: #006bd2;
     --primary-hover: #64b9ea;
-    --text-on-primary: #000000;
-    --text-on-danger: #000000;
+    --text-on-primary: #ffffff;
+    --text-on-danger: #ffffff;
     --border-color: #333333;
-    --danger: #d55e00;
+    --danger: #a74b02;
     --danger-hover: #d66c18;
+    --border-color: #333333;
 }
 
 /* Font size classes */
@@ -210,9 +211,13 @@ svg:not(.logo) {
         --text-secondary: #efefef;
         --background: #0d0d0d;
         --background-card: #1b1b1b;
-        --primary: #56b4e9;
+        --primary: #60c6ff;
+        --primary-button: #006bd2;
         --primary-hover: #64b9ea;
-        --danger: #d55e00;
+        --text-on-primary: #ffffff;
+        --text-on-danger: #ffffff;
+        --border-color: #333333;
+        --danger: #a74b02;
         --danger-hover: #d66c18;
         --border-color: #333333;
     }

@@ -89,7 +89,7 @@
 
 /* Back to top button */
 .back-to-top {
-    background-color: var(--primary);
+    background-color: var(--primary-button);
     color: var(--text-on-primary);
     position: fixed;
     bottom: calc(var(--footer-height) + var(--spacing-md));
@@ -205,7 +205,7 @@
 .allergen-warning {
     background-color: rgba(212, 57, 0, 0.1);
     border-left: 4px solid var(--danger);
-    color: var(--danger);
+    color: #ff7507;
     padding: var(--spacing-sm) var(--spacing-md);
     margin-bottom: var(--spacing-md);
     border-radius: var(--radius-sm);
@@ -254,7 +254,9 @@
 }
 
 .menu-item-container {
-    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
 }
 
 .menu-item-container:last-child {
@@ -482,7 +484,9 @@
     height: 48px;
     border-radius: var(--radius);
     border: 1px solid var(--border-color);
-    transition: border-color var(--transition), box-shadow var(--transition);
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition);
 }
 
 .form-input[type="search"]:focus {
@@ -1027,13 +1031,13 @@ span.center {
     .card-expanded {
         padding: var(--spacing-md);
     }
-    
+
     /* Responsive search bar */
     .search-form {
         margin-bottom: var(--spacing-sm);
         gap: var(--spacing-xs);
     }
-    
+
     .form-input[type="search"] {
         font-size: 16px; /* Prevent zoom on iOS */
     }

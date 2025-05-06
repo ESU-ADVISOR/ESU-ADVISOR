@@ -6,7 +6,16 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!searchInput || !clearButton || !resultsCount) return;
 
   function toggleClearButton() {
-    clearButton.style.display = searchInput.value.length > 0 ? "block" : "none";
+    const isVisible = searchInput.value.length > 0;
+    clearButton.style.display = isVisible ? "block" : "none";
+
+    if (isVisible) {
+      clearButton.removeAttribute("tabindex");
+      clearButton.removeAttribute("aria-hidden");
+    } else {
+      clearButton.setAttribute("tabindex", "-1");
+      clearButton.setAttribute("aria-hidden", "true");
+    }
   }
 
   function filterPiatti() {
@@ -88,4 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   toggleClearButton();
+
+  clearButton.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      clearButton.click();
+    }
+  });
 });

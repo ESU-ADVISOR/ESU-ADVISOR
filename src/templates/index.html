@@ -3,12 +3,17 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="description"
+            content="ESU Advisor è un sito web permette di cercare piatti, selezionare mense e visualizzare il menu del giorno."
+        />
         <link rel="stylesheet" href="styles/main.css" />
         <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
         <title>ESU Advisor</title>
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
         <script src="scripts/accessibility-settings.js"></script>
+        <script src="scripts/bfcache-handler.js" defer></script>
         <script src="scripts/menu_select.js" defer></script>
         <script src="scripts/search-piatti.js" defer></script>
     </head>
@@ -28,16 +33,29 @@
             <section class="menu-section">
                 <div class="card card-expanded mb-4">
                     <h2 class="card-title">Menu del giorno</h2>
-                    
-                    <div class="search-form mb-3">
+
+                    <div class="search-form mb-3" role="search">
                         <label for="search-piatti">Cerca piatti:</label>
                         <div class="search-input-wrapper">
-                            <input type="search" id="search-piatti" class="form-input" placeholder="Cerca piatti..." aria-label="Cerca tra i piatti disponibili">
-                            <button type="button" id="clear-search" class="search-clear-button" aria-label="Cancella ricerca">✕</button>
+                            <input
+                                type="search"
+                                id="search-piatti"
+                                class="form-input"
+                                placeholder="Cerca piatti..."
+                                aria-label="Cerca tra i piatti disponibili"
+                            />
+                            <button
+                                type="submit"
+                                id="clear-search"
+                                class="search-clear-button"
+                                aria-label="Cancella ricerca"
+                            >
+                                ✕
+                            </button>
                         </div>
                     </div>
-                    
-                    <div id="search-results-count" class="search-results-info" aria-live="polite"></div>
+
+                    <div id="search-results-count" class="search-results-info" aria-live="polite" role="status"></div>
                     <ul class="piatti-list">
                         <template id="piatti-template"></template>
                     </ul>

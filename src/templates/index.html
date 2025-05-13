@@ -21,7 +21,7 @@
         <template id="header-template"></template>
 
         <main class="page-content" id="content">
-            <div class="mensa-select-container" id="primoContenuto">
+            <div class="mensa-select-container">
                 <section class="mense-section">
                     <label for="mense-select">Seleziona mensa:</label>
                     <select id="mense-select" class="form-select">
@@ -42,7 +42,7 @@
                                 id="search-piatti"
                                 class="form-input"
                                 placeholder="Cerca piatti..."
-                                aria-label="Cerca tra i piatti disponibili"
+                                aria-label="Cerca piatti"
                             />
                             <button
                                 type="submit"
@@ -79,12 +79,13 @@
             </section>
 
             <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
-                Torna su <span aria-hidden="true">&uarr;</span>
+                <span class="back-to-top-text">Torna su</span>
+                <span aria-hidden="true" class="back-to-top-arrow">&uarr;</span>
             </button>
         </main>
 
         <template id="footer-template"></template>
 
-        <script src="scripts/back-to-top.js"></script>
+        <script src="scripts/back-to-top.js" defer></script>
     </body>
 </html>

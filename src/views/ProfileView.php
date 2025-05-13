@@ -20,7 +20,7 @@ class ProfileView extends BaseView
             return;
         }
 
-        $breadcrumbContent = '<p>Ti trovi in: Profilo</p>';
+        $breadcrumbContent = '<h1 >Ti trovi in: Profilo</h1>';
         Utils::replaceTemplateContent(
             $this->dom,
             "breadcrumb-template",

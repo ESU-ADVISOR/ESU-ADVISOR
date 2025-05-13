@@ -17,7 +17,7 @@ class IndexView extends BaseView
         parent::render();
 
         //breadcrumbs
-        $breadcrumbContent = '<p>Ti trovi in: <span lang="en">Home</span></p>';
+        $breadcrumbContent = '<h1 >Ti trovi in: <span lang="en">Home</span></h1>';
         Utils::replaceTemplateContent(
             $this->dom,
             "breadcrumb-template",
@@ -115,8 +115,7 @@ class IndexView extends BaseView
                 $menseInfoContent .=
                     "<a href=\"" .
                     htmlspecialchars($mensa["maps_link"]) .
-                    "\" class=\"directions-button\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Indicazioni per " . htmlspecialchars($mensa["nome"]) . " su Google Maps (si apre in una nuova finestra)\">
-                        <button class=\"nav-button secondary full-width\">
+                    "\" class=\"directions-button nav-button secondary text-center\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Direzioni su Google Maps per " . htmlspecialchars($mensa["nome"]) . " (si apre in una nuova finestra)\">
                             Direzioni su Google Maps
                             <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"external-link-icon\" aria-hidden=\"true\" role=\"img\" aria-labelledby=\"external-link-title-" . $id . "\">
                                 <title id=\"external-link-title-" . $id . "\">Link esterno</title>
@@ -124,7 +123,6 @@ class IndexView extends BaseView
                                 <polyline points=\"15 3 21 3 21 9\"></polyline>
                                 <line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\"></line>
                             </svg>
-                        </button>
                     </a>";
 
                 $menseInfoContent .= "</li>";

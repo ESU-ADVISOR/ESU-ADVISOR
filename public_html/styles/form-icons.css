@@ -1,0 +1,41 @@
+/* Form input icons styling */
+.username-input {
+    background-image: url("../images/user-light.svg");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+}
+
+.password-input {
+    background-image: url("../images/lock-light.svg");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+}
+.date-input {
+    padding-right: 0.75rem;
+}
+
+/* Dark theme SVG colors */
+.theme-dark .username-input {
+    background-image: url("../images/user-dark.svg");
+}
+
+.theme-dark .password-input {
+    background-image: url("../images/lock-dark.svg");
+}
+
+/* System preference dark mode */
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) .username-input {
+        background-image: url("../images/user-dark.svg");
+    }
+
+    :root:not(.theme-light) .password-input {
+        background-image: url("../images/lock-dark.svg");
+    }
+
+    :root:not(.theme-light) .date-input::-webkit-calendar-picker-indicator {
+        filter: invert(100%);
+    }
+}

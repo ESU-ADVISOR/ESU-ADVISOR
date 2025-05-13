@@ -25,7 +25,7 @@ class ReviewView extends BaseView
         }
 
         //breadcrumbs
-        $breadcrumbContent = '<p>Ti trovi in: <span lang="en">Review</span></p>';
+        $breadcrumbContent = '<h1 >Ti trovi in: <span lang="en">Review</span></h1>';
         Utils::replaceTemplateContent(
             $this->dom,
             "breadcrumb-template",

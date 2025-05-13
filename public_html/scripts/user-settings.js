@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("myModal");
   const btn = document.getElementById("delete-account-button");
   const closeBtn = document.getElementById("close-modal");
+  if (!modal || btn || closeBtn) return;
 
   btn.addEventListener("click", () => {
     modal.style.display = "block";

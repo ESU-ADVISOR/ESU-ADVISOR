@@ -12,6 +12,7 @@
     --text-secondary: #333333;
     --text-on-primary: #ffffff;
     --text-on-danger: #ffffff;
+    --icon-stroke: #333333;
 
     /* Background colors */
     --background: #ffffff;
@@ -89,6 +90,7 @@
 .theme-dark {
     --text-primary: #ffffff;
     --text-secondary: #efefef;
+    --icon-stroke: #afafaf;
     --background: #0d0d0d;
     --background-card: #1b1b1b;
     --primary: #60c6ff;
@@ -209,6 +211,7 @@ svg:not(.logo) {
     :root:not(.theme-light) {
         --text-primary: #ffffff;
         --text-secondary: #efefef;
+        --icon-stroke: #afafaf;
         --background: #0d0d0d;
         --background-card: #1b1b1b;
         --primary: #60c6ff;

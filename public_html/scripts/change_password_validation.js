@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const passwordInput = document.getElementById("new_password");
   const confirmPasswordInput = document.getElementById("new_password_confirm");
 
+  if (!form) return;
+
   form.addEventListener("submit", function (event) {
     let isValid = true;
     let errors = [];
@@ -28,12 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
-        password
+        password,
       )
     ) {
       isValid = false;
       errors.push(
-        "La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&)."
+        "La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&).",
       );
     }
 

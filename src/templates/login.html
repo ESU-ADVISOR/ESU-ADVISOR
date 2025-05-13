@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Pagina di login per l'applicazione ESU Advisor" />
         <link rel="stylesheet" href="styles/main.css" />
+        <link rel="stylesheet" href="styles/form-icons.css" />
         <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
         <title>Login | ESU Advisor</title>
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
@@ -18,26 +19,15 @@
         <main class="form-container" id="content">
             <div class="card card-expanded mb-4">
                 <div class="form-header">
-                    <h1 lang="en" class="text-primary" id="primoContenuto">Login</h1>
+                    <h2 lang="en" class="text-primary">Login</h2>
                 </div>
 
                 <template id="server-response-template"></template>
 
-                <form action="login.php" id="login-form" method="POST" class="base-form">
+                <form action="login.php" id="login-form" method="POST" class="base-form" novalidate>
                     <div class="form-group">
                         <label for="username" lang="en">Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            required
-                            class="form-input"
-                            style="
-                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2%22></path><circle cx=%2212%22 cy=%227%22 r=%224%22></circle></svg>&quot;);
-                                background-position: 12px center;
-                                background-repeat: no-repeat;
-                            "
-                        />
+                        <input type="text" id="username" name="username" required class="form-input username-input" />
                     </div>
 
                     <div class="form-group">
@@ -47,12 +37,7 @@
                             id="password"
                             name="password"
                             required
-                            class="form-input"
-                            style="
-                                background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                                background-position: 12px center;
-                                background-repeat: no-repeat;
-                            "
+                            class="form-input password-input"
                         />
                     </div>
 
@@ -68,7 +53,10 @@
                                 stroke-width="2"
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
+                                role="img"
+                                aria-hidden="true"
                             >
+                                <title>Icona login</title>
                                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
                                 <polyline points="10 17 15 12 10 7" />
                                 <line x1="15" y1="12" x2="3" y2="12" />
@@ -86,7 +74,10 @@
                                 stroke-width="2"
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
+                                role="img"
+                                aria-hidden="true"
                             >
+                                <title>Icona registrazione</title>
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                                 <circle cx="9" cy="7" r="4" />
                                 <line x1="19" y1="8" x2="19" y2="14" />

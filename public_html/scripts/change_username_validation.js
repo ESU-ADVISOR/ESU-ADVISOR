@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("change_username_form");
   const usernameInput = document.getElementById("new_username");
 
+  if (!form) return;
+
   form.addEventListener("submit", function (event) {
     let isValid = true;
     let errors = [];
@@ -16,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
       isValid = false;
       errors.push(
-        "L'username può contenere solo lettere, numeri, underscore e trattini."
+        "L'username può contenere solo lettere, numeri, underscore e trattini.",
       );
     }
 

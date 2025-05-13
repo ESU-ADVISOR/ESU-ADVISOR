@@ -1,4 +1,5 @@
 <?php
+
 namespace Views;
 
 use Views\Utils;
@@ -13,6 +14,12 @@ class RegisterView extends BaseView
     public function render(array $data = []): void
     {
         parent::render();
+        $breadcrumbContent = '<h1 lang="en" >Ti trovi in: Register</h1>';
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "breadcrumb-template",
+            $breadcrumbContent
+        );
 
         if (isset($data["errors"])) {
             $errorHtml = "";
@@ -38,4 +45,3 @@ class RegisterView extends BaseView
         echo $this->dom->saveHTML();
     }
 }
-?>

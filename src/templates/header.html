@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" role="banner">
     <nav aria-label="Aiuti alla navigazione">
         <ul>
             <li><a href="#content" class="navigationHelp">Vai al contenuto</a></li>
@@ -7,14 +7,16 @@
     </nav>
     <div class="header-container">
         <div class="logo-container">
-            <img src="images/logo.svg" alt="Logo ESU Advisor" class="logo" width="150" height="40" />
+            <a href="index.php">
+                <img src="images/logo.svg" alt="Logo ESU Advisor" class="logo" width="150" height="40" />
+            </a>
         </div>
-        <nav class="nav-buttons">
+        <nav class="nav-buttons" aria-label="Azioni utente">
             <template id="session-buttons-template"></template>
         </nav>
     </div>
     <div class="breadcrumb-container">
-        <nav class="breadcrumb">
+        <nav class="breadcrumb" aria-label="Percorso di navigazione">
             <template id="breadcrumb-template"></template>
         </nav>
     </div>

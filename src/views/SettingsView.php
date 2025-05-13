@@ -23,7 +23,7 @@ class SettingsView extends BaseView
         parent::render();
 
         //breadcrumbs
-        $breadcrumbContent = '<p>Ti trovi in: Impostazioni';
+        $breadcrumbContent = '<h1 >Ti trovi in: Impostazioni</h1>';
         Utils::replaceTemplateContent(
             $this->dom,
             "breadcrumb-template",
@@ -57,7 +57,7 @@ class SettingsView extends BaseView
                 }
             }
         }
-        
+
         // Recupera mensa preferita dalla sessione per utenti non loggati
         if (!$isLoggedIn && isset($_SESSION["mensa_preferita"])) {
             $mensaPreferita = $_SESSION["mensa_preferita"];
@@ -89,8 +89,10 @@ class SettingsView extends BaseView
                 $allergeneValue = $checkbox->getAttribute('value');
                 // Ensure consistent casing for comparison
                 $allergeneValueNormalized = ucfirst($allergeneValue);
-                if (in_array($allergeneValueNormalized, $allergeni, true) || 
-                    in_array($allergeneValue, $allergeni, true)) { // Check both normalized and original value
+                if (
+                    in_array($allergeneValueNormalized, $allergeni, true) ||
+                    in_array($allergeneValue, $allergeni, true)
+                ) { // Check both normalized and original value
                     $checkbox->setAttribute('checked', 'checked');
                 } else {
                     if ($checkbox->hasAttribute('checked')) {

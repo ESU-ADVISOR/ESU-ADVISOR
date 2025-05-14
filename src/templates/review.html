@@ -9,6 +9,7 @@
         <title>Recensione Piatto | ESU Advisor</title>
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="stylesheet" href="styles/base/rating-fix.css" />
         <script src="scripts/accessibility-settings.js"></script>
     </head>
     <body>
@@ -16,7 +17,7 @@
 
         <main class="form-container" id="content">
             <div class="card card-expanded">
-                <h2 class="card-title">Lascia una recensione</h2>
+                <h1 class="card-title">Lascia una recensione</h1>
                 <p class="text-secondary mb-4">Condividi la tua esperienza dettagliata:</p>
 
                 <template id="server-response-template"></template>
@@ -31,6 +32,8 @@
                     </div>
 
                     <div class="form-group">
+                        <template id="suggerimenti-piatti-template"></template>
+
                         <label for="piatto">Nome del piatto:</label>
                         <input
                             type="text"
@@ -58,37 +61,40 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Valutazione:</label>
-                        <div class="rating">
-                            <input type="radio" id="star1" name="rating" value="1" class="visually-hidden" required />
-                            <label for="star1" title="1 stella">
-                                <span class="sr-only">1 stella</span>
-                                <template id="star-template-1"></template>
-                            </label>
+                        <label id="rating-label">Valutazione:</label>
+                        <div class="rating" aria-labelledby="rating-label rating-description">
+                            <p id="rating-description" class="sr-only">Valuta da 1 a 5 stelle, dove 5 è il massimo</p>
+                            <div class="rating-container">
+                                <input type="radio" id="star5" name="rating" value="5" class="visually-hidden" />
+                                <label for="star5" title="5 stelle">
+                                    <span class="sr-only">5 stelle - eccellente</span>
+                                    <template id="star-template-5"></template>
+                                </label>
 
-                            <input type="radio" id="star2" name="rating" value="2" class="visually-hidden" />
-                            <label for="star2" title="2 stelle">
-                                <span class="sr-only">2 stelle</span>
-                                <template id="star-template-2"></template>
-                            </label>
+                                <input type="radio" id="star4" name="rating" value="4" class="visually-hidden" />
+                                <label for="star4" title="4 stelle">
+                                    <span class="sr-only">4 stelle - molto buono</span>
+                                    <template id="star-template-4"></template>
+                                </label>
 
-                            <input type="radio" id="star3" name="rating" value="3" class="visually-hidden" />
-                            <label for="star3" title="3 stelle">
-                                <span class="sr-only">3 stelle</span>
-                                <template id="star-template-3"></template>
-                            </label>
+                                <input type="radio" id="star3" name="rating" value="3" class="visually-hidden" />
+                                <label for="star3" title="3 stelle">
+                                    <span class="sr-only">3 stelle - buono</span>
+                                    <template id="star-template-3"></template>
+                                </label>
 
-                            <input type="radio" id="star4" name="rating" value="4" class="visually-hidden" />
-                            <label for="star4" title="4 stelle">
-                                <span class="sr-only">4 stelle</span>
-                                <template id="star-template-4"></template>
-                            </label>
-
-                            <input type="radio" id="star5" name="rating" value="5" class="visually-hidden" />
-                            <label for="star5" title="5 stelle">
-                                <span class="sr-only">5 stelle</span>
-                                <template id="star-template-5"></template>
-                            </label>
+                                <input type="radio" id="star2" name="rating" value="2" class="visually-hidden" />
+                                <label for="star2" title="2 stelle">
+                                    <span class="sr-only">2 stelle - discreto</span>
+                                    <template id="star-template-2"></template>
+                                </label>
+                                
+                                <input type="radio" id="star1" name="rating" value="1" class="visually-hidden" required />
+                                <label for="star1" title="1 stella">
+                                    <span class="sr-only">1 stella - insufficiente</span>
+                                    <template id="star-template-1"></template>
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="form-button">Invia Recensione</button>
@@ -102,7 +108,7 @@
 
         <template id="footer-template"></template>
 
-        <template id="suggerimenti-piatti-template"></template>
+        <script src="scripts/rating-keyboard.js"></script>
         <script src="scripts/review_validation.js"></script>
         <script src="scripts/back-to-top.js"></script>
     </body>

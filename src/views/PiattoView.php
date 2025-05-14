@@ -16,7 +16,7 @@ class PiattoView extends BaseView
     public function render(array $data = []): void
     {
         parent::render();
-        $breadcrumbContent = '<h1>Ti trovi in: <a href="index.php" lang="en" >Home &gt; &gt; ' . htmlspecialchars($data["nome"]) . '</a></h1>';
+        $breadcrumbContent = '<h1>Ti trovi in: <a href="index.php" lang="en" >Home</a>&gt;&gt;' . htmlspecialchars($data["nome"]) . '</h1>';
         Utils::replaceTemplateContent(
             $this->dom,
             "breadcrumb-template",

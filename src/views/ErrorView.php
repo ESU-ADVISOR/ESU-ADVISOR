@@ -136,6 +136,12 @@ class ErrorView extends BaseView
     {
         Utils::replaceTemplateContent(
             $this->dom,
+            "error-title-template",
+            "<h1>Qualcosa è andato storto</h1>"
+        );
+
+        Utils::replaceTemplateContent(
+            $this->dom,
             "error-message-template",
             "<h3>" . htmlspecialchars($message) . "</h3>"
         );

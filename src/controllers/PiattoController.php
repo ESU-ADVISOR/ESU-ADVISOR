@@ -3,6 +3,8 @@ namespace Controllers;
 
 use Models\PiattoModel;
 use Views\PiattoView;
+use Views\ErrorView;
+
 
 class PiattoController implements BaseController
 {
@@ -10,24 +12,22 @@ class PiattoController implements BaseController
     {
         $nome_piatto = $get["nome"];
 
-        $piatti = PiattoModel::findAll();
+        $piatto = PiattoModel::findByName($get["nome"]);
 
-        $piatto = new PiattoModel();
-
-        foreach ($piatti as $p) {
-            if (
-                str_replace(" ", "_", strtolower($p->getNome())) == $nome_piatto
-            ) {
-                $piatto = $p;
-                break;
-            }
+        if(!empty($piatto)) {
+            $view = new PiattoView();
+            $view->render([
+                "nome" => $piatto->getNome(),
+                "descrizione" => $piatto->getDescrizione(),
+            ]);
+        }else{
+            $view = new ErrorView();
+            $view->render([
+                "message" => "Il piatto richiesto non è disponibile.",
+            ]);
         }
 
-        $view = new PiattoView();
-        $view->render([
-            "nome" => $piatto->getNome(),
-            "descrizione" => $piatto->getDescrizione(),
-        ]);
+        
     }
     public function handlePOSTRequest(array $post = []): void
     {

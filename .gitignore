@@ -1,1 +1,3 @@
 .env
+#temporary docker files for testing
+docker-compose.yml

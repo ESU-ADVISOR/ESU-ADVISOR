@@ -3,6 +3,8 @@
 namespace Views;
 
 use Models\MenseModel;
+use Models\UserModel;
+use Models\PreferenzeUtenteModel;
 use Views\Utils;
 
 class IndexView extends BaseView
@@ -39,14 +41,24 @@ class IndexView extends BaseView
 
         if (isset($data["mense"]) && is_array($data["mense"])) {
             $id = 0;
+            $mensaPreferita = null;
+            if(isset($_SESSION["username"])){
+                $preferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
+                $mensaPreferita = $preferences->getMensa()->getNome();
+            }else if(isset($_SESSION["mensa_preferita"])){
+                $mensaPreferita = $_SESSION["mensa_preferita"];
+            }
             foreach ($data["mense"] as $mensa) {
-                $menseContent .=
-                    "<option value=\"" .
-                    htmlspecialchars($id) .
-                    "\">" .
-                    htmlspecialchars($mensa["nome"]) .
-                    "</option>";
-
+                if(isset($mensaPreferita) && $mensaPreferita == $mensa["nome"]){
+                    $menseContent .= "<option value=\"" . htmlspecialchars($mensa["nome"]) . "\" selected>" . htmlspecialchars($mensa["nome"]) . "</option>";
+                }else{
+                    $menseContent .=
+                        "<option value=\"" .
+                        htmlspecialchars($id) .
+                        "\">" .
+                        htmlspecialchars($mensa["nome"]) .
+                        "</option>";
+                }
                 $menseInfoContent .= "<li class=\"mense-info-item\" data-mensa-id=\"" .
                     htmlspecialchars($id) . "\">";
 

@@ -10,11 +10,20 @@ class PiattoController implements BaseController
 {
     public function handleGETRequest(array $get = []): void
     {
-        $nome_piatto = $get["nome"];
+        $piatto = null;
 
-        $piatto = PiattoModel::findByName($get["nome"]);
+        $nome_piatto = $get["nome"] ?? null;
 
-        if(!empty($piatto)) {
+        foreach (PiattoModel::findAll() as $p) {
+            if (
+                str_replace(" ", "_", strtolower($p->getNome())) == $nome_piatto
+            ) {
+                $piatto = $p;
+                break;
+            }
+        }
+
+        if(isset($nome_piatto)) {
             $view = new PiattoView();
             $view->render([
                 "nome" => $piatto->getNome(),

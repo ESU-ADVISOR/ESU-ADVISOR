@@ -3,8 +3,6 @@
 namespace Models;
 
 use Models\Database;
-use Models\MenuModel;
-
 class MenseModel
 {
     private $db;
@@ -113,32 +111,33 @@ class MenseModel
     //-----------------Relationals methods----------------
 
     /**
-     * @return MenuModel
+     * @return PiattoModel[]|null
      */
-    public function getCurrentMenu(): ?MenuModel
+    public function getPiatti(): ?array
     {
         if ($this->nome === null) {
             return null;
         }
 
-        $stmt = $this->db->prepare("SELECT * FROM menu WHERE mensa = :mensa");
+        $stmt = $this->db->prepare(
+            "SELECT * FROM menu WHERE mensa = :mensa"
+        );
+
         $stmt->execute([
             "mensa" => $this->nome,
         ]);
 
-        /** @var MenuModel[] */
-        $data = $stmt->fetchAll(
-            \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
-            MenuModel::class
-        );
-        $currentMenu = $data[0];
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        foreach ($data as $menu) {
-            if ($menu->getData() > $currentMenu->getData()) {
-                $currentMenu = $menu;
+        $piatti = [];
+
+        foreach ($data as $piattoData) {
+            $piatto = PiattoModel::findByName($piattoData["piatto"]);
+            if ($piatto !== null) {
+                $piatti[] = $piatto;
             }
         }
-        return $currentMenu;
+        return $piatti;
     }
 
     /** 

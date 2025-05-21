@@ -12,8 +12,7 @@ class IndexController implements BaseController
     {
         $menus = [];
         foreach (MenseModel::findAll() as $mensa) {
-            $menuModel = $mensa->getCurrentMenu();
-            $piatti = $menuModel->getPiatti();
+            $piatti = $mensa->getPiatti();
             $piattoDelGiorno = null;
             $bestAvg = 0;
             foreach ($piatti as $piatto) {

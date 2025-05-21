@@ -44,8 +44,7 @@ class ReviewView extends BaseView
                 "<option value=\"" . $mensa->getNome() . "\">" . $mensa->getNome() . "</option>";
 
             $piattiContent .= "<datalist class=\"dynamic-datalist\" data-mensa-name=\"" . $mensa->getNome() . "\">";
-            $currentMenu = $mensa->getCurrentMenu();
-            $piatti = $currentMenu->getPiatti();
+            $piatti = $mensa->getPiatti();
             foreach ($piatti as $piatto) {
                 $piattiContent .=
                     "<option value=\"" .

@@ -14,13 +14,6 @@ class LoginView extends BaseView
     public function render(array $data = []): void
     {
         parent::render();
-        parent::render();
-        $breadcrumbContent = '<h1 lang="en" >Ti trovi in: Login</h1>';
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "breadcrumb-template",
-            $breadcrumbContent
-        );
 
         if (isset($data["errors"])) {
             $errorHtml = "";

@@ -12,18 +12,16 @@
         </ul>
     </nav>
     <div class="header-container">
-        <div class="logo-container">
-            <a href="index.php">
+        <div class="logo-breadcrumb-container">
+            <a href="index.php" class="logo-link">
                 <img src="images/logo.svg" alt="Logo ESU Advisor" class="logo" width="150" height="40" />
             </a>
+            <nav class="breadcrumb-integrated" aria-label="Percorso di navigazione">
+                <template id="breadcrumb-template"></template>
+            </nav>
         </div>
         <nav class="nav-buttons" aria-label="Azioni utente">
             <template id="session-buttons-template"></template>
-        </nav>
-    </div>
-    <div class="breadcrumb-container">
-        <nav class="breadcrumb" aria-label="Percorso di navigazione">
-            <template id="breadcrumb-template"></template>
         </nav>
     </div>
 </header>

@@ -20,13 +20,6 @@ class ProfileView extends BaseView
             return;
         }
 
-        $breadcrumbContent = '<h1 >Ti trovi in: Profilo</h1>';
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "breadcrumb-template",
-            $breadcrumbContent
-        );
-
         $user = UserModel::findByUsername($_SESSION["username"]);
         if ($user === null) {
             self::renderError("Utente non trovato");

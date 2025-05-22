@@ -12,6 +12,7 @@ abstract class BaseView
     protected $template;
     protected $dom;
     protected $currentPage;
+    protected $breadcrumbData = null;
 
     /** @param string $templatePath */
     public function __construct($templatePath)
@@ -23,6 +24,50 @@ abstract class BaseView
         libxml_clear_errors();
 
         $this->currentPage = basename($_SERVER['PHP_SELF'], '.php');
+    }
+
+    protected function setBreadcrumb(array $data): void
+    {
+        $this->breadcrumbData = $data;
+    }
+
+    private function generateBreadcrumbHTML(): string
+    {
+        $html = '<h1>&rsaquo; ';
+        
+        if ($this->breadcrumbData && isset($this->breadcrumbData['parent'])) {
+            $parent = $this->breadcrumbData['parent'];
+            $html .= '<a href="' . htmlspecialchars($parent['url']) . '">' 
+                   . htmlspecialchars($parent['title']) . '</a>';
+            $html .= ' &rsaquo; ';
+            
+            $currentTitle = $this->breadcrumbData['current'] ?? ucfirst($this->currentPage);
+            $prefix = $this->breadcrumbData['prefix'] ?? '';
+            $html .= htmlspecialchars($prefix . $currentTitle);
+        } else {
+            if ($this->currentPage === 'index') {
+                $html .= 'Home';
+            } else {
+                $html .= '<a href="index.php">Home</a>';
+                $html .= ' &rsaquo; ';
+                
+                $pageNames = [
+                    'profile' => 'Profilo',
+                    'review' => 'Review',
+                    'settings' => 'Impostazioni', 
+                    'login' => 'Login',
+                    'register' => 'Register'
+                ];
+                
+                $currentTitle = $this->breadcrumbData['current'] ?? 
+                               ($pageNames[$this->currentPage] ?? ucfirst($this->currentPage));
+                
+                $html .= htmlspecialchars($currentTitle);
+            }
+        }
+
+        $html .= '</h1>';
+        return $html;
     }
 
     public function render(array $data = []): void
@@ -168,6 +213,13 @@ abstract class BaseView
                 $buttonsHtml
             );
         }
+
+        $breadcrumbHTML = $this->generateBreadcrumbHTML();
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "breadcrumb-template",
+            $breadcrumbHTML
+        );
     }
 
     public function renderError(string $error, int $errorCode = 500): void

@@ -15,13 +15,18 @@ class PiattoView extends BaseView
 
     public function render(array $data = []): void
     {
+        if (isset($data["nome"])) {
+            $this->setBreadcrumb([
+                'parent' => [
+                    'url' => 'index.php',
+                    'title' => 'Home'
+                ],
+                'current' => $data["nome"],
+                'prefix' => 'Piatto: '
+            ]);
+        }
+
         parent::render();
-        $breadcrumbContent = '<h1>Ti trovi in: <a href="index.php" lang="en" >Home</a>&gt;&gt;' . htmlspecialchars($data["nome"]) . '</h1>';
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "breadcrumb-template",
-            $breadcrumbContent
-        );
 
         $piattoTitle = "<h1 class=\"card-title\" id=\"primoContenuto\">" . htmlspecialchars($data["nome"]) . "</h1>";
 

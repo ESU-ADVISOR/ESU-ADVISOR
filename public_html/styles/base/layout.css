@@ -20,34 +20,59 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: auto; /*100%*/
+    height: 100%;
+    min-height: var(--header-height);
 }
 
-.logo-container {
-    height: /*2rem*/ auto;
+.logo-breadcrumb-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex: 1;
+    min-width: 0; /* Permette flexbox shrinking */
 }
 
-.logo-container img {
-    /*si può rimuovere se viene confermato l'image replacement*/
-    /* height: 100%;
-    width: auto; */
+.logo-link {
+    flex-shrink: 0; /* Logo non si rimpicciolisce */
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: auto;
+    max-height: 32px; /* Logo più compatto per header ridotto */
+}
+
+.breadcrumb-integrated {
+    flex: 1;
+    min-width: 0; /* Permette text overflow */
+}
+
+.breadcrumb-integrated h1 {
+    font-size: var(--text-base);
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.breadcrumb-integrated h1 a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.breadcrumb-integrated h1 a:hover {
+    text-decoration: underline;
+    color: var(--primary-hover);
 }
 
 .nav-buttons {
     display: flex;
     gap: var(--spacing-sm);
-}
-
-.breadcrumb-container {
-    padding: 0 var(--spacing-md);
-    max-width: var(--container-max);
-    margin: 0 auto;
-    height: auto;
-}
-
-.breadcrumb h1{
-    font-size: var(--text-xl);
-    font-weight: 500;
+    flex-shrink: 0;
 }
 
 /* ===== BODY / MAIN CONTENT ===== */
@@ -235,7 +260,6 @@ body {
     display: none;
 }
 
-/* Responsive Adjustments */
 @media (min-width: 640px) {
     .grid-cols-2 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -243,17 +267,43 @@ body {
 }
 
 @media (min-width: 768px) {
-    .header-container {
-        padding: 0 var(--spacing-lg);
+    .header {
+        height: 88px; /* Header più compatto */
     }
 
-    .logo-container {
-        height: auto /*2.5rem*/;
+    .header-container {
+        justify-content: space-between; /* Mantiene spazio tra logo-breadcrumb e bottoni */
+        padding: 0 var(--spacing-lg);
+        max-width: none; /* Rimuove limitazione container */
+        width: 100%;
+    }
+
+    .logo-breadcrumb-container {
+        gap: var(--spacing-lg); /* Spazio maggiore tra logo e breadcrumb */
+    }
+
+    .logo {
+        max-height: 36px; /* Logo leggermente più grande su desktop */
+    }
+
+    .breadcrumb-integrated h1 {
+        font-size: var(--text-lg); /* Testo breadcrumb più grande su desktop */
+    }
+
+    .nav-buttons {
+        display: none;
+    }
+
+    body {
+        padding-top: calc(88px + var(--spacing-sm));
+    }
+
+    .mensa-select-container {
+        top: 88px;
     }
 
     .page-content {
-        /* padding: 0 var(--spacing-lg); */
-        /* padding-bottom: calc(var(--footer-height) + var(--spacing-xl) * 2); */
+        padding-bottom: var(--spacing-lg); /* Rimuove padding bottom per footer mobile */
     }
 
     .section {
@@ -264,31 +314,14 @@ body {
         padding: 0 var(--spacing-lg);
     }
 
-    .bottom-nav {
-        padding-top: var(--spacing-sm);
-    }
-
-    .nav-item {
-        width: 80px;
-    }
-
-    .nav-item span {
-        font-size: var(--text-sm);
-    }
-
-    .nav-item svg {
-        width: 28px;
-        height: 28px;
-    }
-
     .grid-cols-md-3 {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     /* Form container responsive */
-    /* .form-container {
-        padding-bottom: var(--spacing-xs);
-    } */
+    .form-container {
+        padding-bottom: var(--spacing-lg);
+    }
 }
 
 @media (min-width: 1024px) {

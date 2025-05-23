@@ -30,53 +30,62 @@
                 </section>
             </div>
 
-            <section class="menu-section">
-                <div class="card card-expanded mb-4">
-                    <h2 class="card-title">Menu del giorno</h2>
-
-                    <div class="search-form mb-3" role="search">
-                        <label for="search-piatti">Cerca piatti:</label>
-                        <div class="search-input-wrapper">
-                            <input
-                                type="search"
-                                id="search-piatti"
-                                class="form-input"
-                                placeholder="Cerca piatti..."
-                                aria-label="Cerca piatti"
-                            />
-                            <button
-                                type="submit"
-                                id="clear-search"
-                                class="search-clear-button"
-                                aria-label="Cancella ricerca"
-                            >
-                                ✕
-                            </button>
+            <!-- Container principale per layout responsivo -->
+            <div class="content-layout">
+                <!-- Colonna Sinistra: Wrapper scrollabile per Piatto del giorno + Menu -->
+                <div class="left-column">
+                    <!-- Piatto del giorno - PRIMO in ordine su desktop -->
+                    <section class="dish-of-the-day">
+                        <div class="card card-expanded mb-4">
+                            <h2 class="card-title">Piatto del giorno</h2>
+                            <template id="dish-of-the-day-template"></template>
                         </div>
+                    </section>
+
+                    <!-- Menu del giorno - SECONDO in ordine su desktop -->
+                    <section class="menu-section">
+                        <div class="card card-expanded mb-4">
+                            <h2 class="card-title">Menu del giorno</h2>
+
+                            <div class="search-form mb-3" role="search">
+                                <label for="search-piatti">Cerca piatti:</label>
+                                <div class="search-input-wrapper">
+                                    <input
+                                        type="search"
+                                        id="search-piatti"
+                                        class="form-input"
+                                        placeholder="Cerca piatti..."
+                                        aria-label="Cerca piatti"
+                                    />
+                                    <button
+                                        type="submit"
+                                        id="clear-search"
+                                        class="search-clear-button"
+                                        aria-label="Cancella ricerca"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="search-results-count" class="search-results-info" aria-live="polite" role="status"></div>
+                            <ul class="piatti-list">
+                                <template id="piatti-template"></template>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Colonna Destra: Informazioni Mense -->
+                <section class="mense-info-section">
+                    <div class="card card-expanded mb-4">
+                        <h2 class="card-title">Informazioni sulle mense</h2>
+                        <ul>
+                            <template id="mense-info-template"></template>
+                        </ul>
                     </div>
-
-                    <div id="search-results-count" class="search-results-info" aria-live="polite" role="status"></div>
-                    <ul class="piatti-list">
-                        <template id="piatti-template"></template>
-                    </ul>
-                </div>
-            </section>
-
-            <section class="dish-of-the-day">
-                <div class="card card-expanded mb-4">
-                    <h2 class="card-title">Piatto del giorno</h2>
-                    <template id="dish-of-the-day-template"></template>
-                </div>
-            </section>
-
-            <section class="mense-info-section">
-                <div class="card card-expanded mb-4">
-                    <h2 class="card-title">Informazioni sulle mense</h2>
-                    <ul>
-                        <template id="mense-info-template"></template>
-                    </ul>
-                </div>
-            </section>
+                </section>
+            </div>
 
             <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
                 <span class="back-to-top-text">Torna su</span>

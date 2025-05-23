@@ -78,6 +78,9 @@ abstract class BaseView
         $footerContent = file_get_contents(
             __DIR__ . "/../templates/footer.html"
         );
+        $sidebarContent = file_get_contents(
+            __DIR__ . "/../templates/sidebar.html"
+        );
 
         //manipolare headerDOM per togliere il link alla home dall'header quando siamo nella home (link circolare)
         $headerDOM = new \DOMDocument();
@@ -140,6 +143,41 @@ abstract class BaseView
             }
         }
 
+        // Gestire sidebarDOM per togliere il link alla pagina attuale (stessa logica del footer)
+        $sidebarDOM = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $sidebarDOM->loadHTML($sidebarContent);
+        libxml_clear_errors();
+
+        $sidebarXpath = new DOMXPath($sidebarDOM);
+        $sidebarLinks = $sidebarXpath->query('//a[contains(@class, "sidebar-nav-link")]');
+        if ($sidebarLinks) {
+            foreach ($sidebarLinks as $link) {
+                /** @var DOMElement $link */
+                if ($link instanceof DOMElement && $link->hasAttribute('href')) {
+                    $href = $link->getAttribute('href');
+                    $pageName = basename($href, '.php');
+                    if ($pageName === $this->currentPage) {
+                        $parentNode = $link->parentNode;
+                        if ($parentNode instanceof DOMElement && $parentNode->nodeName === 'li') {
+                            $currentClass = $parentNode->getAttribute('class') ?? '';
+                            $parentNode->setAttribute('class', trim($currentClass . ' active'));
+                        }
+                        $span = $sidebarDOM->createElement('span');
+                        $span->setAttribute('class', $link->getAttribute('class'));
+                        $span->setAttribute('aria-current', 'page');
+                        $span->setAttribute('tabindex', '-1');
+                        $span->setAttribute('rel', 'nofollow');
+                        while ($link->firstChild) {
+                            $span->appendChild($link->firstChild);
+                        }
+                        $link->parentNode->replaceChild($span, $link);
+                    }
+                }
+            }
+        }
+
+        // Gestire icone footer
         $iconPaths = [
             'home-icon-template' => __DIR__ . '/../../public_html/images/home.svg',
             'review-icon-template' => __DIR__ . '/../../public_html/images/review.svg',
@@ -157,7 +195,28 @@ abstract class BaseView
                 );
             }
         }
+
+        // Gestire icone sidebar (stessi percorsi, diversi template ID)
+        $sidebarIconPaths = [
+            'sidebar-home-icon-template' => __DIR__ . '/../../public_html/images/home.svg',
+            'sidebar-review-icon-template' => __DIR__ . '/../../public_html/images/review.svg',
+            'sidebar-profile-icon-template' => __DIR__ . '/../../public_html/images/profile.svg',
+            'sidebar-settings-icon-template' => __DIR__ . '/../../public_html/images/settings.svg'
+        ];
+
+        foreach ($sidebarIconPaths as $templateId => $svgPath) {
+            if (file_exists($svgPath)) {
+                $svgContent = file_get_contents($svgPath);
+                Utils::replaceTemplateContent(
+                    $sidebarDOM,
+                    $templateId,
+                    $svgContent
+                );
+            }
+        }
+
         $footerContent = $footerDOM->saveHTML();
+        $sidebarContent = $sidebarDOM->saveHTML();
 
         Utils::replaceTemplateContent(
             $this->dom,
@@ -169,6 +228,11 @@ abstract class BaseView
             "footer-template",
             $footerContent
         );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "sidebar-template",
+            $sidebarContent
+        );
 
         // Pagine che richiedono login ma sono accessibili anche senza login
         $publicPages = ['settings.php', 'index.php'];
@@ -178,15 +242,26 @@ abstract class BaseView
         $isLoginPage = ($currentPage === 'login.php');
         $isRegisterPage = ($currentPage === 'register.php');
 
-        if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
-            // Utente loggato
+        // Debug: aggiungiamo un controllo esplicito
+        $isUserLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]) && $_SESSION["username"] !== '';
+        
+        if ($isUserLoggedIn) {
+            // Utente loggato - mostra solo logout
+            $logoutButton = '<a href="logout.php" class="nav-button danger" lang="en" id="logout">Logout</a>';
+            $sidebarLogoutButton = '<a href="logout.php" class="sidebar-auth-button danger" lang="en" id="sidebar-logout">Logout</a>';
+            
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
-                '<a href="logout.php" class="nav-button danger" lang="en" id="logout">Logout</a>'
+                $logoutButton
+            );
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "sidebar-session-buttons-template",
+                $sidebarLogoutButton
             );
         } else {
-            // Utente non loggato
+            // Utente NON loggato - mostra login/register
 
             // Per pagine protette, aggiungiamo un parametro di redirect
             $loginRedirect = '';
@@ -194,23 +269,33 @@ abstract class BaseView
                 $loginRedirect = "?redirect={$currentPage}";
             }
 
-            // Costruisce i pulsanti in base alla pagina corrente
+            // Costruisce i pulsanti in base alla pagina corrente per header (mobile)
             $buttonsHtml = '';
-
-            // Mostra il pulsante login solo se non siamo nella pagina di login
             if (!$isLoginPage) {
                 $buttonsHtml .= '<a href="login.php' . $loginRedirect . '" class="nav-button primary" lang="en">Login</a>';
             }
-
-            // Mostra il pulsante register solo se non siamo nella pagina di register
             if (!$isRegisterPage) {
                 $buttonsHtml .= '<a href="register.php" class="nav-button secondary">Registrati</a>';
+            }
+
+            // Costruisce i pulsanti per sidebar (desktop)
+            $sidebarButtonsHtml = '';
+            if (!$isLoginPage) {
+                $sidebarButtonsHtml .= '<a href="login.php' . $loginRedirect . '" class="sidebar-auth-button primary" lang="en">Login</a>';
+            }
+            if (!$isRegisterPage) {
+                $sidebarButtonsHtml .= '<a href="register.php" class="sidebar-auth-button secondary">Registrati</a>';
             }
 
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
                 $buttonsHtml
+            );
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "sidebar-session-buttons-template",
+                $sidebarButtonsHtml
             );
         }
 

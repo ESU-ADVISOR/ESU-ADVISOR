@@ -4,7 +4,7 @@ define("DB_NAME", getenv("DB_NAME"));
 define("DB_USER", getenv("DB_USER"));
 define("DB_PASS", getenv("DB_PASS"));
 
-require_once "../src/session_init.php";
+require_once "session_init.php";
 
 spl_autoload_register(function ($class) {
     $prefixes = [

@@ -219,7 +219,7 @@ class PiattoModel
             "nome" => $name,
         ]);
 
-        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, PiattoModel::class)[0];
+        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, PiattoModel::class);
 
         if (!empty($data)) {
             return $data;

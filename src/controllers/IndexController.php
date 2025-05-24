@@ -4,60 +4,69 @@ namespace Controllers;
 
 use Models\MenseModel;
 use Models\PiattoModel;
+use Models\PreferenzeUtenteModel;
 use Views\IndexView;
+use Views\ErrorView;
 
 class IndexController implements BaseController
 {
     public function handleGETRequest(array $get = []): void
     {
-        $menus = [];
-        foreach (MenseModel::findAll() as $mensa) {
-            $piatti = $mensa->getPiatti();
-            $piattoDelGiorno = null;
-            $bestAvg = 0;
-            foreach ($piatti as $piatto) {
-                if ($piatto->getAvgVote() > $bestAvg) {
-                    $bestAvg = $piatto->getAvgVote();
-                    $piattoDelGiorno = $piatto;
-                }
-            }
+        $mense = MenseModel::findAll();
+        if(empty($mense)) {
+            $view = new ErrorView();
+            $view->render([
+                    "message" => "Nessuna mensa disponibile.",
+            ]);
+            exit();
+        }
 
-            $menus[] = [
-                "nome" => $mensa->getNome(),
-                "indirizzo" => $mensa->getIndirizzo(),
-                "telefono" => $mensa->getTelefono(),
-                "maps_link" => $mensa->getMapsLink(),
-                "piatti" => $piatti,
-                "piatto_del_giorno" => $piattoDelGiorno,
-            ];
+        $mensaSelezionata = null;
+        
+        if(isset($get["mensa"]) && !empty($get["mensa"])) {
+            $mensaSelezionata = MenseModel::findByName($get["mensa"]);
+            if(!$mensaSelezionata) {
+               $view = new ErrorView();
+                $view->render([
+                     "message" => "La mensa specificata non esiste.",
+                ]);
+                exit();
+            }
+        }else if(isset($_SESSION["mensa_preferita"]) && !empty($_SESSION["mensa_preferita"])) {
+            $mensaSelezionata = MenseModel::findByName($_SESSION["mensa_preferita"]);
+        }else{
+            $mensaSelezionata = $mense[0];
+        }
+
+        $piatti = $mensaSelezionata->getPiatti();
+        $piattoDelGiorno = null;
+        $bestAvg = 0;
+        foreach ($piatti as $piatto) {
+            if ($piatto->getAvgVote() > $bestAvg) {
+                $bestAvg = $piatto->getAvgVote();
+                $piattoDelGiorno = $piatto;
+            }
+        }
+
+        $datiMensa[] = [
+            "nome" => $mensaSelezionata->getNome(),
+            "indirizzo" => $mensaSelezionata->getIndirizzo(),
+            "telefono" => $mensaSelezionata->getTelefono(),
+            "maps_link" => $mensaSelezionata->getMapsLink(),
+            "orari" => $mensaSelezionata->getMenseOrari(),
+        ];
+
+        $nomiMense = [];
+        foreach ($mense as $mensa) {
+            $nomiMense[] = $mensa->getNome();
         }
 
         $view = new IndexView();
-
-        $piatti = [];
-
         $view->render([
-            "mense" => array_map(function ($menu) {
-                return [
-                    "nome" => $menu["nome"],
-                    "indirizzo" => $menu["indirizzo"],
-                    "telefono" => $menu["telefono"],
-                    "maps_link" => $menu["maps_link"],
-                    "piatti" => $menu["piatti"],
-                    "piatto_del_giorno" => $menu["piatto_del_giorno"],
-                ];
-            }, $menus),
-            "piatti" => array_map(function ($menu) {
-                if (empty($menu["piatti"])) {
-                    return null;
-                }
-                return array_map(function (PiattoModel $piatto) {
-                    return [
-                        "nome" => $piatto->getNome(),
-                        "descrizione" => $piatto->getDescrizione(),
-                    ];
-                }, $menu["piatti"])[0];
-            }, $menus),
+            "mense" => $nomiMense,
+            "mensa_selezionata" => $datiMensa,
+            "piatti" => $piatti,
+            "piatto_del_giorno" => $piattoDelGiorno,
         ]);
     }
 

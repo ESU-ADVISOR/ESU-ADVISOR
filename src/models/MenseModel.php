@@ -229,7 +229,7 @@ class MenseModel
         ]);
 
         /** @var MenseModel $data */
-        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, MenseModel::class)[0];
+        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, MenseModel::class);
 
         if (!empty($data)) {
             return $data;

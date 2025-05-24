@@ -203,7 +203,7 @@ class PreferenzeUtenteModel
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($data) {
-            return new PreferenzeUtenteModel($data[0]);
+            return new PreferenzeUtenteModel($data);
         }
         return null;
     }

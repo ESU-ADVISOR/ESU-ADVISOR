@@ -229,7 +229,7 @@ class UserModel
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, UserModel::class);
 
         if (!empty($data)) {
-            return $data;
+            return $data[0];
         }
         return null;
     }

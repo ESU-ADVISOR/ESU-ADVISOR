@@ -232,7 +232,7 @@ class MenseModel
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, MenseModel::class);
 
         if (!empty($data)) {
-            return $data;
+            return $data[0];
         }
         return null;
     }

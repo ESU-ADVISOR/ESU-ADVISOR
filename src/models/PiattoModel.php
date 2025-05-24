@@ -222,7 +222,7 @@ class PiattoModel
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, PiattoModel::class);
 
         if (!empty($data)) {
-            return $data;
+            return $data[0];
         }
         return null;
     }

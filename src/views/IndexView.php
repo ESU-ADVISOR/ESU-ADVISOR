@@ -34,11 +34,16 @@ class IndexView extends BaseView
         if (isset($data["mense"]) && is_array($data["mense"])) {
             $id = 0;
             $mensaPreferita = null;
-            if(isset($_SESSION["username"])){
-                $preferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
-                $mensaPreferita = $preferences->getMensa()->getNome();
-            }else if(isset($_SESSION["mensa_preferita"])){
-                $mensaPreferita = $_SESSION["mensa_preferita"];
+            if(isset($_SESSION["mensa_preferita"])){
+                try {
+                    $preferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
+                    //if there is no username in session: null->getMensa() Error will be caught
+                    // è un compportamento voluto
+                    $_SESSION["mensa_preferita"] = ($preferences->getMensa())->getNome();
+                    $mensaPreferita = $_SESSION["mensa_preferita"];
+                }catch (\Error $e) {
+                    $mensaPreferita = $_SESSION["mensa_preferita"];
+                }
             }
             foreach ($data["mense"] as $mensa) {
                 if(isset($mensaPreferita) && $mensaPreferita == $mensa["nome"]){

@@ -44,14 +44,6 @@ class PiattoView extends BaseView
         }
 
         $piattoDescription .= "<p>" . htmlspecialchars($data["descrizione"]) . "</p>";
-
-        $allergeni = $piatto->getAllergeni();
-        if (!empty($allergeni)) {
-            $piattoDescription .= "<div class=\"allergens-list\">
-                <p><strong>Allergeni:</strong> " . htmlspecialchars(implode(", ", $allergeni)) . "</p>
-            </div>";
-        }
-
         $piattoDescription .= "</div>";
 
         $piattoImage = "";
@@ -78,6 +70,37 @@ class PiattoView extends BaseView
             $piattoRating .= $starSVG;
         }
         $piattoRating .= "</div>";
+
+        // Gestione allergeni
+        $allergeniContent = "";
+        $allergeni = $piatto->getAllergeni();
+        if (!empty($allergeni)) {
+            // Rimuovi "Nessuno" dalla lista se presente insieme ad altri allergeni
+            $allergeni = array_filter($allergeni, function($allergene) {
+                return $allergene !== "Nessuno";
+            });
+            
+            if (!empty($allergeni)) {
+                $allergeniContent = "<p>" . htmlspecialchars(implode(", ", $allergeni)) . "</p>";
+            } else {
+                $allergeniContent = "<p>Nessuno</p>";
+            }
+        } else {
+            $allergeniContent = "<p>Nessuno</p>";
+        }
+
+        // Gestione mense
+        $menseContent = "";
+        $mense = $piatto->getMense();
+        if (!empty($mense)) {
+            $menseContent = "<ul>";
+            foreach ($mense as $mensa) {
+                $menseContent .= "<li>" . htmlspecialchars($mensa) . "</li>";
+            }
+            $menseContent .= "</ul>";
+        } else {
+            $menseContent = "<p class=\"text-secondary\">Questo piatto non è attualmente disponibile in nessuna mensa</p>";
+        }
 
         $piattoReview = "";
         $recensioni = $piatto->getRecensioni();
@@ -130,6 +153,16 @@ class PiattoView extends BaseView
             $this->dom,
             "piatto-rating-template",
             $piattoRating
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "piatto-allergeni-template",
+            $allergeniContent
+        );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "piatto-mense-template",
+            $menseContent
         );
         Utils::replaceTemplateContent(
             $this->dom,

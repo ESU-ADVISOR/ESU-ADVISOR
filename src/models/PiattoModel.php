@@ -118,6 +118,29 @@ class PiattoModel
     }
 
     /**
+     * @return string[]
+     */
+    public function getMense(): array
+    {
+        if ($this->nome === null) {
+            return [];
+        }
+
+        $stmt = $this->db->prepare("SELECT mensa FROM menu WHERE piatto = :piatto");
+        $stmt->execute([
+            "piatto" => $this->nome,
+        ]);
+
+        $data = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+
+        if (!empty($data)) {
+            return $data;
+        }
+
+        return [];
+    }
+
+    /**
      * @param string[] $allergeni
      * @return bool
      */

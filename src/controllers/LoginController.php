@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Models\UserModel;
+use Models\PreferenzeUtenteModel;
 use Views\LoginView;
 
 class LoginController implements BaseController
@@ -48,6 +49,14 @@ class LoginController implements BaseController
 
         session_regenerate_id(true);
         $_SESSION["username"] = $username;
+
+        $user = UserModel::findByUsername($username);
+        if ($user) {
+            $preferences = PreferenzeUtenteModel::findByUsername($user->getUsername());
+            if ($preferences) {
+                $preferences->loadToSession();
+            }
+        }
 
         if (isset($_SESSION['login_redirect']) && !empty($_SESSION['login_redirect'])) {
             $redirectPage = $_SESSION['login_redirect'];

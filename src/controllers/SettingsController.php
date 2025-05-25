@@ -193,6 +193,10 @@ class SettingsController implements BaseController
 
                 $preferences->saveAllergeni($allergeni);
                 
+                if ($mensaPreferita) {
+                    $_SESSION["mensa_preferita"] = $mensaPreferita;
+                }
+                
                 $view->render([
                     "success" => "Preferenze salvate con successo",
                 ]);

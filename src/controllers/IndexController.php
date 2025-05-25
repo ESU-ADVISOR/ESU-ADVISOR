@@ -5,6 +5,7 @@ namespace Controllers;
 use Models\MenseModel;
 use Models\PiattoModel;
 use Models\PreferenzeUtenteModel;
+use Models\UserModel;
 use Views\IndexView;
 use Views\ErrorView;
 
@@ -32,9 +33,26 @@ class IndexController implements BaseController
                 ]);
                 exit();
             }
-        }else if(isset($_SESSION["mensa_preferita"]) && !empty($_SESSION["mensa_preferita"])) {
+        }
+        else if(isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
+            $user = UserModel::findByUsername($_SESSION["username"]);
+            if ($user) {
+                $preferences = PreferenzeUtenteModel::findByUsername($user->getUsername());
+                if ($preferences && $preferences->getMensaPreferita()) {
+                    $mensaSelezionata = MenseModel::findByName($preferences->getMensaPreferita());
+                    
+                    if ($mensaSelezionata && $_SESSION["mensa_preferita"] !== $preferences->getMensaPreferita()) {
+                        $_SESSION["mensa_preferita"] = $preferences->getMensaPreferita();
+                    }
+                }
+            }
+        }
+        
+        if (!$mensaSelezionata && isset($_SESSION["mensa_preferita"]) && !empty($_SESSION["mensa_preferita"])) {
             $mensaSelezionata = MenseModel::findByName($_SESSION["mensa_preferita"]);
-        }else{
+        }
+        
+        if (!$mensaSelezionata) {
             $mensaSelezionata = $mense[0];
         }
 

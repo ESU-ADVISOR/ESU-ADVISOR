@@ -88,7 +88,26 @@ CREATE TABLE piatto_foto (
 
 -- Lista allergene dall'EU https://www.salute.gov.it/imgs/C_17_pagineAree_1460_0_file.pdf
 CREATE TABLE piatto_allergeni (
-    allergene ENUM ("Nessuno", "Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta_a_guscio", "Sedano", "Senape", "Sesamo", "Anidride_solforosa", "Lupini", "Molluschi") NOT NULL DEFAULT "Nessuno",
+    allergene ENUM (
+        "Nessuno", 
+        "Glutine", 
+        "Crostacei", 
+        "Uova", 
+        "Pesce", 
+        "Arachidi", 
+        "Soia", 
+        "Latte", 
+        "Frutta_a_guscio", 
+        "Sedano", 
+        "Senape", 
+        "Sesamo", 
+        "Anidride_solforosa", 
+        "Lupini", 
+        "Molluschi",
+        "Carne_bovina",
+        "Carne_suina", 
+        "Pollame"
+    ) NOT NULL DEFAULT "Nessuno",
     piatto VARCHAR(100) NOT NULL,
     PRIMARY KEY (allergene, piatto),
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
@@ -255,84 +274,111 @@ INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Kebab di pollo", "Sec
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Piselli", "Contorno", "Piselli freschi cotti al vapore.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Ceci", "Contorno", "Ceci lessati.");
 
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Arrosto di maiale");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Arrosto di tacchino");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Bis di cereali con verdure");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote al vapore");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote e piselli al vapore");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Ceci");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Coscette di pollo");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di funghi");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di piselli");
+-- PIATTI SENZA ALLERGENI (solo verdure/frutta/legumi semplici - NESSUNA CARNE)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Fagioli in umido");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di piselli");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate al basilico");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote al vapore");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Fagiolini");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana con pomodoro e funghi");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalatona vegetariana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con ceci, patate, carote e melanzane");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana con pomodoro, capperi e olive");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con carote, zucchine, fagioli e mais");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate fritte");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Tris di verdure");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate all'olio extravergine");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote e piselli al vapore");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Piselli");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Ceci");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Riso pilaw con piselli");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di funghi");
 
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Falafel");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Sesamo", "Falafel");
+-- PIATTI CON SOLO GLUTINE (paste e cereali)
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Orzo con pomodorini e basilico");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta all'arrabbiata");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta e fagioli alla veneta");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta al ragù");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Gnocchi al pomodoro");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Bis di cereali con verdure");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Peperoni alla partenopea");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Melanzana alla siciliana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta zucca e funghi");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta pomodoro e piselli");
+
+-- PIATTI CON GLUTINE + LATTE (pasta con formaggi)
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pizza pomodorini, rucola e grana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pizza pomodorini, rucola e grana");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta alla Norma (melanzane e ricotta)");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla Norma (melanzane e ricotta)");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Trancio di pizza margherita");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Trancio di pizza margherita");
+
+-- PIATTI CON GLUTINE + PESCE (paste con pesce)
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta salmone e zucchine");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Pasta salmone e zucchine");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta al tonno e olive");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Pasta al tonno e olive");
 
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Filetto di merluzzo");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Filetto di merluzzo");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Filetto di platessa alla marchigiana");
+
+-- PIATTI CON GLUTINE + UOVA + LATTE (tortini e impanati)
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Tortino ricotta e spinaci");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Tortino ricotta e spinaci");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Tortino ricotta e spinaci");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Mozzarella alla romana");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Mozzarella alla romana");
+
+-- PIATTI CON UOVA + LATTE (frittate)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Frittata con verdure e formaggio");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Frittata con verdure e formaggio");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Gnocchi al pomodoro");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Hamburger di manzo BIO con cipolle caramellate");
+
+-- PIATTI CON SOLO PESCE
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Filetto di platessa alla marchigiana");
+
+-- PIATTI CON GLUTINE + SOIA (prodotti vegani)
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Polpettine vegane");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Soia", "Polpettine vegane");
 
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Hamburger vegano");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Soia", "Hamburger vegano");
 
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con carote, zucchine, fagioli e mais");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con ceci, patate, carote e melanzane");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalatona vegetariana");
+-- PIATTI CON GLUTINE + SESAMO (falafel)
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Falafel");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Sesamo", "Falafel");
 
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Kebab di pollo");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Melanzana alla siciliana");
+-- PIATTI CON SENAPE (curry e spezie)
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Senape", "Riso al curry");
 
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana con pomodoro, capperi e olive");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana con pomodoro e funghi");
-
+-- PIATTI CON SEDANO (minestre e zuppe)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Sedano", "Minestra di verdure");
 
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Mozzarella alla romana");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Mozzarella alla romana");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Orzo con pomodorini e basilico");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta al ragù");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta al tonno e olive");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Pasta al tonno e olive");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta all'arrabbiata");
+-- PIATTI CON SOLO CARNE BOVINA
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Carne_bovina", "Hamburger di manzo BIO con cipolle caramellate");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Carne_bovina", "Roast beef con funghi");
+
+-- PIATTI CON SOLO CARNE SUINA
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Carne_suina", "Arrosto di maiale");
+
+-- PIATTI CON GLUTINE + CARNE SUINA (carbonara con guanciale)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta alla carbonara");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Pasta alla carbonara");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla carbonara");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta alla Norma (melanzane e ricotta)");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla Norma (melanzane e ricotta)");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta e fagioli alla veneta");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta pomodoro e piselli");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta salmone e zucchine");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Pasta salmone e zucchine");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta zucca e funghi");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate al basilico");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate all'olio extravergine");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate fritte");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Carne_suina", "Pasta alla carbonara");
 
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Peperoni alla partenopea");
+-- PIATTI CON SOLO POLLAME
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pollame", "Pollo al forno");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pollame", "Coscette di pollo");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pollame", "Arrosto di tacchino");
 
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Piselli");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pizza pomodorini, rucola e grana");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pizza pomodorini, rucola e grana");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Pollo al forno");
-
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Polpettine vegane");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Soia", "Polpettine vegane");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Senape", "Riso al curry");
-
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Riso pilaw con piselli");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Roast beef con funghi");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Tortino ricotta e spinaci");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Tortino ricotta e spinaci");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Tortino ricotta e spinaci");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Trancio di pizza margherita");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Trancio di pizza margherita");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Tris di verdure");
+-- PIATTI CON GLUTINE + POLLAME
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Kebab di pollo");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pollame", "Kebab di pollo");
 
 -- INSERT INTO menu (piatto, mensa) VALUES ("Fagioli in umido", "RistorESU Nord Piovego");
 -- INSERT INTO menu (piatto, mensa) VALUES ("Crema di piselli", "RistorESU Nord Piovego");

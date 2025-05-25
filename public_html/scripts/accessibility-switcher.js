@@ -1,7 +1,7 @@
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", (event) => {
-    console.log("THeme preference has changed to:", event.matches);
+    console.log("Theme preference has changed to:", event.matches);
     if (
       !localStorage.getItem("theme") ||
       localStorage.getItem("theme") === "system"
@@ -28,7 +28,6 @@ function sendAJAXRequest(event) {
   event.preventDefault();
 
   const formData = new FormData(event.target);
-
   formData.append("preferences", "1");
 
   const xhr = new XMLHttpRequest();
@@ -44,49 +43,32 @@ function sendAJAXRequest(event) {
           showMessage("success", response.message);
 
           const themeSelect = document.getElementById("modifica-tema-select");
-          const selectedTheme = themeSelect.value;
-
-          if (selectedTheme === "scuro") {
-            localStorage.setItem("theme", "dark");
-          } else if (selectedTheme === "chiaro") {
-            localStorage.setItem("theme", "light");
-          } else {
-            localStorage.removeItem("theme");
-          }
-
-          // Text size handling
-          const textSizeSelect = document.getElementById(
-            "dimensioni-testo-select",
-          );
-          const selectedTextSize = textSizeSelect.value;
-          if (selectedTextSize !== "none") {
-            localStorage.setItem("textSize", selectedTextSize);
-            document.documentElement.classList.remove(
-              "text-size-piccolo",
-              "text-size-medio",
-              "text-size-grande",
-            );
-            document.documentElement.classList.add(
-              "text-size-" + selectedTextSize,
-            );
-          }
-
-          // Font family handling
+          const textSizeSelect = document.getElementById("dimensioni-testo-select");
           const fontSelect = document.getElementById("modifica-font-select");
-          const selectedFont = fontSelect.value;
-          if (selectedFont !== "none") {
-            localStorage.setItem("fontFamily", selectedFont);
-            document.documentElement.classList.remove(
-              "font-normale",
-              "font-dislessia",
-            );
-            document.documentElement.classList.add("font-" + selectedFont);
+          const iconSizeSelect = document.getElementById("dimensioni-icone-select");
+
+          if (themeSelect) {
+            const selectedTheme = themeSelect.value;
+            applyThemeChanges(selectedTheme);
           }
+
+          if (textSizeSelect) {
+            const selectedTextSize = textSizeSelect.value;
+            applyTextSizeChanges(selectedTextSize);
+          }
+
+          if (fontSelect) {
+            const selectedFont = fontSelect.value;
+            applyFontChanges(selectedFont);
+          }
+
+          if (iconSizeSelect) {
+            const selectedIconSize = iconSizeSelect.value;
+            applyIconSizeChanges(selectedIconSize);
+          }
+
         } else {
-          showMessage(
-            "error",
-            response.message || "Si è verificato un errore.",
-          );
+          showMessage("error", response.message || "Si è verificato un errore.");
         }
       } catch (e) {
         showMessage("error", "Si è verificato un errore: " + e.message);
@@ -103,6 +85,69 @@ function sendAJAXRequest(event) {
   xhr.send(formData);
 }
 
+function applyThemeChanges(selectedTheme) {
+  if (selectedTheme === "scuro") {
+    document.documentElement.classList.add("theme-dark");
+    document.documentElement.classList.remove("theme-light");
+    if (!window.isLoggedIn) {
+      localStorage.setItem("theme", "dark");
+    }
+  } else if (selectedTheme === "chiaro") {
+    document.documentElement.classList.remove("theme-dark");
+    document.documentElement.classList.add("theme-light");
+    if (!window.isLoggedIn) {
+      localStorage.setItem("theme", "light");
+    }
+  } else {
+    document.documentElement.classList.remove("theme-dark", "theme-light");
+    if (!window.isLoggedIn) {
+      localStorage.removeItem("theme");
+    }
+    
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (prefersDark) {
+      document.documentElement.classList.add("theme-dark");
+    } else {
+      document.documentElement.classList.add("theme-light");
+    }
+  }
+}
+
+function applyTextSizeChanges(selectedTextSize) {
+  document.documentElement.classList.remove(
+    "text-size-piccolo",
+    "text-size-medio",
+    "text-size-grande",
+  );
+  document.documentElement.classList.add("text-size-" + selectedTextSize);
+  
+  if (!window.isLoggedIn) {
+    localStorage.setItem("textSize", selectedTextSize);
+  }
+}
+
+function applyFontChanges(selectedFont) {
+  document.documentElement.classList.remove("font-normale", "font-dislessia");
+  document.documentElement.classList.add("font-" + selectedFont);
+  
+  if (!window.isLoggedIn) {
+    localStorage.setItem("fontFamily", selectedFont);
+  }
+}
+
+function applyIconSizeChanges(selectedIconSize) {
+  document.documentElement.classList.remove(
+    "icon-size-piccolo",
+    "icon-size-medio",
+    "icon-size-grande",
+  );
+  document.documentElement.classList.add("icon-size-" + selectedIconSize);
+  
+  if (!window.isLoggedIn) {
+    localStorage.setItem("iconSize", selectedIconSize);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const themeSelect = document.getElementById("modifica-tema-select");
   const preferencesForm = document.getElementById("preferenze-accessibilità");
@@ -110,96 +155,68 @@ document.addEventListener("DOMContentLoaded", function () {
   if (preferencesForm) {
     preferencesForm.addEventListener("submit", sendAJAXRequest);
   }
-  const savedTheme = localStorage.getItem("theme");
 
-  // L'utente non ha il cookie ma ha una preferenza nel db e bisogna riassegnare il cookie
-  if (themeSelect.value != "sistema" && !savedTheme) {
-    if (themeSelect.value == "scuro") {
-      document.documentElement.classList.add("theme-dark");
-      document.documentElement.classList.remove("theme-light");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.add("theme-light");
-      document.documentElement.classList.remove("theme-dark");
-      localStorage.setItem("theme", "light");
+  if (window.serverPreferences && window.isLoggedIn) {
+    const serverPrefs = window.serverPreferences;
+    
+    if (themeSelect && serverPrefs.theme) {
+      themeSelect.value = serverPrefs.theme;
+      applyThemeChanges(serverPrefs.theme);
+    }
+    
+    const textSizeSelect = document.getElementById("dimensioni-testo-select");
+    if (textSizeSelect && serverPrefs.textSize) {
+      textSizeSelect.value = serverPrefs.textSize;
+      applyTextSizeChanges(serverPrefs.textSize);
+    }
+    
+    const fontSelect = document.getElementById("modifica-font-select");
+    if (fontSelect && serverPrefs.fontFamily) {
+      fontSelect.value = serverPrefs.fontFamily;
+      applyFontChanges(serverPrefs.fontFamily);
+    }
+    
+    const iconSizeSelect = document.getElementById("dimensioni-icone-select");
+    if (iconSizeSelect && serverPrefs.iconSize) {
+      iconSizeSelect.value = serverPrefs.iconSize;
+      applyIconSizeChanges(serverPrefs.iconSize);
+    }
+  } else {
+    const savedTheme = localStorage.getItem("theme");
+
+    if (themeSelect && themeSelect.value != "sistema" && !savedTheme) {
+      if (themeSelect.value == "scuro") {
+        applyThemeChanges("scuro");
+      } else {
+        applyThemeChanges("chiaro");
+      }
     }
   }
 
-  themeSelect.addEventListener("change", function (event) {
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-
-    if (event.target.value == "scuro") {
-      document.documentElement.classList.add("theme-dark");
-      document.documentElement.classList.remove("theme-light");
-    } else if (event.target.value == "chiaro") {
-      document.documentElement.classList.remove("theme-dark");
-      document.documentElement.classList.add("theme-light");
-    } else {
-      if (prefersDark) {
-        document.documentElement.classList.add("theme-dark");
-        document.documentElement.classList.remove("theme-light");
-      } else {
-        document.documentElement.classList.add("theme-light");
-        document.documentElement.classList.remove("theme-dark");
-      }
-    }
-  });
+  if (themeSelect) {
+    themeSelect.addEventListener("change", function (event) {
+      applyThemeChanges(event.target.value);
+    });
+  }
 
   const textSizeSelect = document.getElementById("dimensioni-testo-select");
   if (textSizeSelect) {
     textSizeSelect.addEventListener("change", function (event) {
-      document.documentElement.classList.remove(
-        "text-size-piccolo",
-        "text-size-medio",
-        "text-size-grande",
-      );
-      document.documentElement.classList.add("text-size-" + event.target.value);
+      applyTextSizeChanges(event.target.value);
     });
-
-    // Set initial value from localStorage if available
-    const savedTextSize = localStorage.getItem("textSize");
-    if (savedTextSize) {
-      document.documentElement.classList.add("text-size-" + savedTextSize);
-    }
   }
 
   const fontSelect = document.getElementById("modifica-font-select");
   if (fontSelect) {
     fontSelect.addEventListener("change", function (event) {
-      document.documentElement.classList.remove(
-        "font-normale",
-        "font-dislessia",
-      );
-      document.documentElement.classList.add("font-" + event.target.value);
+      applyFontChanges(event.target.value);
     });
-
-    // Set initial value from localStorage if available
-    const savedFont = localStorage.getItem("fontFamily");
-    if (savedFont) {
-      document.documentElement.classList.add("font-" + savedFont);
-    }
   }
 
   const iconSizeSelect = document.getElementById("dimensioni-icone-select");
   if (iconSizeSelect) {
     iconSizeSelect.addEventListener("change", function (event) {
-      document.documentElement.classList.remove(
-        "icon-size-piccolo",
-        "icon-size-medio",
-        "icon-size-grande",
-      );
-      document.documentElement.classList.add("icon-size-" + event.target.value);
-
-      // Store the preference
-      localStorage.setItem("iconSize", event.target.value);
+      applyIconSizeChanges(event.target.value);
     });
-
-    // Set initial value from localStorage if available
-    const savedIconSize = localStorage.getItem("iconSize");
-    if (savedIconSize) {
-      document.documentElement.classList.add("icon-size-" + savedIconSize);
-    }
   }
 });

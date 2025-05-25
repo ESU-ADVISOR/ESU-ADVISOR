@@ -5,7 +5,6 @@ namespace Controllers;
 use Models\MenseModel;
 use Models\PiattoModel;
 use Models\PreferenzeUtenteModel;
-use Models\UserModel;
 use Views\IndexView;
 use Views\ErrorView;
 
@@ -23,6 +22,7 @@ class IndexController implements BaseController
         }
 
         $mensaSelezionata = null;
+        $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
         
         if(isset($get["mensa"]) && !empty($get["mensa"])) {
             $mensaSelezionata = MenseModel::findByName($get["mensa"]);
@@ -33,27 +33,30 @@ class IndexController implements BaseController
                 ]);
                 exit();
             }
-        }
-        else if(isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
-            $user = UserModel::findByUsername($_SESSION["username"]);
-            if ($user) {
-                $preferences = PreferenzeUtenteModel::findByUsername($user->getUsername());
-                if ($preferences && $preferences->getMensaPreferita()) {
-                    $mensaSelezionata = MenseModel::findByName($preferences->getMensaPreferita());
-                    
-                    if ($mensaSelezionata && $_SESSION["mensa_preferita"] !== $preferences->getMensaPreferita()) {
-                        $_SESSION["mensa_preferita"] = $preferences->getMensaPreferita();
+        } else {
+            $mensaPreferitaNome = null;
+            
+            if ($isLoggedIn) {
+                $userPreferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
+                if ($userPreferences) {
+                    $mensaPreferitaNome = $userPreferences->getMensaPreferita();
+                    if ($mensaPreferitaNome && !isset($_SESSION["mensa_preferita"])) {
+                        $_SESSION["mensa_preferita"] = $mensaPreferitaNome;
                     }
                 }
             }
-        }
-        
-        if (!$mensaSelezionata && isset($_SESSION["mensa_preferita"]) && !empty($_SESSION["mensa_preferita"])) {
-            $mensaSelezionata = MenseModel::findByName($_SESSION["mensa_preferita"]);
-        }
-        
-        if (!$mensaSelezionata) {
-            $mensaSelezionata = $mense[0];
+            
+            if (!$mensaPreferitaNome && isset($_SESSION["mensa_preferita"]) && !empty($_SESSION["mensa_preferita"])) {
+                $mensaPreferitaNome = $_SESSION["mensa_preferita"];
+            }
+            
+            if ($mensaPreferitaNome) {
+                $mensaSelezionata = MenseModel::findByName($mensaPreferitaNome);
+            }
+            
+            if (!$mensaSelezionata) {
+                $mensaSelezionata = $mense[0];
+            }
         }
 
         $piatti = $mensaSelezionata->getPiatti();

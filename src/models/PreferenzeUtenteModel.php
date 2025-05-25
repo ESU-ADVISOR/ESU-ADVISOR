@@ -288,38 +288,28 @@ class PreferenzeUtenteModel
                     "allergene" => $allergene
                 ]);
             }
-            return true;
         }
-        return false;
+        return true;
     }
 
-    /**
-     * Carica tutte le preferenze dell'utente in sessione
-     * Utile per sincronizzare DB → sessione al login
-     */
-    public function loadToSession(): void
+    public function syncToSession(): void
     {
         if ($this->mensaPreferita) {
             $_SESSION["mensa_preferita"] = $this->mensaPreferita;
         }
-        
         if ($this->modificaTema) {
             $_SESSION["tema"] = $this->modificaTema->value;
         }
-        
         if ($this->dimensioneTesto) {
             $_SESSION["dimensione_testo"] = $this->dimensioneTesto->value;
         }
-        
         if ($this->dimensioneIcone) {
             $_SESSION["dimensione_icone"] = $this->dimensioneIcone->value;
         }
-        
         if ($this->modificaFont) {
             $_SESSION["modifica_font"] = $this->modificaFont->value;
         }
-
-        // Carica allergeni
+        
         $allergeni = $this->getAllergeni();
         if (!empty($allergeni)) {
             $_SESSION["allergeni"] = $allergeni;

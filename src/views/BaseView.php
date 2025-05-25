@@ -6,6 +6,8 @@ use Views\Utils;
 use DOMDocument;
 use DOMXPath;
 use DOMElement;
+use Models\PreferenzeUtenteModel;
+use Models\UserModel;
 
 abstract class BaseView
 {
@@ -68,6 +70,61 @@ abstract class BaseView
 
         $html .= '</h1>';
         return $html;
+    }
+
+    private function getServerPreferences(): array
+    {
+        $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
+        
+        $preferences = [
+            'theme' => 'system',
+            'textSize' => 'medio',
+            'iconSize' => 'medio', 
+            'fontFamily' => 'normale'
+        ];
+
+        if ($isLoggedIn) {
+            $userPreferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
+            if ($userPreferences) {
+                if ($userPreferences->getTema()) {
+                    $preferences['theme'] = $userPreferences->getTema()->value;
+                }
+                if ($userPreferences->getDimensioneTesto()) {
+                    $preferences['textSize'] = $userPreferences->getDimensioneTesto()->value;
+                }
+                if ($userPreferences->getDimensioneIcone()) {
+                    $preferences['iconSize'] = $userPreferences->getDimensioneIcone()->value;
+                }
+                if ($userPreferences->getModificaFont()) {
+                    $preferences['fontFamily'] = $userPreferences->getModificaFont()->value;
+                }
+            }
+        }
+
+        if (isset($_SESSION["tema"])) {
+            $preferences['theme'] = $_SESSION["tema"];
+        }
+        if (isset($_SESSION["dimensione_testo"])) {
+            $preferences['textSize'] = $_SESSION["dimensione_testo"];
+        }
+        if (isset($_SESSION["dimensione_icone"])) {
+            $preferences['iconSize'] = $_SESSION["dimensione_icone"];
+        }
+        if (isset($_SESSION["modifica_font"])) {
+            $preferences['fontFamily'] = $_SESSION["modifica_font"];
+        }
+
+        return $preferences;
+    }
+
+    private function generatePreferencesScript(): string
+    {
+        $preferences = $this->getServerPreferences();
+        
+        return '<script>
+            window.serverPreferences = ' . json_encode($preferences) . ';
+            window.isLoggedIn = ' . (isset($_SESSION["username"]) && !empty($_SESSION["username"]) ? 'true' : 'false') . ';
+        </script>';
     }
 
     public function render(array $data = []): void
@@ -305,6 +362,14 @@ abstract class BaseView
             "breadcrumb-template",
             $breadcrumbHTML
         );
+
+        $preferencesScript = $this->generatePreferencesScript();
+        $head = $this->dom->getElementsByTagName('head')->item(0);
+        if ($head) {
+            $scriptElement = $this->dom->createElement('script');
+            $scriptElement->textContent = str_replace(['<script>', '</script>'], '', $preferencesScript);
+            $head->appendChild($scriptElement);
+        }
     }
 
     public function renderError(string $error, int $errorCode = 500): void

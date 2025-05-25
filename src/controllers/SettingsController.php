@@ -184,6 +184,7 @@ class SettingsController implements BaseController
             $preferences->setUsername($username);
             if ($mensaPreferita) {
                 $preferences->setMensaPreferita($mensaPreferita);
+                $_SESSION["mensa_preferita"] = $mensaPreferita;
             }
 
             try {
@@ -192,10 +193,6 @@ class SettingsController implements BaseController
                 }
 
                 $preferences->saveAllergeni($allergeni);
-                
-                if ($mensaPreferita) {
-                    $_SESSION["mensa_preferita"] = $mensaPreferita;
-                }
                 
                 $view->render([
                     "success" => "Preferenze salvate con successo",
@@ -292,11 +289,11 @@ class SettingsController implements BaseController
                     header('Content-Type: application/json');
                     echo json_encode([
                         'success' => true,
-                        'message' => 'Tema salvato con successo'
+                        'message' => 'Tema salvato con questa sessione'
                     ]);
                 } else {
                     $view->render([
-                        "success" => "Tema salvato con successo",
+                        "success" => "Tema salvato per questa sessione",
                     ]);
                 }
             }

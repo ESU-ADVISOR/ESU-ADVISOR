@@ -88,25 +88,7 @@ CREATE TABLE piatto_foto (
 
 -- Lista allergene dall'EU https://www.salute.gov.it/imgs/C_17_pagineAree_1460_0_file.pdf
 CREATE TABLE piatto_allergeni (
-    allergene ENUM (
-        "Nessuno", 
-        "Glutine", 
-        "Crostacei", 
-        "Uova", 
-        "Pesce", 
-        "Arachidi", 
-        "Soia", 
-        "Latte", 
-        "Frutta_a_guscio", 
-        "Sedano", 
-        "Senape", 
-        "Sesamo", 
-        "Anidride_solforosa", 
-        "Lupini", 
-        "Molluschi",
-        "Carne_bovina",
-        "Carne_suina", 
-        "Pollame"
+    allergene ENUM ("Nessuno", "Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta_a_guscio", "Sedano", "Senape", "Sesamo", "Anidride_solforosa", "Lupini", "Molluschi","Carne_bovina","Carne_suina", "Pollame"
     ) NOT NULL DEFAULT "Nessuno",
     piatto VARCHAR(100) NOT NULL,
     PRIMARY KEY (allergene, piatto),

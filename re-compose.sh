@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose down && docker volume rm  esu-advisor_mariadb -f && docker compose up --build
+docker compose down && docker image rm esu-advisor-web:latest && docker volume rm  esu-advisor_mariadb && docker buildx prune -f && docker compose up

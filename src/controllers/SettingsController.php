@@ -226,8 +226,8 @@ class SettingsController implements BaseController
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
         
         try {
-            $tema = isset($post['tema']) && $post['tema'] !== "none" ?
-                ModificaTema::tryFrom($post['tema']) : ModificaTema::CHIARO;
+            $tema = isset($post['modifica_tema']) && $post['modifica_tema'] !== "none" ?
+                ModificaTema::tryFrom($post['modifica_tema']) : ModificaTema::SISTEMA;
 
             $dimensioneTesto = isset($post['dimensione_testo']) && $post['dimensione_testo'] !== "none" ?
                 DimensioneTesto::tryFrom($post['dimensione_testo']) : DimensioneTesto::MEDIO;
@@ -261,11 +261,11 @@ class SettingsController implements BaseController
                         header('Content-Type: application/json');
                         echo json_encode([
                             'success' => true,
-                            'message' => 'Tema salvato con successo'
+                            'message' => 'Preferenze salvate con successo'
                         ]);
                     } else {
                         $view->render([
-                            "success" => "Tema salvato con successo",
+                            "success" => "Preferenze salvate con successo",
                         ]);
                     }
                     exit();
@@ -274,11 +274,11 @@ class SettingsController implements BaseController
                         header('Content-Type: application/json');
                         echo json_encode([
                             'success' => false,
-                            'message' => 'Impossibile salvare il tema'
+                            'message' => 'Impossibile salvare le preferenze'
                         ]);
                     } else {
                         $view->render([
-                            "errors" => ["Impossibile salvare il tema"],
+                            "errors" => ["Impossibile salvare le preferenze"],
                             "formData" => $post
                         ]);
                     }
@@ -289,26 +289,26 @@ class SettingsController implements BaseController
                     header('Content-Type: application/json');
                     echo json_encode([
                         'success' => true,
-                        'message' => 'Tema salvato con questa sessione'
+                        'message' => 'Preferenze salvate per questa sessione'
                     ]);
                 } else {
                     $view->render([
-                        "success" => "Tema salvato per questa sessione",
+                        "success" => "Preferenze salvate per questa sessione",
                     ]);
                 }
             }
         } catch (\Exception $e) {
-            error_log("Errore nel salvataggio tema: " . $e->getMessage());
+            error_log("Errore nel salvataggio preferenze: " . $e->getMessage());
             
             if ($isAjax) {
                 header('Content-Type: application/json');
                 echo json_encode([
                     'success' => false,
-                    'message' => 'Impossibile salvare il tema: ' . $e->getMessage()
+                    'message' => 'Impossibile salvare le preferenze: ' . $e->getMessage()
                 ]);
             } else {
                 $view->render([
-                    "errors" => ["Impossibile salvare il tema: " . $e->getMessage()],
+                    "errors" => ["Impossibile salvare le preferenze: " . $e->getMessage()],
                     "formData" => $post
                 ]);
             }

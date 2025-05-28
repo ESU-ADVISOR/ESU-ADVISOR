@@ -23,7 +23,7 @@ class RegisterController implements BaseController
         try {
             if (UserModel::isUsernameTaken($username)) {
                 $view->render([
-                    "errors" => ["Registrazione fallita: Username già in uso"],
+                    "errors" => ["Registrazione fallita: <span lang='en'>username</span> già in uso"],
                     "formData" => $post
                 ]);
                 return;
@@ -40,7 +40,7 @@ class RegisterController implements BaseController
                 return;
             } else {
                 $view->render([
-                    "errors" => ["Registrazione fallita: Impossibile salvare nel database"],
+                    "errors" => ["Registrazione fallita: impossibile salvare nel database"],
                     "formData" => $post
                 ]);
             }

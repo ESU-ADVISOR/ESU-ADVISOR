@@ -1784,7 +1784,12 @@ body {
     transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-.form-input-with-icon {
+
+.form-input:not(:placeholder-shown), .form-input:focus {
+    background-image: none !important;
+}
+
+.form-input-with-icon { /* non utilizzata */
     padding-left: calc(40px + var(--spacing-sm));
     background-position: var(--spacing-sm) center !important;
     background-repeat: no-repeat;
@@ -2259,14 +2264,14 @@ span.center {
 /* ===== FORM ICONS ===== */
 .username-input {
     background-image: url("../images/user-light.svg");
-    background-position: right 0.75rem center;
+    background-position: left 0.75rem center;
     background-repeat: no-repeat;
     padding-right: 2.5rem;
 }
 
 .password-input {
     background-image: url("../images/lock-light.svg");
-    background-position: right 0.75rem center;
+    background-position: left 0.75rem center;
     background-repeat: no-repeat;
     padding-right: 2.5rem;
 }

@@ -9,16 +9,17 @@ document.addEventListener("DOMContentLoaded", function () {
     let errors = [];
 
     document.querySelectorAll(".error").forEach((el) => el.remove());
+    document.querySelectorAll(".error-container").forEach((el) => el.remove());
 
     const username = usernameInput.value.trim();
     if (username.length < 3 || username.length > 50) {
       isValid = false;
-      errors.push("L'username deve essere compreso tra 3 e 50 caratteri.");
+      errors.push("L'<span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.");
     }
     if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
       isValid = false;
       errors.push(
-        "L'username può contenere solo lettere, numeri, underscore e trattini.",
+        "L'<span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini.",
       );
     }
 
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     errors.forEach((error) => {
       const errorElement = document.createElement("div");
       errorElement.classList.add("error");
-      errorElement.textContent = error;
+      errorElement.innerHTML = error;
       errorContainer.appendChild(errorElement);
     });
     form.prepend(errorContainer);

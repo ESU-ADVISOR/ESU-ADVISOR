@@ -135,6 +135,12 @@ class UserModel
         if ($this->username == "") {
             return false;
         }
+
+        $dataNascitaObj = $this->dataNascita;
+        if (is_string($dataNascitaObj)) {
+            $dataNascitaObj = new \DateTimeImmutable($dataNascitaObj);
+        }
+
         $exists = self::findByUsername($this->username);
         if (!$exists) {
             $stmt = $this->db->prepare(
@@ -143,7 +149,7 @@ class UserModel
             return $stmt->execute([
                 "username" => $this->username,
                 "password" => $this->password,
-                "dataNascita" => $this->dataNascita->format("Y-m-d"),
+                "dataNascita" => $dataNascitaObj->format("Y-m-d"),
             ]);
         } else {
             $stmt = $this->db->prepare(
@@ -152,7 +158,7 @@ class UserModel
             return $stmt->execute([
                 "username" => $this->username,
                 "password" => $this->password,
-                "dataNascita" => $this->dataNascita->format("Y-m-d"),
+                "dataNascita" => $dataNascitaObj->format("Y-m-d"),
             ]);
         }
     }

@@ -20,7 +20,7 @@ class ReviewView extends BaseView
         parent::render();
 
         if (empty($_SESSION["username"])) {
-            self::renderError("You're not logged in");
+            self::renderError("Non hai effettuato il <span lang='en'>login</span>, impossibile inviare una recensione.");
             return;
         }
 

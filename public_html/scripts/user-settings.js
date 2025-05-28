@@ -2,13 +2,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("myModal");
   const btn = document.getElementById("delete-account-button");
   const closeBtn = document.getElementById("close-modal");
-  if (!modal || btn || closeBtn) return;
+  const cancelBtn = document.getElementById("cancel-button");
 
-  btn.addEventListener("click", () => {
+  if (!modal || !btn || !closeBtn || !cancelBtn) return;
+
+  btn.addEventListener("click", (event) => {
+    event.preventDefault();
     modal.style.display = "block";
   });
 
   closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  cancelBtn.addEventListener("click", (event) => {
+    event.preventDefault();
     modal.style.display = "none";
   });
 

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   mensaInput.addEventListener("input", validateMensa);
   piattoInput.addEventListener("input", validatePiatto);
   form.addEventListener("submit", function (event) {
-    if (!validatePiatto() || !validateMensa() || !valdiateRating()) {
+    if (!validatePiatto() || !validateMensa() || !validateRating()) {
       event.preventDefault();
     }
   });
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
       }
     }
-    errors.set("mensa-error", "La mensa non esiste nel database");
+    errors.set("mensa-error", "La mensa non esiste nel <span lang='en'>database</span>");
     refreshErrors();
     return false;
   }
@@ -63,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
       }
     }
-    errors.set("piatto-error", "Il piatto non esiste nel database");
+    errors.set("piatto-error", "Il piatto non esiste nel <span lang='en'>database</span>");
     refreshErrors();
     return false;
   }
-  function valdiateRating() {
+  function validateRating() {
     const ratingInputs = document.getElementsByName("rating");
     let ratingSelected = false;
     for (let i = 0; i < ratingInputs.length; i++) {

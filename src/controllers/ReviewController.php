@@ -32,7 +32,7 @@ class ReviewController implements BaseController
                 return;
             } else {
                 $view->render([
-                    "errors" => ["Invio recensione fallito: impossibile salvare nel database"],
+                    "errors" => ["Invio recensione fallito: impossibile salvare nel <span lang='en'>database</span>"],
                     "formData" => $post
                 ]);
             }

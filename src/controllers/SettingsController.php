@@ -36,7 +36,7 @@ class SettingsController implements BaseController
             exit();
         } else {
             $view->render([
-                "errors" => ["Eliminazione account fallita: impossibile rimuovere dal database"],
+                "errors" => ["Eliminazione account fallita: impossibile rimuovere dal <span lang='en'>database</span>"],
             ]);
             exit();
         }
@@ -53,24 +53,33 @@ class SettingsController implements BaseController
             exit();
         }
 
+        $user = UserModel::findByUsername($post['new_username']);
+        if ($user !== null) {
+            $view->render([
+                "errors" => ["Lo <span lang='en'>username</span> scelto è già in uso da un altro utente"],
+                "formData" => ['new_username' => $post['new_username']]
+            ]);
+            exit();
+        }
+
         if (empty($post['new_username'])) {
             $view->render([
-                "errors" => ["Username non può essere vuoto"],
-                "formData" => $post
+                "errors" => ["<span lang='en'>Username</span> non può essere vuoto"],
+                "formData" => ['new_username' => $post['new_username']]
             ]);
             exit();
         } else {
             if (strlen($post['new_username']) < 3 || strlen($post['new_username']) > 50) {
                 $view->render([
-                    "errors" => ["L'username deve essere compreso tra 3 e 50 caratteri"],
-                    "formData" => $post
+                    "errors" => ["L'<span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri"],
+                    "formData" => ['new_username' => $post['new_username']]
                 ]);
                 exit();
             }
             if (!preg_match('/^[a-zA-Z0-9_-]+$/', $post['new_username'])) {
                 $view->render([
-                    "errors" => ["L'username può contenere solo lettere, numeri, underscore e trattini"],
-                    "formData" => $post
+                    "errors" => ["L'<span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini"],
+                    "formData" => ['new_username' => $post['new_username']]
                 ]);
                 exit();
             }
@@ -80,13 +89,13 @@ class SettingsController implements BaseController
 
         if ($user->saveToDB()) {
             $view->render([
-                "success" => "Username modificato con successo",
+                "success" => "<span lang='en'>Username</span> modificato con successo",
             ]);
             exit();
         } else {
             $view->render([
-                "errors" => ["Modifica username non riuscita"],
-                "formData" => $post
+                "errors" => ["Modifica <span lang='en'>username</span> non riuscita"],
+                "formData" => ['new_username' => $post['new_username']]
             ]);
             exit();
         }
@@ -96,6 +105,8 @@ class SettingsController implements BaseController
     {
         $view = new SettingsView();
         $user = UserModel::findByUsername($_SESSION["username"]);
+        $errors = [];
+
         if ($user === null) {
             $view->render([
                 "errors" => ["Utente non trovato"],
@@ -104,8 +115,55 @@ class SettingsController implements BaseController
         }
 
         if (!UserModel::authenticate($user->getUsername(), $post['password'])) {
+            $errors[] = "La <span lang='en'>password</span> attuale è errata";
+            /*
             $view->render([
-                "errors" => ["La password attuale è errata"],
+                "errors" => $errors,
+                "formData" => [
+                    "new_password" => $post['new_password'],
+                    "new_password_confirm" => $post['new_password_confirm']
+                ]
+            ]);
+            exit();*/
+        }
+
+        if ($post['new_password'] !== $post['new_password_confirm']) {
+            $errors[] = "Le nuove <span lang='en'>password</span> non corrispondono";
+            /*
+            $view->render([
+                "errors" => ["Le nuove <span lang='en'>password</span> non corrispondono"],
+                "formData" => []
+            ]);
+            exit();*/
+        }
+
+        if ($post['new_password'] === $post['password']) {
+            $errors[] = "La nuova <span lang='en'>password</span> deve essere diversa da quella attuale";
+            /*
+            $view->render([
+                "errors" => ["La nuova <span lang='en'>password</span> deve essere diversa da quella attuale"],
+                "formData" => []
+            ]);
+            exit();*/
+        }
+
+        if (strlen($post['new_password']) < 8) {
+            $errors[] = "La <span lang='en'>password</span> deve essere di almeno 8 caratteri";
+        }
+
+        if (
+            !preg_match(
+                '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
+                $post['new_password']
+            )
+        ) {
+            $errors[] =
+                "La <span lang='en'>password</span> deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&).";
+        }
+
+        if(!empty($errors) ) {
+            $view->render([
+                "errors" => $errors,
                 "formData" => [
                     "new_password" => $post['new_password'],
                     "new_password_confirm" => $post['new_password_confirm']
@@ -114,32 +172,16 @@ class SettingsController implements BaseController
             exit();
         }
 
-        if ($post['new_password'] !== $post['new_password_confirm']) {
-            $view->render([
-                "errors" => ["Le nuove password non corrispondono"],
-                "formData" => []
-            ]);
-            exit();
-        }
-
-        if ($post['new_password'] === $post['password']) {
-            $view->render([
-                "errors" => ["La nuova password deve essere diversa da quella attuale"],
-                "formData" => []
-            ]);
-            exit();
-        }
-
         $user->setClearPassword($post['new_password']);
 
         if ($user->saveToDB()) {
             $view->render([
-                "success" => "Password modificata con successo"
+                "success" => "<span lang='en'>Password</span> modificata con successo"
             ]);
             exit();
         } else {
             $view->render([
-                "errors" => ["Modifica password non riuscita"],
+                "errors" => ["Modifica <span lang='en'>password</span> non riuscita"],
                 "formData" => []
             ]);
             exit();
@@ -154,7 +196,7 @@ class SettingsController implements BaseController
             $mensa = MenseModel::findByName($post['mensa_preferita']);
             if ($mensa === null) {
                 $view->render([
-                    "errors" => ["Mensa non trovata nel database"],
+                    "errors" => ["Mensa non trovata nel <span lang='en'>database</span>"],
                     "formData" => $post
                 ]);
                 exit();
@@ -331,9 +373,9 @@ class SettingsController implements BaseController
             }
         }
 
-        if (isset($post['save_preferenze_generali']))
+        if (isset($post['save_preferenze_generali']))   //mensa e allergeni
             $this->savePreferences($post);
-        else if (isset($post['preferences'])) {
+        else if (isset($post['preferences'])) {         //accessibilità
             $this->saveUserPreferences($post);
         } else {
             http_response_code(400);

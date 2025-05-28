@@ -634,7 +634,7 @@ BEGIN
     CALL crea_recensioni_casuali();
 END //
 
-
+DELIMITER ;
 
 CALL crea_menu_settimanale();
 CALL crea_recensioni_casuali();

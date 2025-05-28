@@ -1,6 +1,4 @@
-(function () {
-  var currentTheme, textSize, fontFamily, iconSize;
-
+(function() {
   function applyTheme(theme) {
     if (theme === "scuro") {
       document.documentElement.classList.add("theme-dark");
@@ -10,6 +8,10 @@
       document.documentElement.classList.add("theme-light");
     } else {
       document.documentElement.classList.remove("theme-dark", "theme-light");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (prefersDark) {
+        document.documentElement.classList.add("theme-dark");
+      }
     }
   }
 
@@ -48,36 +50,10 @@
     }
   }
 
-  function syncLocalStorageFromServer() {
-    if (window.serverPreferences) {
-      var serverPrefs = window.serverPreferences;
-      
-      if (serverPrefs.theme === "scuro") {
-        localStorage.setItem("theme", "dark");
-      } else if (serverPrefs.theme === "chiaro") {
-        localStorage.setItem("theme", "light");
-      } else {
-        localStorage.removeItem("theme");
-      }
-
-      localStorage.setItem("textSize", serverPrefs.textSize || "medio");
-      localStorage.setItem("fontFamily", serverPrefs.fontFamily || "normale");
-      localStorage.setItem("iconSize", serverPrefs.iconSize || "medio");
-    }
-  }
-
-  function clearLocalStoragePreferences() {
-    localStorage.removeItem("theme");
-    localStorage.removeItem("textSize");
-    localStorage.removeItem("fontFamily");
-    localStorage.removeItem("iconSize");
-  }
-
   function applyPreferences() {
-    var useServerPrefs = window.serverPreferences && window.isLoggedIn;
+    var currentTheme, textSize, fontFamily, iconSize;
     
-    if (useServerPrefs) {
-      syncLocalStorageFromServer();
+    if (window.serverPreferences) {
       var prefs = window.serverPreferences;
       
       currentTheme = prefs.theme || "sistema";
@@ -85,70 +61,27 @@
       fontFamily = prefs.fontFamily || "normale";
       iconSize = prefs.iconSize || "medio";
     } else {
-      try {
-        currentTheme = localStorage.getItem("theme") || "system";
-        if (currentTheme !== "system") {
-          if (currentTheme === "dark") currentTheme = "scuro";
-          if (currentTheme === "light") currentTheme = "chiaro";
-        } else {
-          currentTheme = "sistema";
-        }
-        
-        textSize = localStorage.getItem("textSize") || "medio";
-        fontFamily = localStorage.getItem("fontFamily") || "normale";
-        iconSize = localStorage.getItem("iconSize") || "medio";
-      } catch (err) {
-        currentTheme = "sistema";
-        textSize = "medio";
-        fontFamily = "normale";
-        iconSize = "medio";
-        console.log(new Error("accessing preferences has been denied"));
-      }
+      currentTheme = "sistema";
+      textSize = "medio";
+      fontFamily = "normale";
+      iconSize = "medio";
     }
 
-    if (currentTheme !== "sistema") {
-      applyTheme(currentTheme);
-    }
+    applyTheme(currentTheme);
     applyFontFamily(fontFamily);
     applyTextSize(textSize);
     applyIconSize(iconSize);
   }
 
-  applyPreferences();
-
-  window.forcePreferencesReload = function() {
+  if (window.serverPreferences) {
     applyPreferences();
-  };
+  }
 
-  if (window.forcePreferencesReload === true) {
-    setTimeout(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    applyPreferences();
+    
+    window.forcePreferencesReload = function() {
       applyPreferences();
-    }, 100);
-  }
-
-  if (window.isLoggedIn === false) {
-    window.addEventListener('beforeunload', function() {
-      clearLocalStoragePreferences();
-    });
-  }
+    };
+  });
 })();
-
-document.addEventListener("DOMContentLoaded", function () {
-  const logoutButton = document.getElementById("logout");
-  const sidebarLogoutButton = document.getElementById("sidebar-logout");
-
-  function handleLogout() {
-    localStorage.removeItem("theme");
-    localStorage.removeItem("textSize");
-    localStorage.removeItem("fontFamily");
-    localStorage.removeItem("iconSize");
-  }
-
-  if (logoutButton) {
-    logoutButton.addEventListener("click", handleLogout);
-  }
-
-  if (sidebarLogoutButton) {
-    sidebarLogoutButton.addEventListener("click", handleLogout);
-  }
-});

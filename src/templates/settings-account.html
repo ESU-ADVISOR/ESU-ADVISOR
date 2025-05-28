@@ -8,10 +8,10 @@
                 L'<span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo lettere, numeri, <span lang="en">underscore</span> e trattini.
             </p>
             <input
-                type="username"
+                type="text"
                 id="new_username"
                 name="new_username"
-                class="form-input username-input"
+                class="form-input email-input-left" 
                 placeholder=""
             />
             <!--
@@ -35,16 +35,8 @@
                 type="password"
                 id="current_password"
                 name="password"
-                class="form-input password-input"
-                placeholder=""
+                class="form-input password-input-left"
             />
-            <!-- 
-                style="
-                    background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                    background-position: 12px center;
-                    background-repeat: no-repeat;
-                " 
-            -->
 
             <label for="new_password">Nuova <span lang="en">password</span></label>
             <p class="text-secondary text-sm">
@@ -54,32 +46,16 @@
                 type="password"
                 id="new_password"
                 name="new_password"
-                class="form-input password-input"
-                placeholder=""
+                class="form-input password-input-left"
             />
-            <!--
-            style="
-                    background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                    background-position: 12px center;
-                    background-repeat: no-repeat;
-                "
-            -->
 
             <label for="new_password_confirm">Conferma nuova <span lang="en">password</span></label>
             <input
                 type="password"
                 id="new_password_confirm"
                 name="new_password_confirm"
-                class="form-input password-input"
-                placeholder=""
+                class="form-input password-input-left"
             />
-            <!--
-            style="
-                    background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>&quot;);
-                    background-position: 12px center;
-                    background-repeat: no-repeat;
-                "
-            -->
 
             <button type="submit" class="form-button" name="change_password">Salva</button>
         </div>

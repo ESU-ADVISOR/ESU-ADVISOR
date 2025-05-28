@@ -77,7 +77,7 @@ abstract class BaseView
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
         
         $preferences = [
-            'theme' => 'system',
+            'theme' => 'sistema',
             'textSize' => 'medio',
             'iconSize' => 'medio', 
             'fontFamily' => 'normale'
@@ -139,7 +139,6 @@ abstract class BaseView
             __DIR__ . "/../templates/sidebar.html"
         );
 
-        //manipolare headerDOM per togliere il link alla home dall'header quando siamo nella home (link circolare)
         $headerDOM = new \DOMDocument();
         libxml_use_internal_errors(true);
         $headerDOM->loadHTML($headerContent);
@@ -162,7 +161,6 @@ abstract class BaseView
         }
         $headerContent = $headerDOM->saveHTML();
 
-        //manipolare footerDOM per togliere il link alla pagina attuale dal nav (link circolare)
         $footerDOM = new \DOMDocument();
         libxml_use_internal_errors(true);
         $footerDOM->loadHTML($footerContent);
@@ -200,7 +198,6 @@ abstract class BaseView
             }
         }
 
-        // Gestire sidebarDOM per togliere il link alla pagina attuale (stessa logica del footer)
         $sidebarDOM = new \DOMDocument();
         libxml_use_internal_errors(true);
         $sidebarDOM->loadHTML($sidebarContent);
@@ -234,7 +231,6 @@ abstract class BaseView
             }
         }
 
-        // Gestire icone footer
         $iconPaths = [
             'home-icon-template' => __DIR__ . '/../../public_html/images/home.svg',
             'review-icon-template' => __DIR__ . '/../../public_html/images/review.svg',
@@ -253,7 +249,6 @@ abstract class BaseView
             }
         }
 
-        // Gestire icone sidebar (stessi percorsi, diversi template ID)
         $sidebarIconPaths = [
             'sidebar-home-icon-template' => __DIR__ . '/../../public_html/images/home.svg',
             'sidebar-review-icon-template' => __DIR__ . '/../../public_html/images/review.svg',
@@ -291,19 +286,15 @@ abstract class BaseView
             $sidebarContent
         );
 
-        // Pagine che richiedono login ma sono accessibili anche senza login
         $publicPages = ['settings.php', 'index.php'];
         $currentPage = basename($_SERVER['PHP_SELF']);
 
-        // Controlla se è la pagina di login o register per non mostrare i rispettivi pulsanti
         $isLoginPage = ($currentPage === 'login.php');
         $isRegisterPage = ($currentPage === 'register.php');
 
-        // Debug: aggiungiamo un controllo esplicito
         $isUserLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]) && $_SESSION["username"] !== '';
         
         if ($isUserLoggedIn) {
-            // Utente loggato - mostra solo logout
             $logoutButton = '<a href="logout.php" class="nav-button danger" lang="en" id="logout">Logout</a>';
             $sidebarLogoutButton = '<a href="logout.php" class="sidebar-auth-button danger" lang="en" id="sidebar-logout">Logout</a>';
             
@@ -318,15 +309,11 @@ abstract class BaseView
                 $sidebarLogoutButton
             );
         } else {
-            // Utente NON loggato - mostra login/register
-
-            // Per pagine protette, aggiungiamo un parametro di redirect
             $loginRedirect = '';
             if (!in_array($currentPage, $publicPages) && $currentPage !== 'login.php' && $currentPage !== 'register.php') {
                 $loginRedirect = "?redirect={$currentPage}";
             }
 
-            // Costruisce i pulsanti in base alla pagina corrente per header (mobile)
             $buttonsHtml = '';
             if (!$isLoginPage) {
                 $buttonsHtml .= '<a href="login.php' . $loginRedirect . '" class="nav-button primary" lang="en">Login</a>';
@@ -335,7 +322,6 @@ abstract class BaseView
                 $buttonsHtml .= '<a href="register.php" class="nav-button secondary">Registrati</a>';
             }
 
-            // Costruisce i pulsanti per sidebar (desktop)
             $sidebarButtonsHtml = '';
             if (!$isLoginPage) {
                 $sidebarButtonsHtml .= '<a href="login.php' . $loginRedirect . '" class="sidebar-auth-button primary" lang="en">Login</a>';

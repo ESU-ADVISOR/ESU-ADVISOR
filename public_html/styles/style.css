@@ -2276,8 +2276,30 @@ span.center {
     padding-right: 2.5rem;
 }
 
+.email-input-left {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z'/><path d='m3 7 9 6 9-6'/></svg>");
+    background-position: 12px center;
+    background-repeat: no-repeat;
+    padding-left: 2.75rem;
+}
+
+.password-input-left {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>");
+    background-position: 12px center;
+    background-repeat: no-repeat;
+    padding-left: 2.75rem;
+}
+
 .date-input {
     padding-right: 0.75rem;
+}
+
+.theme-dark .email-input-left {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23afafaf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z'/><path d='m3 7 9 6 9-6'/></svg>");
+}
+
+.theme-dark .password-input-left {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23afafaf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>");
 }
 
 .theme-dark .username-input {
@@ -2289,6 +2311,14 @@ span.center {
 }
 
 @media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) .email-input-left {
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23afafaf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z'/><path d='m3 7 9 6 9-6'/></svg>");
+    }
+
+    :root:not(.theme-light) .password-input-left {
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23afafaf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>");
+    }
+
     :root:not(.theme-light) .username-input {
         background-image: url("../images/user-dark.svg");
     }

@@ -104,6 +104,27 @@ class SettingsView extends BaseView
                 "settings-account-template",
                 $settingsAccountContent
             );
+
+            // ricompilazione campi se si proviene da un errore
+            if (isset($data["formData"])) {
+                $formData = $data["formData"];
+
+                if (isset($formData["new_username"]) && !empty($formData["new_username"])) {
+                    $this->dom->getElementById("new_username")->setAttribute("value", htmlspecialchars($formData["new_username"]));
+                }
+
+                if (isset($formData["password"]) && !empty($formData["password"])) {
+                    $this->dom->getElementById("password")->setAttribute("value", htmlspecialchars($formData["password"]));
+                }
+
+                if (isset($formData["new_password"]) && !empty($formData["new_password"])) {
+                    $this->dom->getElementById("new_password")->setAttribute("value", htmlspecialchars($formData["new_password"]));
+                }
+
+                if (isset($formData["new_password_confirm"]) && !empty($formData["new_password_confirm"])) {
+                    $this->dom->getElementById("new_password_confirm")->setAttribute("value", htmlspecialchars($formData["new_password_confirm"]));
+                }
+            } 
         }
 
         // ======== Dark Mode =========

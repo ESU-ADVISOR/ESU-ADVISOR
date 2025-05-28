@@ -41,7 +41,7 @@ class LoginController implements BaseController
 
         if (!$this->model->authenticate($this->model->findByUsername($username)->getUsername(), $password)) {
             $this->view->render([
-                "errors" => ["Username o password non validi"],
+                "errors" => ["<span lang='en'>Username</span> o <span lang='en'>password</span> non validi"],
                 "formData" => ["username" => $username]
             ]);
             return;

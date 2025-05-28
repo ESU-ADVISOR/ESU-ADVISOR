@@ -22,12 +22,26 @@
                     <h2 class="text-primary">Registrati</h2>
                 </div>
 
+                <p class="text-secondary text-sm">
+                    Compila tutti i campi del <span lang="en">form</span> per registrarti.
+                </p>
+
                 <template id="server-response-template"></template>
 
                 <form action="register.php" method="POST" class="base-form" id="register-form" novalidate>
                     <div class="form-group">
                         <label for="username" lang="en">Username</label>
-                        <input type="text" id="username" name="username" required class="form-input username-input" />
+                        <p class="text-secondary text-sm">
+                            L'<span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo lettere, numeri, underscore e trattini.
+                        </p>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            required 
+                            class="form-input username-input" 
+                            placeholder=""
+                        />
                         <small id="username-error" class="error"></small>
                     </div>
 
@@ -39,12 +53,16 @@
 
                     <div class="form-group">
                         <label for="password" lang="en">Password</label>
+                        <p class="text-secondary text-sm">
+                            La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
+                        </p>
                         <input
                             type="password"
                             id="password"
                             name="password"
                             required
                             class="form-input password-input"
+                            placeholder=""
                         />
                         <small id="password-error" class="error"></small>
                     </div>
@@ -57,6 +75,7 @@
                             name="confirm_password"
                             required
                             class="form-input password-input"
+                            placeholder=""
                         />
                         <small id="confirm_password-error" class="error"></small>
                     </div>

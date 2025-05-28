@@ -222,7 +222,7 @@ class SettingsController implements BaseController
         
         if ($isLoggedIn) {
             $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
-            $preferences = PreferenzeUtenteModel::findByUsername($username) ?? new PreferenzeUtenteModel();
+            $preferences = PreferenzeUtenteModel::findByUsername($username);
 
             $preferences->setUsername($username);
             if ($mensaPreferita) {
@@ -232,7 +232,7 @@ class SettingsController implements BaseController
 
             try {
                 if (!$preferences->saveToDB()) {
-                    throw new \Exception("Impossibile salvare le preferenze");
+                    throw new \Exception("Impossibile salvare le preferenze della mensa");
                 }
 
                 $preferences->saveAllergeni($allergeni);
@@ -246,7 +246,7 @@ class SettingsController implements BaseController
                 error_log("Errore nel salvataggio preferenze: " . $e->getMessage());
                 
                 $view->render([
-                    "errors" => ["Impossibile salvare le preferenze: " . $e->getMessage()],
+                    "errors" => ["Impossibile salvare le preferenze della mensa: " . $e->getMessage()],
                     "formData" => $post
                 ]);
                 exit();
@@ -297,6 +297,8 @@ class SettingsController implements BaseController
                 $preferences->setDimensioneIcone($dimensioneIcone);
                 $preferences->setModificaFont($font);
 
+                $preferences->syncToSession();
+
                 if ($preferences->saveToDB()) {
                     $view->render([
                         "success" => "Preferenze salvate con successo",
@@ -304,7 +306,7 @@ class SettingsController implements BaseController
                     exit();
                 } else {
                     $view->render([
-                        "errors" => ["Impossibile salvare le preferenze"],
+                        "errors" => ["Impossibile salvare le preferenze dell'utente"],
                         "formData" => $post
                     ]);
                     exit();
@@ -318,7 +320,7 @@ class SettingsController implements BaseController
             error_log("Errore nel salvataggio preferenze: " . $e->getMessage());
             
             $view->render([
-                "errors" => ["Impossibile salvare le preferenze: " . $e->getMessage()],
+                "errors" => ["Impossibile salvare le preferenze dell'utente: " . $e->getMessage()],
                 "formData" => $post
             ]);
             exit();

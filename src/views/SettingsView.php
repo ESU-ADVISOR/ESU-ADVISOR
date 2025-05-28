@@ -158,7 +158,7 @@ class SettingsView extends BaseView
         $opzioniDimensioneTesto = DimensioneTesto::cases();
         $dimensioneTestoScelta = null;
 
-        if ($userPreferences != null && $userPreferences->getDimensioneTesto()) {
+        if (isset($userPreferences)) {
             $dimensioneTestoScelta = $userPreferences->getDimensioneTesto()->value;
         } elseif (isset($_SESSION["dimensione_testo"])) {
             $dimensioneTestoScelta = $_SESSION["dimensione_testo"];

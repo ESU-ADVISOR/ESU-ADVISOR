@@ -11,6 +11,7 @@ class UserModel
 
 
     // table fields
+    private int|null $id;
     private string|null $username;
     private string|null $password;
     private string|DateTimeImmutable|null $dataNascita;
@@ -33,6 +34,9 @@ class UserModel
      */
     private function fill(array $data): void
     {
+        if (isset($data["id"])) {
+            $this->id = (int)$data["id"];
+        }
         if (isset($data["username"])) {
             $this->username = $data["username"];
         }
@@ -43,13 +47,13 @@ class UserModel
             );
         }
         if (isset($data["dataNascita"])) {
-            $this->dataNascita = new DateTimeImmutable($data["dataNascita"]);
+            $this->dataNascita = new DateTimeImmutable($datetime = $data["dataNascita"]);
         }
     }
 
     public function validate(): bool
     {
-        return $this->username != "";
+        return $this->username != "" && $this->id !== null;
     }
 
     public function refresh(): bool
@@ -64,6 +68,11 @@ class UserModel
             return true;
         }
         return false;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getUsername(): string
@@ -120,7 +129,7 @@ class UserModel
             "SELECT * FROM recensione WHERE utente = :utente"
         );
         $stmt->execute([
-            "utente" => $this->username,
+            "utente" => $this->id,
         ]);
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, RecensioneModel::class);
         if (!empty($data)) {
@@ -135,7 +144,16 @@ class UserModel
         if ($this->username == "") {
             return false;
         }
-        $exists = self::findByUsername($this->username);
+
+        if(is_string($this->dataNascita)) {
+            try {
+                $this->dataNascita = new DateTimeImmutable($this->dataNascita);
+            } catch (\Exception $e) {
+                return false; // Invalid date format
+            }
+        }
+
+        $exists = $this->id !== null && $this->id > 0; //nel caso della registrazione l'id è null
         if (!$exists) {
             $stmt = $this->db->prepare(
                 "INSERT INTO utente (username, password, dataNascita) VALUES (:username, :password, :dataNascita)"
@@ -147,19 +165,20 @@ class UserModel
             ]);
         } else {
             $stmt = $this->db->prepare(
-                "UPDATE utente SET username = :username, password = :password, dataNascita = :dataNascita WHERE username = :username"
+                "UPDATE utente SET username = :username, password = :password, dataNascita = :dataNascita WHERE id = :id"
             );
             return $stmt->execute([
                 "username" => $this->username,
                 "password" => $this->password,
                 "dataNascita" => $this->dataNascita->format("Y-m-d"),
+                "id" => $this->id,
             ]);
         }
     }
 
     public function deleteFromDB(): bool
     {
-        if ($this->username == null) {
+        if ($this->username == null || $this->id == null) {
             return false;
         }
 

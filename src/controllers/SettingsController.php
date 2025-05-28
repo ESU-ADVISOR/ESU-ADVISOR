@@ -79,6 +79,7 @@ class SettingsController implements BaseController
         $user->setUsername($post['new_username']);
 
         if ($user->saveToDB()) {
+            $_SESSION["username"] = $user->getUsername();
             $view->render([
                 "success" => "Username modificato con successo",
             ]);
@@ -243,8 +244,6 @@ class SettingsController implements BaseController
             $_SESSION["dimensione_icone"] = $dimensioneIcone->value;
             $_SESSION["modifica_font"] = $font->value;
 
-            $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
                 
             if ($isLoggedIn) {
                 $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
@@ -257,61 +256,29 @@ class SettingsController implements BaseController
                 $preferences->setModificaFont($font);
 
                 if ($preferences->saveToDB()) {
-                    if ($isAjax) {
-                        header('Content-Type: application/json');
-                        echo json_encode([
-                            'success' => true,
-                            'message' => 'Preferenze salvate con successo'
-                        ]);
-                    } else {
-                        $view->render([
-                            "success" => "Preferenze salvate con successo",
-                        ]);
-                    }
+                    $view->render([
+                        "success" => "Preferenze salvate con successo",
+                    ]);
                     exit();
                 } else {
-                    if ($isAjax) {
-                        header('Content-Type: application/json');
-                        echo json_encode([
-                            'success' => false,
-                            'message' => 'Impossibile salvare le preferenze'
-                        ]);
-                    } else {
-                        $view->render([
-                            "errors" => ["Impossibile salvare le preferenze"],
-                            "formData" => $post
-                        ]);
-                    }
+                    $view->render([
+                        "errors" => ["Impossibile salvare le preferenze"],
+                        "formData" => $post
+                    ]);
                     exit();
                 }
             } else {
-                if ($isAjax) {
-                    header('Content-Type: application/json');
-                    echo json_encode([
-                        'success' => true,
-                        'message' => 'Preferenze salvate per questa sessione'
-                    ]);
-                } else {
-                    $view->render([
-                        "success" => "Preferenze salvate per questa sessione",
-                    ]);
-                }
+                $view->render([
+                    "success" => "Preferenze salvate per questa sessione",
+                ]);
             }
         } catch (\Exception $e) {
             error_log("Errore nel salvataggio preferenze: " . $e->getMessage());
             
-            if ($isAjax) {
-                header('Content-Type: application/json');
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Impossibile salvare le preferenze: ' . $e->getMessage()
-                ]);
-            } else {
-                $view->render([
-                    "errors" => ["Impossibile salvare le preferenze: " . $e->getMessage()],
-                    "formData" => $post
-                ]);
-            }
+            $view->render([
+                "errors" => ["Impossibile salvare le preferenze: " . $e->getMessage()],
+                "formData" => $post
+            ]);
             exit();
         }
     }

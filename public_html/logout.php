@@ -1,15 +1,7 @@
 <?php
 session_start();
 
-unset($_SESSION["username"]);
-unset($_SESSION["mensa_preferita"]);
-unset($_SESSION["tema"]);
-unset($_SESSION["dimensione_testo"]);
-unset($_SESSION["dimensione_icone"]);
-unset($_SESSION["modifica_font"]);
-unset($_SESSION["allergeni"]);
-
-$_SESSION = [];
+session_unset();
 
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();

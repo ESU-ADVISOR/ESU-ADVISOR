@@ -18,11 +18,16 @@ class ReviewController implements BaseController
     {
         $view = new ReviewView();
 
+        $user = UserModel::findByUsername($_SESSION["username"]);
+        $idutente = $user->getId();
+        $piatto = $post["piatto"];
+
         $recensione = new RecensioneModel([
             "voto" => $post["rating"],
             "descrizione" => $post["review"],
-            "utente" => UserModel::findByUsername($_SESSION["username"])->getUsername(),
-            "piatto" => $post["piatto"],
+            "utente" => $user->getUsername(),
+            "idutente" => $idutente,
+            "piatto" => $piatto,
             "data" => date("Y-m-d H:i:s"),
         ]);
 
@@ -38,7 +43,7 @@ class ReviewController implements BaseController
             }
         } catch (\Exception $e) {
             error_log("Errore di recensione: " . $e->getMessage());
-            
+
             $view->render([
                 "errors" => ["Invio recensione fallito: " . $e->getMessage()],
                 "formData" => $post

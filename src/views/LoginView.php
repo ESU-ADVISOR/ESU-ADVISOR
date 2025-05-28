@@ -20,6 +20,7 @@ class LoginView extends BaseView
             foreach ($data["errors"] as $error) {
                 $errorHtml .= "<div class='error'>$error</div>";
             }
+            $errorHtml = "<div class='error-container' role='alert' aria-live='assertive'>$errorHtml</div>";
             Utils::replaceTemplateContent(
                 $this->dom,
                 "server-response-template",

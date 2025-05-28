@@ -11,17 +11,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".error-container").forEach((el) => el.remove());
 
     const username = usernameInput.value.trim();
-    if (!username) {
-      isValid = false;
-      errors.push("<span lang='en'>Username</span> obbligatorio.");
-    }
-
     const password = passwordInput.value.trim();
-    if (!password) {
-      isValid = false;
-      errors.push("<span lang='en'>Password</span> obbligatoria.");
-    }
 
+    if (!username || !password) {
+      isValid = false;
+      errors.push("È necesssario compilare tutti i campi.");
+    }
+    
     if (!isValid) {
       event.preventDefault();
       displayErrors(errors);
@@ -31,6 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function displayErrors(errors) {
     const errorContainer = document.createElement("div");
     errorContainer.classList.add("error-container");
+    errorContainer.setAttribute("role", "alert");
+    errorContainer.setAttribute("aria-live", "assertive");
     errors.forEach((error) => {
       const errorElement = document.createElement("div");
       errorElement.classList.add("error");

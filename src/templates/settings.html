@@ -25,20 +25,20 @@
                         <form action="settings.php" id="preferenze-generali" method="post" class="settings-form">
                             <div class="form-group">
                                 <label for="mensa-preferita-select">Seleziona la tua mensa preferita:</label>
-                                <p class="text-secondary text-sm">
+                                <p class="text-secondary text-sm" id="mensa-preferita-instructions">
                                     La mensa selezionata verrà visualizzata automaticamente nella <span lang='en'>home</span>.
                                 </p>
-                                <select class="form-select" id="mensa-preferita-select" name="mensa_preferita">
-                                    <template id="mense-options-template"></template>
+                                <select class="form-select" id="mensa-preferita-select" name="mensa_preferita" aria-describedby="mensa-preferita-instructions">
+                                    <template id="mense-options-template"></template>   
                                 </select>
                                 
                             </div>
 
                             <!-- Implementazione allergeni migliorata -->
                             <div class="form-group">
-                                <fieldset>
+                                <fieldset aria-describedby="allergeni-instructions">
                                     <legend>Allergeni da segnalare:</legend>
-                                    <p class="text-secondary text-sm">
+                                    <p class="text-secondary text-sm" id="allergeni-instructions">
                                         I piatti contenenti gli allergeni selezionati verranno segnalati durante la navigazione.
                                     </p>
                                     <div class="checkbox-grid">

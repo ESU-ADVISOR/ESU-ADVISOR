@@ -3,24 +3,18 @@
     <form action="settings.php" id="change_username_form" method="post" class="base-form">
         <div class="form-group">
             <label for="new_username">Modifica <span lang="en">username</span></label>
-            <p class="text-secondary text-sm">
+            <p class="text-secondary text-sm" id="username-instructions">
                 Digita un nuovo <span lang="en">username</span> per il tuo profilo.<br>
-                L'<span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo lettere, numeri, <span lang="en">underscore</span> e trattini.
+                Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo lettere, numeri, <span lang="en">underscore</span> e trattini.
             </p>
             <input
                 type="text"
                 id="new_username"
                 name="new_username"
-                class="form-input email-input-left" 
+                class="form-input username-input" 
                 placeholder=""
+                aria-describedby="username-instructions"
             />
-            <!--
-                style="
-                    background-image: url(&quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B7280%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M19 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z%22/><path d=%22m3 7 9 6 9-6%22/></svg>&quot;);
-                    background-position: 12px center;
-                    background-repeat: no-repeat;
-                "
-            -->
 
             <button type="submit" class="form-button" name="change_username">Salva</button>
         </div>
@@ -35,18 +29,21 @@
                 type="password"
                 id="current_password"
                 name="password"
-                class="form-input password-input-left"
+                class="form-input password-input"
+                placeholder=""
             />
 
             <label for="new_password">Nuova <span lang="en">password</span></label>
-            <p class="text-secondary text-sm">
+            <p class="text-secondary text-sm" id="new-password-instructions">
                 La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
             </p>
             <input
                 type="password"
                 id="new_password"
                 name="new_password"
-                class="form-input password-input-left"
+                class="form-input password-input"
+                placeholder=""
+                aria-describedby="new-password-instructions"
             />
 
             <label for="new_password_confirm">Conferma nuova <span lang="en">password</span></label>
@@ -54,7 +51,8 @@
                 type="password"
                 id="new_password_confirm"
                 name="new_password_confirm"
-                class="form-input password-input-left"
+                class="form-input password-input"
+                placeholder=""
             />
 
             <button type="submit" class="form-button" name="change_password">Salva</button>

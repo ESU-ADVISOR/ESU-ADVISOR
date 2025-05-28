@@ -12,6 +12,7 @@
         <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
         <script src="scripts/accessibility-settings.js"></script>
         <script src="scripts/register_form_validation.js" defer></script>
+        <script src="scripts/toggle-instructions.js" defer></script>
     </head>
     <body>
         <template id="header-template"></template>
@@ -21,18 +22,20 @@
                 <div class="form-header">
                     <h2 class="text-primary">Registrati</h2>
                 </div>
+                <p class="text-secondary mt-3">
+                        Hai già un account? <a href="login.php">Accedi qui</a>
+                </p>
 
-                <p class="text-secondary text-sm">
+                <p class="text-secondary text-sm" id="register-form-instructions">
                     Compila tutti i campi del <span lang="en">form</span> per registrarti.
                 </p>
 
-                <template id="server-response-template"></template>
-
-                <form action="register.php" method="POST" class="base-form" id="register-form" novalidate>
+                <form action="register.php" method="POST" class="base-form" id="register-form" novalidate aria-describedby="register-form-instructions">
+                    <template id="server-response-template"></template>
                     <div class="form-group">
                         <label for="username" lang="en">Username</label>
-                        <p class="text-secondary text-sm">
-                            L'<span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo lettere, numeri, underscore e trattini.
+                        <p class="text-secondary text-sm" id="username-instructions">
+                            Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo lettere, numeri, underscore e trattini.
                         </p>
                         <input 
                             type="text" 
@@ -41,19 +44,18 @@
                             required 
                             class="form-input username-input" 
                             placeholder=""
+                            aria-describedby="username-instructions"
                         />
-                        <small id="username-error" class="error"></small>
                     </div>
 
                     <div class="form-group">
                         <label for="birth_date">Data di nascita</label>
                         <input type="date" id="birth_date" name="birth_date" required class="form-input date-input" />
-                        <small id="birth_date-error" class="error"></small>
                     </div>
 
                     <div class="form-group">
                         <label for="password" lang="en">Password</label>
-                        <p class="text-secondary text-sm">
+                        <p class="text-secondary text-sm" id="password-instructions">
                             La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
                         </p>
                         <input
@@ -63,8 +65,8 @@
                             required
                             class="form-input password-input"
                             placeholder=""
+                            aria-describedby="password-instructions"
                         />
-                        <small id="password-error" class="error"></small>
                     </div>
 
                     <div class="form-group">
@@ -77,13 +79,10 @@
                             class="form-input password-input"
                             placeholder=""
                         />
-                        <small id="confirm_password-error" class="error"></small>
                     </div>
 
                     <button type="submit" class="form-button mt-3" aria-label="Registrati">Registrati</button>
-                    <p class="text-secondary mt-3 text-center">
-                        Hai già un account? <a href="login.php">Accedi qui</a>
-                    </p>
+                    
                 </form>
             </div>
         </main>

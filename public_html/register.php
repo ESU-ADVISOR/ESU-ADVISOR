@@ -15,23 +15,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $dataNascita = trim($_POST["birth_date"] ?? "");
 
     if (empty($username)) {
-        $errors[] = "È necessario l'<span lang='en'>username</span>.";
+        $errors[] = "È necessario lo <span lang='en'>username</span>.";
     } else {
         if (strlen($username) < 3 || strlen($username) > 50) {
-            $errors[] = "L'<span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.";
+            $errors[] = "Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.";
         }
         if (!preg_match('/^[a-zA-Z0-9_-]+$/', $username)) {
             $errors[] =
-                "L'<span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini.";
+                "Lo <span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini.";
         }
     }
 
-    if (empty($dataNascita)) {
-        $errors[] = "È necessaria la data di nascita.";
-    } else {
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dataNascita)) {
-            $errors[] = "Per favore inserisci una data di nascita valida.";
-        }
+    if (empty($dataNascita) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dataNascita)) {
+        $errors[] = "Per favore inserisci una data di nascita valida.";
     }
 
     if (empty($password)) {
@@ -61,14 +57,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $data = [
             "username" => $username,
             "password" => $password,
-            "dataNascita" => $dataNascita,
+            "birth_date" => $dataNascita,
+            "confirm_password" => $confirmPassword,
         ];
         $controller->handlePOSTRequest($data);
     } else {
         http_response_code(400);
+        
         $controller->handleGETRequest([
             "status" => "error",
             "errors" => $errors,
+            "formData" => [
+                "username" => $username,
+                "birth_date" => $dataNascita,
+                "password" => $password,
+                "confirm_password" => $confirmPassword,
+            ],
         ]);
 
         exit();

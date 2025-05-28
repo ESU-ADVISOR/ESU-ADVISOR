@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const username = usernameInput.value.trim();
     if (username.length < 3 || username.length > 50) {
       isValid = false;
-      errors.push("L'<span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.");
+      errors.push("Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.");
     }
     if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
       isValid = false;
       errors.push(
-        "L'<span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini.",
+        "Lo <span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini.",
       );
     }
 

@@ -17,14 +17,15 @@ class RegisterController implements BaseController
     {
         $username = $post["username"];
         $password = $post["password"];
-        $dataNascita = $post["dataNascita"];
+        $dataNascita = $post["birth_date"];
         $view = new RegisterView();
 
         try {
             if (UserModel::isUsernameTaken($username)) {
                 $view->render([
                     "errors" => ["Registrazione fallita: <span lang='en'>username</span> già in uso"],
-                    "formData" => $post
+                    "formData" => $post,
+                    "focus" => "username"
                 ]);
                 return;
             }

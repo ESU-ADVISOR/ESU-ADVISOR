@@ -71,14 +71,14 @@ class SettingsController implements BaseController
         } else {
             if (strlen($post['new_username']) < 3 || strlen($post['new_username']) > 50) {
                 $view->render([
-                    "errors" => ["L'<span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri"],
+                    "errors" => ["Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri"],
                     "formData" => ['new_username' => $post['new_username']]
                 ]);
                 exit();
             }
             if (!preg_match('/^[a-zA-Z0-9_-]+$/', $post['new_username'])) {
                 $view->render([
-                    "errors" => ["L'<span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini"],
+                    "errors" => ["Lo <span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini"],
                     "formData" => ['new_username' => $post['new_username']]
                 ]);
                 exit();

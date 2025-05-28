@@ -12,6 +12,7 @@ class RecensioneModel
     private int|null $voto;
     private string|null $descrizione;
     private string|null $utente;
+    private int|null $idutente;
     private string|null $piatto;
     private string|DateTimeImmutable|null $data;
 
@@ -42,6 +43,9 @@ class RecensioneModel
         if (isset($data["utente"])) {
             $this->utente = $data["utente"];
         }
+        if (isset($data["idutente"])) {
+            $this->idutente = (int)$data["idutente"];
+        }
         if (isset($data["piatto"])) {
             $this->piatto = $data["piatto"];
         }
@@ -52,7 +56,7 @@ class RecensioneModel
 
     public function validate(): bool
     {
-        return $this->utente != "" && $this->piatto != "";
+        return $this->idutente != null && $this->piatto != "";
     }
 
     public function refresh(): bool
@@ -61,7 +65,7 @@ class RecensioneModel
             return false;
         }
 
-        $data = self::findByFields($this->utente, $this->piatto);
+        $data = self::findByFields($this->idutente, $this->piatto);
         if ($data) {
             $this->descrizione = $data->descrizione;
             $this->voto = $data->voto;
@@ -139,25 +143,25 @@ class RecensioneModel
         }
 
         $exists = self::findByFields($this->utente, $this->piatto);
-        if (!$exists) {
+        if ($exists === null) {
             $stmt = $this->db->prepare(
                 "INSERT INTO recensione (voto, descrizione, utente, piatto, data) VALUES (:voto, :descrizione, :utente, :piatto, :data)"
             );
             return $stmt->execute([
                 "voto" => $this->voto,
                 "descrizione" => $this->descrizione,
-                "utente" => $this->utente,
+                "utente" => $this->idutente,
                 "piatto" => $this->piatto,
                 "data" => $this->data->format("Y-m-d"),
             ]);
         } else {
             $stmt = $this->db->prepare(
-                "UPDATE recensione SET voto = :voto AND descrizione = :descrizione WHERE utente = :utente AND piatto = :piatto AND data = :data"
+                "UPDATE recensione SET voto = :voto, descrizione = :descrizione WHERE utente = :utente AND piatto = :piatto AND data = :data"
             );
             return $stmt->execute([
                 "voto" => $this->voto,
                 "descrizione" => $this->descrizione,
-                "utente" => $this->utente,
+                "utente" => $this->idutente,
                 "piatto" => $this->piatto,
                 "data" => $this->data->format("Y-m-d"),
             ]);
@@ -193,7 +197,7 @@ class RecensioneModel
     ): ?RecensioneModel {
         $db = Database::getInstance();
         $stmt = $db->prepare(
-            "SELECT * FROM recensione WHERE utente = :utente AND piatto = :piatto"
+            "SELECT voto, descrizione, username as utente, utente as idutente, piatto, data FROM recensione JOIN utente ON utente.id = recensione.utente WHERE username = :utente AND piatto = :piatto"
         );
         $stmt->execute([
             "utente" => $utente,
@@ -212,7 +216,7 @@ class RecensioneModel
     public static function findAll(): array
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM recensione");
+        $stmt = $db->prepare("SELECT voto, descrizione, username as utente, utente as idutente, piatto, data FROM recensione JOIN utente ON utente.id = recensione.utente");
         $stmt->execute();
 
         $recensioni = $stmt->fetchAll(

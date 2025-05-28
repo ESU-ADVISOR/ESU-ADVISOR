@@ -33,10 +33,12 @@ CREATE TABLE piatto (
 );
 
 CREATE TABLE utente (
+    id INT AUTO_INCREMENT,
     password VARCHAR(100) NOT NULL,
     dataNascita DATE NOT NULL,
     username VARCHAR(50) NOT NULL,
-    PRIMARY KEY (username),
+    PRIMARY KEY (id),
+    UNIQUE (username),
     CHECK (username REGEXP "^[a-zA-Z0-9_]+$")
 );
 
@@ -58,7 +60,7 @@ CREATE TABLE orarioapertura (
 CREATE TABLE recensione (
     voto INT NOT NULL,
     descrizione TEXT,
-    utente VARCHAR(50) NOT NULL,
+    utente INT NOT NULL,
     piatto VARCHAR(100) NOT NULL,
     data DATE DEFAULT CURRENT_DATE,
     CHECK (
@@ -66,7 +68,7 @@ CREATE TABLE recensione (
         AND voto <= 5
     ),
     PRIMARY KEY (utente, piatto),
-    FOREIGN KEY (utente) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (utente) REFERENCES utente (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -96,22 +98,22 @@ CREATE TABLE piatto_allergeni (
 );
 
 CREATE TABLE preferenze_utente (
-    username VARCHAR(50) NOT NULL,
+    utente INT NOT NULL,
     dimensione_testo ENUM ("piccolo", "medio", "grande") NOT NULL DEFAULT "medio",
     dimensione_icone ENUM ("piccolo", "medio", "grande") NOT NULL DEFAULT "medio",
     modifica_font ENUM ("normale", "dislessia") NOT NULL DEFAULT "normale",
     modifica_tema ENUM ("chiaro", "scuro", "sistema") NOT NULL DEFAULT "sistema",
     mensa_preferita VARCHAR(50) NULL DEFAULT NULL,
-    PRIMARY KEY (username),
-    FOREIGN KEY (username) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (utente),
+    FOREIGN KEY (utente) REFERENCES utente (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (mensa_preferita) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE allergeni_utente (
-    username VARCHAR(50) NOT NULL,
+    utente int NOT NULL,
     allergene ENUM ("Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta_a_guscio", "Sedano", "Senape", "Sesamo", "Anidride_solforosa", "Lupini", "Molluschi") NOT NULL,
-    PRIMARY KEY (username, allergene),
-    FOREIGN KEY (username) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE
+    PRIMARY KEY (utente, allergene),
+    FOREIGN KEY (utente) REFERENCES utente (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE VIEW piatto_recensioni_foto AS
@@ -135,6 +137,13 @@ VALUES ( "password", "1990-01-01", "roberto"),
        ( "password", "1995-02-15", "admin"),
        ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1970-01-01", "user"); -- password: user
 
+INSERT INTO preferenze_utente(utente) VALUES (1);
+INSERT INTO preferenze_utente(utente) VALUES (2);
+INSERT INTO preferenze_utente(utente) VALUES (3);
+INSERT INTO preferenze_utente(utente) VALUES (4);
+INSERT INTO preferenze_utente(utente) VALUES (5);
+INSERT INTO preferenze_utente(utente) VALUES (6);
+INSERT INTO preferenze_utente(utente) VALUES (7);
 
 INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("RistorESU Agripolis", "Viale dell\'Università, 6 - Legnaro (PD)", "04 97430607", "https://www.google.com/maps/place/Mensa+Agripolis/@45.3474897,11.9577471,17z/data=!4m6!3m5!1s0x477ec378b59940cf:0x5b21dfbc8034b869!8m2!3d45.346961!4d11.9586004!16s%2Fg%2F11h9__56t4?entry=tts");
 INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("RistorESU Nord Piovego", "Viale Giuseppe Colombo, 1 - Padova", "049 7430811", "https://www.google.com/maps/place/RistorEsu+Nord+Piovego/@45.4110432,11.8896739,1675m/data=!3m2!1e3!4b1!4m6!3m5!1s0x477edaf60d6b6371:0x2c00159331ead3d8!8m2!3d45.4110432!4d11.8896739!16s%2Fg%2F1pp2tjhxw?entry=tts");
@@ -462,7 +471,7 @@ BEGIN
             SET i = 0;
             WHILE i < num_recensioni DO
                 -- Scegli utente casuale
-                SELECT username INTO utente_nome
+                SELECT id INTO utente_nome
                 FROM utente
                 ORDER BY RAND()
                 LIMIT 1;
@@ -497,6 +506,13 @@ BEGIN
     
     CALL crea_menu_settimanale();
     CALL crea_recensioni_casuali();
+END //
+
+CREATE TRIGGER after_utente_insert
+AFTER INSERT ON utente
+FOR EACH ROW
+BEGIN
+    INSERT INTO preferenze_utente (utente) VALUES (NEW.id);
 END //
 
 DELIMITER ;

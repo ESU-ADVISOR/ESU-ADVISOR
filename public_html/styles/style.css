@@ -1835,7 +1835,6 @@ textarea.form-input {
         background-image: url("../../images/dropdown-dark.svg");
     }
 }
-
 .form-select:hover {
     border-color: var(--primary);
 }

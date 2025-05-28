@@ -23,8 +23,8 @@ abstract class BaseView
         $this->dom = new \DOMDocument();
         libxml_use_internal_errors(true);
         $this->dom->loadHTML($this->template);
+        Utils::updatePreferencesFromSession($this->dom, $_SESSION);
         libxml_clear_errors();
-
         $this->currentPage = basename($_SERVER['PHP_SELF'], '.php');
     }
 
@@ -72,61 +72,6 @@ abstract class BaseView
         return $html;
     }
 
-    private function getServerPreferences(): array
-    {
-        $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
-        
-        $preferences = [
-            'theme' => 'sistema',
-            'textSize' => 'medio',
-            'iconSize' => 'medio', 
-            'fontFamily' => 'normale'
-        ];
-
-        if ($isLoggedIn) {
-            $userPreferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
-            if ($userPreferences) {
-                if ($userPreferences->getTema()) {
-                    $preferences['theme'] = $userPreferences->getTema()->value;
-                }
-                if ($userPreferences->getDimensioneTesto()) {
-                    $preferences['textSize'] = $userPreferences->getDimensioneTesto()->value;
-                }
-                if ($userPreferences->getDimensioneIcone()) {
-                    $preferences['iconSize'] = $userPreferences->getDimensioneIcone()->value;
-                }
-                if ($userPreferences->getModificaFont()) {
-                    $preferences['fontFamily'] = $userPreferences->getModificaFont()->value;
-                }
-            }
-        }
-
-        if (isset($_SESSION["tema"])) {
-            $preferences['theme'] = $_SESSION["tema"];
-        }
-        if (isset($_SESSION["dimensione_testo"])) {
-            $preferences['textSize'] = $_SESSION["dimensione_testo"];
-        }
-        if (isset($_SESSION["dimensione_icone"])) {
-            $preferences['iconSize'] = $_SESSION["dimensione_icone"];
-        }
-        if (isset($_SESSION["modifica_font"])) {
-            $preferences['fontFamily'] = $_SESSION["modifica_font"];
-        }
-
-        return $preferences;
-    }
-
-    private function generatePreferencesScript(): string
-    {
-        $preferences = $this->getServerPreferences();
-        
-        return '<script>
-            window.serverPreferences = ' . json_encode($preferences) . ';
-            window.isLoggedIn = ' . (isset($_SESSION["username"]) && !empty($_SESSION["username"]) ? 'true' : 'false') . ';
-        </script>';
-    }
-
     public function render(array $data = []): void
     {
         $headerContent = file_get_contents(
@@ -142,6 +87,7 @@ abstract class BaseView
         $headerDOM = new \DOMDocument();
         libxml_use_internal_errors(true);
         $headerDOM->loadHTML($headerContent);
+        Utils::updatePreferencesFromSession($this->dom, $_SESSION);
         libxml_clear_errors();
 
         $xpathHeader = new DOMXpath($headerDOM);
@@ -348,14 +294,6 @@ abstract class BaseView
             "breadcrumb-template",
             $breadcrumbHTML
         );
-
-        $preferencesScript = $this->generatePreferencesScript();
-        $head = $this->dom->getElementsByTagName('head')->item(0);
-        if ($head) {
-            $scriptElement = $this->dom->createElement('script');
-            $scriptElement->textContent = str_replace(['<script>', '</script>'], '', $preferencesScript);
-            $head->appendChild($scriptElement);
-        }
     }
 
     public function renderError(string $error, int $errorCode = 500): void

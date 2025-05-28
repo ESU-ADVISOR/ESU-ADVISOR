@@ -16,6 +16,7 @@ class PreferenzeUtenteModel
 {
     private $db;
 
+    private int|null $utente = null;
     private string|null $username = null;
     private DimensioneTesto|null $dimensioneTesto = null;
     private DimensioneIcone|null $dimensioneIcone = null;
@@ -41,6 +42,9 @@ class PreferenzeUtenteModel
      */
     private function fill(array $data): void
     {
+        if (isset($data["utente"])) {
+            $this->utente = (int)$data["utente"];
+        }
         if (isset($data["username"])) {
             $this->username = $data["username"];
         }
@@ -63,6 +67,10 @@ class PreferenzeUtenteModel
 
     //-------------Getters and Setters----------------
 
+    public function setUtente(?int $utente): void
+    {
+        $this->utente = $utente;
+    }
     public function getUsername(): string
     {
         return $this->username;
@@ -127,12 +135,8 @@ class PreferenzeUtenteModel
 
     public function saveToDB(): bool
     {
-        if (empty($this->username)) {
-            return false;
-        }
-
         $existing = self::findByUsername($this->username);
-        if ($existing) {
+        if ($existing != null) {
             $stmt = $this->db->prepare(
                 "UPDATE preferenze_utente SET
                     dimensione_testo = :dimensione_testo,
@@ -140,36 +144,36 @@ class PreferenzeUtenteModel
                     modifica_font = :modifica_font,
                     modifica_tema = :modifica_tema,
                     mensa_preferita = :mensa_preferita
-                WHERE username = :username"
+                WHERE utente = :utente"
             );
 
             return $stmt->execute([
-                "dimensione_testo" => $this->dimensioneTesto ? $this->dimensioneTesto->value : DimensioneTesto::MEDIO->value,
-                "dimensione_icone" => $this->dimensioneIcone ? $this->dimensioneIcone->value : DimensioneIcone::MEDIO->value,
-                "modifica_font" => $this->modificaFont ? $this->modificaFont->value : ModificaFont::NORMALE->value,
-                "modifica_tema" => $this->modificaTema ? $this->modificaTema->value : ModificaTema::SISTEMA->value,
+                "dimensione_testo" => $this->dimensioneTesto->value,
+                "dimensione_icone" => $this->dimensioneIcone->value,
+                "modifica_font" => $this->modificaFont->value,
+                "modifica_tema" => $this->modificaTema->value,
                 "mensa_preferita" => $this->mensaPreferita,
-                "username" => $this->username,
+                "utente" => $this->utente,
             ]);
         } else {
             $stmt = $this->db->prepare(
                 "INSERT INTO preferenze_utente (
-                    username, dimensione_testo,
+                    utente, dimensione_testo,
                     dimensione_icone, modifica_font,
                     modifica_tema, mensa_preferita
                 ) VALUES (
-                    :username, :dimensione_testo,
+                    :utente, :dimensione_testo,
                     :dimensione_icone, :modifica_font,
                     :modifica_tema, :mensa_preferita
                 )"
             );
 
             return $stmt->execute([
-                "username" => $this->username,
-                "dimensione_testo" => $this->dimensioneTesto ? $this->dimensioneTesto->value : DimensioneTesto::MEDIO->value,
-                "dimensione_icone" => $this->dimensioneIcone ? $this->dimensioneIcone->value : DimensioneIcone::MEDIO->value,
-                "modifica_font" => $this->modificaFont ? $this->modificaFont->value : ModificaFont::NORMALE->value,
-                "modifica_tema" => $this->modificaTema ? $this->modificaTema->value : ModificaTema::SISTEMA->value,
+                "utente" => $this->utente,
+                "dimensione_testo" => $this->dimensioneTesto->value,
+                "dimensione_icone" => $this->dimensioneIcone->value,
+                "modifica_font" => $this->modificaFont->value,
+                "modifica_tema" => $this->modificaTema->value,
                 "mensa_preferita" => $this->mensaPreferita
             ]);
         }
@@ -196,7 +200,14 @@ class PreferenzeUtenteModel
     public static function findByUsername(string $username): ?PreferenzeUtenteModel
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM preferenze_utente WHERE username = :username");
+        $stmt = $db->prepare(
+            "SELECT utente, dimensione_testo, dimensione_icone,
+                    modifica_font, modifica_tema, mensa_preferita,
+                    u.username as username
+             FROM preferenze_utente pu
+             JOIN utente u ON pu.utente = u.id
+             WHERE u.username = :username"
+        );
         $stmt->execute([
             "username" => $username,
         ]);
@@ -214,9 +225,14 @@ class PreferenzeUtenteModel
     public static function findAll(): array
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM preferenze_utente");
+        $stmt = $db->prepare("SELECT utente, dimensione_testo,
+                                    dimensione_icone, modifica_font,
+                                    modifica_tema, mensa_preferita,
+                                    u.username as username
+                            FROM preferenze_utente pu
+                            JOIN utente u ON pu.utente = u.id");
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_CLASS, PreferenzeUtenteModel::class);
 
         $preferenze = [];
         foreach ($data as $row) {
@@ -235,7 +251,7 @@ class PreferenzeUtenteModel
      */
     public function getUtente(): ?UserModel
     {
-        return UserModel::findByusername($this->username);
+        return UserModel::findByUsername($this->username);
     }
 
     /**
@@ -261,8 +277,8 @@ class PreferenzeUtenteModel
             return [];
         }
 
-        $stmt = $this->db->prepare("SELECT allergene FROM allergeni_utente WHERE username = :username");
-        $stmt->execute(["username" => $this->username]);
+        $stmt = $this->db->prepare("SELECT allergene FROM allergeni_utente WHERE utente = :utente");
+        $stmt->execute(["utente" => $this->utente]);
 
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
@@ -277,14 +293,14 @@ class PreferenzeUtenteModel
             return false;
         }
 
-        $deleteStmt = $this->db->prepare("DELETE FROM allergeni_utente WHERE username = :username");
-        $deleteStmt->execute(["username" => $this->username]);
+        $deleteStmt = $this->db->prepare("DELETE FROM allergeni_utente WHERE utente = :utente");
+        $deleteStmt->execute(["utente" => $this->utente]);
 
         if (!empty($allergeni)) {
-            $insertStmt = $this->db->prepare("INSERT INTO allergeni_utente (username, allergene) VALUES (:username, :allergene)");
+            $insertStmt = $this->db->prepare("INSERT INTO allergeni_utente (utente, allergene) VALUES (:utente, :allergene)");
             foreach ($allergeni as $allergene) {
                 $insertStmt->execute([
-                    "username" => $this->username,
+                    "utente" => $this->utente,
                     "allergene" => $allergene
                 ]);
             }

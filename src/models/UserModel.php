@@ -161,7 +161,7 @@ class UserModel
             return $stmt->execute([
                 "username" => $this->username,
                 "password" => $this->password,
-                "dataNascita" => $dataNascitaObj->format("Y-m-d"),
+                "dataNascita" => $dataNascita->format("Y-m-d"),
             ]);
         } else {
             $stmt = $this->db->prepare(

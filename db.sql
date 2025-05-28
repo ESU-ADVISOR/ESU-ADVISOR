@@ -4,6 +4,9 @@ DROP VIEW IF EXISTS mensa_orari_apertura;
 DROP VIEW IF EXISTS piatto_recensioni_foto;
 DROP EVENT IF EXISTS crea_menu_settimanale_event;
 DROP PROCEDURE IF EXISTS crea_menu_settimanale;
+DROP PROCEDURE IF EXISTS crea_recensioni_casuali;
+DROP TABLE IF EXISTS preferenze_alimentari_utente;
+DROP TABLE IF EXISTS piatto_categorie_alimentari;
 DROP TABLE IF EXISTS preferenze_utente;
 DROP TABLE IF EXISTS allergeni_utente;
 DROP TABLE IF EXISTS piatto_allergeni;
@@ -86,12 +89,20 @@ CREATE TABLE piatto_foto (
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- Lista allergene dall'EU https://www.salute.gov.it/imgs/C_17_pagineAree_1460_0_file.pdf
+-- TABELLA ALLERGENI - Solo allergeni reali secondo standard EU
 CREATE TABLE piatto_allergeni (
-    allergene ENUM ("Nessuno", "Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta_a_guscio", "Sedano", "Senape", "Sesamo", "Anidride_solforosa", "Lupini", "Molluschi","Carne_bovina","Carne_suina", "Pollame"
+    allergene ENUM ("Nessuno", "Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta_a_guscio", "Sedano", "Senape", "Sesamo", "Anidride_solforosa", "Lupini", "Molluschi"
     ) NOT NULL DEFAULT "Nessuno",
     piatto VARCHAR(100) NOT NULL,
     PRIMARY KEY (allergene, piatto),
+    FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- NUOVA TABELLA: Categorie alimentari e tipi di carne
+CREATE TABLE piatto_categorie_alimentari (
+    categoria ENUM ("Vegetariano", "Vegano", "Contiene_carne_bovina", "Contiene_carne_suina", "Contiene_pollame") NOT NULL,
+    piatto VARCHAR(100) NOT NULL,
+    PRIMARY KEY (categoria, piatto),
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -107,10 +118,19 @@ CREATE TABLE preferenze_utente (
     FOREIGN KEY (mensa_preferita) REFERENCES mensa (nome) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
+-- TABELLA ALLERGENI UTENTE - Sincronizzata con piatto_allergeni (senza "Nessuno")
 CREATE TABLE allergeni_utente (
     username VARCHAR(50) NOT NULL,
     allergene ENUM ("Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta_a_guscio", "Sedano", "Senape", "Sesamo", "Anidride_solforosa", "Lupini", "Molluschi") NOT NULL,
     PRIMARY KEY (username, allergene),
+    FOREIGN KEY (username) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- NUOVA TABELLA: Preferenze alimentari utente
+CREATE TABLE preferenze_alimentari_utente (
+    username VARCHAR(50) NOT NULL,
+    preferenza ENUM ("Vegetariano", "Vegano") NOT NULL,
+    PRIMARY KEY (username, preferenza),
     FOREIGN KEY (username) REFERENCES utente (username) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -126,6 +146,7 @@ FROM
 GROUP BY
     p.nome;
 
+-- INSERIMENTO DATI
 INSERT INTO utente (password, dataNascita, username)
 VALUES ( "password", "1990-01-01", "roberto"),
        ( "password", "1990-01-01", "angela"),
@@ -134,7 +155,6 @@ VALUES ( "password", "1990-01-01", "roberto"),
        ( "password789", "1992-11-30", "alicejones"),
        ( "password", "1995-02-15", "admin"),
        ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1970-01-01", "user"); -- password: user
-
 
 INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("RistorESU Agripolis", "Viale dell\'Università, 6 - Legnaro (PD)", "04 97430607", "https://www.google.com/maps/place/Mensa+Agripolis/@45.3474897,11.9577471,17z/data=!4m6!3m5!1s0x477ec378b59940cf:0x5b21dfbc8034b869!8m2!3d45.346961!4d11.9586004!16s%2Fg%2F11h9__56t4?entry=tts");
 INSERT INTO mensa (nome, indirizzo, telefono, maps_link) VALUES ("RistorESU Nord Piovego", "Viale Giuseppe Colombo, 1 - Padova", "049 7430811", "https://www.google.com/maps/place/RistorEsu+Nord+Piovego/@45.4110432,11.8896739,1675m/data=!3m2!1e3!4b1!4m6!3m5!1s0x477edaf60d6b6371:0x2c00159331ead3d8!8m2!3d45.4110432!4d11.8896739!16s%2Fg%2F1pp2tjhxw?entry=tts");
@@ -190,7 +210,7 @@ INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Fagioli in umido", "C
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Crema di piselli", "Primo", "Vellutata di piselli freschi con un tocco di menta.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Orzo con pomodorini e basilico", "Primo", "Orzo perlato condito con pomodorini freschi e basilico.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Patate al basilico", "Contorno", "Patate al forno aromatizzate con basilico fresco.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Carote al vapore", "Contorno", "Carote cotte al vapore, condite con un filo d’olio.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Carote al vapore", "Contorno", "Carote cotte al vapore, condite con un filo d'olio.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Fagiolini", "Contorno", "Fagiolini freschi cotti al vapore.");
 
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Polpettine vegane", "Secondo", "Polpettine a base di legumi e verdure.");
@@ -256,7 +276,11 @@ INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Kebab di pollo", "Sec
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Piselli", "Contorno", "Piselli freschi cotti al vapore.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Ceci", "Contorno", "Ceci lessati.");
 
--- PIATTI SENZA ALLERGENI (solo verdure/frutta/legumi semplici - NESSUNA CARNE)
+-- ===============================================
+-- INSERIMENTI ALLERGENI (Solo allergeni reali)
+-- ===============================================
+
+-- PIATTI SENZA ALLERGENI (solo verdure/frutta/legumi semplici)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Fagioli in umido");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di piselli");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate al basilico");
@@ -340,27 +364,78 @@ INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Senape", "Riso al curr
 -- PIATTI CON SEDANO (minestre e zuppe)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Sedano", "Minestra di verdure");
 
--- PIATTI CON SOLO CARNE BOVINA
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Carne_bovina", "Hamburger di manzo BIO con cipolle caramellate");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Carne_bovina", "Roast beef con funghi");
-
--- PIATTI CON SOLO CARNE SUINA
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Carne_suina", "Arrosto di maiale");
-
--- PIATTI CON GLUTINE + CARNE SUINA (carbonara con guanciale)
+-- PIATTI CON GLUTINE + UOVA + LATTE + CARNE SUINA (carbonara con guanciale)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta alla carbonara");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Pasta alla carbonara");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla carbonara");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Carne_suina", "Pasta alla carbonara");
-
--- PIATTI CON SOLO POLLAME
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pollame", "Pollo al forno");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pollame", "Coscette di pollo");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pollame", "Arrosto di tacchino");
 
 -- PIATTI CON GLUTINE + POLLAME
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Kebab di pollo");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pollame", "Kebab di pollo");
+
+-- ===============================================
+-- INSERIMENTI CATEGORIE ALIMENTARI
+-- ===============================================
+
+-- PIATTI VEGANI (nessun derivato animale)
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Fagioli in umido");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Crema di piselli");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Orzo con pomodorini e basilico");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Patate al basilico");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Carote al vapore");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Fagiolini");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Polpettine vegane");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Pasta all'arrabbiata");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Pasta e fagioli alla veneta");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Melanzana con pomodoro e funghi");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Insalata vegana con ceci, patate, carote e melanzane");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Bis di cereali con verdure");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Melanzana con pomodoro, capperi e olive");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Insalata vegana con carote, zucchine, fagioli e mais");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Patate fritte");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Tris di verdure");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Patate all'olio extravergine");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Carote e piselli al vapore");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Pasta zucca e funghi");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Pasta pomodoro e piselli");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Hamburger vegano");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Falafel");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Piselli");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Ceci");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Riso pilaw con piselli");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Crema di funghi");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Riso al curry");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Gnocchi al pomodoro");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Peperoni alla partenopea");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Melanzana alla siciliana");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegano", "Minestra di verdure");
+
+-- PIATTI VEGETARIANI (senza carne, ma con derivati animali)
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegetariano", "Mozzarella alla romana");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegetariano", "Frittata con verdure e formaggio");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegetariano", "Pizza pomodorini, rucola e grana");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegetariano", "Pasta alla Norma (melanzane e ricotta)");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegetariano", "Tortino ricotta e spinaci");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegetariano", "Insalatona vegetariana");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegetariano", "Trancio di pizza margherita");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Vegetariano", "Pasta alla carbonara");
+
+-- PIATTI CON CARNE BOVINA
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_carne_bovina", "Hamburger di manzo BIO con cipolle caramellate");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_carne_bovina", "Roast beef con funghi");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_carne_bovina", "Pasta al ragù");
+
+-- PIATTI CON CARNE SUINA  
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_carne_suina", "Arrosto di maiale");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_carne_suina", "Pasta alla carbonara");
+
+-- PIATTI CON POLLAME
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_pollame", "Pollo al forno");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_pollame", "Coscette di pollo");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_pollame", "Arrosto di tacchino");
+INSERT INTO piatto_categorie_alimentari (categoria, piatto) VALUES ("Contiene_pollame", "Kebab di pollo");
+
+-- PIATTI CON PESCE (non sono categorie alimentari, ma per completezza)
+-- I piatti di pesce rimangono gestiti solo tramite allergeni
 
 -- INSERT INTO menu (piatto, mensa) VALUES ("Fagioli in umido", "RistorESU Nord Piovego");
 -- INSERT INTO menu (piatto, mensa) VALUES ("Crema di piselli", "RistorESU Nord Piovego");
@@ -650,8 +725,7 @@ BEGIN
     CALL crea_recensioni_casuali();
 END //
 
-
-DELIMITER ;
+DELIMITER;
 
 CALL crea_menu_settimanale();
 CALL crea_recensioni_casuali();

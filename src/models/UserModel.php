@@ -11,10 +11,10 @@ class UserModel
 
 
     // table fields
-    private int|null $id;
-    private string|null $username;
-    private string|null $password;
-    private string|DateTimeImmutable|null $dataNascita;
+    private int|null $id = null;
+    private string|null $username = null;
+    private string|null $password = null;
+    private string|DateTimeImmutable|null $dataNascita = null;
 
     /**
      * @param array<int,string> $data
@@ -161,7 +161,7 @@ class UserModel
             return $stmt->execute([
                 "username" => $this->username,
                 "password" => $this->password,
-                "dataNascita" => $dataNascita->format("Y-m-d"),
+                "dataNascita" => $this->dataNascita->format("Y-m-d"),
             ]);
         } else {
             $stmt = $this->db->prepare(

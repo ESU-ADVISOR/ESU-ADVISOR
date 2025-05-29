@@ -248,8 +248,6 @@ INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Hamburger di manzo BI
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Patate fritte", "Contorno", "Patate fritte croccanti.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Tris di verdure", "Contorno", "Mix di verdure cotte al vapore.");
 
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Patate all'olio extravergine", "Contorno", "Patate condite con olio extravergine di oliva.");
-
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Carote e piselli al vapore", "Contorno", "Carote e piselli cotti al vapore.");
 
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta zucca e funghi", "Primo", "Pasta con zucca e funghi.");
@@ -280,7 +278,6 @@ INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana c
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con carote, zucchine, fagioli e mais");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate fritte");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Tris di verdure");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate all'olio extravergine");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote e piselli al vapore");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Piselli");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Ceci");
@@ -356,41 +353,34 @@ INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Sedano", "Minestra di 
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Bis di cereali con verdure", "images/uploads/bis-di-cereali-con-verdure.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Crema di funghi", "images/uploads/crema-di-funghi.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Crema di piselli", "images/uploads/crema-di-piselli2.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Filetto di merluzzo", "images/uploads/filetto-di-merluzzo-e-carote-al-vapore.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote al vapore", "images/uploads/filetto-di-merluzzo-e-carote-al-vapore.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Filetto di platessa alla Marchigiana", "images/uploads/filetto-di-platessa-alla-marchigiana+patate-al-basilico.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/uploads/filetto-di-platessa-alla-marchigiana+patate-al-basilico.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Frittata con verdure e formaggio", "images/uploads/frittata-con-verdure-e-formaggio-+-tris-di-verdure.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Tris di verdure", "images/uploads/frittata-con-verdure-e-formaggio-+-tris-di-verdure.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Filetto di merluzzo", "images/uploads/filetto-di-merluzzo.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote al vapore", "images/uploads/carote-al-vapore.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Filetto di platessa alla Marchigiana", "images/uploads/filetto-di-platessa-alla-marchigiana.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/uploads/patate-al-basilico.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Frittata con verdure e formaggio", "images/uploads/frittata-con-verdure-e-formaggio.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Tris di verdure", "images/uploads/tris-di-verdure.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Gnocchi al pomodoro", "images/uploads/gnocchi-al-pomodoro.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "images/uploads/insalata-vegana-con-ceci-patate-carote-e-melanzare-+-tris-di-verdure.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Tris di verdure", "images/uploads/insalata-vegana-con-ceci-patate-carote-e-melanzare-+-tris-di-verdure.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con carote, zucchine, fagioli e mais", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-carote-al-vapore.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote al vapore", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais-+-carote-al-vapore.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "images/uploads/insalata-vegana-con-ceci-patate-carote-e-melanzane.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con carote, zucchine, fagioli e mais", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana alla siciliana", "images/uploads/melanzana-alla-siciliana.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana con pomodoro, capperi e olive", "images/uploads/melanzana-con-pomodoro-capperi-e-olive-+-fagioli-in-umido.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagioli in umido", "images/uploads/melanzana-con-pomodoro-capperi-e-olive-+-fagioli-in-umido.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana con pomodoro, capperi e olive", "images/uploads/melanzana-con-pomodoro-capperi-e-olive.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagioli in umido", "images/uploads/fagioli-in-umido.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Minestra di verdure", "images/uploads/minestra-di-verdure.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Orzo con pomodorini e basilico", "images/uploads/orzo-con-pomodorini-e-basilico.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta al ragù", "images/uploads/pasta-al-ragu.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta all'arrabbiata", "images/uploads/pasta-all'arrabbiata.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta all'arrabbiata", "images/uploads/pasta-all'arrabbiata-+-roast-beef-con-funghi-+-fagiolini.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagiolini", "images/uploads/pasta-all'arrabbiata-+-roast-beef-con-funghi-+-fagiolini.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Roast beef con funghi", "images/uploads/pasta-all'arrabbiata-+-roast-beef-con-funghi-+-fagiolini.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagiolini", "images/uploads/fagiolini.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Roast beef con funghi", "images/uploads/roast-beef-con-funghi.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta alla Carbonara", "images/uploads/pasta-alla-carbonara.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta al tonno e olive", "images/uploads/pasta-tonno-e-olive.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate fritte", "images/uploads/patatine-fritte.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Peperoni alla partenopea", "images/uploads/peperoni-alla-partenopea-e-fagiolini.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagiolini", "images/uploads/peperoni-alla-partenopea-e-fagiolini.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Peperoni alla partenopea", "images/uploads/peperoni-alla-partenopea.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Riso pilaw con piselli", "images/uploads/riso-pilaw-con-piselli-1.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Riso pilaw con piselli", "images/uploads/riso-pilaw-con-piselli-2.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Tortino ricotta e spinaci", "images/uploads/tortino-ricotta-e-spinaci-+-carote-e-piselli-al-vapore.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote e piselli al vapore", "images/uploads/tortino-ricotta-e-spinaci-+-carote-e-piselli-al-vapore.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Trancio di pizza margherita", "images/uploads/trancio-di-pizza-margherita+patate-al-basilico.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Trancio di pizza margherita", "images/uploads/trancio-di-pizza-margherita+patate-al-basilico+fagiolini.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/uploads/trancio-di-pizza-margherita+patate-al-basilico.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/uploads/trancio-di-pizza-margherita+patate-al-basilico+fagiolini.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagiolini", "images/uploads/trancio-di-pizza-margherita+patate-al-basilico+fagiolini.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Tortino ricotta e spinaci", "images/uploads/tortino-ricotta-e-spinaci.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote e piselli al vapore", "images/uploads/carote-e-piselli-al-vapore.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Trancio di pizza margherita", "images/uploads/trancio-di-pizza-margherita.webp");
+
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("", "images/uploads/ .webp");
 
 DELIMITER //
 

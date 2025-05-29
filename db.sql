@@ -195,94 +195,79 @@ INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (4, "18:45", "21:00", "Pio X");
 INSERT INTO orarioapertura (giornoSettimana, orainizio, orafine, mensa) VALUES (5, "18:45", "21:00", "Pio X");
 
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Fagioli in umido", "Contorno", "Fagioli cotti lentamente in umido con pomodoro e spezie.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Crema di piselli", "Primo", "Vellutata di piselli freschi con un tocco di menta.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Orzo con pomodorini e basilico", "Primo", "Orzo perlato condito con pomodorini freschi e basilico.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Patate al basilico", "Contorno", "Patate al forno aromatizzate con basilico fresco.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Carote al vapore", "Contorno", "Carote cotte al vapore, condite con un filo d’olio.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Fagiolini", "Contorno", "Fagiolini freschi cotti al vapore.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Polpettine vegane", "Secondo", "Polpettine a base di legumi e verdure.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta alla carbonara", "Primo", "Pasta condita con uova, guanciale e pecorino.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta all'arrabbiata", "Primo", "Pasta con sugo di pomodoro piccante.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta salmone e zucchine", "Primo", "Pasta condita con salmone affumicato e zucchine.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta e fagioli alla veneta", "Primo", "Pasta e fagioli preparata secondo la tradizione veneta.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Mozzarella alla romana", "Secondo", "Mozzarella impanata e fritta.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Minestra di verdure", "Primo", "Zuppa di verdure miste.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Frittata con verdure e formaggio", "Secondo", "Frittata con verdure miste e formaggio.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pollo al forno", "Secondo", "Pollo arrosto con erbe aromatiche.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pizza pomodorini, rucola e grana", "Secondo", "Pizza con pomodorini freschi, rucola e scaglie di grana.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta alla Norma (melanzane e ricotta)", "Primo", "Pasta con melanzane fritte e ricotta salata.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta al ragù", "Primo", "Pasta con ragù di carne.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Riso al curry", "Primo", "Riso basmati con curry e verdure.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Riso pilaw con piselli", "Primo", "Riso pilaw con piselli freschi.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Crema di funghi", "Primo", "Vellutata di funghi porcini.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Gnocchi al pomodoro", "Primo", "Gnocchi di patate con sugo di pomodoro.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Filetto di platessa alla marchigiana", "Secondo", "Filetto di platessa con pomodoro e olive.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Filetto di merluzzo", "Secondo", "Filetto di merluzzo impanato e fritto.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Melanzana con pomodoro e funghi", "Secondo", "Melanzana ripiena di pomodoro e funghi.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Arrosto di tacchino", "Secondo", "Arrosto di tacchino con erbe aromatiche.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Tortino ricotta e spinaci", "Secondo", "Tortino di pasta sfoglia ripieno di ricotta e spinaci.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Insalatona vegetariana", "Secondo", "Insalata mista con verdure fresche.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "Secondo", "Insalata vegana con ceci, patate, carote e melanzane grigliate.");
+-- ========== PRIMI PIATTI (ordinati alfabeticamente) ==========
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Bis di cereali con verdure", "Primo", "Mix di cereali con verdure di stagione.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Peperoni alla partenopea", "Contorno", "Peperoni ripieni alla napoletana.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Melanzana con pomodoro, capperi e olive", "Secondo", "Melanzana condita con pomodoro, capperi e olive.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Roast beef con funghi", "Secondo", "Roast beef con funghi trifolati.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Trancio di pizza margherita", "Secondo", "Trancio di pizza margherita con mozzarella e pomodoro.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Crema di funghi", "Primo", "Vellutata di funghi porcini.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Crema di piselli", "Primo", "Vellutata di piselli freschi con un tocco di menta.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Gnocchi al pomodoro", "Primo", "Gnocchi di patate con sugo di pomodoro.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Minestra di verdure", "Primo", "Zuppa di verdure miste.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Orzo con pomodorini e basilico", "Primo", "Orzo perlato condito con pomodorini freschi e basilico.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta al ragù", "Primo", "Pasta con ragù di carne.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta al tonno e olive", "Primo", "Pasta con tonno e olive.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta all'arrabbiata", "Primo", "Pasta con sugo di pomodoro piccante.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta alla carbonara", "Primo", "Pasta condita con uova, guanciale e pecorino.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta alla Norma (melanzane e ricotta)", "Primo", "Pasta con melanzane fritte e ricotta salata.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta e fagioli alla veneta", "Primo", "Pasta e fagioli preparata secondo la tradizione veneta.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta salmone e zucchine", "Primo", "Pasta condita con salmone affumicato e zucchine.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta zucca e funghi", "Primo", "Pasta con zucca e funghi.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Riso al curry", "Primo", "Riso basmati con curry e verdure.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Riso pilaw con piselli", "Primo", "Riso pilaw con piselli freschi.");
+
+-- ========== SECONDI PIATTI (ordinati alfabeticamente) ==========
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Arrosto di maiale", "Secondo", "Arrosto di maiale con erbe aromatiche.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Arrosto di tacchino", "Secondo", "Arrosto di tacchino con erbe aromatiche.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Coscette di pollo", "Secondo", "Coscette di pollo arrosto.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Falafel", "Secondo", "Polpette di ceci speziate.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Filetto di merluzzo", "Secondo", "Filetto di merluzzo impanato e fritto.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Filetto di platessa alla marchigiana", "Secondo", "Filetto di platessa con pomodoro e olive.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Frittata con verdure e formaggio", "Secondo", "Frittata con verdure miste e formaggio.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Hamburger vegano", "Secondo", "Hamburger vegano a base di legumi.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Insalata vegana con carote, zucchine, fagioli e mais", "Secondo", "Insalata vegana con carote, zucchine, fagioli e mais.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "Secondo", "Insalata vegana con ceci, patate, carote e melanzane grigliate.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Kebab di pollo", "Secondo", "Kebab di pollo con spezie orientali.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Melanzana alla siciliana", "Secondo", "Melanzana ripiena alla siciliana.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Melanzana con pomodoro, capperi e olive", "Secondo", "Melanzana condita con pomodoro, capperi e olive.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Mozzarella alla romana", "Secondo", "Mozzarella impanata e fritta.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Peperoni alla partenopea", "Secondo", "Peperoni ripieni alla napoletana.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Polpettine vegane", "Secondo", "Polpettine a base di legumi e verdure.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Roast beef con funghi", "Secondo", "Roast beef con funghi trifolati.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Tortino ricotta e spinaci", "Secondo", "Tortino di pasta sfoglia ripieno di ricotta e spinaci.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Trancio di pizza margherita", "Secondo", "Trancio di pizza margherita con mozzarella e pomodoro.");
 
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Hamburger di manzo BIO con cipolle caramellate", "Secondo", "Hamburger di manzo biologico con cipolle caramellate.");
-
+-- ========== CONTORNI (ordinati alfabeticamente) ==========
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Carote al vapore", "Contorno", "Carote cotte al vapore, condite con un filo d'olio.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Carote e piselli al vapore", "Contorno", "Carote e piselli cotti al vapore.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Ceci", "Contorno", "Ceci lessati.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Cavoli lessati", "Contorno", "Cavoli cotti al vapore.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Fagioli in umido", "Contorno", "Fagioli cotti lentamente in umido con pomodoro e spezie.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Fagiolini", "Contorno", "Fagiolini freschi cotti al vapore.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Insalata", "Contorno", "Insalata mista con verdure fresche.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Patate al basilico", "Contorno", "Patate al forno aromatizzate con basilico fresco.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Patate fritte", "Contorno", "Patate fritte croccanti.");
+INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Piselli", "Contorno", "Piselli freschi cotti al vapore.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Tris di verdure", "Contorno", "Mix di verdure cotte al vapore.");
 
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Carote e piselli al vapore", "Contorno", "Carote e piselli cotti al vapore.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta zucca e funghi", "Primo", "Pasta con zucca e funghi.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta al tonno e olive", "Primo", "Pasta con tonno e olive.");
-
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Pasta pomodoro e piselli", "Primo", "Pasta con sugo di pomodoro e piselli.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Arrosto di maiale", "Secondo", "Arrosto di maiale con erbe aromatiche.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Coscette di pollo", "Secondo", "Coscette di pollo arrosto.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Hamburger vegano", "Secondo", "Hamburger vegano a base di legumi.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Falafel", "Secondo", "Polpette di ceci speziate.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Kebab di pollo", "Secondo", "Kebab di pollo con spezie orientali.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Piselli", "Contorno", "Piselli freschi cotti al vapore.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Ceci", "Contorno", "Ceci lessati.");
-
--- ===============================================
+-- ========== INSERIMENTO ALLERGENI ORGANIZZATO ==========
 
 -- PIATTI SENZA ALLERGENI (solo verdure/frutta/legumi semplici)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Fagioli in umido");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di piselli");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate al basilico");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote al vapore");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Fagiolini");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana con pomodoro e funghi");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalatona vegetariana");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con ceci, patate, carote e melanzane");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Melanzana con pomodoro, capperi e olive");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata vegana con carote, zucchine, fagioli e mais");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Patate fritte");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Tris di verdure");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Carote e piselli al vapore");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Piselli");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Ceci");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Riso pilaw con piselli");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Crema di funghi");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Cavoli lessati");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Insalata");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Arrosto di maiale");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Arrosto di tacchino");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Coscette di pollo");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Nessuno", "Roast beef con funghi");
 
 -- PIATTI CON SOLO GLUTINE (paste e cereali)
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Orzo con pomodorini e basilico");
@@ -294,20 +279,16 @@ INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Bis di cere
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Peperoni alla partenopea");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Melanzana alla siciliana");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta zucca e funghi");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta pomodoro e piselli");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Kebab di pollo");
 
--- PIATTI CON GLUTINE + LATTE (pasta con formaggi)
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pizza pomodorini, rucola e grana");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pizza pomodorini, rucola e grana");
-
+-- PIATTI CON GLUTINE + LATTE
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta alla Norma (melanzane e ricotta)");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla Norma (melanzane e ricotta)");
 
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Trancio di pizza margherita");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Trancio di pizza margherita");
 
--- PIATTI CON GLUTINE + PESCE (paste con pesce)
+-- PIATTI CON GLUTINE + PESCE
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta salmone e zucchine");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Pasta salmone e zucchine");
 
@@ -317,7 +298,7 @@ INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Pasta al tonn
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Filetto di merluzzo");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Filetto di merluzzo");
 
--- PIATTI CON GLUTINE + UOVA + LATTE (tortini e impanati)
+-- PIATTI CON GLUTINE + UOVA + LATTE
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Tortino ricotta e spinaci");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Tortino ricotta e spinaci");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Tortino ricotta e spinaci");
@@ -325,67 +306,95 @@ INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Tortino ricott
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Mozzarella alla romana");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Mozzarella alla romana");
 
-
--- PIATTI CON UOVA + LATTE (frittate)
+-- PIATTI CON UOVA + LATTE
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Frittata con verdure e formaggio");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Frittata con verdure e formaggio");
+
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Pasta alla carbonara");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Uova", "Pasta alla carbonara");
+INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla carbonara");
 
 -- PIATTI CON SOLO PESCE
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Filetto di platessa alla marchigiana");
 
--- PIATTI CON GLUTINE + SOIA (prodotti vegani)
+-- PIATTI CON GLUTINE + SOIA
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Polpettine vegane");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Soia", "Polpettine vegane");
 
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Hamburger vegano");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Soia", "Hamburger vegano");
 
--- PIATTI CON GLUTINE + SESAMO (falafel)
+-- PIATTI CON GLUTINE + SESAMO
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Falafel");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Sesamo", "Falafel");
 
--- PIATTI CON SENAPE (curry e spezie)
+-- PIATTI CON SENAPE
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Senape", "Riso al curry");
 
--- PIATTI CON SEDANO (minestre e zuppe)
+-- PIATTI CON SEDANO
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Sedano", "Minestra di verdure");
 
+
+-- ===============================================
+-- INSERIMENTO FOTO PIATTI AGGIORNATA
+-- ===============================================
+
+-- ========== PRIMI PIATTI (16 totali - ordinati alfabeticamente) ==========
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Bis di cereali con verdure", "images/uploads/bis-di-cereali-con-verdure.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Crema di funghi", "images/uploads/crema-di-funghi.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Crema di piselli", "images/uploads/crema-di-piselli2.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Filetto di merluzzo", "images/uploads/filetto-di-merluzzo.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote al vapore", "images/uploads/carote-al-vapore.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Filetto di platessa alla Marchigiana", "images/uploads/filetto-di-platessa-alla-marchigiana.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/uploads/patate-al-basilico.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Frittata con verdure e formaggio", "images/uploads/frittata-con-verdure-e-formaggio.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Tris di verdure", "images/uploads/tris-di-verdure.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Gnocchi al pomodoro", "images/uploads/gnocchi-al-pomodoro.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "images/uploads/insalata-vegana-con-ceci-patate-carote-e-melanzane.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con carote, zucchine, fagioli e mais", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana alla siciliana", "images/uploads/melanzana-alla-siciliana.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana con pomodoro, capperi e olive", "images/uploads/melanzana-con-pomodoro-capperi-e-olive.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagioli in umido", "images/uploads/fagioli-in-umido.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Minestra di verdure", "images/uploads/minestra-di-verdure.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Orzo con pomodorini e basilico", "images/uploads/orzo-con-pomodorini-e-basilico.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta al ragù", "images/uploads/pasta-al-ragu.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta all'arrabbiata", "images/uploads/pasta-all'arrabbiata.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagiolini", "images/uploads/fagiolini.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Roast beef con funghi", "images/uploads/roast-beef-con-funghi.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta alla Carbonara", "images/uploads/pasta-alla-carbonara.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta al tonno e olive", "images/uploads/pasta-tonno-e-olive.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate fritte", "images/uploads/patatine-fritte.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Peperoni alla partenopea", "images/uploads/peperoni-alla-partenopea.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta all'arrabbiata", "images/uploads/pasta-all'arrabbiata.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta alla carbonara", "images/uploads/pasta-alla-carbonara.webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta alla Norma (melanzane e ricotta)", "images/uploads/ .webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta e fagioli alla veneta", "images/uploads/ .webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta salmone e zucchine", "images/uploads/ .webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Pasta zucca e funghi", "images/uploads/ .webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Riso al curry", "images/uploads/ .webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Riso pilaw con piselli", "images/uploads/riso-pilaw-con-piselli-1.webp");
+
+-- ========== SECONDI PIATTI (19 totali - ordinati alfabeticamente) ==========
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Arrosto di maiale", "images/uploads/ .webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Arrosto di tacchino", "images/uploads/ .webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Coscette di pollo", "images/uploads/ .webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Falafel", "images/uploads/ .webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Filetto di merluzzo", "images/uploads/filetto-di-merluzzo.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Filetto di platessa alla marchigiana", "images/uploads/filetto-di-platessa-alla-marchigiana.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Frittata con verdure e formaggio", "images/uploads/frittata-con-verdure-e-formaggio.webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Hamburger vegano", "images/uploads/ .webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con carote, zucchine, fagioli e mais", "images/uploads/insalata-vegana-con-fagioli-carote-zucchine-e-mais.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata vegana con ceci, patate, carote e melanzane", "images/uploads/insalata-vegana-con-ceci-patate-carote-e-melanzane.webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Kebab di pollo", "images/uploads/ .webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana alla siciliana", "images/uploads/melanzana-alla-siciliana.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana con pomodoro, capperi e olive", "images/uploads/melanzana-con-pomodoro-capperi-e-olive.webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Mozzarella alla romana", "images/uploads/ .webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Peperoni alla partenopea", "images/uploads/peperoni-alla-partenopea.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Polpettine vegane", "images/uploads/ .webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Roast beef con funghi", "images/uploads/roast-beef-con-funghi.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Tortino ricotta e spinaci", "images/uploads/tortino-ricotta-e-spinaci.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote e piselli al vapore", "images/uploads/carote-e-piselli-al-vapore.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Trancio di pizza margherita", "images/uploads/trancio-di-pizza-margherita.webp");
 
---INSERT INTO piatto_foto (piatto, foto) VALUES ("", "images/uploads/ .webp");
+-- ========== CONTORNI (11 totali - ordinati alfabeticamente) ==========
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote al vapore", "images/uploads/carote-al-vapore.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Carote e piselli al vapore", "images/uploads/carote-e-piselli-al-vapore.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Cavoli lessati", "images/uploads/cavoli-lessati.webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Ceci", "images/uploads/ .webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagioli in umido", "images/uploads/fagioli-in-umido.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Fagiolini", "images/uploads/fagiolini.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Insalata", "images/uploads/insalata.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate al basilico", "images/uploads/patate-al-basilico.webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Patate fritte", "images/uploads/patatine-fritte.webp");
+--INSERT INTO piatto_foto (piatto, foto) VALUES ("Piselli", "images/uploads/ .webp");
+INSERT INTO piatto_foto (piatto, foto) VALUES ("Tris di verdure", "images/uploads/tris-di-verdure.webp");
 
 DELIMITER //
 
 CREATE PROCEDURE crea_menu_settimanale()
--- 11 contorni 24 secondi e 17 primi
+-- 11 contorni 24 secondi e 17 primi + insalata fissa
 BEGIN
     DECLARE done INT DEFAULT 0;
     DECLARE mensa_nome VARCHAR(50);
@@ -409,6 +418,7 @@ BEGIN
         FETCH mensa_cursor INTO mensa_nome;
         IF NOT done THEN
 
+            -- 3 primi casuali
             INSERT IGNORE INTO menu (piatto, mensa)
             SELECT p.nome, mensa_nome
             FROM piatto p
@@ -416,7 +426,7 @@ BEGIN
             ORDER BY RAND()
             LIMIT 3;
 
-            -- 3 secondi
+            -- 3 secondi casuali
             INSERT IGNORE INTO menu (piatto, mensa)
             SELECT p.nome, mensa_nome
             FROM piatto p
@@ -424,13 +434,19 @@ BEGIN
             ORDER BY RAND()
             LIMIT 3;
 
-            -- 2 contorni
+            -- 2 contorni casuali
             INSERT IGNORE INTO menu (piatto, mensa)
             SELECT p.nome, mensa_nome
             FROM piatto p
             WHERE p.categoria = 'Contorno'
+            AND p.nome != 'Insalata' 
             ORDER BY RAND()
             LIMIT 2;
+
+            -- Insalata fissa per ogni mensa
+            INSERT IGNORE INTO menu (piatto, mensa)
+            VALUES ('Insalata', mensa_nome);
+
         END IF;
     UNTIL done END REPEAT;
     COMMIT;

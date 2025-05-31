@@ -5,9 +5,7 @@
     width="24"
     height="24"
     role="img"
-    aria-labelledby="home-icon-label"
 >
-    <title id="home-icon-label">Home</title>
     <path
         stroke-linecap="round"
         stroke-linejoin="round"

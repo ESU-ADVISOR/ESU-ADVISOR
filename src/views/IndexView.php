@@ -29,15 +29,15 @@ class IndexView extends BaseView
         $menseInfoContent = "";
         $piattiContent = "";
         $dishOfTheDayContent = "";
-        
+
         $datiMensa = $data["mensa_selezionata"][0];
         $id = 0;
         $idtmp = 0;
         foreach ($data["mense"] as $nomeMensa) {
-            if(isset($datiMensa) && ($datiMensa["nome"] == $nomeMensa)){
+            if (isset($datiMensa) && ($datiMensa["nome"] == $nomeMensa)) {
                 $menseContent .= "<option value=\"" . htmlspecialchars($nomeMensa) . "\" selected>" . htmlspecialchars($nomeMensa) . "</option>";
                 $id = $idtmp;
-            }else{
+            } else {
                 $menseContent .=
                     "<option value=\"" .
                     htmlspecialchars($nomeMensa) .
@@ -47,9 +47,9 @@ class IndexView extends BaseView
             }
             $id++;
         }
-        
+
         $menseInfoContent .= "<li class=\"mense-info-item\" data-mensa-id=\"" .
-            htmlspecialchars($id) . ">";
+            htmlspecialchars($id) . "\">";
 
         $menseInfoContent .= "<h3>" . htmlspecialchars($datiMensa["nome"]) . "</h3>";
 
@@ -214,7 +214,7 @@ class IndexView extends BaseView
                 "\"><div class=\"empty-menu\"><p class=\"text-center\">Nessun piatto disponibile per questa mensa</p></div></li>";
         }
 
-            //     =========== Corrected Logic for Dish of the Day ============
+        //     =========== Corrected Logic for Dish of the Day ============
         if (isset($data["piatto_del_giorno"]) && $data["piatto_del_giorno"]) {
             $dishOfTheDayContent .= "<div class=\"menu-item-container\" data-mensa-id=\"" .
                 htmlspecialchars($id) . "\">";

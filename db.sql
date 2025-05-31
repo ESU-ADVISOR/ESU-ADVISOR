@@ -229,7 +229,6 @@ INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Melanzana alla sicili
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Melanzana con pomodoro, capperi e olive", "Secondo", "Melanzana condita con pomodoro, capperi e olive.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Mozzarella alla romana", "Secondo", "Mozzarella impanata e fritta.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Peperoni alla partenopea", "Secondo", "Peperoni ripieni alla napoletana.");
-INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Polpettine vegane", "Secondo", "Polpettine a base di legumi e verdure.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Roast beef con funghi", "Secondo", "Roast beef con funghi trifolati.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Tortino ricotta e spinaci", "Secondo", "Tortino di pasta sfoglia ripieno di ricotta e spinaci.");
 INSERT INTO piatto (nome, categoria, descrizione) VALUES ("Trancio di pizza margherita", "Secondo", "Trancio di pizza margherita con mozzarella e pomodoro.");
@@ -317,10 +316,6 @@ INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Latte", "Pasta alla ca
 -- PIATTI CON SOLO PESCE
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Pesce", "Filetto di platessa alla marchigiana");
 
--- PIATTI CON GLUTINE + SOIA
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Polpettine vegane");
-INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Soia", "Polpettine vegane");
-
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Glutine", "Hamburger vegano");
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Soia", "Hamburger vegano");
 
@@ -373,7 +368,6 @@ INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana alla siciliana", "imag
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Melanzana con pomodoro, capperi e olive", "images/uploads/melanzana-con-pomodoro-capperi-e-olive.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Mozzarella alla romana", "images/uploads/mozzarella-alla-romana.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Peperoni alla partenopea", "images/uploads/peperoni-alla-partenopea.webp");
-INSERT INTO piatto_foto (piatto, foto) VALUES ("Polpettine vegane", "images/uploads/ .webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Roast beef con funghi", "images/uploads/roast-beef-con-funghi.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Tortino ricotta e spinaci", "images/uploads/tortino-ricotta-e-spinaci.webp");
 INSERT INTO piatto_foto (piatto, foto) VALUES ("Trancio di pizza margherita", "images/uploads/trancio-di-pizza-margherita.webp");

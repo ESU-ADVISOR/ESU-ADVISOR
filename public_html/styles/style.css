@@ -783,11 +783,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-}
-
-.piatti-list .menu-item {
-    height: auto;
-    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .piatti-list .menu-item[hidden] {
@@ -1347,8 +1345,15 @@ body {
     gap: var(--spacing-md);
 }
 
-/* Menu item cards */
 .menu-item {
+    list-style: none;
+}
+
+.menu-item[hidden] {
+    display: none;
+}
+
+.menu-item article {
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-md);
@@ -1359,25 +1364,7 @@ body {
     border: 1px solid var(--border-color);
 }
 
-.menu-item:last-child {
-    margin-bottom: 0;
-}
-
-.menu-item[hidden] {
-    display: none;
-}
-
-.menu-item-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-}
-
-.menu-item-container:last-child {
-    margin-bottom: 0;
-}
-
-.menu-item figure {
+.menu-item article figure {
     flex-shrink: 0;
     width: 150px;
     height: 150px;
@@ -1385,7 +1372,7 @@ body {
     border-radius: var(--radius-sm);
 }
 
-.menu-item figure img {
+.menu-item article figure img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1423,8 +1410,24 @@ body {
     text-decoration: underline;
 }
 
+.dish-of-day-item {
+    list-style: none;
+}
+
+.dish-of-day-item article {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+    background-color: var(--background-card);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
 .empty-menu,
 .empty-dish {
+    list-style: none;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2118,11 +2121,11 @@ span.center {
         flex-direction: column;
     }
 
-    .menu-item {
+    .menu-item article {
         flex-direction: column;
     }
 
-    .menu-item figure {
+    .menu-item article figure {
         width: 100%;
         height: auto;
         max-height: 200px;

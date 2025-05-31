@@ -22,24 +22,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const selectedMensaId = document.getElementById("mense-select").value;
 
-    // Seleziona solo i piatti dell'attuale mensa selezionata
-    const currentMensaPiatti = document.querySelector(
-      `.menu-item-container[data-mensa-id="${selectedMensaId}"]`,
+    const menuItems = document.querySelectorAll(
+      `.menu-item[data-mensa-id="${selectedMensaId}"]`
     );
-
-    if (!currentMensaPiatti) return;
-
-    const menuItems = currentMensaPiatti.querySelectorAll(".menu-item");
+    
     let visibleCount = 0;
     let totalItems = menuItems.length;
 
     menuItems.forEach((item) => {
-      const titolo = item.querySelector("h3")?.textContent.toLowerCase() || "";
-      const descrizione =
-        item.querySelector("p")?.textContent.toLowerCase() || "";
+      const article = item.querySelector("article");
+      if (!article) return;
+      
+      const titolo = article.querySelector("h3")?.textContent.toLowerCase() || "";
+      const descrizione = article.querySelector("p")?.textContent.toLowerCase() || "";
 
       // Ottieni informazioni allergeni se presenti
-      const allergeniElement = item.querySelector(".allergens-list");
+      const allergeniElement = article.querySelector(".allergens-list");
       const allergeni = allergeniElement
         ? allergeniElement.textContent.toLowerCase()
         : "";
@@ -57,23 +55,50 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    const emptyMenu = document.querySelector(`.empty-menu[data-mensa-id="${selectedMensaId}"]`);
+
     if (searchTerm === "") {
       resultsCount.textContent = "";
+      if (emptyMenu) {
+        emptyMenu.style.display = totalItems === 0 ? "" : "none";
+      }
     } else {
       if (visibleCount === 0) {
         resultsCount.textContent = `Nessun piatto trovato per "${searchTerm}"`;
+        if (emptyMenu) {
+          emptyMenu.style.display = "none";
+        }
       } else if (visibleCount === 1) {
         resultsCount.textContent = `1 piatto trovato per "${searchTerm}"`;
+        if (emptyMenu) {
+          emptyMenu.style.display = "none";
+        }
       } else {
         resultsCount.textContent = `${visibleCount} piatti trovati per "${searchTerm}"`;
+        if (emptyMenu) {
+          emptyMenu.style.display = "none";
+        }
       }
     }
+  }
 
-    if (visibleCount === 0 && currentMensaPiatti.querySelector(".empty-menu")) {
-      currentMensaPiatti.querySelector(".empty-menu").style.display = searchTerm
-        ? "none"
-        : "";
-    }
+  function showMensaPiatti(mensaId) {
+    const allMenuItems = document.querySelectorAll(".menu-item");
+    allMenuItems.forEach(item => {
+      item.style.display = "none";
+    });
+
+    const allEmptyMenus = document.querySelectorAll(".empty-menu");
+    allEmptyMenus.forEach(item => {
+      item.style.display = "none";
+    });
+
+    const currentMensaItems = document.querySelectorAll(
+      `[data-mensa-id="${mensaId}"]`
+    );
+    currentMensaItems.forEach(item => {
+      item.style.display = "";
+    });
   }
 
   searchInput.addEventListener("input", function () {
@@ -91,11 +116,18 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("mense-select")
     .addEventListener("change", function () {
+      const selectedMensaId = this.value;
       searchInput.value = "";
       toggleClearButton();
-      filterPiatti();
+      showMensaPiatti(selectedMensaId);
+      resultsCount.textContent = "";
     });
 
+  const initialMensaId = document.getElementById("mense-select").value;
+  if (initialMensaId) {
+    showMensaPiatti(initialMensaId);
+  }
+  
   toggleClearButton();
 
   clearButton.addEventListener("keydown", function (event) {

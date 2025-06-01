@@ -74,6 +74,8 @@ abstract class BaseView
 
     public function render(array $data = []): void
     {
+        $this->injectSEOMetaTags();
+        
         $headerContent = file_get_contents(
             __DIR__ . "/../templates/header.html"
         );

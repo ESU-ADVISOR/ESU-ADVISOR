@@ -22,13 +22,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const selectedMensaId = document.getElementById("mense-select").value;
 
+    // Cerca tutti i menu items (incluso piatto del giorno) per la mensa selezionata
     const menuItems = document.querySelectorAll(
       `.menu-item[data-mensa-id="${selectedMensaId}"]`
     );
     
     let visibleCount = 0;
-    let totalItems = menuItems.length;
+    const totalItems = menuItems.length;
 
+    // Filtra tutti i piatti (menu + piatto del giorno)
     menuItems.forEach((item) => {
       const article = item.querySelector("article");
       if (!article) return;
@@ -48,59 +50,61 @@ document.addEventListener("DOMContentLoaded", function () {
         allergeni.includes(searchTerm);
 
       if (matchesSearch) {
-        item.style.display = "";
+        // Per i menu items normali, mostra il parent li
+        if (item.parentElement && item.parentElement.tagName === 'LI') {
+          item.parentElement.style.display = "";
+        } 
+        // Per il piatto del giorno, mostra il parent ul
+        else if (item.parentElement && item.parentElement.tagName === 'UL') {
+          item.parentElement.style.display = "";
+        }
         visibleCount++;
       } else {
-        item.style.display = "none";
+        // Nascondi l'elemento appropriato
+        if (item.parentElement && item.parentElement.tagName === 'LI') {
+          item.parentElement.style.display = "none";
+        } 
+        else if (item.parentElement && item.parentElement.tagName === 'UL') {
+          item.parentElement.style.display = "none";
+        }
       }
     });
 
+    // Gestisci messaggi vuoti
     const emptyMenu = document.querySelector(`.empty-menu[data-mensa-id="${selectedMensaId}"]`);
+    const emptyDishMessage = document.querySelector(`.dish-of-day-empty[data-mensa-id="${selectedMensaId}"]`);
 
     if (searchTerm === "") {
       resultsCount.textContent = "";
       if (emptyMenu) {
-        emptyMenu.style.display = totalItems === 0 ? "" : "none";
+        // Conta solo i menu items normali (non piatto del giorno) per il messaggio vuoto
+        const normalMenuItems = document.querySelectorAll(
+          `.menu-item[data-mensa-id="${selectedMensaId}"]:not(.dish-of-day-item)`
+        );
+        emptyMenu.style.display = normalMenuItems.length === 0 ? "" : "none";
+      }
+      if (emptyDishMessage) {
+        emptyDishMessage.style.display = "";
       }
     } else {
       if (visibleCount === 0) {
         resultsCount.textContent = `Nessun piatto trovato per "${searchTerm}"`;
-        if (emptyMenu) {
-          emptyMenu.style.display = "none";
-        }
       } else if (visibleCount === 1) {
         resultsCount.textContent = `1 piatto trovato per "${searchTerm}"`;
-        if (emptyMenu) {
-          emptyMenu.style.display = "none";
-        }
       } else {
         resultsCount.textContent = `${visibleCount} piatti trovati per "${searchTerm}"`;
-        if (emptyMenu) {
-          emptyMenu.style.display = "none";
-        }
+      }
+      
+      if (emptyMenu) {
+        emptyMenu.style.display = "none";
+      }
+      if (emptyDishMessage) {
+        emptyDishMessage.style.display = "none";
       }
     }
   }
 
-  function showMensaPiatti(mensaId) {
-    const allMenuItems = document.querySelectorAll(".menu-item");
-    allMenuItems.forEach(item => {
-      item.style.display = "none";
-    });
-
-    const allEmptyMenus = document.querySelectorAll(".empty-menu");
-    allEmptyMenus.forEach(item => {
-      item.style.display = "none";
-    });
-
-    const currentMensaItems = document.querySelectorAll(
-      `[data-mensa-id="${mensaId}"]`
-    );
-    currentMensaItems.forEach(item => {
-      item.style.display = "";
-    });
-  }
-
+  // Event listeners per la ricerca
   searchInput.addEventListener("input", function () {
     toggleClearButton();
     filterPiatti();
@@ -113,27 +117,21 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInput.focus();
   });
 
-  document
-    .getElementById("mense-select")
-    .addEventListener("change", function () {
-      const selectedMensaId = this.value;
-      searchInput.value = "";
-      toggleClearButton();
-      showMensaPiatti(selectedMensaId);
-      resultsCount.textContent = "";
-    });
-
-  const initialMensaId = document.getElementById("mense-select").value;
-  if (initialMensaId) {
-    showMensaPiatti(initialMensaId);
-  }
-  
-  toggleClearButton();
-
   clearButton.addEventListener("keydown", function (event) {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       clearButton.click();
     }
   });
+
+  // Ascolta il cambio di mensa gestito da menu_select.js
+  window.addEventListener('mensaChanged', function(event) {
+    // Reset della ricerca quando cambia la mensa
+    searchInput.value = "";
+    toggleClearButton();
+    resultsCount.textContent = "";
+  });
+
+  // Inizializzazione
+  toggleClearButton();
 });

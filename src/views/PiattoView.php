@@ -24,18 +24,6 @@ class PiattoView extends BaseView
                 'current' => $data["nome"],
                 'prefix' => 'Piatto: '
             ]);
-            
-            $xpath = new \DOMXPath($this->dom);
-            $titleNode = $xpath->query('//title')->item(0);
-            if ($titleNode) {
-                $titleNode->textContent = htmlspecialchars($data["nome"]) . " - Recensioni e Info | ESU Advisor";
-            }
-            
-            $descriptionNode = $xpath->query('//meta[@name="description"]')->item(0);
-            if ($descriptionNode && isset($data["descrizione"])) {
-                $descriptionText = substr(htmlspecialchars($data["descrizione"]), 0, 150);
-                $descriptionNode->setAttribute('content', $descriptionText . " - Scopri recensioni e informazioni su questo piatto nelle mense ESU.");
-            }
         }
 
         parent::render();

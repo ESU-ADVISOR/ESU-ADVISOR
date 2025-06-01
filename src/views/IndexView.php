@@ -15,15 +15,6 @@ class IndexView extends BaseView
 
     public function render(array $data = []): void
     {
-        if (isset($data["mensa_selezionata"]) && !empty($data["mensa_selezionata"])) {
-            $mensaNome = $data["mensa_selezionata"][0]["nome"];
-            $xpath = new \DOMXPath($this->dom);
-            $titleNode = $xpath->query('//title')->item(0);
-            if ($titleNode) {
-                $titleNode->textContent = "Menu " . htmlspecialchars($mensaNome) . " - Mense Universitarie Padova | ESU Advisor";
-            }
-        }
-        
         parent::render();
 
         $starSVG = file_get_contents(

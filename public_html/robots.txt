@@ -1,7 +1,2 @@
 User-agent: *
-Allow: /
-
-Disallow: /scripts/
-Disallow: /fonts/
-Disallow: /logout.php
-Disallow: /error.php
+Disallow:

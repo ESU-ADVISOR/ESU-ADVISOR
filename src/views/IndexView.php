@@ -44,7 +44,7 @@ class IndexView extends BaseView
             $mensaId = $datiMensa["nome"];
             $isInitialMensa = ($mensaId === $mensaIniziale);
             $displayStyle = $isInitialMensa ? '' : ' style="display: none;"';
-            
+
             // === MENSE INFO ===
             $menseInfoContent .= "<li class=\"mense-info-item\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\"" . $displayStyle . ">";
             $menseInfoContent .= "<h3>" . htmlspecialchars($datiMensa["nome"]) . "</h3>";
@@ -63,7 +63,13 @@ class IndexView extends BaseView
 
             $menseInfoContent .= "<div class=\"schedule-container\">";
             $giorniSettimana = [
-                "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica",
+                "Lunedì",
+                "Martedì",
+                "Mercoledì",
+                "Giovedì",
+                "Venerdì",
+                "Sabato",
+                "Domenica",
             ];
 
             $menseInfoContent .= "
@@ -117,7 +123,7 @@ class IndexView extends BaseView
                 foreach ($datiMensa["piatti"] as $piatto) {
                     $piattiContent .= "<li class=\"menu-item\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\"" . $displayStyle . ">";
                     $piattiContent .= "<article>";
-                    
+
                     if ($piatto->getImage()) {
                         $piattiContent .=
                             "<figure aria-labelledby=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "-" . htmlspecialchars(str_replace(" ", "-", strtolower($mensaId))) . "\">
@@ -139,7 +145,7 @@ class IndexView extends BaseView
                                 </figcaption>
                             </figure>";
                     }
-                    
+
                     $piattiContent .= "<div class=\"menu-item-content\">";
 
                     //Check for allergens
@@ -194,7 +200,7 @@ class IndexView extends BaseView
                 $dishOfTheDayContent .= "<ul class=\"piatti-list\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\"" . $displayStyle . ">";
                 $dishOfTheDayContent .= "<li class=\"menu-item dish-of-day-item\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\">";
                 $dishOfTheDayContent .= "<article>";
-                
+
                 $dishId = htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome())) . "-day-" . str_replace(" ", "-", strtolower($mensaId)));
                 if ($piatto->getImage()) {
                     $dishOfTheDayContent .=
@@ -217,7 +223,7 @@ class IndexView extends BaseView
                             </figcaption>
                         </figure>";
                 }
-                
+
                 $dishOfTheDayContent .= "<div class=\"menu-item-content\">";
 
                 $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
@@ -254,7 +260,7 @@ class IndexView extends BaseView
                 $dishOfTheDayContent .=
                     "<a href=\"./piatto.php?nome=" .
                     htmlspecialchars(str_replace(" ", "_", strtolower($piatto->getNome()))) .
-                    "\">Vedi <span lang=\"en\">reviews</span></a>" .
+                    "\">Vedi <span lang=\"en\">recensioni</span></a>" .
                     "</div>" .
                     "</article>";
 

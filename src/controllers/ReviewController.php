@@ -43,7 +43,6 @@ class ReviewController implements BaseController
             }
         } catch (\Exception $e) {
             error_log("Errore di recensione: " . $e->getMessage());
-
             $view->render([
                 "errors" => ["Invio recensione fallito: " . $e->getMessage()],
                 "formData" => $post

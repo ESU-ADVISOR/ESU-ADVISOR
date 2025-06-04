@@ -3,10 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Pagina di recensione per l'applicazione ESU Advisor" />
+        <meta name="description" content="Modifica recensione per l'applicazione ESU Advisor" />
         <link rel="stylesheet" href="styles/style.css" />
         <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-        <title>Recensione Piatto | ESU Advisor</title>
+        <title>Modifica Recensione | ESU Advisor</title>
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="stylesheet" href="styles/base/rating-fix.css" />
@@ -16,39 +16,30 @@
 
         <main class="form-container" id="content">
             <div class="card card-expanded">
-                <h1 class="card-title">Lascia una recensione</h1>
-                <p class="text-secondary mb-4">Condividi la tua esperienza dettagliata:</p>
+                <h1 class="card-title">Modifica la tua recensione</h1>
+                <p class="text-secondary mb-4">Aggiorna le informazioni sulla tua esperienza:</p>
 
                 <template id="server-response-template"></template>
 
-                <form action="review.php" method="post" class="base-form">
+                <form action="review-edit.php" method="post" class="base-form">
                     <div class="form-group">
                         <label for="mensa">Nome della mensa:</label>
-                        <select id="mensa" name="mensa" required class="form-select">
+                        <select id="mensa" name="mensa" required class="form-select" disabled>
                             <option value="">Seleziona una mensa</option>
-                            <template id="mense-select-2-template"></template>
+                            <template id="mense-select-template"></template>
                         </select>
+                        <p class="text-secondary text-sm">
+                            La mensa non può essere modificata durante l'aggiornamento di una recensione.
+                        </p>
                     </div>
 
                     <div class="form-group">
-                        <template id="suggerimenti-piatti-template"></template>
-
                         <label for="piatto">Nome del piatto:</label>
-                        <p class="text-secondary text-sm" id="piatto-instructions">
-                            Dopo aver selezionato la mensa, inizia a scrivere il nome del piatto e selezionalo dalla
-                            lista.
+                        <input type="text" id="piatto" class="form-input" disabled />
+                        <template id="hidden-piatto-value-template"></template>
+                        <p class="text-secondary text-sm">
+                            Il piatto non può essere modificato durante l'aggiornamento di una recensione.
                         </p>
-                        <input
-                            type="text"
-                            id="piatto"
-                            name="piatto"
-                            required
-                            class="form-input"
-                            list="suggerimenti-piatti"
-                            autocomplete="off"
-                            aria-describedby="piatto-instructions"
-                        />
-                        <small id="piatto-error" class="error"></small>
                     </div>
 
                     <div class="form-group">
@@ -107,7 +98,11 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="form-button">Invia Recensione</button>
+
+                    <div class="form-actions mt-4">
+                        <button type="submit" class="form-button">Aggiorna Recensione</button>
+                        <a href="profile.php" class="button-link ml-3">Annulla</a>
+                    </div>
                 </form>
             </div>
 
@@ -120,7 +115,6 @@
         <template id="sidebar-template"></template>
 
         <script src="scripts/rating-keyboard.js"></script>
-        <script src="scripts/review_validation.js"></script>
         <script src="scripts/back-to-top.js"></script>
     </body>
 </html>

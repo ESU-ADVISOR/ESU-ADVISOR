@@ -3,8 +3,8 @@
 namespace Views;
 
 use Models\PiattoModel;
-use Models\RecensioneModel;
 use Views\Utils;
+use Views\BaseView;
 
 class PiattoView extends BaseView
 {
@@ -28,7 +28,7 @@ class PiattoView extends BaseView
 
         parent::render();
 
-        $piattoTitle = "<h1 class=\"card-title\" id=\"primoContenuto\">" . htmlspecialchars($data["nome"]) . "</h1>";
+        $piattoTitle = "<h2 class=\"card-title\" id=\"primoContenuto\">" . htmlspecialchars($data["nome"]) . "</h2>";
 
         $piatto = PiattoModel::findByName($data["nome"]);
 
@@ -76,10 +76,10 @@ class PiattoView extends BaseView
         $allergeni = $piatto->getAllergeni();
         if (!empty($allergeni)) {
             // Rimuovi "Nessuno" dalla lista se presente insieme ad altri allergeni
-            $allergeni = array_filter($allergeni, function($allergene) {
+            $allergeni = array_filter($allergeni, function ($allergene) {
                 return $allergene !== "Nessuno";
             });
-            
+
             if (!empty($allergeni)) {
                 $allergeniContent = "<p>" . htmlspecialchars(implode(", ", $allergeni)) . "</p>";
             } else {

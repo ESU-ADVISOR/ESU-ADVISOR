@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   mensaInput.addEventListener("input", updateDatalist);
   mensaInput.addEventListener("input", validateMensa);
   piattoInput.addEventListener("input", validatePiatto);
+
   form.addEventListener("submit", function (event) {
     if (!validatePiatto() || !validateMensa() || !validateRating()) {
       event.preventDefault();
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function validateMensa() {
     const mensaInput = document.getElementById("mensa");
+
     const mensa = mensaInput.value;
     const mensaList = document.getElementById("suggerimenti-mense");
     const options = mensaList.getElementsByTagName("option");
@@ -43,12 +45,13 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
       }
     }
-    errors.set("mensa-error", "La mensa non esiste nel <span lang='en'>database</span>");
+    errors.set("mensa-error", "La mensa non esiste nel database");
     refreshErrors();
     return false;
   }
   function validatePiatto() {
     const piattoInput = document.getElementById("piatto");
+
     const listaPiatti = document.getElementById("suggerimenti-piatti");
     if (!listaPiatti) return;
 
@@ -63,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
       }
     }
-    errors.set("piatto-error", "Il piatto non esiste nel <span lang='en'>database</span>");
+    errors.set("piatto-error", "Il piatto non esiste nel database");
     refreshErrors();
     return false;
   }

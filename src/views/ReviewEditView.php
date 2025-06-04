@@ -3,13 +3,14 @@
 namespace Views;
 
 use Models\MenseModel;
+use Models\RecensioneModel;
 use Views\Utils;
 
-class ReviewView extends BaseView
+class ReviewEditView extends BaseView
 {
     public function __construct()
     {
-        parent::__construct(__DIR__ . "/../templates/review.html");
+        parent::__construct(__DIR__ . "/../templates/review-edit.html");
     }
 
     public function render(array $data = []): void
@@ -17,28 +18,31 @@ class ReviewView extends BaseView
         parent::render();
 
         if (empty($_SESSION["username"])) {
-            self::renderError("Non hai effettuato il <span lang='en'>login</span>, impossibile inviare una recensione.", 403);
+            self::renderError("Non hai effettuato il <span lang='en'>login</span>, impossibile modificare una recensione.", 403);
             return;
         }
 
+        if (!isset($data['recensione']) || !$data['recensione'] instanceof RecensioneModel) {
+            self::renderError("Recensione non trovata", "Nessuna recensione trovata da modificare.", 404);
+            return;
+        }
+
+        $recensione = $data['recensione'];
         $menseContent = "";
-        $piattiContent = "";
 
         $mense = MenseModel::findAll();
         foreach ($mense as $mensa) {
-
-            $menseContent .=
-                "<option value=\"" . $mensa->getNome() . "\">" . $mensa->getNome() . "</option>";
-
-            $piattiContent .= "<datalist class=\"dynamic-datalist\" data-mensa-name=\"" . $mensa->getNome() . "\">";
+            $selected = "";
             $piatti = $mensa->getPiatti();
+
             foreach ($piatti as $piatto) {
-                $piattiContent .=
-                    "<option value=\"" .
-                    $piatto->getNome() .
-                    "\"></option>";
+                if ($piatto->getNome() === $recensione->getPiatto()) {
+                    $selected = " selected";
+                    break;
+                }
             }
-            $piattiContent .= "</datalist>";
+
+            $menseContent .= "<option value=\"" . $mensa->getNome() . "\"" . $selected . ">" . $mensa->getNome() . "</option>";
         }
 
         Utils::replaceTemplateContent(
@@ -46,24 +50,23 @@ class ReviewView extends BaseView
             "mense-select-template",
             $menseContent
         );
+
+
+        $piattoInput = $this->dom->getElementById('piatto');
+        if ($piattoInput) {
+            $piattoInput->setAttribute('value', $recensione->getPiatto());
+        }
         Utils::replaceTemplateContent(
             $this->dom,
-            "mense-select-2-template",
-            $menseContent
+            "hidden-piatto-value-template",
+            '<input type="hidden"  name="piatto" value="' . $recensione->getPiatto() . '" />'
         );
 
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "suggerimenti-piatti-template",
-            $piattiContent
-        );
+        $reviewTextarea = $this->dom->getElementById('review');
+        if ($reviewTextarea) {
+            $reviewTextarea->textContent = $recensione->getDescrizione();
+        }
 
-        $starSVG = file_get_contents(
-            __DIR__ . "/../../public_html/images/star.svg"
-        );
-        $starFilledSVG = file_get_contents(
-            __DIR__ . "/../../public_html/images/star_filled.svg"
-        );
         $starRatingSVG = file_get_contents(
             __DIR__ . "/../../public_html/images/star_form.svg"
         );
@@ -94,6 +97,14 @@ class ReviewView extends BaseView
             $starRatingSVG
         );
 
+        $voto = $recensione->getVoto();
+        if ($voto >= 1 && $voto <= 5) {
+            $ratingInput = $this->dom->getElementById('star' . $voto);
+            if ($ratingInput) {
+                $ratingInput->setAttribute('checked', 'checked');
+            }
+        }
+
         if (isset($data["errors"])) {
             $errorHtml = "";
             foreach ($data["errors"] as $error) {
@@ -104,9 +115,7 @@ class ReviewView extends BaseView
                 "server-response-template",
                 $errorHtml
             );
-        }
-
-        if (isset($data["success"])) {
+        } else if (isset($data["success"])) {
             $successHtml = "<div class='success'>{$data["success"]}</div>";
             Utils::replaceTemplateContent(
                 $this->dom,
@@ -114,6 +123,7 @@ class ReviewView extends BaseView
                 $successHtml
             );
         }
+
         echo $this->dom->saveHTML();
     }
 }

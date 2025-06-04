@@ -15,6 +15,7 @@ class RecensioneModel
     private int|null $idutente;
     private string|null $piatto;
     private string|DateTimeImmutable|null $data;
+    private bool|null $modificato;
 
     /**
      * @param array<int,string> $data
@@ -51,6 +52,9 @@ class RecensioneModel
         }
         if (isset($data["data"])) {
             $this->data = new DateTimeImmutable($data["data"]);
+        }
+        if (isset($data["modificato"])) {
+            $this->modificato = (bool)$data["modificato"];
         }
     }
 
@@ -89,7 +93,7 @@ class RecensioneModel
         return $this->descrizione;
     }
 
-    public function setDescrizione(int $descrizione): void
+    public function setDescrizione(string $descrizione): void
     {
         $this->descrizione = $descrizione;
     }
@@ -132,6 +136,17 @@ class RecensioneModel
     {
         $this->data = new DateTimeImmutable($value);
     }
+
+    public function isEdited(): ?bool
+    {
+        return $this->modificato;
+    }
+
+    /** @param bool $value */
+    public function setEdited($value): void
+    {
+        $this->modificato = (bool)$value;
+    }
     //-----------------Relationals methods----------------
 
     //-----------------Database methods----------------
@@ -145,7 +160,7 @@ class RecensioneModel
         $exists = self::findByFields($this->utente, $this->piatto);
         if ($exists === null) {
             $stmt = $this->db->prepare(
-                "INSERT INTO recensione (voto, descrizione, utente, piatto, data) VALUES (:voto, :descrizione, :utente, :piatto, :data)"
+                "INSERT INTO recensione (voto, descrizione, utente, piatto, data, modificato) VALUES (:voto, :descrizione, :utente, :piatto, :data, :modificato)"
             );
             return $stmt->execute([
                 "voto" => $this->voto,
@@ -153,10 +168,11 @@ class RecensioneModel
                 "utente" => $this->idutente,
                 "piatto" => $this->piatto,
                 "data" => $this->data->format("Y-m-d"),
+                "modificato" => false,
             ]);
         } else {
             $stmt = $this->db->prepare(
-                "UPDATE recensione SET voto = :voto, descrizione = :descrizione WHERE utente = :utente AND piatto = :piatto AND data = :data"
+                "UPDATE recensione SET voto = :voto, descrizione = :descrizione, modificato = :modificato, data = :data WHERE utente = :utente AND piatto = :piatto"
             );
             return $stmt->execute([
                 "voto" => $this->voto,
@@ -164,6 +180,7 @@ class RecensioneModel
                 "utente" => $this->idutente,
                 "piatto" => $this->piatto,
                 "data" => $this->data->format("Y-m-d"),
+                "modificato" => true
             ]);
         }
     }
@@ -188,7 +205,7 @@ class RecensioneModel
 
     /**
     @param string $utente
-    @param string string
+    @param string $piatto
     @return RecensioneModel|null
      */
     public static function findByFields(
@@ -197,7 +214,7 @@ class RecensioneModel
     ): ?RecensioneModel {
         $db = Database::getInstance();
         $stmt = $db->prepare(
-            "SELECT voto, descrizione, username as utente, utente as idutente, piatto, data FROM recensione JOIN utente ON utente.id = recensione.utente WHERE username = :utente AND piatto = :piatto"
+            "SELECT voto, descrizione, username as utente, utente as idutente, piatto, data, modificato FROM recensione JOIN utente ON utente.id = recensione.utente WHERE username = :utente AND piatto = :piatto"
         );
         $stmt->execute([
             "utente" => $utente,
@@ -216,7 +233,7 @@ class RecensioneModel
     public static function findAll(): array
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT voto, descrizione, username as utente, utente as idutente, piatto, data FROM recensione JOIN utente ON utente.id = recensione.utente");
+        $stmt = $db->prepare("SELECT voto, descrizione, username as utente, utente as idutente, piatto, data, modificato FROM recensione JOIN utente ON utente.id = recensione.utente");
         $stmt->execute();
 
         $recensioni = $stmt->fetchAll(

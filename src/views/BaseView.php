@@ -6,8 +6,6 @@ use Views\Utils;
 use DOMDocument;
 use DOMXPath;
 use DOMElement;
-use Models\PreferenzeUtenteModel;
-use Models\UserModel;
 
 abstract class BaseView
 {
@@ -36,13 +34,13 @@ abstract class BaseView
     private function generateBreadcrumbHTML(): string
     {
         $html = '<h1>&rsaquo; ';
-        
+
         if ($this->breadcrumbData && isset($this->breadcrumbData['parent'])) {
             $parent = $this->breadcrumbData['parent'];
-            $html .= '<a href="' . htmlspecialchars($parent['url']) . '">' 
-                   . htmlspecialchars($parent['title']) . '</a>';
+            $html .= '<a href="' . htmlspecialchars($parent['url']) . '">'
+                . htmlspecialchars($parent['title']) . '</a>';
             $html .= ' &rsaquo; ';
-            
+
             $currentTitle = $this->breadcrumbData['current'] ?? ucfirst($this->currentPage);
             $prefix = $this->breadcrumbData['prefix'] ?? '';
             $html .= htmlspecialchars($prefix . $currentTitle);
@@ -52,18 +50,18 @@ abstract class BaseView
             } else {
                 $html .= '<a href="index.php">Home</a>';
                 $html .= ' &rsaquo; ';
-                
+
                 $pageNames = [
                     'profile' => 'Profilo',
                     'review' => 'Review',
-                    'settings' => 'Impostazioni', 
+                    'settings' => 'Impostazioni',
                     'login' => 'Login',
                     'register' => 'Register'
                 ];
-                
-                $currentTitle = $this->breadcrumbData['current'] ?? 
-                               ($pageNames[$this->currentPage] ?? ucfirst($this->currentPage));
-                
+
+                $currentTitle = $this->breadcrumbData['current'] ??
+                    ($pageNames[$this->currentPage] ?? ucfirst($this->currentPage));
+
                 $html .= htmlspecialchars($currentTitle);
             }
         }
@@ -239,11 +237,11 @@ abstract class BaseView
         $isRegisterPage = ($currentPage === 'register.php');
 
         $isUserLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]) && $_SESSION["username"] !== '';
-        
+
         if ($isUserLoggedIn) {
             $logoutButton = '<a href="logout.php" class="nav-button danger" lang="en" id="logout">Logout</a>';
             $sidebarLogoutButton = '<a href="logout.php" class="sidebar-auth-button danger" lang="en" id="sidebar-logout">Logout</a>';
-            
+
             Utils::replaceTemplateContent(
                 $this->dom,
                 "session-buttons-template",
@@ -256,7 +254,9 @@ abstract class BaseView
             );
         } else {
             $loginRedirect = '';
-            if (!in_array($currentPage, $publicPages) && $currentPage !== 'login.php' && $currentPage !== 'register.php') {
+            if (
+                in_array($currentPage, $publicPages) && $currentPage !== 'login.php' && $currentPage !== 'register.php' && $currentPage !== 'error.php'
+            ) {
                 $loginRedirect = "?redirect={$currentPage}";
             }
 
@@ -296,79 +296,11 @@ abstract class BaseView
         );
     }
 
-    public function renderError(string $error, int $errorCode = 500): void
+    public function renderError(string  $errorTitle, string $errorMessage, int $errorCode = 500): void
     {
-        $protectedPages = ['profile.php', 'review.php'];
         $currentPage = basename($_SERVER['PHP_SELF']);
-
-        $isAccessError = in_array($currentPage, $protectedPages) &&
-            $error === "Devi effettuare il login per accedere";
-
-        if ($isAccessError) {
-            header("Location: error.php?code=401&page=" . urlencode($currentPage));
-            exit();
-        }
-
-        if ($errorCode === 404) {
-            $this->template = file_get_contents(__DIR__ . "/../templates/error.html");
-            $this->dom = new \DOMDocument();
-            libxml_use_internal_errors(true);
-            $this->dom->loadHTML($this->template);
-            libxml_clear_errors();
-
-            Utils::replaceTemplateContent(
-                $this->dom,
-                "error-title-template",
-                "<h1>Pagina non trovata</h1>"
-            );
-
-            Utils::replaceTemplateContent(
-                $this->dom,
-                "error-message-template",
-                "<h3>La pagina che stai cercando non esiste</h3>"
-            );
-
-            Utils::replaceTemplateContent(
-                $this->dom,
-                "access-error-content",
-                ""
-            );
-
-            Utils::replaceTemplateContent(
-                $this->dom,
-                "generic-error-content",
-                ""
-            );
-
-            echo $this->dom->saveHTML();
-            return;
-        }
-
-        $this->template = file_get_contents(__DIR__ . "/../templates/error.html");
-        $this->dom = new \DOMDocument();
-        libxml_use_internal_errors(true);
-        $this->dom->loadHTML($this->template);
-        libxml_clear_errors();
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "error-message-template",
-            "<h3>" . htmlspecialchars($error) . "</h3>"
-        );
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "access-error-content",
-            ""
-        );
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "not-found-error-content",
-            ""
-        );
-
-        echo $this->dom->saveHTML();
+        header("Location: error.php?code=" . $errorCode . "&page=" . urlencode($currentPage) . "&title=" . $errorTitle . "&message=" . $errorMessage);
+        exit();
     }
 
     public function getDom(): \DOMDocument

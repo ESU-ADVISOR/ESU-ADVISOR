@@ -63,6 +63,7 @@ CREATE TABLE recensione (
     utente INT NOT NULL,
     piatto VARCHAR(100) NOT NULL,
     data DATE DEFAULT CURRENT_DATE,
+    modificato BOOLEAN DEFAULT FALSE,
     CHECK (
         voto >= 1
         AND voto <= 5
@@ -100,7 +101,6 @@ CREATE TABLE piatto_allergeni (
 CREATE TABLE preferenze_utente (
     utente INT NOT NULL,
     dimensione_testo ENUM ("piccolo", "medio", "grande") NOT NULL DEFAULT "medio",
-    dimensione_icone ENUM ("piccolo", "medio", "grande") NOT NULL DEFAULT "medio",
     modifica_font ENUM ("normale", "dislessia") NOT NULL DEFAULT "normale",
     modifica_tema ENUM ("chiaro", "scuro", "sistema") NOT NULL DEFAULT "sistema",
     mensa_preferita VARCHAR(50) NULL DEFAULT NULL,

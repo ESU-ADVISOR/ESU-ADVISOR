@@ -96,7 +96,7 @@ class IndexView extends BaseView
                         }
                     }
                     if (!empty($orariPerGiorno)) {
-                        $menseInfoContent .= implode(", ", $orariPerGiorno);
+                        $menseInfoContent .= implode("<br>", $orariPerGiorno);
                     } else {
                         $menseInfoContent .= "Chiuso";
                     }

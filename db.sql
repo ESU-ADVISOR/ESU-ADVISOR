@@ -129,12 +129,12 @@ GROUP BY
     p.nome;
 
 INSERT INTO utente (password, dataNascita, username)
-VALUES ( "password", "1990-01-01", "roberto"),
-       ( "password", "1990-01-01", "angela"),
-       ( "password123", "1985-05-20", "janedoe"),
-       ( "password456", "1988-08-15", "johnsmith"),
-       ( "password789", "1992-11-30", "alicejones"),
-       ( "password", "1995-02-15", "admin"),
+VALUES ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1990-01-01", "Malik"),
+       ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1990-01-01", "Giacomo"),
+       ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1985-05-20", "Gulio"),
+       ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1988-08-15", "Manuel"),
+       ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1992-11-30", "Andrea"),
+       ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1995-02-15", "Martin"),
        ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1970-01-01", "user"); -- password: user
 
 INSERT INTO preferenze_utente(utente) VALUES (1);
@@ -329,6 +329,84 @@ INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Senape", "Riso al curr
 -- PIATTI CON SEDANO
 INSERT INTO piatto_allergeni (allergene, piatto) VALUES ("Sedano", "Minestra di verdure");
 
+-- ===============================================
+-- INSERIMENTO RECENSIONI PIATTI
+-- ===============================================
+
+-- INSERT recensioni with exact piatto names that match the database
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Alto assorbimento delle radiazioni elettromagnetiche, quasi al pari di un corpo nero. Densità alta ma non esagerata, conforme agli standard UNI ISO. Sapore buono, leggermente salato, temperatura leggermente al di sopra di quella ambientale. Frazione in massa di pasta infima ma ciò è possibile che sia dovuto al fatto che il piatto servito fosse solo una delle prime mestolate. Pro: sapore, senso di sazietà raggiunto facilmente, ottimo materiale edile Contro: mancanza di nota piccante, produzione incontrollabile di metano gassoso da orifizi corporei.", 1, "Pasta e fagioli alla veneta");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Il sapore è buono ma la texture non mi è piaciuta. Ci sono troppi pezzi grossi, non è stata tritata bene.", 2, "Crema di piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Fredda e non frullata bene.", 3, "Crema di piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona, ma calda sarebbe stata meglio.", 4, "Pasta alla Norma");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Mangiabile.", 5, "Pasta alla Norma");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Melanzane un po' acide ma buona.", 1, "Pasta alla Norma");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Nulla da dire, è buona. Magari calda sarebbe stata più gradita.", 2, "Pasta alla Norma");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Pasta troppo cotta, il sugo però era buono.", 3, "Pasta al ragù");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Pasta cotta giusta e ragù molto saporito, classica ma molto buona.", 4, "Pasta al ragù");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, riso non stracotto, un po' al dente.", 5, "Riso al curry");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Riso un po' al dente ma rimane comunque buono.", 1, "Riso pilaw con piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono, riso al dente ma non crudo.", 2, "Riso pilaw con piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Personalmente preferisco le minestre frullate, però il gusto era buono.", 3, "Minestra di verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Eccellente, nulla da dire se non buonissima.", 4, "Crema di funghi");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Sugo molto saporito.", 5, "Pasta all'arrabbiata");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buona, il sugo è piccante al punto giusto.", 1, "Pasta all'arrabbiata");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Troppo salato, cereali un po' troppo al dente e basilico inesistente.", 2, "Orzo con pomodorini e basilico");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buona e gustosa, il sugo era abbondante e saporito, si mangia molto volentieri. Peccato per la pasta un po' al dente.", 3, "Pasta alla carbonara");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Dose buona, condimento abbondante e quantità di pancetta giusta, ma il sugo me lo aspettavo un po' più saporito.", 4, "Pasta alla carbonara");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Gli gnocchi erano della consistenza giusta e non molli, e il sugo molto saporito, nel complesso davvero buoni.", 5, "Gnocchi al pomodoro");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Ottimo considerando anche la mancanza di spine. Tramite analisi olfattiva e degustativa è possibile affermare l'assenza di olio di palma e di cadmio.", 1, "Filetto di platessa alla marchigiana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, la panatura è croccante e asciutta.", 2, "Filetto di merluzzo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, la panatura è asciutta e croccante.", 3, "Filetto di merluzzo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Il gusto era buono ma c'era troppo olio sulla melanzana.", 4, "Melanzana con pomodoro, capperi e olive");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Il sapore è buono, la carne non è secca.", 5, "Arrosto di tacchino");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono il ripieno, la pasta sfoglia però è un po' dura e difficile da tagliare.", 1, "Tortino ricotta e spinaci");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto saporito, forse un po' salato ma molto buono.", 2, "Tortino ricotta e spinaci");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona ma impasta un po' in bocca.", 3, "Mozzarella alla romana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona, il pomodoro le dà quel tocco in più che ci sta. Arrivi alla fine che sei sazio.", 4, "Mozzarella alla romana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Cotto bene, aromatizzato bene, buono.", 5, "Coscette di pollo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Si lascia mangiare, bene.", 1, "Coscette di pollo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buono, non c'è tanto da dire, il nome coincide con il prodotto, l'unica pecca è che secondo me sono assenti totalmente le proteine, ci sono solo verdure.", 2, "Hamburger vegano");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Tutto buono tranne i pomodorini che erano amari.", 3, "Insalata");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Le patate erano crude, le verdure fredde e i ceci erano pochi. Apporto proteico molto basso per essere un secondo.", 4, "Insalata vegana con ceci, patate, carote e melanzane");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Saporito, i cereali cotti al punto giusto. Ottimo anche per variare la fonte di carboidrati e non mangiare sempre grano.", 5, "Bis di cereali con verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Il gusto di per sé era buono, anche se erano zuppi di acqua. Inoltre, la mozzarella sopra ai peperoni era palesemente la mozzarella alla romana avanzata dai giorni scorsi.", 1, "Peperoni alla partenopea");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (1, "Più bagnata dell'oceano, ha la consistenza di una spugna. Nel complesso il sapore è orribile.", 2, "Frittata con verdure e formaggio");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buona, ma il rapporto capperi/topping è troppo alto.", 3, "Melanzana con pomodoro, capperi e olive");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buono, i funghi ci stanno molto bene.", 4, "Roast beef con funghi");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono, riempie molto, il problema è la distribuzione di mozzarella tra i vari tranci che non è per nulla uniforme.", 5, "Trancio di pizza margherita");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Molto buono, l'impasto era morbido e soffice e nel complesso molto gustosa.", 1, "Trancio di pizza margherita");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buona anche da fredda, buon apporto di legumi.", 2, "Insalata vegana con carote, zucchine, fagioli e mais");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Letteralmente il pezzo di formaggio più duro che io abbia mangiato, impossibile da tagliare, pesante. Nel complesso non è stata un'esperienza piacevole mangiarla.", 3, "Melanzana alla siciliana");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Buonissimi, poco da aggiungere.", 5, "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buoni ma freddi.", 1, "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buoni, ma leggermente crudi.", 2, "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni, nulla da dire.", 3, "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Gusto medio, abbastanza buoni ma sempre freddi.", 4, "Fagiolini");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Non sono croccanti, sono infatti un po' molli, però almeno non sono troppo salate.", 5, "Patate fritte");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone, peccato siano un po' fredde e molli.", 1, "Patate fritte");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Sono patate fritte, sono standard, nulla da aggiungere.", 2, "Patate fritte");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buono anche se avrei preferito mangiarlo caldo.", 3, "Tris di verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Un buon contorno, forse le verdure erano un po' troppo bagnate.", 4, "Tris di verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone, l'unica pecca sono i cavolfiori poco cotti.", 5, "Tris di verdure");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (1, "Mix tra crude e cotte, non si riescono a mangiare.", 1, "Patate al basilico");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Cotte, aromatizzate poco, due erbette potevano metterle.", 2, "Patate al basilico");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Metà dei bocconi sono crudi e l'altra metà cotti, non hanno tutti la stessa consistenza. Sanno di poco e sono completamente scondite, consiglio di prendere sale e olio.", 3, "Patate al basilico");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Spesso alcune sono crude, ma in questo caso erano tutte apposto.", 4, "Patate al basilico");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Incredibilmente quasi tutti i bocconi erano cotti, un miglioramento.", 5, "Patate al basilico");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Le carote sono abbastanza bagnate e non caldissime, comunque rimangono un buon contorno.", 2, "Carote e piselli al vapore");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Buone ma un po' secche.", 3, "Carote al vapore");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buone, un po' secche.", 4, "Carote al vapore");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni, rappresentativi della cultura veneta.", 5, "Fagioli in umido");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "I funghi sovrastano un po' la zucca, che si sente meno, ma nel complesso molto buona e soddisfacente.", 2, "Pasta zucca e funghi");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "La pasta era discretamente buona e di buona cottura, il pomodoro non è troppo acido (cosa rara).", 3, "Pasta al tonno e olive");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Sugo molto buono, si mangia di gusto. Peccato che le zucchine si sentano poco, ma nel complesso buono.", 5, "Pasta salmone e zucchine");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Arrosto di buona cottura e consistenza, unica pecca l'eccessiva salinità (troppo sale).", 1, "Arrosto di maiale");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Cotte bene.", 2, "Coscette di pollo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Molto buoni e saporiti, si mangiano volentieri. Unica pecca, sono un po'granulosi all'interno, per il resto ottimi.", 5, "Falafel");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buoni e ben speziati, sanno proprio di falafel. Sono un po' asciutte, ma mangiati con la maionese sono top.", 1, "Falafel");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Normale, nulla da dire.", 2, "Kebab di pollo");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Nulla da dire, buoni, standard.", 3, "Piselli");
+INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Ceci di scarsa qualità, granulosi e di consistenza inadeguata.", 4, "Ceci");
 
 -- ===============================================
 -- INSERIMENTO FOTO PIATTI AGGIORNATA
@@ -408,6 +486,8 @@ BEGIN
     OPEN mensa_cursor;
     START TRANSACTION;
 
+    DELETE FROM menu;
+
     REPEAT
         FETCH mensa_cursor INTO mensa_nome;
         IF NOT done THEN
@@ -448,49 +528,6 @@ BEGIN
     CLOSE mensa_cursor;
 END //
 
-CREATE PROCEDURE crea_recensioni_casuali()
-BEGIN
-    DECLARE done INT DEFAULT 0;
-    DECLARE piatto_nome VARCHAR(100);
-    DECLARE num_recensioni INT;
-    DECLARE i INT;
-    DECLARE utente_nome VARCHAR(50);
-    DECLARE voto INT;
-
-    DECLARE piatti_cursor CURSOR FOR
-        SELECT nome FROM piatto;
-
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
-    OPEN piatti_cursor;
-
-    REPEAT
-        FETCH piatti_cursor INTO piatto_nome;
-        IF NOT done THEN
-            SET num_recensioni = FLOOR(4 + (RAND() * 4)); -- 4 to 7 recensioni
-            SET i = 0;
-            WHILE i < num_recensioni DO
-                -- Scegli utente casuale
-                SELECT id INTO utente_nome
-                FROM utente
-                ORDER BY RAND()
-                LIMIT 1;
-
-                -- Scegli voto casuale
-                SET voto = FLOOR(1 + (RAND() * 5)); -- 1 to 5
-
-                -- Inserisci recensione solo se non esiste già per quell'utente e piatto
-                INSERT IGNORE INTO recensione (voto, descrizione, utente, piatto)
-                VALUES (voto, 'recensione generata automaticamente', utente_nome, piatto_nome);
-
-                SET i = i + 1;
-            END WHILE;
-        END IF;
-    UNTIL done END REPEAT;
-
-    CLOSE piatti_cursor;
-END //
-
 -- necessita di event_scheduler = ON nel file di configurazione mariadb;
 CREATE EVENT IF NOT EXISTS crea_menu_settimanale_event
 ON SCHEDULE 
@@ -505,7 +542,6 @@ BEGIN
     END;
     
     CALL crea_menu_settimanale();
-    CALL crea_recensioni_casuali();
 END //
 
 CREATE TRIGGER after_utente_insert
@@ -518,4 +554,3 @@ END //
 DELIMITER ;
 
 CALL crea_menu_settimanale();
-CALL crea_recensioni_casuali();

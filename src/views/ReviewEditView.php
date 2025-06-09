@@ -15,6 +15,9 @@ class ReviewEditView extends BaseView
 
     public function render(array $data = []): void
     {
+        $this->setBreadcrumb([
+                'current' => "Modifica Recensione",
+        ]);
         parent::render();
 
         if (empty($_SESSION["username"])) {

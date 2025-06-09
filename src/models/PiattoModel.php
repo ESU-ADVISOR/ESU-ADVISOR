@@ -202,6 +202,9 @@ class PiattoModel
         foreach ($recensioni as $recensione) {
             $avg += $recensione->getVoto();
         }
+        if (count($recensioni) == 0) {
+            return 0; // No reviews, no average
+        }
         $avg = $avg / count($recensioni);
         return intval($avg);
     }

@@ -184,11 +184,17 @@ abstract class BaseView
         }
     }
 
+    /**
+     * Genera l'HTML della breadcrumb secondo la struttura corretta:
+     * - Primo livello (nessuna breadcrumb): Home, Profilo, Recensione, Login, Register, Settings, Errore
+     * - Secondo livello (con breadcrumb): Piatto, Modifica Recensione
+     */
     private function generateBreadcrumbHTML(): string
     {
         $html = '<h1>&rsaquo; ';
 
         if ($this->breadcrumbData && isset($this->breadcrumbData['parent'])) {
+            // Pagine di secondo livello con breadcrumb definito
             $parent = $this->breadcrumbData['parent'];
             $html .= '<a href="' . htmlspecialchars($parent['url']) . '">'
                 . htmlspecialchars($parent['title']) . '</a>';
@@ -198,25 +204,21 @@ abstract class BaseView
             $prefix = $this->breadcrumbData['prefix'] ?? '';
             $html .= htmlspecialchars($prefix . $currentTitle);
         } else {
-            if ($this->currentPage === 'index') {
-                $html .= 'Home';
-            } else {
-                $html .= '<a href="index.php">Home</a>';
-                $html .= ' &rsaquo; ';
+            // Pagine di primo livello - mostrano solo il nome della pagina
+            $pageNames = [
+                'index' => 'Home',
+                'profile' => 'Profilo',
+                'review' => 'Recensione',
+                'settings' => 'Impostazioni',
+                'login' => 'Login',
+                'register' => 'Register',
+                'error' => 'Errore'
+            ];
 
-                $pageNames = [
-                    'profile' => 'Profilo',
-                    'review' => 'Review',
-                    'settings' => 'Impostazioni',
-                    'login' => 'Login',
-                    'register' => 'Register'
-                ];
+            $currentTitle = $this->breadcrumbData['current'] ??
+                ($pageNames[$this->currentPage] ?? ucfirst($this->currentPage));
 
-                $currentTitle = $this->breadcrumbData['current'] ??
-                    ($pageNames[$this->currentPage] ?? ucfirst($this->currentPage));
-
-                $html .= htmlspecialchars($currentTitle);
-            }
+            $html .= htmlspecialchars($currentTitle);
         }
 
         $html .= '</h1>';

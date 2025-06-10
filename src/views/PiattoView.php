@@ -15,14 +15,26 @@ class PiattoView extends BaseView
 
     public function render(array $data = []): void
     {
+        // Personalizza SEO per questo specifico piatto
         if (isset($data["nome"])) {
+            $nomePiatto = $data["nome"];
+            
+            // Title dinamico con nome del piatto
+            $this->setTitle("$nomePiatto - Recensioni e Dettagli | ESU Advisor");
+            
+            // Description con ingredienti del piatto
+            $descrizione = $data["descrizione"] ?? "";
+            $this->setDescription("Scopri tutto su $nomePiatto delle mense ESU di Padova: $descrizione Leggi recensioni degli studenti, ingredienti e allergeni.");
+            
+            // Keywords specifiche per il piatto
+            $this->setKeywords("$nomePiatto, recensioni $nomePiatto, piatto mensa padova, valutazioni studenti, ingredienti $nomePiatto, allergeni");
+            
             $this->setBreadcrumb([
                 'parent' => [
                     'url' => 'index.php',
                     'title' => 'Home'
                 ],
-                'current' => $data["nome"],
-                'prefix' => 'Piatto: '
+                'current' => $nomePiatto
             ]);
         }
 

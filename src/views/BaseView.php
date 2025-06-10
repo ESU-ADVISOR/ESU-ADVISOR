@@ -13,6 +13,11 @@ abstract class BaseView
     protected $dom;
     protected $currentPage;
     protected $breadcrumbData = null;
+    
+    // SEO properties
+    protected $customTitle = null;
+    protected $customDescription = null;
+    protected $customKeywords = null;
 
     /** @param string $templatePath */
     public function __construct($templatePath)
@@ -29,6 +34,154 @@ abstract class BaseView
     protected function setBreadcrumb(array $data): void
     {
         $this->breadcrumbData = $data;
+    }
+    
+    /**
+     * Set custom SEO title
+     */
+    public function setTitle(string $title): void
+    {
+        $this->customTitle = $title;
+    }
+    
+    /**
+     * Set custom SEO description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->customDescription = $description;
+    }
+    
+    /**
+     * Set custom SEO keywords
+     */
+    public function setKeywords(string $keywords): void
+    {
+        $this->customKeywords = $keywords;
+    }
+    
+    /**
+     * Add basic SEO meta tags
+     */
+    protected function addBasicSEO(): void
+    {
+        $head = $this->dom->getElementsByTagName('head')->item(0);
+        if (!$head) {
+            return;
+        }
+        
+        // Use custom values if set, otherwise use defaults
+        $title = $this->customTitle ?? $this->getDefaultTitle();
+        $description = $this->customDescription ?? $this->getDefaultDescription();
+        $keywords = $this->customKeywords ?? $this->getDefaultKeywords();
+        
+        // Update title
+        $titleElements = $this->dom->getElementsByTagName('title');
+        if ($titleElements->length > 0) {
+            $titleElements->item(0)->textContent = $title;
+        }
+        
+        // Add/update meta tags
+        $this->updateOrCreateMeta('name', 'description', $description);
+        $this->updateOrCreateMeta('name', 'keywords', $keywords);
+        $this->updateOrCreateMeta('name', 'language', 'it');
+        $this->updateOrCreateMeta('name', 'author', 'Giacomo Loat, Giulio Bottacin, Malik Giafar Mohamed, Manuel Felipe Vasquez - Università di Padova');
+    }
+    
+    /**
+     * Get default title based on current page
+     */
+    private function getDefaultTitle(): string
+    {
+        $baseTitle = "ESU Advisor";
+        
+        switch ($this->currentPage) {
+            case 'index':
+                return "Menu Mense Universitarie Padova | $baseTitle";
+            case 'piatto':
+                return "Dettagli Piatto | $baseTitle";
+            case 'login':
+                return "Accedi | $baseTitle";
+            case 'register':
+                return "Registrati | $baseTitle";
+            case 'profile':
+                return "Il Mio Profilo | $baseTitle";
+            case 'review':
+                return "Scrivi Recensione | $baseTitle";
+            case 'settings':
+                return "Impostazioni | $baseTitle";
+            default:
+                return $baseTitle;
+        }
+    }
+    
+    /**
+     * Get default description based on current page
+     */
+    private function getDefaultDescription(): string
+    {
+        switch ($this->currentPage) {
+            case 'index':
+                return "Scopri i menu giornalieri delle mense ESU di Padova. Trova orari, località e recensioni dei piatti delle mense universitarie.";
+            case 'piatto':
+                return "Leggi recensioni e dettagli sui piatti delle mense universitarie di Padova. Scopri ingredienti, allergeni e valutazioni degli studenti.";
+            case 'login':
+                return "Accedi al tuo account ESU Advisor per lasciare recensioni sui piatti delle mense universitarie di Padova.";
+            case 'register':
+                return "Crea il tuo account ESU Advisor per recensire i piatti delle mense universitarie e personalizzare le tue preferenze alimentari.";
+            case 'profile':
+                return "Gestisci il tuo profilo ESU Advisor: visualizza le tue recensioni e le statistiche delle tue valutazioni.";
+            case 'review':
+                return "Condividi la tua esperienza: scrivi una recensione sui piatti delle mense universitarie di Padova per aiutare altri studenti.";
+            case 'settings':
+                return "Personalizza la tua esperienza ESU Advisor: gestisci preferenze alimentari, accessibilità e impostazioni account.";
+            default:
+                return "Consulta i menu delle mense universitarie di Padova, leggi recensioni e condividi la tua esperienza sui piatti dell'ESU.";
+        }
+    }
+    
+    /**
+     * Get default keywords based on current page
+     */
+    private function getDefaultKeywords(): string
+    {
+        switch ($this->currentPage) {
+            case 'index':
+                return "mense universitarie padova, menu ESU, cibo università padova, mense studenti, recensioni piatti mensa";
+            case 'piatto':
+                return "piatti mensa padova, recensioni cibo università, allergeni mensa, valutazioni piatti ESU";
+            case 'login':
+                return "login mensa padova, accesso ESU advisor, account studente";
+            case 'register':
+                return "registrazione mensa padova, nuovo account ESU, studente università padova";
+            case 'profile':
+                return "profilo studente, recensioni mensa, statistiche valutazioni";
+            case 'review':
+                return "recensione piatti mensa, valutazione cibo università, esperienza mensa padova";
+            case 'settings':
+                return "impostazioni mensa, preferenze alimentari, allergeni, accessibilità";
+            default:
+                return "mense universitarie padova, ESU, recensioni piatti, menu università";
+        }
+    }
+    
+    /**
+     * Update or create meta tag
+     */
+    private function updateOrCreateMeta(string $attribute, string $name, string $content): void
+    {
+        $head = $this->dom->getElementsByTagName('head')->item(0);
+        $xpath = new DOMXPath($this->dom);
+        $existing = $xpath->query("//meta[@{$attribute}='{$name}']")->item(0);
+        
+        if ($existing) {
+            $existing->setAttribute('content', $content);
+        } else {
+            $meta = $this->dom->createElement('meta');
+            $meta->setAttribute($attribute, $name);
+            $meta->setAttribute('content', $content);
+            $head->appendChild($meta);
+        }
     }
 
     private function generateBreadcrumbHTML(): string
@@ -72,6 +225,9 @@ abstract class BaseView
 
     public function render(array $data = []): void
     {
+        // Apply SEO meta tags
+        $this->addBasicSEO();
+        
         $headerContent = file_get_contents(
             __DIR__ . "/../templates/header.html"
         );

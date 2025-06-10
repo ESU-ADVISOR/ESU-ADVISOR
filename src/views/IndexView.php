@@ -180,6 +180,7 @@ class IndexView extends BaseView
                         $piattiContent .= $starSVG;
                     }
                     $piattiContent .= "</div>";
+                    
                     $piattiContent .=
                         "<a href=\"./piatto.php?nome=" .
                         urldecode(str_replace(" ", "_", strtolower($piatto->getNome()))) .
@@ -257,6 +258,8 @@ class IndexView extends BaseView
                     $dishOfTheDayContent .= $starSVG;
                 }
                 $dishOfTheDayContent .= "</div>";
+                
+                // Link pulito senza parametro mensa
                 $dishOfTheDayContent .=
                     "<a href=\"./piatto.php?nome=" .
                     urldecode(str_replace(" ", "_", strtolower($piatto->getNome()))) .

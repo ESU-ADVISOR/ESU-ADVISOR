@@ -29,13 +29,28 @@ class PiattoView extends BaseView
             // Keywords specifiche per il piatto
             $this->setKeywords("$nomePiatto, recensioni $nomePiatto, piatto mensa padova, valutazioni studenti, ingredienti $nomePiatto, allergeni");
             
-            $this->setBreadcrumb([
-                'parent' => [
-                    'url' => 'index.php',
-                    'title' => 'Home'
-                ],
-                'current' => $nomePiatto
-            ]);
+            // Gestisci breadcrumb in base alla provenienza
+            $fromProfile = isset($_GET['from']) && $_GET['from'] === 'profile';
+            
+            if ($fromProfile) {
+                // Breadcrumb: Profilo > [Nome Piatto]
+                $this->setBreadcrumb([
+                    'parent' => [
+                        'url' => 'profile.php',
+                        'title' => 'Profilo'
+                    ],
+                    'current' => $nomePiatto
+                ]);
+            } else {
+                // Breadcrumb: Home > [Nome Piatto] (comportamento standard)
+                $this->setBreadcrumb([
+                    'parent' => [
+                        'url' => 'index.php',
+                        'title' => 'Home'
+                    ],
+                    'current' => $nomePiatto
+                ]);
+            }
         }
 
         parent::render();

@@ -15,8 +15,14 @@ class ReviewEditView extends BaseView
 
     public function render(array $data = []): void
     {
+        // ✅ La modifica recensioni è accessibile SOLO da profile.php
+        // Breadcrumb sempre: Profilo > Modifica Recensione
         $this->setBreadcrumb([
-                'current' => "Modifica Recensione",
+            'parent' => [
+                'url' => 'profile.php',
+                'title' => 'Profilo'
+            ],
+            'current' => "Modifica Recensione",
         ]);
         parent::render();
 

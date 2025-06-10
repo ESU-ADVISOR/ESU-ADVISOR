@@ -975,7 +975,7 @@ body {
 
     @supports not selector(:has(*)) {
         .content-layout {
-            /* ✅ FIXED: Same height calculation fix for fallback */
+            /*  FIXED: Same height calculation fix for fallback */
             height: calc(100vh - var(--header-height) - var(--spacing-sm));
         }
 

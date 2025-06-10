@@ -5,6 +5,30 @@ document.addEventListener("DOMContentLoaded", function () {
     
     if (!menseSelect) return;
 
+    // Funzione per aggiornare SEO dinamicamente
+    function updateSEO(mensaName) {
+        if (!mensaName) return;
+        
+        // Aggiorna title
+        document.title = `Menu ${mensaName} - Mense Universitarie Padova | ESU Advisor`;
+        
+        // Aggiorna meta description esistente
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            metaDescription.setAttribute('content', 
+                `Consulta il menu di oggi di ${mensaName} a Padova. Scopri piatti, orari, recensioni e allergeni della mensa universitaria ESU.`
+            );
+        }
+        
+        // Aggiorna meta keywords esistente
+        const metaKeywords = document.querySelector('meta[name="keywords"]');
+        if (metaKeywords) {
+            metaKeywords.setAttribute('content', 
+                `${mensaName}, menu ${mensaName}, mensa ${mensaName}, orari ${mensaName}, ESU Padova, mense universitarie padova`
+            );
+        }
+    }
+
     // Funzione per cambiare mensa senza ricaricare la pagina
     function showMensaPiatti(mensaId) {
         // Pulisci la ricerca
@@ -27,14 +51,27 @@ document.addEventListener("DOMContentLoaded", function () {
             element.style.display = "";
         });
 
+        // Aggiorna SEO dinamicamente
+        updateSEO(mensaId);
+
         // Aggiorna URL senza ricaricare la pagina (per bookmarkability)
         const url = new URL(window.location);
         url.searchParams.set('mensa', mensaId);
-        window.history.replaceState({}, '', url);
+        
+        // Aggiorna anche il testo nel history state per migliorare l'accessibilità
+        const newTitle = `Menu ${mensaId} - ESU Advisor`;
+        window.history.replaceState(
+            { mensa: mensaId }, 
+            newTitle, 
+            url
+        );
 
         // Trigger evento per notificare altri script del cambio
         window.dispatchEvent(new CustomEvent('mensaChanged', { 
-            detail: { mensaId: mensaId } 
+            detail: { 
+                mensaId: mensaId,
+                mensaName: mensaId 
+            } 
         }));
     }
 
@@ -46,6 +83,19 @@ document.addEventListener("DOMContentLoaded", function () {
             sessionStorage.setItem('currentMensa', selectedMensa);
             
             showMensaPiatti(selectedMensa);
+            
+            // Annuncia il cambio agli screen reader
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = `Menu aggiornato per ${selectedMensa}`;
+            document.body.appendChild(announcement);
+            
+            // Rimuovi l'annuncio dopo un po'
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 1000);
         }
     });
 
@@ -65,6 +115,20 @@ document.addEventListener("DOMContentLoaded", function () {
             menseSelect.value = mensaFromUrl;
             sessionStorage.setItem('currentMensa', mensaFromUrl);
             showMensaPiatti(mensaFromUrl);
+        } else if (event.state && event.state.mensa) {
+            // Ripristina dallo state del browser
+            menseSelect.value = event.state.mensa;
+            sessionStorage.setItem('currentMensa', event.state.mensa);
+            showMensaPiatti(event.state.mensa);
         }
+    });
+
+    // Gestisci il cambio di focus sulla select per l'accessibilità
+    menseSelect.addEventListener('focus', function() {
+        this.setAttribute('aria-expanded', 'true');
+    });
+
+    menseSelect.addEventListener('blur', function() {
+        this.setAttribute('aria-expanded', 'false');
     });
 });

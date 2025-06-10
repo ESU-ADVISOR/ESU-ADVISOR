@@ -15,6 +15,20 @@ class IndexView extends BaseView
 
     public function render(array $data = []): void
     {
+        // Personalizza SEO per la mensa iniziale
+        if (isset($data["mensa_iniziale"]) && !empty($data["mensa_iniziale"])) {
+            $mensaIniziale = $data["mensa_iniziale"];
+            
+            // Title dinamico con nome della mensa
+            $this->setTitle("Menu $mensaIniziale - Mense Universitarie Padova | ESU Advisor");
+            
+            // Description specifica per la mensa
+            $this->setDescription("Consulta il menu di oggi di $mensaIniziale a Padova. Scopri piatti, orari, recensioni e allergeni della mensa universitaria ESU.");
+            
+            // Keywords specifiche per la mensa
+            $this->setKeywords("$mensaIniziale, menu $mensaIniziale, mensa $mensaIniziale, orari $mensaIniziale, ESU Padova, mense universitarie padova");
+        }
+        
         parent::render();
 
         $starSVG = file_get_contents(

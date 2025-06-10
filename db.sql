@@ -487,7 +487,6 @@ INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona, il
 INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Croccante fuori e filante dentro, panatura perfetta!", 9, "Mozzarella alla romana");
 INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (2, "Troppo oleosa e la mozzarella era gommosa.", 14, "Mozzarella alla romana");
 INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Buona e sfiziosa, anche se un po' pesante.", 18, "Mozzarella alla romana");
-INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (3, "Nella media, niente di eccezionale ma mangiabile.", 7, "Mozzarella alla romana");
 
 INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (5, "Cotto bene, aromatizzato bene, buono.", 5, "Coscette di pollo");
 INSERT INTO recensione (voto, descrizione, utente, piatto) VALUES (4, "Si lascia mangiare, bene.", 1, "Coscette di pollo");

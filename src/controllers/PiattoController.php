@@ -23,7 +23,7 @@ class PiattoController implements BaseController
             }
         }
 
-        if(isset($nome_piatto)) {
+        if(isset($piatto) && !empty($piatto)) {
             $view = new PiattoView();
             $view->render([
                 "nome" => $piatto->getNome(),

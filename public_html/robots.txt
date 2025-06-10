@@ -2,34 +2,17 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: http://localhost/sitemap.xml
+Sitemap: /sitemap.php
 
-# Allow crawling of main pages
-Allow: /index.php
-Allow: /piatto.php
-Allow: /register.php
-Allow: /login.php
-
-# Disallow private/sensitive areas
+# Disallow private areas only
 Disallow: /src/
 Disallow: /docs/
 Disallow: /logout.php
-Disallow: /error.php
 
-# Disallow dynamic pages that require authentication
+# Disallow authenticated pages
 Disallow: /profile.php
 Disallow: /review.php
 Disallow: /settings.php
 Disallow: /review-edit.php
-
-# Disallow search parameters and session parameters
-Disallow: /*?*
-Disallow: /*&*
-
-# Allow crawling of static resources
-Allow: /styles/
-Allow: /scripts/
-Allow: /images/
-Allow: /fonts/
 
 Crawl-delay: 1

@@ -42,13 +42,17 @@ document.addEventListener("DOMContentLoaded", function () {
     menseSelect.addEventListener("change", function () {
         const selectedMensa = this.value;
         if (selectedMensa) {
+            // Save selected mensa to sessionStorage for dynamic back links
+            sessionStorage.setItem('currentMensa', selectedMensa);
+            
             showMensaPiatti(selectedMensa);
         }
     });
 
-    // Inizializzazione: mostra la mensa selezionata
+    // Inizializzazione: mostra la mensa selezionata e salva in sessionStorage
     const initialMensa = menseSelect.value;
     if (initialMensa) {
+        sessionStorage.setItem('currentMensa', initialMensa);
         showMensaPiatti(initialMensa);
     }
 
@@ -59,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         if (mensaFromUrl && menseSelect.value !== mensaFromUrl) {
             menseSelect.value = mensaFromUrl;
+            sessionStorage.setItem('currentMensa', mensaFromUrl);
             showMensaPiatti(mensaFromUrl);
         }
     });

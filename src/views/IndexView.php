@@ -182,7 +182,7 @@ class IndexView extends BaseView
                     $piattiContent .= "</div>";
                     $piattiContent .=
                         "<a href=\"./piatto.php?nome=" .
-                        htmlspecialchars(str_replace(" ", "_", strtolower($piatto->getNome()))) .
+                        urldecode(str_replace(" ", "_", strtolower($piatto->getNome()))) .
                         "\">Vedi recensioni</a>" .
                         "</div>" .
                         "</article>" .
@@ -259,7 +259,7 @@ class IndexView extends BaseView
                 $dishOfTheDayContent .= "</div>";
                 $dishOfTheDayContent .=
                     "<a href=\"./piatto.php?nome=" .
-                    htmlspecialchars(str_replace(" ", "_", strtolower($piatto->getNome()))) .
+                    urldecode(str_replace(" ", "_", strtolower($piatto->getNome()))) .
                     "\">Vedi <span lang=\"en\">recensioni</span></a>" .
                     "</div>" .
                     "</article>";

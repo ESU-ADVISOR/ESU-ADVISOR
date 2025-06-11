@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Models\UserModel;
 use Models\RecensioneModel;
+use Models\MenuModel;
 use Views\ReviewView;
 
 class ReviewController implements BaseController
@@ -19,15 +20,24 @@ class ReviewController implements BaseController
         $view = new ReviewView();
 
         $user = UserModel::findByUsername($_SESSION["username"]);
-        $idutente = $user->getId();
         $piatto = $post["piatto"];
+        $mensa = $post["mensa"];
+
+        // Verifica che il menu esista
+        if (!MenuModel::exists($piatto, $mensa)) {
+            $view->render([
+                "errors" => ["Combinazione piatto-mensa non valida"],
+                "formData" => $post
+            ]);
+            return;
+        }
 
         $recensione = new RecensioneModel([
             "voto" => $post["rating"],
             "descrizione" => $post["review"],
-            "utente" => $user->getUsername(),
-            "idutente" => $idutente,
+            "idUtente" => $user->getId(),
             "piatto" => $piatto,
+            "mensa" => $mensa,
             "data" => date("Y-m-d H:i:s"),
         ]);
 

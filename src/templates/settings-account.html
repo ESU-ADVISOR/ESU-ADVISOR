@@ -4,14 +4,15 @@
         <div class="form-group">
             <label for="new_username">Modifica <span lang="en">username</span></label>
             <p class="text-secondary text-sm" id="username-instructions">
-                Digita un nuovo <span lang="en">username</span> per il tuo profilo.<br>
-                Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo lettere, numeri, <span lang="en">underscore</span> e trattini.
+                Digita un nuovo <span lang="en">username</span> per il tuo profilo.<br />
+                Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo
+                lettere, numeri, <span lang="en">underscore</span> e trattini.
             </p>
             <input
                 type="text"
                 id="new_username"
                 name="new_username"
-                class="form-input username-input" 
+                class="form-input username-input"
                 placeholder=""
                 aria-describedby="username-instructions"
             />
@@ -22,66 +23,50 @@
 
     <form action="settings.php" id="change_password_form" method="post" class="base-form">
         <fieldset>
-        <legend>Modifica <span lang="en">password:</span></legend>
-        <div class="form-group">
-            <label for="password"><span lang="en">Password</span> attuale</label>
-            <input
-                type="password"
-                id="current_password"
-                name="password"
-                class="form-input password-input"
-                placeholder=""
-            />
+            <legend>Modifica <span lang="en">password:</span></legend>
+            <div class="form-group">
+                <label for="password"><span lang="en">Password</span> attuale</label>
+                <input
+                    type="password"
+                    id="current_password"
+                    name="password"
+                    class="form-input password-input"
+                    placeholder=""
+                />
 
-            <label for="new_password">Nuova <span lang="en">password</span></label>
-            <p class="text-secondary text-sm" id="new-password-instructions">
-                La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
-            </p>
-            <input
-                type="password"
-                id="new_password"
-                name="new_password"
-                class="form-input password-input"
-                placeholder=""
-                aria-describedby="new-password-instructions"
-            />
+                <label for="new_password">Nuova <span lang="en">password</span></label>
+                <p class="text-secondary text-sm" id="new-password-instructions">
+                    La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere
+                    speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
+                </p>
+                <input
+                    type="password"
+                    id="new_password"
+                    name="new_password"
+                    class="form-input password-input"
+                    placeholder=""
+                    aria-describedby="new-password-instructions"
+                />
 
-            <label for="new_password_confirm">Conferma nuova <span lang="en">password</span></label>
-            <input
-                type="password"
-                id="new_password_confirm"
-                name="new_password_confirm"
-                class="form-input password-input"
-                placeholder=""
-            />
+                <label for="new_password_confirm">Conferma nuova <span lang="en">password</span></label>
+                <input
+                    type="password"
+                    id="new_password_confirm"
+                    name="new_password_confirm"
+                    class="form-input password-input"
+                    placeholder=""
+                />
 
-            <button type="submit" class="form-button" name="change_password">Salva</button>
-        </div>
+                <button type="submit" class="form-button" name="change_password">Salva</button>
+            </div>
         </fieldset>
     </form>
 
-    <div class="form-group">
-        <button type="submit" id="delete-account-button" class="danger form-button" aria-label="Elimina Account">
-            Elimina <span lang="en">Account</span>
-        </button>
-
-        <div class="modal" id="myModal">
-            <div class="modal-content card card-expanded mb-4">
-                <div class="card-content">
-                    <h2 class="card-title">Conferma l'eliminazione dell'<span lang="en">account</span></h2>
-                    <button class="close-button" id="close-modal" aria-label="Chiudi finestra">&times;</button>
-                    <p>
-                        Sei sicuro di volere cancellare il tuo <span lang="en">account</span>? Questa azione è
-                        irreversibile.
-                    </p>
-                    <form id="delete-account-form" method="POST" action="settings.php">
-                        <span class="center">
-                            <button type="submit" name="delete_account" class="confirmation-button">Sì</button>
-                            <button class="cancel-button" id="cancel-button">No</button>
-                        </span>
-                    </form>
-                </div>
-            </div>
+    <form id="delete-account-form" method="POST" action="settings.php">
+        <div class="form-group">
+            <button type="button" id="delete-account-button" class="danger form-button" aria-label="Elimina Account">
+                Elimina <span lang="en">Account</span>
+            </button>
         </div>
-    </div>
+    </form>
 </section>

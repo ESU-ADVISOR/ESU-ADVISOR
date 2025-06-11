@@ -221,10 +221,11 @@ class SettingsController implements BaseController
         $_SESSION["allergeni"] = $allergeni;
 
         if ($isLoggedIn) {
-            $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
-            $preferences = PreferenzeUtenteModel::findByUsername($username);
+            $idUtente = UserModel::findByUsername($_SESSION["username"])->getId();
+            $preferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
+            print_r($idUtente);
 
-            $preferences->setUsername($username);
+            $preferences->setIdUtente($idUtente);
             if ($mensaPreferita) {
                 $preferences->setMensaPreferita($mensaPreferita);
                 $_SESSION["mensa_preferita"] = $mensaPreferita;
@@ -284,10 +285,10 @@ class SettingsController implements BaseController
 
 
             if ($isLoggedIn) {
-                $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
-                $preferences = PreferenzeUtenteModel::findByUsername($username) ?? new PreferenzeUtenteModel();
+                $idUtente = UserModel::findByUsername($_SESSION["username"])->getId();
+                $preferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]) ?? new PreferenzeUtenteModel();
 
-                $preferences->setUsername($username);
+                $preferences->setIdUtente($idUtente);
                 $preferences->setTema($tema);
                 $preferences->setDimensioneTesto($dimensioneTesto);
                 $preferences->setModificaFont($font);
@@ -324,7 +325,6 @@ class SettingsController implements BaseController
 
     public function handlePOSTRequest(array $post = []): void
     {
-        $view = new SettingsView();
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
 
         if ($isLoggedIn) {

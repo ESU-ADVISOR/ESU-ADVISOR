@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Models\UserModel;
 use Models\RecensioneModel;
+use Models\MenuModel;
 use Views\ReviewEditView;
 
 class ReviewEditController implements BaseController
@@ -12,8 +13,14 @@ class ReviewEditController implements BaseController
     {
         $view = new ReviewEditView();
 
-        if (!isset($get['piatto'])) {
-            $view->renderError("Piatto non trovato", "Parametro piatto mancante. Impossibile modificare la recensione.", 404);
+        if (!isset($get['piatto']) || !isset($get['mensa'])) {
+            $view->renderError("Parametri mancanti", "Parametri piatto o mensa mancanti. Impossibile modificare la recensione.", 404);
+            return;
+        }
+
+        // Verifica che il menu esista
+        if (!MenuModel::exists($get['piatto'], $get['mensa'])) {
+            $view->renderError("Menu non trovato", "La combinazione piatto-mensa specificata non esiste.", 404);
             return;
         }
 
@@ -23,7 +30,7 @@ class ReviewEditController implements BaseController
             return;
         }
 
-        $recensione = RecensioneModel::findByFields($user->getUsername(), $get['piatto']);
+        $recensione = RecensioneModel::findByFields($user->getUsername(), $get['piatto'], $get['mensa']);
 
         if (!$recensione) {
             $view->renderError("Recensione non trovata", "Recensione non trovata o non hai i permessi per modificarla.", 404);
@@ -39,8 +46,26 @@ class ReviewEditController implements BaseController
     {
         $view = new ReviewEditView();
 
-        if (!isset($post['piatto']) || !isset($post['rating']) || !isset($post['review'])) {
+        if (!isset($post['piatto']) || !isset($post['mensa']) || !isset($post['action'])) {
+            $view->renderError("Richiesta malformata", "Parametri mancanti.", 400);
+            return;
+        }
+
+        // Gestione eliminazione recensione
+        if ($post['action'] === 'delete') {
+            $this->handleDeleteRequest($post);
+            return;
+        }
+
+        // Gestione aggiornamento recensione
+        if (!isset($post['rating']) || !isset($post['review'])) {
             $view->renderError("Richiesta malformata", "Parametri mancanti. Per favore compila tutti i campi.", 400);
+            return;
+        }
+
+        // Verifica che il menu esista
+        if (!MenuModel::exists($post['piatto'], $post['mensa'])) {
+            $view->renderError("Menu non trovato", "La combinazione piatto-mensa specificata non esiste.", 404);
             return;
         }
 
@@ -50,7 +75,7 @@ class ReviewEditController implements BaseController
             return;
         }
 
-        $recensione = RecensioneModel::findByFields($user->getUsername(), $post['piatto']);
+        $recensione = RecensioneModel::findByFields($user->getUsername(), $post['piatto'], $post['mensa']);
 
         if (!$recensione) {
             $view->renderError("Recensione non trovata", "Recensione non trovata o non hai i permessi per modificarla.", 404);
@@ -64,7 +89,7 @@ class ReviewEditController implements BaseController
 
         try {
             if ($recensione->saveToDB()) {
-                $recensione = RecensioneModel::findByFields($user->getUsername(), $post['piatto']);
+                $recensione = RecensioneModel::findByFields($user->getUsername(), $post['piatto'], $post['mensa']);
 
                 $view->render([
                     "success" => "Recensione aggiornata con successo!",
@@ -82,6 +107,50 @@ class ReviewEditController implements BaseController
 
             $view->render([
                 "errors" => ["Aggiornamento recensione fallito: " . $e->getMessage()],
+                "recensione" => $recensione
+            ]);
+        }
+    }
+
+    private function handleDeleteRequest(array $post): void
+    {
+        $view = new ReviewEditView();
+
+        // Verifica che il menu esista
+        if (!MenuModel::exists($post['piatto'], $post['mensa'])) {
+            $view->renderError("Menu non trovato", "La combinazione piatto-mensa specificata non esiste.", 404);
+            return;
+        }
+
+        $user = UserModel::findByUsername($_SESSION["username"]);
+        if (!$user) {
+            $view->renderError("Utente non trovato.", "L'utente corrente non esiste, esci ed esegui nuovamente il login", 404);
+            return;
+        }
+
+        $recensione = RecensioneModel::findByFields($user->getUsername(), $post['piatto'], $post['mensa']);
+
+        if (!$recensione) {
+            $view->renderError("Recensione non trovata", "Recensione non trovata o non hai i permessi per eliminarla.", 404);
+            return;
+        }
+
+        try {
+            if ($recensione->deleteFromDB()) {
+                // Reindirizza al profilo con messaggio di successo
+                header("Location: profile.php?success=" . urlencode("Recensione eliminata con successo!"));
+                exit;
+            } else {
+                $view->render([
+                    "errors" => ["Eliminazione recensione fallita: impossibile eliminare dal <span lang='en'>database</span>"],
+                    "recensione" => $recensione
+                ]);
+            }
+        } catch (\Exception $e) {
+            error_log("Errore durante l'eliminazione della recensione: " . $e->getMessage());
+
+            $view->render([
+                "errors" => ["Eliminazione recensione fallita: " . $e->getMessage()],
                 "recensione" => $recensione
             ]);
         }

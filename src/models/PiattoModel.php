@@ -175,8 +175,11 @@ class PiattoModel
         return !empty(array_intersect($normalizedUserAllergeni, $normalizedPiattoAllergeni));
     }
 
-    /** @return RecensioneModel[] */
-    public function getRecensioni(): ?array
+    /**
+     * @param string|null $mensa Opzionale: filtra per mensa specifica
+     * @return RecensioneModel[]
+     */
+    public function getRecensioni(?string $mensa = null): ?array
     {
         if ($this->nome == null) {
             return null;
@@ -188,16 +191,19 @@ class PiattoModel
 
         foreach ($recensioni as $recensione) {
             if ($recensione->getPiatto() == $this->nome) {
-                $result[] = $recensione;
+                // Se è specificata una mensa, filtra per quella mensa
+                if ($mensa === null || $recensione->getMensa() == $mensa) {
+                    $result[] = $recensione;
+                }
             }
         }
 
         return $result;
     }
 
-    public function getAvgVote(): ?int
+    public function getAvgVote(?string $mensa = null): ?int
     {
-        $recensioni = $this->getRecensioni();
+        $recensioni = $this->getRecensioni($mensa);
         $avg = 0.0;
         foreach ($recensioni as $recensione) {
             $avg += $recensione->getVoto();

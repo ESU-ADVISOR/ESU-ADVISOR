@@ -4,6 +4,9 @@ namespace Models;
 
 use Models\Database;
 use DateTimeImmutable;
+use Models\Enums\DimensioneTesto;
+use Models\Enums\ModificaFont;
+use Models\Enums\ModificaTema;
 
 class UserModel
 {
@@ -47,7 +50,7 @@ class UserModel
             );
         }
         if (isset($data["dataNascita"])) {
-            $this->dataNascita = new DateTimeImmutable($datetime = $data["dataNascita"]);
+            $this->dataNascita = new DateTimeImmutable($data["dataNascita"]);
         }
     }
 
@@ -85,8 +88,6 @@ class UserModel
     {
         $this->username = $value;
     }
-
-
 
     /** @param string $password */
     public function setClearPassword($password): void
@@ -126,10 +127,10 @@ class UserModel
     public function getRecensioni(): array
     {
         $stmt = $this->db->prepare(
-            "SELECT * FROM recensione WHERE utente = :utente"
+            "SELECT * FROM recensione WHERE idUtente = :idUtente"
         );
         $stmt->execute([
-            "utente" => $this->id,
+            "idUtente" => $this->id,
         ]);
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, RecensioneModel::class);
         if (!empty($data)) {
@@ -145,10 +146,10 @@ class UserModel
             return false;
         }
 
-        if(is_string($this->dataNascita)) {
+        if (is_string($this->dataNascita)) {
             try {
                 $this->dataNascita = new DateTimeImmutable($this->dataNascita);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 return false; // Invalid date format
             }
         }
@@ -158,11 +159,24 @@ class UserModel
             $stmt = $this->db->prepare(
                 "INSERT INTO utente (username, password, dataNascita) VALUES (:username, :password, :dataNascita)"
             );
-            return $stmt->execute([
+            $result = $stmt->execute([
                 "username" => $this->username,
                 "password" => $this->password,
                 "dataNascita" => $this->dataNascita->format("Y-m-d"),
             ]);
+
+            if ($result == true) {
+                $preferenzeUtente = new PreferenzeUtenteModel([
+                    "idUtente" => UserModel::findByUsername($this->username)->getId(),
+                    "dimensione_testo" => DimensioneTesto::MEDIO->value,
+                    "modifica_font" => ModificaFont::NORMALE->value,
+                    "modifica_tema" => ModificaTema::SISTEMA->value,
+                ]);
+
+                return $preferenzeUtente->saveToDB();
+            } else {
+                return false;
+            }
         } else {
             $stmt = $this->db->prepare(
                 "UPDATE utente SET username = :username, password = :password, dataNascita = :dataNascita WHERE id = :id"
@@ -252,6 +266,22 @@ class UserModel
         }
         return null;
     }
+
+    public static function findById($id): ?UserModel
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM utente WHERE id = :id");
+        $stmt->execute([
+            "id" => $id,
+        ]);
+        $data = $stmt->fetchAll(\PDO::FETCH_CLASS, UserModel::class);
+
+        if (!empty($data)) {
+            return $data[0];
+        }
+        return null;
+    }
+
 
     /** @return UserModel[] */
     public static function findAll(): array

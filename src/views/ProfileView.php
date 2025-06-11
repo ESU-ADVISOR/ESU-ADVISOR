@@ -35,18 +35,36 @@ class ProfileView extends BaseView
         );
 
         $dataNascita = $user->getDataNascita();
-        $memberSince = "";
+        $dateOfBirth = "";
         if ($dataNascita) {
-            $memberSince = "Membro dal <time>" . $dataNascita->format('Y') . "</time>";
-        } else {
-            $memberSince = "Membro";
+            $dateOfBirth = "Nato nel <time>" . $dataNascita->format('Y') . "</time>";
         }
 
         Utils::replaceTemplateContent(
             $this->dom,
-            "profile-member-since-template",
-            $memberSince
+            "profile-date-of-birth-template",
+            $dateOfBirth
         );
+
+        // Handle success/error messages
+        if (isset($data['success'])) {
+            $successHtml = "<div class='success'>{$data['success']}</div>";
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "server-response-template",
+                $successHtml
+            );
+        } else if (isset($data['errors'])) {
+            $errorHtml = "";
+            foreach ($data['errors'] as $error) {
+                $errorHtml .= "<div class='error'>$error</div>";
+            }
+            Utils::replaceTemplateContent(
+                $this->dom,
+                "server-response-template",
+                $errorHtml
+            );
+        }
 
         $recensioni = $user->getRecensioni();
         $recensioniCount = count($recensioni);
@@ -116,8 +134,9 @@ class ProfileView extends BaseView
                 $recensioniContent .= "<a href='piatto.php?nome=" .
                     urldecode(str_replace(" ", "_", strtolower($recensione->getPiatto()))) .
                     "&from=profile'>Vedi dettagli piatto</a>";
-                $recensioniContent .= "<a href='review-edit.php?piatto=" .
+                $recensioniContent .= "<a class='review-edit-button' href='review-edit.php?piatto=" .
                     htmlspecialchars(urlencode($recensione->getPiatto())) .
+                    "&mensa=" . htmlspecialchars(urlencode($recensione->getMensa())) .
                     "&from=profile'>Modifica recensione</a>";
                 $recensioniContent .= "</div>";
 

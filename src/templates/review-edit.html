@@ -9,7 +9,6 @@
         <title>Modifica Recensione | ESU Advisor</title>
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
-        <link rel="stylesheet" href="styles/base/rating-fix.css" />
     </head>
     <body>
         <template id="header-template"></template>
@@ -22,6 +21,7 @@
                 <template id="server-response-template"></template>
 
                 <form action="review-edit.php" method="post" class="base-form">
+                    <input type="hidden" name="action" value="update" id="form-action" />
                     <div class="form-group">
                         <label for="mensa">Nome della mensa:</label>
                         <select id="mensa" name="mensa" required class="form-select" disabled>
@@ -101,7 +101,10 @@
 
                     <div class="form-actions mt-4">
                         <button type="submit" class="form-button">Aggiorna Recensione</button>
-                        <a href="profile.php" class="button-link ml-3">Annulla</a>
+                        <button type="button" id="delete-review-button" class="form-button danger ml-3">
+                            Elimina Recensione
+                        </button>
+                        <a href="profile.php" class="form-button secondary ml-3">Annulla</a>
                     </div>
                 </form>
             </div>
@@ -116,5 +119,6 @@
 
         <script src="scripts/rating-keyboard.js"></script>
         <script src="scripts/back-to-top.js"></script>
+        <script src="scripts/confirm-delete.js"></script>
     </body>
 </html>

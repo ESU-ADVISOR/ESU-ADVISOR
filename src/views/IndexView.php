@@ -18,17 +18,17 @@ class IndexView extends BaseView
         // Personalizza SEO per la mensa iniziale
         if (isset($data["mensa_iniziale"]) && !empty($data["mensa_iniziale"])) {
             $mensaIniziale = $data["mensa_iniziale"];
-            
+
             // Title dinamico con nome della mensa
             $this->setTitle("Menu $mensaIniziale - Mense Universitarie Padova | ESU Advisor");
-            
+
             // Description specifica per la mensa
             $this->setDescription("Consulta il menu di oggi di $mensaIniziale a Padova. Scopri piatti, orari, recensioni e allergeni della mensa universitaria ESU.");
-            
+
             // Keywords specifiche per la mensa
             $this->setKeywords("$mensaIniziale, menu $mensaIniziale, mensa $mensaIniziale, orari $mensaIniziale, ESU Padova, mense universitarie padova");
         }
-        
+
         parent::render();
 
         $starSVG = file_get_contents(
@@ -194,7 +194,7 @@ class IndexView extends BaseView
                         $piattiContent .= $starSVG;
                     }
                     $piattiContent .= "</div>";
-                    
+
                     $piattiContent .=
                         "<a href=\"./piatto.php?nome=" .
                         urldecode(str_replace(" ", "_", strtolower($piatto->getNome()))) .
@@ -212,8 +212,8 @@ class IndexView extends BaseView
             // === PIATTO DEL GIORNO ===
             if (isset($datiMensa["piatto_del_giorno"]) && $datiMensa["piatto_del_giorno"]) {
                 $piatto = $datiMensa["piatto_del_giorno"];
-                $dishOfTheDayContent .= "<ul class=\"piatti-list\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\"" . $displayStyle . ">";
-                $dishOfTheDayContent .= "<li class=\"menu-item dish-of-day-item\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\">";
+                // $dishOfTheDayContent .= "<ul class=\"piatti-list\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\"" . $displayStyle . ">";
+                $dishOfTheDayContent .= "<div class=\"menu-item dish-of-day-item\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\">";
                 $dishOfTheDayContent .= "<article>";
 
                 $dishId = htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome())) . "-day-" . str_replace(" ", "-", strtolower($mensaId)));
@@ -272,7 +272,7 @@ class IndexView extends BaseView
                     $dishOfTheDayContent .= $starSVG;
                 }
                 $dishOfTheDayContent .= "</div>";
-                
+
                 // Link pulito senza parametro mensa
                 $dishOfTheDayContent .=
                     "<a href=\"./piatto.php?nome=" .
@@ -281,8 +281,8 @@ class IndexView extends BaseView
                     "</div>" .
                     "</article>";
 
-                $dishOfTheDayContent .= "</li>";
-                $dishOfTheDayContent .= "</ul>";
+                $dishOfTheDayContent .= "</div>";
+                // $dishOfTheDayContent .= "</ul>";
             } else {
                 $dishOfTheDayContent .= "<p class=\"text-center text-secondary dish-of-day-empty\" data-mensa-id=\"" .
                     htmlspecialchars($mensaId) .

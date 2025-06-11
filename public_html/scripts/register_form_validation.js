@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     verifica_username();
   });
 
-  function verifica_username() {  
+  function verifica_username() {
     let isValid = true;
     let errors = [];
     document.querySelectorAll(".username-error").forEach((el) => el.remove());
@@ -18,20 +18,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (username.length < 3 || username.length > 50) {
       isValid = false;
-      errors.push("Lo <span lang=\"en\">username</span> deve essere compreso tra 3 e 50 caratteri.");
+      errors.push(
+        'Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri.',
+      );
     }
     if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
       isValid = false;
       errors.push(
-        "Lo <span lang=\"en\">username</span> può contenere solo lettere, numeri, <span lang=\"en\">underscore</span> e trattini."
+        'Lo <span lang="en">username</span> può contenere solo lettere, numeri, <span lang="en">underscore</span> e trattini.',
       );
     }
 
     if (!isValid) {
-      displayErrors(errors, 'username-error-container', usernameInput)
+      displayErrors(errors, "username-error-container", usernameInput);
     }
     return isValid;
-  };
+  }
 
   passwordInput.addEventListener("blur", function () {
     verifica_password();
@@ -46,24 +48,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (password.length < 8) {
       isValid = false;
-      errors.push("La <span lang=\"en\">password</span> deve essere di almeno 8 caratteri.");
+      errors.push(
+        'La <span lang="en">password</span> deve essere di almeno 8 caratteri.',
+      );
     }
     if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
-        password
+        password,
       )
     ) {
       isValid = false;
       errors.push(
-        "La <span lang=\"en\">password</span> deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&)."
+        'La <span lang="en">password</span> deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&).',
       );
     }
 
     if (!isValid) {
-      displayErrors(errors, 'password-error-container', passwordInput)
+      displayErrors(errors, "password-error-container", passwordInput);
     }
     return isValid;
-  };
+  }
 
   confirmPasswordInput.addEventListener("blur", function () {
     verifica_confirm_password();
@@ -72,25 +76,33 @@ document.addEventListener("DOMContentLoaded", function () {
   function verifica_confirm_password() {
     let isValid = true;
     let errors = [];
-    document.querySelectorAll(".confirm-password-error").forEach((el) => el.remove());
+    document
+      .querySelectorAll(".confirm-password-error")
+      .forEach((el) => el.remove());
     document.getElementById("confirm-password-error-container")?.remove();
     const confirmPassword = confirmPasswordInput.value.trim();
     const password = passwordInput.value.trim();
 
     if (!confirmPassword) {
       isValid = false;
-      errors.push("È necessario confermare la <span lang=\"en\">password</span>.");
+      errors.push(
+        'È necessario confermare la <span lang="en">password</span>.',
+      );
     }
     if (confirmPassword !== password) {
       isValid = false;
-      errors.push("Le <span lang=\"en\">password</span> non corrispondono.");
+      errors.push('Le <span lang="en">password</span> non corrispondono.');
     }
 
     if (!isValid) {
-      displayErrors(errors, 'confirm-password-error-container', confirmPasswordInput)
+      displayErrors(
+        errors,
+        "confirm-password-error-container",
+        confirmPasswordInput,
+      );
     }
     return isValid;
-  };
+  }
 
   dataInput.addEventListener("blur", function () {
     verifica_data();
@@ -102,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".data-error").forEach((el) => el.remove());
     document.getElementById("data-error-container")?.remove();
     const data = dataInput.value.trim();
-    
+
     if (!data) {
       isValid = false;
       errors.push("È necessaria la data di nascita.");
@@ -112,30 +124,36 @@ document.addEventListener("DOMContentLoaded", function () {
       errors.push("Per favore inserisci una data di nascita valida.");
     }
 
+    if (data && /^\d{4}-\d{2}-\d{2}$/.test(data)) {
+      const birthDate = new Date(data);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (birthDate > today) {
+        isValid = false;
+        errors.push("La data di nascita non può essere nel futuro.");
+      }
+    }
+
     if (!isValid) {
-      displayErrors(errors, 'data-error-container', dataInput)
+      displayErrors(errors, "data-error-container", dataInput);
     }
     return isValid;
-  };
-
-
+  }
 
   form.addEventListener("submit", function (event) {
     let isValid = true;
-
-    //document.querySelectorAll(".error").forEach((el) => el.remove());
-    //document.querySelectorAll(".error-container").forEach((el) => el.remove());
 
     const fieldsToCheck = [
       { check: verifica_username, input: usernameInput },
       { check: verifica_data, input: dataInput },
       { check: verifica_password, input: passwordInput },
-      { check: verifica_confirm_password, input: confirmPasswordInput }
+      { check: verifica_confirm_password, input: confirmPasswordInput },
     ];
 
     let firstInvalidField = null;
 
-    fieldsToCheck.forEach(field => {
+    fieldsToCheck.forEach((field) => {
       if (!field.check()) {
         isValid = false;
         if (!firstInvalidField) {
@@ -147,24 +165,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!isValid) {
       event.preventDefault();
       if (firstInvalidField) {
-      firstInvalidField.focus();
+        firstInvalidField.focus();
       }
     }
-
   });
 
   function displayErrors(errors, container_id = null, input_element = null) {
-    /*
-    se si passa solo la lista di errors questi vengono mostrati all'inizio del form.
-    altrimenti si può passare container_id e input_element
-    per specificare esattamente dove mostrare gli errori.
-    */
-
     const errorContainer = document.createElement("div");
     errorContainer.classList.add("error-container");
     errorContainer.setAttribute("role", "alert");
     errorContainer.setAttribute("aria-live", "assertive");
-    if(container_id!== null) {
+    if (container_id !== null) {
       errorContainer.id = container_id;
     }
 
@@ -175,9 +186,11 @@ document.addEventListener("DOMContentLoaded", function () {
       errorContainer.appendChild(errorElement);
     });
     if (input_element) {
-      input_element.parentNode.insertBefore(errorContainer, input_element.nextSibling);
-    }
-    else {
+      input_element.parentNode.insertBefore(
+        errorContainer,
+        input_element.nextSibling,
+      );
+    } else {
       form.prepend(errorContainer);
     }
   }

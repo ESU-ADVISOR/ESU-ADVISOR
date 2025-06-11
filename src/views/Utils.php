@@ -50,7 +50,6 @@ class Utils
             return;
         }
 
-        // Apply theme
         $classes = [];
 
         if (isset($session['tema']) && !empty($session['tema'])) {
@@ -63,9 +62,6 @@ class Utils
 
         if (!empty($session['dimensione_testo'])) {
             $classes[] = 'text-size-' . $session['dimensione_testo'];
-        }
-        if (!empty($session['dimensione_icone'])) {
-            $classes[] = 'icon-size-' . $session['dimensione_icone'];
         }
         if (!empty($session['modifica_font'])) {
             $classes[] = 'font-' . $session['modifica_font'];

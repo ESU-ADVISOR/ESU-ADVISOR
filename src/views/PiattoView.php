@@ -18,20 +18,20 @@ class PiattoView extends BaseView
         // Personalizza SEO per questo specifico piatto
         if (isset($data["nome"])) {
             $nomePiatto = $data["nome"];
-            
+
             // Title dinamico con nome del piatto
             $this->setTitle("$nomePiatto - Recensioni e Dettagli | ESU Advisor");
-            
+
             // Description con ingredienti del piatto
             $descrizione = $data["descrizione"] ?? "";
             $this->setDescription("Scopri tutto su $nomePiatto delle mense ESU di Padova: $descrizione Leggi recensioni degli studenti, ingredienti e allergeni.");
-            
+
             // Keywords specifiche per il piatto
             $this->setKeywords("$nomePiatto, recensioni $nomePiatto, piatto mensa padova, valutazioni studenti, ingredienti $nomePiatto, allergeni");
-            
+
             // Gestisci breadcrumb in base alla provenienza
             $fromProfile = isset($_GET['from']) && $_GET['from'] === 'profile';
-            
+
             if ($fromProfile) {
                 // Breadcrumb: Profilo > [Nome Piatto]
                 $this->setBreadcrumb([
@@ -138,7 +138,7 @@ class PiattoView extends BaseView
             foreach ($recensioni as $recensione) {
                 $piattoReview .= "<li class=\"review-card\">";
                 $piattoReview .= "<div class=\"review-header\">";
-                $piattoReview .= "<h4 class=\"review-author\">" . htmlspecialchars($recensione->getUtente()) . "</h4>";
+                $piattoReview .= "<h4 class=\"review-author\">" . htmlspecialchars($recensione->getUsername()) . "</h4>";
 
                 $piattoReview .= "<div class=\"ratings\">";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {

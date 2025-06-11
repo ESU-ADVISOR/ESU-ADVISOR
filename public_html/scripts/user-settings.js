@@ -1,28 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const modal = document.getElementById("myModal");
-  const btn = document.getElementById("delete-account-button");
-  const closeBtn = document.getElementById("close-modal");
-  const cancelBtn = document.getElementById("cancel-button");
+  const deleteAccountButton = document.getElementById("delete-account-button");
 
-  if (!modal || !btn || !closeBtn || !cancelBtn) return;
-
-  btn.addEventListener("click", (event) => {
-    event.preventDefault();
-    modal.style.display = "block";
-  });
-
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  cancelBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    modal.style.display = "none";
-  });
-
-  window.addEventListener("click", (event) => {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  });
+  if (deleteAccountButton) {
+    deleteAccountButton.addEventListener("click", function () {
+      confirmDeleteAccount();
+    });
+  }
 });
+
+function confirmDeleteAccount() {
+  if (
+    confirm(
+      "Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.",
+    )
+  ) {
+    const form = document.getElementById("delete-account-form");
+
+    if (form) {
+      // Create a hidden input to indicate account deletion
+      const deleteInput = document.createElement("input");
+      deleteInput.type = "hidden";
+      deleteInput.name = "delete_account";
+      deleteInput.value = "1";
+      form.appendChild(deleteInput);
+
+      form.submit();
+    } else {
+      console.error(
+        "Impossibile trovare il form per l'eliminazione dell'account",
+      );
+    }
+  }
+}

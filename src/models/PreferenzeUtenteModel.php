@@ -6,7 +6,6 @@ use Models\Database;
 use Models\UserModel;
 use Models\MenseModel;
 use PDO;
-use DateTimeImmutable;
 use Models\Enums\DimensioneTesto;
 use Models\Enums\ModificaFont;
 use Models\Enums\ModificaTema;
@@ -15,8 +14,7 @@ class PreferenzeUtenteModel
 {
     private $db;
 
-    private int|null $utente = null;
-    private string|null $username = null;
+    private int|null $idUtente = null;
     private DimensioneTesto|null $dimensioneTesto = null;
     private ModificaFont|null $modificaFont = null;
     private ModificaTema|null $modificaTema = null;
@@ -40,11 +38,8 @@ class PreferenzeUtenteModel
      */
     private function fill(array $data): void
     {
-        if (isset($data["utente"])) {
-            $this->utente = (int)$data["utente"];
-        }
-        if (isset($data["username"])) {
-            $this->username = $data["username"];
+        if (isset($data["idUtente"])) {
+            $this->idUtente = $data["idUtente"];
         }
         if (isset($data["dimensione_testo"])) {
             $this->dimensioneTesto = DimensioneTesto::tryFrom($data["dimensione_testo"]);
@@ -62,18 +57,15 @@ class PreferenzeUtenteModel
 
     //-------------Getters and Setters----------------
 
-    public function setUtente(?int $utente): void
+    public function getIdUtente(): string
     {
-        $this->utente = $utente;
-    }
-    public function getUsername(): string
-    {
-        return $this->username;
+        return $this->idUtente;
     }
 
-    public function setUsername(string $username): void
+    public function setIdUtente(int $idUtente): void
     {
-        $this->username = $username;
+        print_r($idUtente);
+        $this->idUtente = $idUtente;
     }
 
     public function getDimensioneTesto(): ?DimensioneTesto
@@ -120,7 +112,7 @@ class PreferenzeUtenteModel
 
     public function saveToDB(): bool
     {
-        $existing = self::findByUsername($this->username);
+        $existing = self::findByIdUtente($this->idUtente);
         if ($existing != null) {
             $stmt = $this->db->prepare(
                 "UPDATE preferenze_utente SET
@@ -128,7 +120,7 @@ class PreferenzeUtenteModel
                     modifica_font = :modifica_font,
                     modifica_tema = :modifica_tema,
                     mensa_preferita = :mensa_preferita
-                WHERE utente = :utente"
+                WHERE idUtente = :idUtente"
             );
 
             return $stmt->execute([
@@ -136,23 +128,23 @@ class PreferenzeUtenteModel
                 "modifica_font" => $this->modificaFont->value,
                 "modifica_tema" => $this->modificaTema->value,
                 "mensa_preferita" => $this->mensaPreferita,
-                "utente" => $this->utente,
+                "idUtente" => $this->idUtente
             ]);
         } else {
             $stmt = $this->db->prepare(
                 "INSERT INTO preferenze_utente (
-                    utente, dimensione_testo,
+                    idUtente, dimensione_testo,
                    modifica_font,
                     modifica_tema, mensa_preferita
                 ) VALUES (
-                    :utente, :dimensione_testo,
+                    :idUtente, :dimensione_testo,
                      :modifica_font,
                     :modifica_tema, :mensa_preferita
                 )"
             );
 
             return $stmt->execute([
-                "utente" => $this->utente,
+                "idUtente" => $this->idUtente,
                 "dimensione_testo" => $this->dimensioneTesto->value,
                 "modifica_font" => $this->modificaFont->value,
                 "modifica_tema" => $this->modificaTema->value,
@@ -163,17 +155,41 @@ class PreferenzeUtenteModel
 
     public function deleteFromDB(): bool
     {
-        if (empty($this->username)) {
+        if (empty($this->idUtente)) {
             return false;
         }
 
-        $stmt = $this->db->prepare("DELETE FROM preferenze_utente WHERE username = :username");
+        $stmt = $this->db->prepare("DELETE FROM preferenze_utente WHERE idUtente = :idUtente");
         return $stmt->execute([
-            "username" => $this->username,
+            "idUtente" => $this->idUtente,
         ]);
     }
 
     //-----------------Stateless methods----------------
+
+    /**
+     * @param int $idUtente
+     * @return PreferenzeUtenteModel|null
+     */
+    public static function findByIdUtente(int $idUtente): ?PreferenzeUtenteModel
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare(
+            "SELECT idUtente, dimensione_testo,
+                    modifica_font, modifica_tema, mensa_preferita
+             FROM preferenze_utente
+             WHERE idUtente = :idUtente"
+        );
+        $stmt->execute([
+            "idUtente" => $idUtente,
+        ]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($data) {
+            return new PreferenzeUtenteModel($data);
+        }
+        return null;
+    }
 
     /**
      * @param string $username
@@ -183,11 +199,11 @@ class PreferenzeUtenteModel
     {
         $db = Database::getInstance();
         $stmt = $db->prepare(
-            "SELECT utente, dimensione_testo,
+            "SELECT idUtente, dimensione_testo,
                     modifica_font, modifica_tema, mensa_preferita,
                     u.username as username
              FROM preferenze_utente pu
-             JOIN utente u ON pu.utente = u.id
+             JOIN utente u ON pu.idUtente = u.id
              WHERE u.username = :username"
         );
         $stmt->execute([
@@ -207,12 +223,12 @@ class PreferenzeUtenteModel
     public static function findAll(): array
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT utente, dimensione_testo,
+        $stmt = $db->prepare("SELECT idUtente, dimensione_testo,
                                     modifica_font,
                                     modifica_tema, mensa_preferita,
                                     u.username as username
                             FROM preferenze_utente pu
-                            JOIN utente u ON pu.utente = u.id");
+                            JOIN utente u ON pu.idUtente = u.id");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_CLASS, PreferenzeUtenteModel::class);
 
@@ -233,7 +249,11 @@ class PreferenzeUtenteModel
      */
     public function getUtente(): ?UserModel
     {
-        return UserModel::findByUsername($this->username);
+        if (!$this->idUtente) {
+            return null;
+        }
+
+        return UserModel::findById($this->idUtente);
     }
 
     /**
@@ -255,12 +275,12 @@ class PreferenzeUtenteModel
      */
     public function getAllergeni(): array
     {
-        if (!$this->username) {
+        if (!$this->idUtente) {
             return [];
         }
 
-        $stmt = $this->db->prepare("SELECT allergene FROM allergeni_utente WHERE utente = :utente");
-        $stmt->execute(["utente" => $this->utente]);
+        $stmt = $this->db->prepare("SELECT allergene FROM allergeni_utente WHERE idUtente = :idUtente");
+        $stmt->execute(["idUtente" => $this->idUtente]);
 
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
@@ -271,18 +291,18 @@ class PreferenzeUtenteModel
      */
     public function saveAllergeni(array $allergeni): bool
     {
-        if (!$this->username) {
+        if (!$this->idUtente) {
             return false;
         }
 
-        $deleteStmt = $this->db->prepare("DELETE FROM allergeni_utente WHERE utente = :utente");
-        $deleteStmt->execute(["utente" => $this->utente]);
+        $deleteStmt = $this->db->prepare("DELETE FROM allergeni_utente WHERE idUtente = :idUtente");
+        $deleteStmt->execute(["idUtente" => $this->idUtente]);
 
         if (!empty($allergeni)) {
-            $insertStmt = $this->db->prepare("INSERT INTO allergeni_utente (utente, allergene) VALUES (:utente, :allergene)");
+            $insertStmt = $this->db->prepare("INSERT INTO allergeni_utente (idUtente, allergene) VALUES (:idUtente, :allergene)");
             foreach ($allergeni as $allergene) {
                 $insertStmt->execute([
-                    "utente" => $this->utente,
+                    "idUtente" => $this->idUtente,
                     "allergene" => $allergene
                 ]);
             }

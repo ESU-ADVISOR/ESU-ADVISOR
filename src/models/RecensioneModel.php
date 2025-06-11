@@ -4,6 +4,8 @@ namespace Models;
 
 use DateTimeImmutable;
 use Models\Database;
+use Models\MenuModel;
+use Models\UserModel;
 
 class RecensioneModel
 {
@@ -11,11 +13,11 @@ class RecensioneModel
 
     private int|null $voto;
     private string|null $descrizione;
-    private string|null $utente;
-    private int|null $idutente;
+    private int|null $idUtente;
     private string|null $piatto;
+    private string|null $mensa;
     private string|DateTimeImmutable|null $data;
-    private bool|null $modificato;
+    private bool|null $modificato = false;
 
     /**
      * @param array<int,string> $data
@@ -41,15 +43,16 @@ class RecensioneModel
         if (isset($data["descrizione"])) {
             $this->descrizione = $data["descrizione"];
         }
-        if (isset($data["utente"])) {
-            $this->utente = $data["utente"];
-        }
-        if (isset($data["idutente"])) {
-            $this->idutente = (int)$data["idutente"];
+        if (isset($data["idUtente"])) {
+            $this->idUtente = $data["idUtente"];
         }
         if (isset($data["piatto"])) {
             $this->piatto = $data["piatto"];
         }
+        if (isset($data["mensa"])) {
+            $this->mensa = $data["mensa"];
+        }
+
         if (isset($data["data"])) {
             $this->data = new DateTimeImmutable($data["data"]);
         }
@@ -60,16 +63,16 @@ class RecensioneModel
 
     public function validate(): bool
     {
-        return $this->idutente != null && $this->piatto != "";
+        return $this->idUtente != null && MenuModel::exists($this->piatto, $this->mensa);
     }
 
     public function refresh(): bool
     {
-        if ($this->utente === null || $this->piatto === null) {
+        if ($this->idUtente === null || $this->piatto === null || $this->mensa === null) {
             return false;
         }
 
-        $data = self::findByFields($this->idutente, $this->piatto);
+        $data = self::findByFields($this->idUtente, $this->piatto, $this->mensa);
         if ($data) {
             $this->descrizione = $data->descrizione;
             $this->voto = $data->voto;
@@ -98,24 +101,58 @@ class RecensioneModel
         $this->descrizione = $descrizione;
     }
 
-    public function getUtente(): ?string
+    public function getIdUtente(): ?int
     {
-        return $this->utente;
+        return $this->idUtente;
     }
 
-    public function setUtente(string $utente): void
+    public function setIdUtente(int $idUtente): void
     {
-        $this->utente = $utente;
+        $this->idUtente = $idUtente;
     }
+    public function getUsername(): ?string
+    {
+        if ($this->idUtente === null) {
+            return null;
+        }
+
+        $user = UserModel::findById($this->idUtente);
+        return $user ? $user->getUsername() : null;
+    }
+
+
 
     public function getPiatto(): ?string
     {
         return $this->piatto;
     }
 
-    public function setPiatto(string $piatto): void
+    public function getMensa(): ?string
     {
-        $this->piatto = $piatto;
+
+        return $this->mensa;
+    }
+
+    public function getMenu(): ?MenuModel
+    {
+        return MenuModel::findByFields($this->piatto, $this->mensa);
+    }
+
+    public function setMenu(MenuModel $menu): void
+    {
+        $this->piatto = $menu->getPiatto();
+        $this->mensa = $menu->getMensa();
+    }
+
+    public function setPiattoMensa(string $piatto, string $mensa): void
+    {
+        $menu = MenuModel::findByFields($piatto, $mensa);
+        if ($menu) {
+            $this->setMenu($menu);
+        } else {
+            $this->piatto = $piatto;
+            $this->mensa = $mensa;
+        }
     }
 
     public function getData(): ?DateTimeImmutable
@@ -147,83 +184,95 @@ class RecensioneModel
     {
         $this->modificato = (bool)$value;
     }
-    //-----------------Relationals methods----------------
 
     //-----------------Database methods----------------
 
     public function saveToDB(): bool
     {
-        if ($this->utente === null || $this->piatto === null) {
+        if ($this->idUtente === null || $this->piatto === null || $this->mensa === null) {
             return false;
         }
 
-        $exists = self::findByFields($this->utente, $this->piatto);
+
+        // Assicurati che il menu esista nel database
+        if (!MenuModel::exists($this->piatto, $this->mensa)) {
+
+            return false;
+        }
+
+        $exists = self::findByFields($this->idUtente, $this->piatto, $this->mensa);
         if ($exists === null) {
             $stmt = $this->db->prepare(
-                "INSERT INTO recensione (voto, descrizione, utente, piatto, data, modificato) VALUES (:voto, :descrizione, :utente, :piatto, :data, :modificato)"
+                "INSERT INTO recensione (voto, descrizione, idUtente, piatto, mensa, data, modificato) VALUES (:voto, :descrizione, :idUtente, :piatto, :mensa, :data, :modificato)"
             );
             return $stmt->execute([
                 "voto" => $this->voto,
                 "descrizione" => $this->descrizione,
-                "utente" => $this->idutente,
+                "idUtente" => $this->idUtente,
                 "piatto" => $this->piatto,
+                "mensa" => $this->mensa,
                 "data" => $this->data->format("Y-m-d"),
-                "modificato" => false,
+                "modificato" => 0,
             ]);
         } else {
             $stmt = $this->db->prepare(
-                "UPDATE recensione SET voto = :voto, descrizione = :descrizione, modificato = :modificato, data = :data WHERE utente = :utente AND piatto = :piatto"
+                "UPDATE recensione SET voto = :voto, descrizione = :descrizione, modificato = :modificato, data = :data WHERE idUtente = :idUtente AND piatto = :piatto AND mensa = :mensa"
             );
             return $stmt->execute([
                 "voto" => $this->voto,
                 "descrizione" => $this->descrizione,
-                "utente" => $this->idutente,
+                "idUtente" => $this->idUtente,
                 "piatto" => $this->piatto,
+                "mensa" => $this->mensa,
                 "data" => $this->data->format("Y-m-d"),
-                "modificato" => true
+                "modificato" => 1
             ]);
         }
     }
 
     public function deleteFromDB(): bool
     {
-        if ($this->utente === null || $this->piatto === null) {
+        if ($this->idUtente === null || $this->piatto === null || $this->mensa === null) {
             return false;
         }
 
         $stmt = $this->db->prepare(
-            "DELETE FROM recensione WHERE utente = :utente AND piatto = :piatto"
+            "DELETE FROM recensione WHERE idUtente = :idUtente AND piatto = :piatto AND mensa = :mensa"
         );
 
         return $stmt->execute([
-            "utente" => $this->utente,
+            "idUtente" => $this->idUtente,
             "piatto" => $this->piatto,
+            "mensa" => $this->mensa,
         ]);
     }
 
     //-----------------Stateless methods----------------
 
     /**
-    @param string $utente
+    @param int $idUtente
     @param string $piatto
+    @param string $mensa
     @return RecensioneModel|null
      */
     public static function findByFields(
-        string $utente,
-        string $piatto
+        int $idUtente,
+        string $piatto,
+        string $mensa
     ): ?RecensioneModel {
         $db = Database::getInstance();
         $stmt = $db->prepare(
-            "SELECT voto, descrizione, username as utente, utente as idutente, piatto, data, modificato FROM recensione JOIN utente ON utente.id = recensione.utente WHERE username = :utente AND piatto = :piatto"
+            "SELECT voto, descrizione, idUtente, piatto, mensa, data, modificato FROM recensione WHERE idUtente = :idUtente AND piatto = :piatto AND mensa = :mensa"
         );
         $stmt->execute([
-            "utente" => $utente,
+            "idUtente" => $idUtente,
             "piatto" => $piatto,
+            "mensa" => $mensa,
         ]);
 
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, RecensioneModel::class);
 
-        if (!empty($data) && count($data) == 1) {
+        if (!empty($data)) {
             return $data[0];
         }
         return null;
@@ -233,7 +282,7 @@ class RecensioneModel
     public static function findAll(): array
     {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT voto, descrizione, username as utente, utente as idutente, piatto, data, modificato FROM recensione JOIN utente ON utente.id = recensione.utente");
+        $stmt = $db->prepare("SELECT voto, descrizione, idUtente, piatto, mensa, data, modificato FROM recensione JOIN utente ON utente.id = recensione.idUtente");
         $stmt->execute();
 
         $recensioni = $stmt->fetchAll(

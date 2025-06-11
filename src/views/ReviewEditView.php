@@ -4,6 +4,7 @@ namespace Views;
 
 use Models\MenseModel;
 use Models\RecensioneModel;
+use Models\MenuModel;
 use Views\Utils;
 
 class ReviewEditView extends BaseView
@@ -42,13 +43,10 @@ class ReviewEditView extends BaseView
         $mense = MenseModel::findAll();
         foreach ($mense as $mensa) {
             $selected = "";
-            $piatti = $mensa->getPiatti();
 
-            foreach ($piatti as $piatto) {
-                if ($piatto->getNome() === $recensione->getPiatto()) {
-                    $selected = " selected";
-                    break;
-                }
+            // Seleziona la mensa se corrisponde a quella della recensione
+            if ($mensa->getNome() === $recensione->getMensa()) {
+                $selected = " selected";
             }
 
             $menseContent .= "<option value=\"" . $mensa->getNome() . "\"" . $selected . ">" . $mensa->getNome() . "</option>";
@@ -68,7 +66,8 @@ class ReviewEditView extends BaseView
         Utils::replaceTemplateContent(
             $this->dom,
             "hidden-piatto-value-template",
-            '<input type="hidden"  name="piatto" value="' . $recensione->getPiatto() . '" />'
+            '<input type="hidden" name="piatto" value="' . htmlspecialchars($recensione->getPiatto()) . '" />' .
+                '<input type="hidden" name="mensa" value="' . htmlspecialchars($recensione->getMensa()) . '" />'
         );
 
         $reviewTextarea = $this->dom->getElementById('review');

@@ -28,6 +28,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($dataNascita) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dataNascita)) {
         $errors[] = "Per favore inserisci una data di nascita valida.";
+    } else {
+        $birthDate = new DateTime($dataNascita);
+        $today = new DateTime();
+        $today->setTime(0, 0, 0);
+
+        if ($birthDate > $today) {
+            $errors[] = "La data di nascita non può essere nel futuro.";
+        }
     }
 
     if (empty($password)) {
@@ -63,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $controller->handlePOSTRequest($data);
     } else {
         http_response_code(400);
-        
+
         $controller->handleGETRequest([
             "status" => "error",
             "errors" => $errors,

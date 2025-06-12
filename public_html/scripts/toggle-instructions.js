@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             describedElem.classList.remove('hidden');
                         }
                     };
-                    field.addEventListener('input', toggleDescription);
+                    field.addEventListener('blur', toggleDescription);
                     // Initialize state on load
                     toggleDescription();
                 }

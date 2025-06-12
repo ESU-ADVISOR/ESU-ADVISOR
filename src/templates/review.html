@@ -65,9 +65,9 @@
 
                     <div class="form-group">
                         <label id="rating-label">Valutazione:</label>
-                        <div class="rating" aria-labelledby="rating-label rating-description">
+                        <div id="rating-contaienr" aria-labelledby="rating-label" aria-describedby="rating-description">
                             <p id="rating-description" class="sr-only">Valuta da 1 a 5 stelle, dove 5 è il massimo</p>
-                            <div class="rating-container">
+                            <div class="rating-container" id="rating-container">
                                 <input type="radio" id="star5" name="rating" value="5" class="visually-hidden" />
                                 <label for="star5" title="5 stelle">
                                     <span class="sr-only">5 stelle - eccellente</span>
@@ -111,7 +111,6 @@
 
         <template id="footer-template"></template>
         <template id="sidebar-template"></template>
-
         <script src="scripts/rating-keyboard.js"></script>
         <script src="scripts/review_validation.js"></script>
         <script src="scripts/back-to-top.js"></script>

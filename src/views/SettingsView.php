@@ -239,7 +239,7 @@ class SettingsView extends BaseView
             }
             Utils::replaceTemplateContent(
                 $this->dom,
-                "server-response-template",
+                $data["template"],
                 $errorHtml
             );
         }
@@ -248,7 +248,7 @@ class SettingsView extends BaseView
             $successHtml = "<div class='success'>{$data["success"]}</div>";
             Utils::replaceTemplateContent(
                 $this->dom,
-                "server-response-template",
+                $data["template"],
                 $successHtml
             );
         }

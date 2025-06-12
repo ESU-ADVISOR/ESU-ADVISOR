@@ -5,9 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const confirmPasswordInput = document.getElementById("confirm_password");
   const dataInput = document.getElementById("birth_date");
 
-  usernameInput.addEventListener("blur", function () {
-    verifica_username();
-  });
+  usernameInput.addEventListener("blur", verifica_username);
 
   function verifica_username() {  
     let isValid = true;
@@ -33,9 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return isValid;
   };
 
-  passwordInput.addEventListener("blur", function () {
-    verifica_password();
-  });
+  passwordInput.addEventListener("blur", verifica_password);
 
   function verifica_password() {
     let isValid = true;
@@ -65,9 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return isValid;
   };
 
-  confirmPasswordInput.addEventListener("blur", function () {
-    verifica_confirm_password();
-  });
+  confirmPasswordInput.addEventListener("blur", verifica_confirm_password);
 
   function verifica_confirm_password() {
     let isValid = true;
@@ -92,9 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return isValid;
   };
 
-  dataInput.addEventListener("blur", function () {
-    verifica_data();
-  });
+  dataInput.addEventListener("blur", verifica_data);
 
   function verifica_data() {
     let isValid = true;

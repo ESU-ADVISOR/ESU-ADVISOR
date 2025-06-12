@@ -16,8 +16,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!username || !password) {
       isValid = false;
       errors.push("È necesssario compilare tutti i campi.");
+      if(!username) {
+        passwordInput.focus();
+        if(!password) {
+          passwordInput.focus();
+        }
+      }
     }
-    
+
     if (!isValid) {
       event.preventDefault();
       displayErrors(errors);

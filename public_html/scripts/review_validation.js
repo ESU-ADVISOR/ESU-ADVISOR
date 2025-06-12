@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function updateDatalist() {
-    displayErrors("esecuzione update datalist");
     const selectedMensa = mensaInput.value;
 
     const oldDatalist = document.getElementById("suggerimenti-piatti");
@@ -103,11 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
       }
     }
-    //errors.set("piatto-error", "Il piatto non esiste nel <span lang='en'>database</span>");
-    //refreshErrors();+
-
-    errors.push("Il piatto non esiste nel <span lang='en'>database</span>");
-    displayErrors(errors, "piatto-error-container", piattoInput);
+    errors.set("piatto-error", "Il piatto non esiste nel <span lang='en'>database</span>");
+    refreshErrors();
     return false;
   }
 

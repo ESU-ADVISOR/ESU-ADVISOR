@@ -12,6 +12,7 @@ class PiattoModel
     // table fields
     private string|null $nome;
     private string|null $descrizione;
+    private string|null $categoria;
 
     /**
      * @param array<int,string> $data
@@ -37,11 +38,14 @@ class PiattoModel
         if (isset($data["descrizione"])) {
             $this->descrizione = $data["descrizione"];
         }
+        if (isset($data["categoria"])) {
+            $this->categoria = $data["categoria"];
+        }
     }
 
     public function validate(): bool
     {
-        return $this->nome != "" && $this->descrizione != "";
+        return $this->nome != "" && $this->descrizione != "" && $this->categoria != "";
     }
 
     public function refresh(): bool
@@ -53,6 +57,7 @@ class PiattoModel
         $data = self::findByName($this->nome);
         if ($data) {
             $this->descrizione = $data->descrizione;
+            $this->categoria = $data->categoria;
             return true;
         }
         return false;
@@ -78,6 +83,17 @@ class PiattoModel
     public function setDescrizione($value): void
     {
         $this->descrizione = $value;
+    }
+
+    public function getCategoria(): ?string
+    {
+        return $this->categoria;
+    }
+
+    /** @param string $value */
+    public function setCategoria($value): void
+    {
+        $this->categoria = $value;
     }
 
     //-----------------Relationals methods----------------
@@ -149,13 +165,13 @@ class PiattoModel
         if (empty($allergeni)) {
             return false;
         }
-        
+
         $piattoAllergeni = $this->getAllergeni();
-        
+
         // Normalize both arrays for case-insensitive comparison
         $normalizedUserAllergeni = array_map('strtolower', $allergeni);
         $normalizedPiattoAllergeni = array_map('strtolower', $piattoAllergeni);
-        
+
         return !empty(array_intersect($normalizedUserAllergeni, $normalizedPiattoAllergeni));
     }
 
@@ -186,6 +202,9 @@ class PiattoModel
         foreach ($recensioni as $recensione) {
             $avg += $recensione->getVoto();
         }
+        if (count($recensioni) == 0) {
+            return 0; // No reviews, no average
+        }
         $avg = $avg / count($recensioni);
         return intval($avg);
     }
@@ -201,19 +220,21 @@ class PiattoModel
         $exists = self::findByName($this->nome);
         if (!$exists) {
             $stmt = $this->db->prepare(
-                "INSERT INTO piatto (nome, descrizione) VALUES (:nome, :descrizione)"
+                "INSERT INTO piatto (nome, descrizione, categoria) VALUES (:nome, :descrizione, :categoria)"
             );
             return $stmt->execute([
                 "nome" => $this->nome,
                 "descrizione" => $this->descrizione,
+                "categoria" => $this->categoria,
             ]);
         } else {
             $stmt = $this->db->prepare(
-                "UPDATE piatto SET descrizione = :descrizione WHERE nome = :nome"
+                "UPDATE piatto SET descrizione = :descrizione, categoria = :categoria WHERE nome = :nome"
             );
             return $stmt->execute([
                 "nome" => $this->nome,
                 "descrizione" => $this->descrizione,
+                "categoria" => $this->categoria,
             ]);
         }
     }

@@ -13,9 +13,6 @@ class MenseModel
     private string|null $telefono;
     private string|null $maps_link;
 
-    /**
-     * @param array<int,string> $data
-     */
     public function __construct(array $data = [])
     {
         $this->db = Database::getInstance();
@@ -26,9 +23,6 @@ class MenseModel
 
     //-------------Stateful methods----------------
 
-    /**
-     * @param array<int,string> $data
-     */
     private function fill(array $data): void
     {
         if (isset($data["nome"])) {
@@ -69,7 +63,6 @@ class MenseModel
         return $this->nome;
     }
 
-    /** @param string $value */
     public function setNome($value): void
     {
         $this->nome = $value;
@@ -80,7 +73,6 @@ class MenseModel
         return $this->indirizzo;
     }
 
-    /** @param string $value */
     public function setIndirizzo($value): void
     {
         $this->indirizzo = $value;
@@ -91,7 +83,6 @@ class MenseModel
         return $this->telefono;
     }
 
-    /** @param string $value */
     public function setTelefono($value): void
     {
         $this->telefono = $value;
@@ -102,7 +93,6 @@ class MenseModel
         return $this->maps_link;
     }
 
-    /** @param string $value */
     public function setMapsLink($value): void
     {
         $this->maps_link = $value;
@@ -110,9 +100,6 @@ class MenseModel
 
     //-----------------Relationals methods----------------
 
-    /**
-     * @return PiattoModel[]|null
-     */
     public function getPiatti(): ?array
     {
         if ($this->nome === null) {
@@ -120,7 +107,18 @@ class MenseModel
         }
 
         $stmt = $this->db->prepare(
-            "SELECT * FROM menu WHERE mensa = :mensa"
+            "SELECT p.* FROM menu m 
+             JOIN piatto p ON m.piatto = p.nome 
+             WHERE m.mensa = :mensa
+             ORDER BY 
+                CASE 
+                    WHEN p.categoria = 'Primo' THEN 1
+                    WHEN p.categoria = 'Secondo' THEN 2
+                    WHEN p.categoria = 'Contorno' AND p.nome = 'Insalata' THEN 3
+                    WHEN p.categoria = 'Contorno' AND p.nome != 'Insalata' THEN 4
+                    ELSE 5
+                END,
+                p.nome"
         );
 
         $stmt->execute([
@@ -132,7 +130,7 @@ class MenseModel
         $piatti = [];
 
         foreach ($data as $piattoData) {
-            $piatto = PiattoModel::findByName($piattoData["piatto"]);
+            $piatto = PiattoModel::findByName($piattoData["nome"]);
             if ($piatto !== null) {
                 $piatti[] = $piatto;
             }
@@ -140,10 +138,6 @@ class MenseModel
         return $piatti;
     }
 
-    /** 
-     * @return array<string,string>
-     * @return null
-     */
     public function getMenseOrari(): ?array
     {
         if ($this->nome === null) {
@@ -216,10 +210,6 @@ class MenseModel
 
     //-----------------Stateless methods----------------
 
-    /**
-    * @param string $name
-    * @return MenseModel|null
-     */
     public static function findByName($name): ?MenseModel
     {
         $db = Database::getInstance();
@@ -228,7 +218,6 @@ class MenseModel
             "nome" => $name,
         ]);
 
-        /** @var MenseModel $data */
         $data = $stmt->fetchAll(\PDO::FETCH_CLASS, MenseModel::class);
 
         if (!empty($data)) {
@@ -237,7 +226,6 @@ class MenseModel
         return null;
     }
 
-    /** @return MenseModel[] */
     public static function findAll(): array
     {
         $db = Database::getInstance();

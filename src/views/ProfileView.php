@@ -16,13 +16,13 @@ class ProfileView extends BaseView
     {
         parent::render();
         if (empty($_SESSION["username"])) {
-            self::renderError("Devi effettuare il login per accedere");
+            self::renderError("Devi effettuare il login per accedere", 403);
             return;
         }
 
         $user = UserModel::findByUsername($_SESSION["username"]);
         if ($user === null) {
-            self::renderError("Utente non trovato");
+            self::renderError("Utente non trovato", "L'utente corrente non esiste, esci ed esegui nuovamente il login", 404);
             return;
         }
 
@@ -105,13 +105,20 @@ class ProfileView extends BaseView
 
                 if ($recensione->getData()) {
                     $data = $recensione->getData()->format('d/m/Y');
-                    $recensioniContent .= "<div class='review-meta'>Recensione pubblicata il: " . $data . "</div>";
+                    if ($recensione->isEdited()) {
+                        $recensioniContent .= "<div class='review-meta'>Recensione pubblicata il: " . $data . " (modificata)</div>";
+                    } else {
+                        $recensioniContent .= "<div class='review-meta'>Recensione pubblicata il: " . $data . "</div>";
+                    }
                 }
 
                 $recensioniContent .= "<div class='review-actions'>";
                 $recensioniContent .= "<a href='piatto.php?nome=" .
-                    htmlspecialchars(str_replace(" ", "_", strtolower($recensione->getPiatto()))) .
-                    "' class='text-primary'>Vedi dettagli piatto</a>";
+                    urldecode(str_replace(" ", "_", strtolower($recensione->getPiatto()))) .
+                    "&from=profile'>Vedi dettagli piatto</a>";
+                $recensioniContent .= "<a href='review-edit.php?piatto=" .
+                    htmlspecialchars(urlencode($recensione->getPiatto())) .
+                    "&from=profile'>Modifica recensione</a>";
                 $recensioniContent .= "</div>";
 
                 $recensioniContent .= "</li>";

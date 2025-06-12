@@ -43,7 +43,8 @@ class Utils
         }
     }
 
-    public static function updatePreferencesFromSession($dom, $session){
+    public static function updatePreferencesFromSession($dom, $session)
+    {
         $html = $dom->getElementsByTagName('html')->item(0);
         if (!$html) {
             return;
@@ -52,7 +53,7 @@ class Utils
         // Apply theme
         $classes = [];
 
-        if(isset($session['tema']) && !empty($session['tema'])) {    
+        if (isset($session['tema']) && !empty($session['tema'])) {
             if ($session['tema'] === 'scuro') {
                 $classes[] = 'theme-dark';
             } elseif ($session['tema'] === 'chiaro') {
@@ -72,6 +73,41 @@ class Utils
 
         if (!empty($classes)) {
             $html->setAttribute('class', implode(' ', $classes));
+        }
+    }
+
+    public static function insertAfterOpeningTag($dom, $tagName, $content, $index = 0): void
+    {
+        $elements = $dom->getElementsByTagName($tagName);
+
+        if ($elements->length > $index) {
+            $element = $elements->item($index);
+
+            $newDom = new \DOMDocument('1.0', 'UTF-8');
+            $newDom->preserveWhiteSpace = false;
+            $newDom->formatOutput = true;
+            libxml_use_internal_errors(true);
+
+            $html = '<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8">' .
+                '<body>' . $content . '</body></html>';
+
+            $newDom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            libxml_clear_errors();
+
+            $fragment = $dom->createDocumentFragment();
+            $body = $newDom->getElementsByTagName('body')->item(0);
+
+            if ($body) {
+                foreach ($body->childNodes as $child) {
+                    $fragment->appendChild($dom->importNode($child, true));
+                }
+
+                if ($element->firstChild) {
+                    $element->insertBefore($fragment, $element->firstChild);
+                } else {
+                    $element->appendChild($fragment);
+                }
+            }
         }
     }
 }

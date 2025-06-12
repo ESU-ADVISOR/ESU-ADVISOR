@@ -15,6 +15,20 @@ class IndexView extends BaseView
 
     public function render(array $data = []): void
     {
+        // Personalizza SEO per la mensa iniziale
+        if (isset($data["mensa_iniziale"]) && !empty($data["mensa_iniziale"])) {
+            $mensaIniziale = $data["mensa_iniziale"];
+            
+            // Title dinamico con nome della mensa
+            $this->setTitle("Menu $mensaIniziale - Mense Universitarie Padova | ESU Advisor");
+            
+            // Description specifica per la mensa
+            $this->setDescription("Consulta il menu di oggi di $mensaIniziale a Padova. Scopri piatti, orari, recensioni e allergeni della mensa universitaria ESU.");
+            
+            // Keywords specifiche per la mensa
+            $this->setKeywords("$mensaIniziale, menu $mensaIniziale, mensa $mensaIniziale, orari $mensaIniziale, ESU Padova, mense universitarie padova");
+        }
+        
         parent::render();
 
         $starSVG = file_get_contents(
@@ -29,57 +43,53 @@ class IndexView extends BaseView
         $menseInfoContent = "";
         $piattiContent = "";
         $dishOfTheDayContent = "";
-        
-        $datiMensa = $data["mensa_selezionata"][0];
-        $id = 0;
-        $idtmp = 0;
-        foreach ($data["mense"] as $nomeMensa) {
-            if(isset($datiMensa) && ($datiMensa["nome"] == $nomeMensa)){
-                $menseContent .= "<option value=\"" . htmlspecialchars($nomeMensa) . "\" selected>" . htmlspecialchars($nomeMensa) . "</option>";
-                $id = $idtmp;
-            }else{
-                $menseContent .=
-                    "<option value=\"" .
-                    htmlspecialchars($nomeMensa) .
-                    "\">" .
-                    htmlspecialchars($nomeMensa) .
-                    "</option>";
-            }
-            $id++;
+
+        $menseComplete = $data["mense_complete"];
+        $mensaIniziale = $data["mensa_iniziale"];
+
+        // Genera il select delle mense
+        foreach ($menseComplete as $datiMensa) {
+            $selected = ($datiMensa["nome"] === $mensaIniziale) ? 'selected' : '';
+            $menseContent .= "<option value=\"" . htmlspecialchars($datiMensa["nome"]) . "\" " . $selected . ">" . htmlspecialchars($datiMensa["nome"]) . "</option>";
         }
-        
-        $menseInfoContent .= "<li class=\"mense-info-item\" data-mensa-id=\"" .
-            htmlspecialchars($id) . ">";
 
-        $menseInfoContent .= "<h3>" . htmlspecialchars($datiMensa["nome"]) . "</h3>";
+        // Genera il contenuto di TUTTE le mense (ma mostra solo quella iniziale)
+        foreach ($menseComplete as $datiMensa) {
+            $mensaId = $datiMensa["nome"];
+            $isInitialMensa = ($mensaId === $mensaIniziale);
+            $displayStyle = $isInitialMensa ? '' : ' style="display: none;"';
 
-        $menseInfoContent .= "<dl class=\"contact-info\">";
-        $menseInfoContent .= "<div class=\"contact-group\">";
-        $menseInfoContent .= "<dt>Indirizzo:</dt>";
-        $menseInfoContent .= "<dd>" . htmlspecialchars($datiMensa["indirizzo"]) . "</dd>";
-        $menseInfoContent .= "</div>";
+            // === MENSE INFO ===
+            $menseInfoContent .= "<li class=\"mense-info-item\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\"" . $displayStyle . ">";
+            $menseInfoContent .= "<h3>" . htmlspecialchars($datiMensa["nome"]) . "</h3>";
 
-        $menseInfoContent .= "<div class=\"contact-group\">";
-        $menseInfoContent .= "<dt>Telefono mensa:</dt>";
-        $menseInfoContent .= "<dd>" . htmlspecialchars($datiMensa["telefono"]) . "</dd>";
-        $menseInfoContent .= "</div>";
-        $menseInfoContent .= "</dl>";
+            $menseInfoContent .= "<dl class=\"contact-info\">";
+            $menseInfoContent .= "<div class=\"contact-group\">";
+            $menseInfoContent .= "<dt>Indirizzo:</dt>";
+            $menseInfoContent .= "<dd>" . htmlspecialchars($datiMensa["indirizzo"]) . "</dd>";
+            $menseInfoContent .= "</div>";
 
-        $menseInfoContent .= "<div class=\"schedule-container\">";
-        $giorniSettimana = [
-            "Lunedì",
-            "Martedì",
-            "Mercoledì",
-            "Giovedì",
-            "Venerdì",
-            "Sabato",
-            "Domenica",
-        ];
+            $menseInfoContent .= "<div class=\"contact-group\">";
+            $menseInfoContent .= "<dt>Telefono mensa:</dt>";
+            $menseInfoContent .= "<dd>" . htmlspecialchars($datiMensa["telefono"]) . "</dd>";
+            $menseInfoContent .= "</div>";
+            $menseInfoContent .= "</dl>";
 
-        $menseInfoContent .= "
-                <p id='orari-mensa-description'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
-                <table aria-describedby=\"orari-mensa-description\">
-                    <caption id=\"orari-mensa-caption\">Orari:</caption>
+            $menseInfoContent .= "<div class=\"schedule-container\">";
+            $giorniSettimana = [
+                "Lunedì",
+                "Martedì",
+                "Mercoledì",
+                "Giovedì",
+                "Venerdì",
+                "Sabato",
+                "Domenica",
+            ];
+
+            $menseInfoContent .= "
+                <p id='orari-mensa-description-" . htmlspecialchars(str_replace(' ', '-', strtolower($mensaId))) . "'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
+                <table aria-describedby=\"orari-mensa-description-" . htmlspecialchars(str_replace(' ', '-', strtolower($mensaId))) . "\">
+                    <caption>Orari:</caption>
                     <thead>
                         <tr>
                             <th scope=\"col\">Giorno</th>
@@ -88,226 +98,196 @@ class IndexView extends BaseView
                     </thead>
                     <tbody>";
 
-        $orari = $datiMensa["orari"] ?? null;
-        foreach ($giorniSettimana as $giorno) {
-            $menseInfoContent .= "<tr>
-                    <th scope=\"row\" abbr=\"" . htmlspecialchars(substr($giorno, 0, 3)) . "\">" . htmlspecialchars($giorno) . "</th><td>";
-            if ($orari) {
-                $orariPerGiorno = [];
-                foreach ($orari as $orario) {
-                    if ($orario["Giorno"] === $giorno) {
-                        $orariPerGiorno[] = "<time datetime=\"" . htmlspecialchars($orario["orainizio"]) . "\">" . htmlspecialchars($orario["orainizio"]) . "</time> - <time datetime=\"" . htmlspecialchars($orario["orafine"]) . "\">" . htmlspecialchars($orario["orafine"]) . "</time>";
+            $orari = $datiMensa["orari"] ?? null;
+            foreach ($giorniSettimana as $giorno) {
+                $menseInfoContent .= "<tr>
+                        <th scope=\"row\" abbr=\"" . htmlspecialchars(substr($giorno, 0, 3)) . "\">" . htmlspecialchars($giorno) . "</th><td>";
+                if ($orari) {
+                    $orariPerGiorno = [];
+                    foreach ($orari as $orario) {
+                        if ($orario["Giorno"] === $giorno) {
+                            $orariPerGiorno[] = "<time datetime=\"" . htmlspecialchars($orario["orainizio"]) . "\">" . htmlspecialchars($orario["orainizio"]) . "</time> - <time datetime=\"" . htmlspecialchars($orario["orafine"]) . "\">" . htmlspecialchars($orario["orafine"]) . "</time>";
+                        }
+                    }
+                    if (!empty($orariPerGiorno)) {
+                        $menseInfoContent .= implode("<br>", $orariPerGiorno);
+                    } else {
+                        $menseInfoContent .= "Chiuso";
                     }
                 }
-                if (!empty($orariPerGiorno)) {
-                    $menseInfoContent .= implode(", ", $orariPerGiorno);
-                } else {
-                    $menseInfoContent .= "Chiuso";
-                }
+                $menseInfoContent .= "</td></tr>";
             }
-            $menseInfoContent .= "</td></tr>";
-        }
-        $menseInfoContent .= "</tbody></table>";
+            $menseInfoContent .= "</tbody></table>";
 
-        //     Add maps link
-        $menseInfoContent .=
-            "<a href=\"" .
-            htmlspecialchars($datiMensa["maps_link"]) .
-            "\" class=\"directions-button nav-button secondary text-center\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Direzioni su Google Maps per " . htmlspecialchars($datiMensa["nome"]) . " (si apre in una nuova finestra)\">
-                    Direzioni su Google Maps
-                    <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"external-link-icon\" aria-hidden=\"true\" role=\"img\" aria-labelledby=\"external-link-title-" . $id . "\">
-                        <title id=\"external-link-title\">Link esterno</title>
-                        <path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"></path>
-                        <polyline points=\"15 3 21 3 21 9\"></polyline>
-                        <line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\"></line>
-                    </svg>
-            </a>";
+            $menseInfoContent .=
+                "<a href=\"" . htmlspecialchars($datiMensa["maps_link"]) . "\" class=\"directions-button nav-button secondary text-center\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Direzioni su Google Maps per " . htmlspecialchars($datiMensa["nome"]) . " (si apre in una nuova finestra)\">
+                        Direzioni su Google Maps
+                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"external-link-icon\" aria-hidden=\"true\" role=\"img\">
+                            <title>Link esterno</title>
+                            <path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"></path>
+                            <polyline points=\"15 3 21 3 21 9\"></polyline>
+                            <line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\"></line>
+                        </svg>
+                </a>";
 
-        $menseInfoContent .= "</li>";
+            $menseInfoContent .= "</li>";
 
-        //=========== Generate dishes content ============
-        if (isset($data["piatti"]) && is_array($data["piatti"]) && !empty($data["piatti"])) {
-            $piattiForThisMensa = "";
-            foreach ($data["piatti"] as $piatto) {
-                $piattiForThisMensa .= "<article class=\"menu-item\">";
+            // === PIATTI DEL MENU ===
+            if (isset($datiMensa["piatti"]) && is_array($datiMensa["piatti"]) && !empty($datiMensa["piatti"])) {
+                foreach ($datiMensa["piatti"] as $piatto) {
+                    $piattiContent .= "<li class=\"menu-item\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\"" . $displayStyle . ">";
+                    $piattiContent .= "<article>";
+
+                    if ($piatto->getImage()) {
+                        $piattiContent .=
+                            "<figure aria-labelledby=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "-" . htmlspecialchars(str_replace(" ", "-", strtolower($mensaId))) . "\">
+                                <img src=\"" . $piatto->getImage() . "\" alt=\"" .
+                            htmlspecialchars($piatto->getNome()) .
+                            "\" width=\"150\" height=\"150\" >
+                                <figcaption id=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "-" . htmlspecialchars(str_replace(" ", "-", strtolower($mensaId))) . "\" class=\"sr-only\">
+                                    Immagine del piatto: " . htmlspecialchars($piatto->getNome()) . "
+                                </figcaption>
+                            </figure>";
+                    } else {
+                        $piattiContent .=
+                            "<figure aria-labelledby=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "-" . htmlspecialchars(str_replace(" ", "-", strtolower($mensaId))) . "\">
+                                <img src=\"images/placeholder.png\" alt=\"" .
+                            htmlspecialchars($piatto->getNome()) .
+                            "\" width=\"150\" height=\"150\" >
+                                <figcaption id=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "-" . htmlspecialchars(str_replace(" ", "-", strtolower($mensaId))) . "\" class=\"sr-only\">
+                                    Immagine di anteprima per: " . htmlspecialchars($piatto->getNome()) . "
+                                </figcaption>
+                            </figure>";
+                    }
+
+                    $piattiContent .= "<div class=\"menu-item-content\">";
+
+                    //Check for allergens
+                    $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
+                    $hasAllergens = $piatto->containsAllergens($userAllergeni);
+
+                    if ($hasAllergens) {
+                        $piattiContent .= "<div class=\"allergen-warning\" role=\"alert\">
+                            <strong>Attenzione:</strong> Questo piatto contiene allergeni da te segnalati.
+                        </div>";
+                    }
+
+                    $piattiContent .= "<h3>" . htmlspecialchars($piatto->getNome()) . "</h3>";
+                    $piattiContent .= "<p>" . htmlspecialchars($piatto->getDescrizione()) . "</p>";
+
+                    $allergeni = $piatto->getAllergeni();
+                    if (!empty($allergeni)) {
+                        $piattiContent .= "<div class=\"allergens-list\">
+                            <p><strong>Allergeni:</strong> " . htmlspecialchars(implode(", ", $allergeni)) . "</p>
+                        </div>";
+                    }
+
+                    $ratingValue = $piatto->getAvgVote();
+                    $ratingText = sprintf("Valutazione: %.1f su 5", $ratingValue);
+                    $piattiContent .= "<div class=\"ratings\" aria-label=\"" . htmlspecialchars($ratingText) . "\" role=\"img\">";
+                    $piattiContent .= "<span class=\"sr-only\">" . htmlspecialchars($ratingText) . "</span>";
+
+                    for ($i = 0; $i < $ratingValue; $i++) {
+                        $piattiContent .= $starFilledSVG;
+                    }
+                    for ($i = 0; $i < 5 - $ratingValue; $i++) {
+                        $piattiContent .= $starSVG;
+                    }
+                    $piattiContent .= "</div>";
+                    
+                    $piattiContent .=
+                        "<a href=\"./piatto.php?nome=" .
+                        urldecode(str_replace(" ", "_", strtolower($piatto->getNome()))) .
+                        "\">Vedi recensioni</a>" .
+                        "</div>" .
+                        "</article>" .
+                        "</li>";
+                }
+            } else {
+                $piattiContent .= "<li class=\"empty-menu\" data-mensa-id=\"" .
+                    htmlspecialchars($mensaId) .
+                    "\"" . $displayStyle . "><p class=\"text-center\">Nessun piatto disponibile per questa mensa</p></li>";
+            }
+
+            // === PIATTO DEL GIORNO ===
+            if (isset($datiMensa["piatto_del_giorno"]) && $datiMensa["piatto_del_giorno"]) {
+                $piatto = $datiMensa["piatto_del_giorno"];
+                $dishOfTheDayContent .= "<ul class=\"piatti-list\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\"" . $displayStyle . ">";
+                $dishOfTheDayContent .= "<li class=\"menu-item dish-of-day-item\" data-mensa-id=\"" . htmlspecialchars($mensaId) . "\">";
+                $dishOfTheDayContent .= "<article>";
+
+                $dishId = htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome())) . "-day-" . str_replace(" ", "-", strtolower($mensaId)));
                 if ($piatto->getImage()) {
-                    $piattiForThisMensa .=
-                        "<figure aria-labelledby=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "\">
+                    $dishOfTheDayContent .=
+                        "<figure aria-labelledby=\"caption-" . $dishId . "\">
                             <img src=\"" . $piatto->getImage() . "\" alt=\"" .
                         htmlspecialchars($piatto->getNome()) .
                         "\" width=\"150\" height=\"150\" >
-                            <figcaption id=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "\" class=\"sr-only\">
-                                Immagine del piatto: " . htmlspecialchars($piatto->getNome()) . "
+                            <figcaption id=\"caption-" . $dishId . "\" class=\"sr-only\">
+                                Piatto del giorno: " . htmlspecialchars($piatto->getNome()) . "
                             </figcaption>
                         </figure>";
                 } else {
-                    $piattiForThisMensa .=
-                        "<figure aria-labelledby=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "\">
+                    $dishOfTheDayContent .=
+                        "<figure aria-labelledby=\"caption-" . $dishId . "\">
                             <img src=\"images/placeholder.png\" alt=\"" .
                         htmlspecialchars($piatto->getNome()) .
                         "\" width=\"150\" height=\"150\" >
-                            <figcaption id=\"caption-" . htmlspecialchars(str_replace(" ", "-", strtolower($piatto->getNome()))) . "\" class=\"sr-only\">
-                                Immagine di anteprima per: " . htmlspecialchars($piatto->getNome()) . "
+                            <figcaption id=\"caption-" . $dishId . "\" class=\"sr-only\">
+                                Piatto del giorno (immagine di anteprima): " . htmlspecialchars($piatto->getNome()) . "
                             </figcaption>
                         </figure>";
                 }
-                $piattiForThisMensa .=
-                    "<div class=\"menu-item-content\">";
 
-                //Check for allergens
+                $dishOfTheDayContent .= "<div class=\"menu-item-content\">";
+
                 $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
                 $hasAllergens = $piatto->containsAllergens($userAllergeni);
 
                 if ($hasAllergens) {
-                    $piattiForThisMensa .= "<div class=\"allergen-warning\" role=\"alert\">
+                    $dishOfTheDayContent .= "<div class=\"allergen-warning\" role=\"alert\">
                         <strong>Attenzione:</strong> Questo piatto contiene allergeni da te segnalati.
                     </div>";
                 }
 
-                $piattiForThisMensa .= "<h3>" .
-                    htmlspecialchars($piatto->getNome()) .
-                    "</h3>";
-                $piattiForThisMensa .=
-                    "<p>" .
-                    htmlspecialchars($piatto->getDescrizione()) .
-                    "</p>";
+                $dishOfTheDayContent .= "<h3>" . htmlspecialchars($piatto->getNome()) . "</h3>";
+                $dishOfTheDayContent .= "<p>" . htmlspecialchars($piatto->getDescrizione()) . "</p>";
 
                 $allergeni = $piatto->getAllergeni();
                 if (!empty($allergeni)) {
-                    $piattiForThisMensa .= "<div class=\"allergens-list\">
+                    $dishOfTheDayContent .= "<div class=\"allergens-list\">
                         <p><strong>Allergeni:</strong> " . htmlspecialchars(implode(", ", $allergeni)) . "</p>
                     </div>";
                 }
 
                 $ratingValue = $piatto->getAvgVote();
-                $ratingText = sprintf("Valutazione: %.1f su 5", $ratingValue);
-                $piattiForThisMensa .= "<div class=\"ratings\" aria-label=\"" . htmlspecialchars($ratingText) . "\" role=\"img\">";
-
-                $piattiForThisMensa .= "<span class=\"sr-only\">" . htmlspecialchars($ratingText) . "</span>";
+                $ratingText = sprintf("Valutazione del piatto del giorno: %.1f su 5", $ratingValue);
+                $dishOfTheDayContent .= "<div class=\"ratings\" aria-label=\"" . htmlspecialchars($ratingText) . "\" role=\"img\">";
+                $dishOfTheDayContent .= "<span class=\"sr-only\">" . htmlspecialchars($ratingText) . "</span>";
 
                 for ($i = 0; $i < $ratingValue; $i++) {
-                    $piattiForThisMensa .= $starFilledSVG;
+                    $dishOfTheDayContent .= $starFilledSVG;
                 }
                 for ($i = 0; $i < 5 - $ratingValue; $i++) {
-                    $piattiForThisMensa .= $starSVG;
+                    $dishOfTheDayContent .= $starSVG;
                 }
-                $piattiForThisMensa .= "</div>";
-                $piattiForThisMensa .=
+                $dishOfTheDayContent .= "</div>";
+                
+                // Link pulito senza parametro mensa
+                $dishOfTheDayContent .=
                     "<a href=\"./piatto.php?nome=" .
-                    htmlspecialchars(
-                        str_replace(
-                            " ",
-                            "_",
-                            strtolower($piatto->getNome())
-                        )
-                    ) .
-                    "\">Vedi recensioni</a>" .
+                    urldecode(str_replace(" ", "_", strtolower($piatto->getNome()))) .
+                    "\">Vedi <span lang=\"en\">recensioni</span></a>" .
                     "</div>" .
                     "</article>";
-            }
 
-            $piattiContent .= "<li class=\"menu-item-container\" data-mensa-id=\"" .
-                htmlspecialchars($id) . "\">" . $piattiForThisMensa . "</li>";
-        } else {
-            $piattiContent .= "<li class=\"menu-item-container\" data-mensa-id=\"" .
-                htmlspecialchars($id) .
-                "\"><div class=\"empty-menu\"><p class=\"text-center\">Nessun piatto disponibile per questa mensa</p></div></li>";
-        }
-
-            //     =========== Corrected Logic for Dish of the Day ============
-        if (isset($data["piatto_del_giorno"]) && $data["piatto_del_giorno"]) {
-            $dishOfTheDayContent .= "<div class=\"menu-item-container\" data-mensa-id=\"" .
-                htmlspecialchars($id) . "\">";
-
-            $dishOfTheDayContent .= "<article class=\"menu-item\">";
-
-            $dishId = htmlspecialchars(str_replace(" ", "-", strtolower($data["piatto_del_giorno"]->getNome())) . "-day");
-            if ($data["piatto_del_giorno"]->getImage()) {
-                $dishOfTheDayContent .=
-                    "<figure aria-labelledby=\"caption-" . $dishId . "\">
-                        <img src=\"" . $data["piatto_del_giorno"]->getImage() . "\" alt=\"" .
-                    htmlspecialchars($data["piatto_del_giorno"]->getNome()) .
-                    "\" width=\"150\" height=\"150\" >
-                        <figcaption id=\"caption-" . $dishId . "\" class=\"sr-only\">
-                            Piatto del giorno: " . htmlspecialchars($data["piatto_del_giorno"]->getNome()) . "
-                        </figcaption>
-                    </figure>";
+                $dishOfTheDayContent .= "</li>";
+                $dishOfTheDayContent .= "</ul>";
             } else {
-                $dishOfTheDayContent .=
-                    "<figure aria-labelledby=\"caption-" . $dishId . "\">
-                        <img src=\"images/placeholder.png\" alt=\"" .
-                    htmlspecialchars($data["piatto_del_giorno"]->getNome()) .
-                    "\" width=\"150\" height=\"150\" >
-                        <figcaption id=\"caption-" . $dishId . "\" class=\"sr-only\">
-                            Piatto del giorno (immagine di anteprima): " . htmlspecialchars($data["piatto_del_giorno"]->getNome()) . "
-                        </figcaption>
-                    </figure>";
+                $dishOfTheDayContent .= "<p class=\"text-center text-secondary dish-of-day-empty\" data-mensa-id=\"" .
+                    htmlspecialchars($mensaId) .
+                    "\"" . $displayStyle . ">Nessun piatto del giorno disponibile per questa mensa</p>";
             }
-
-            $dishOfTheDayContent .= "<div class=\"menu-item-content\">";
-
-            $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
-            $hasAllergens = $data["piatto_del_giorno"]->containsAllergens($userAllergeni);
-
-            if ($hasAllergens) {
-                $dishOfTheDayContent .= "<div class=\"allergen-warning\" role=\"alert\">
-                    <strong>Attenzione:</strong> Questo piatto contiene allergeni da te segnalati.
-                </div>";
-            }
-
-            $dishOfTheDayContent .=
-                "<h3>" .
-                htmlspecialchars(
-                    $data["piatto_del_giorno"]->getNome()
-                ) .
-                "</h3>";
-            $dishOfTheDayContent .=
-                "<p>" .
-                htmlspecialchars(
-                    $data["piatto_del_giorno"]->getDescrizione()
-                ) .
-                "</p>";
-
-            $allergeni = $data["piatto_del_giorno"]->getAllergeni();
-            if (!empty($allergeni)) {
-                $dishOfTheDayContent .= "<div class=\"allergens-list\">
-                    <p><strong>Allergeni:</strong> " . htmlspecialchars(implode(", ", $allergeni)) . "</p>
-                </div>";
-            }
-
-            $ratingValue = $data["piatto_del_giorno"]->getAvgVote();
-            $ratingText = sprintf("Valutazione del piatto del giorno: %.1f su 5", $ratingValue);
-            $dishOfTheDayContent .= "<div class=\"ratings\" aria-label=\"" . htmlspecialchars($ratingText) . "\" role=\"img\">";
-
-            $dishOfTheDayContent .= "<span class=\"sr-only\">" . htmlspecialchars($ratingText) . "</span>";
-
-            for ($i = 0; $i < $ratingValue; $i++) {
-                $dishOfTheDayContent .= $starFilledSVG;
-            }
-            for ($i = 0; $i < 5 - $ratingValue; $i++) {
-                $dishOfTheDayContent .= $starSVG;
-            }
-            $dishOfTheDayContent .= "</div>";
-            $dishOfTheDayContent .=
-                "<a href=\"./piatto.php?nome=" .
-                htmlspecialchars(
-                    str_replace(
-                        " ",
-                        "_",
-                        strtolower(
-                            $data["piatto_del_giorno"]->getNome()
-                        )
-                    )
-                ) .
-                "\">Vedi <span lang=\"en\">reviews</span></a>" .
-                "</div>" .
-                "</article>";
-
-            $dishOfTheDayContent .= "</div>";
-        } else {
-            $dishOfTheDayContent .= "<div class=\"menu-item-container\" data-mensa-id=\"" .
-                htmlspecialchars($id) .
-                "\"><div class=\"empty-dish\"><p class=\"text-center\">Nessun piatto del giorno disponibile</p></div></div>";
         }
 
         // Replace template placeholders with actual content
@@ -331,10 +311,7 @@ class IndexView extends BaseView
             "mense-info-template",
             $menseInfoContent
         );
-        // Save the HTML from DOMDocument
-        $html = $this->dom->saveHTML();
 
-        // Output the HTML
-        echo $html;
+        echo $this->dom->saveHTML();
     }
 }

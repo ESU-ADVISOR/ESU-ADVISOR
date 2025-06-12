@@ -1,7 +1,7 @@
 <?php
+
 namespace Controllers;
 
-use Models\UserModel;
 use Views\ProfileView;
 
 class ProfileController implements BaseController
@@ -22,4 +22,3 @@ class ProfileController implements BaseController
         exit();
     }
 }
-?>

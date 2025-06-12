@@ -1,13 +1,11 @@
 <svg
     role="img"
-    aria-labelledby="settings-icon-label"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
     stroke-width="32"
     width="24"
     height="24"
 >
-    <title id="settings-icon-label">Home</title>
     <path
         stroke-linecap="round"
         stroke-linejoin="round"

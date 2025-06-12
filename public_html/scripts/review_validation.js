@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function validateMensa() {
     const mensaInput = document.getElementById("mensa");
+
     const mensa = mensaInput.value;
     let errors = [];
 
@@ -83,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function validatePiatto() {
     const piattoInput = document.getElementById("piatto");
+
     const listaPiatti = document.getElementById("suggerimenti-piatti");
 
     document.querySelectorAll(".piatto-error").forEach((el) => el.remove());

@@ -21,73 +21,65 @@ class IndexController implements BaseController
             exit();
         }
 
-        $mensaSelezionata = null;
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
         
+        // Determina la mensa da mostrare inizialmente
+        $mensaInizialeNome = null;
         if(isset($get["mensa"]) && !empty($get["mensa"])) {
-            $mensaSelezionata = MenseModel::findByName($get["mensa"]);
-            if(!$mensaSelezionata) {
-               $view = new ErrorView();
-                $view->render([
-                     "message" => "La mensa specificata non esiste.",
-                ]);
-                exit();
+            $mensaTest = MenseModel::findByName($get["mensa"]);
+            if($mensaTest) {
+                $mensaInizialeNome = $get["mensa"];
             }
-        } else {
-            $mensaPreferitaNome = null;
+        }
+        
+        if (!$mensaInizialeNome && $isLoggedIn) {
+            $userPreferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
+            if ($userPreferences) {
+                $mensaPreferitaNome = $userPreferences->getMensaPreferita();
+                if ($mensaPreferitaNome && !isset($_SESSION["mensa_preferita"])) {
+                    $_SESSION["mensa_preferita"] = $mensaPreferitaNome;
+                }
+                $mensaInizialeNome = $mensaPreferitaNome;
+            }
+        }
+        
+        if (!$mensaInizialeNome && isset($_SESSION["mensa_preferita"]) && !empty($_SESSION["mensa_preferita"])) {
+            $mensaInizialeNome = $_SESSION["mensa_preferita"];
+        }
+        
+        if (!$mensaInizialeNome) {
+            $mensaInizialeNome = $mense[0]->getNome();
+        }
+
+        // Carica i dati di TUTTE le mense
+        $datiCompleti = [];
+        foreach ($mense as $mensa) {
+            $piatti = $mensa->getPiatti();
+            $piattoDelGiorno = null;
+            $bestAvg = 0;
             
-            if ($isLoggedIn) {
-                $userPreferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
-                if ($userPreferences) {
-                    $mensaPreferitaNome = $userPreferences->getMensaPreferita();
-                    if ($mensaPreferitaNome && !isset($_SESSION["mensa_preferita"])) {
-                        $_SESSION["mensa_preferita"] = $mensaPreferitaNome;
-                    }
+            foreach ($piatti as $piatto) {
+                if ($piatto->getAvgVote() > $bestAvg) {
+                    $bestAvg = $piatto->getAvgVote();
+                    $piattoDelGiorno = $piatto;
                 }
             }
-            
-            if (!$mensaPreferitaNome && isset($_SESSION["mensa_preferita"]) && !empty($_SESSION["mensa_preferita"])) {
-                $mensaPreferitaNome = $_SESSION["mensa_preferita"];
-            }
-            
-            if ($mensaPreferitaNome) {
-                $mensaSelezionata = MenseModel::findByName($mensaPreferitaNome);
-            }
-            
-            if (!$mensaSelezionata) {
-                $mensaSelezionata = $mense[0];
-            }
-        }
 
-        $piatti = $mensaSelezionata->getPiatti();
-        $piattoDelGiorno = null;
-        $bestAvg = 0;
-        foreach ($piatti as $piatto) {
-            if ($piatto->getAvgVote() > $bestAvg) {
-                $bestAvg = $piatto->getAvgVote();
-                $piattoDelGiorno = $piatto;
-            }
-        }
-
-        $datiMensa[] = [
-            "nome" => $mensaSelezionata->getNome(),
-            "indirizzo" => $mensaSelezionata->getIndirizzo(),
-            "telefono" => $mensaSelezionata->getTelefono(),
-            "maps_link" => $mensaSelezionata->getMapsLink(),
-            "orari" => $mensaSelezionata->getMenseOrari(),
-        ];
-
-        $nomiMense = [];
-        foreach ($mense as $mensa) {
-            $nomiMense[] = $mensa->getNome();
+            $datiCompleti[] = [
+                "nome" => $mensa->getNome(),
+                "indirizzo" => $mensa->getIndirizzo(),
+                "telefono" => $mensa->getTelefono(),
+                "maps_link" => $mensa->getMapsLink(),
+                "orari" => $mensa->getMenseOrari(),
+                "piatti" => $piatti,
+                "piatto_del_giorno" => $piattoDelGiorno,
+            ];
         }
 
         $view = new IndexView();
         $view->render([
-            "mense" => $nomiMense,
-            "mensa_selezionata" => $datiMensa,
-            "piatti" => $piatti,
-            "piatto_del_giorno" => $piattoDelGiorno,
+            "mense_complete" => $datiCompleti,
+            "mensa_iniziale" => $mensaInizialeNome,
         ]);
     }
 

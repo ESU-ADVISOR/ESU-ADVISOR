@@ -56,8 +56,8 @@ class SettingsController implements BaseController
             exit();
         }
 
-        $new_user = UserModel::findByUsername($post['new_username']);
-        if ($new_user !== null) {
+        $newUser = UserModel::findByUsername($post['new_username']);
+        if ($newUser !== null) {
             $view->render([
                 "errors" => ["Lo <span lang='en'>username</span> scelto è già in uso da un altro utente"],
                 "formData" => ['new_username' => $post['new_username']],
@@ -172,7 +172,7 @@ class SettingsController implements BaseController
                 "La <span lang='en'>password</span> deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&).";
         }
 
-        if(!empty($errors) ) {
+        if (!empty($errors)) {
             $view->render([
                 "errors" => $errors,
                 "formData" => [
@@ -225,15 +225,15 @@ class SettingsController implements BaseController
         }
 
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
-        
+
         if (!empty($allergeni)) {
             $allergeni = array_map('ucfirst', $allergeni);
         } else {
             $allergeni = [];
         }
-        
+
         $_SESSION["allergeni"] = $allergeni;
-        
+
         if ($isLoggedIn) {
             $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
             $preferences = PreferenzeUtenteModel::findByUsername($username);
@@ -250,16 +250,15 @@ class SettingsController implements BaseController
                 }
 
                 $preferences->saveAllergeni($allergeni);
-                
+
                 $view->render([
                     "success" => "Preferenze salvate con successo",
                     "template" => "server-response-template-preferenze"
                 ]);
                 exit();
-                
             } catch (\Exception $e) {
                 error_log("Errore nel salvataggio preferenze: " . $e->getMessage());
-                
+
                 $view->render([
                     "errors" => ["Impossibile salvare le preferenze della mensa: " . $e->getMessage()],
                     "formData" => $post,
@@ -271,7 +270,7 @@ class SettingsController implements BaseController
             if ($mensaPreferita) {
                 $_SESSION["mensa_preferita"] = $mensaPreferita;
             }
-            
+
             $view->render([
                 "success" => "Preferenze salvate per questa sessione",
                 "template" => "server-response-template-preferenze"
@@ -284,7 +283,7 @@ class SettingsController implements BaseController
     {
         $view = new SettingsView();
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
-        
+
         try {
             $tema = isset($post['modifica_tema']) && $post['modifica_tema'] !== "none" ?
                 ModificaTema::tryFrom($post['modifica_tema']) : ModificaTema::SISTEMA;
@@ -292,18 +291,15 @@ class SettingsController implements BaseController
             $dimensioneTesto = isset($post['dimensione_testo']) && $post['dimensione_testo'] !== "none" ?
                 DimensioneTesto::tryFrom($post['dimensione_testo']) : DimensioneTesto::MEDIO;
 
-            $dimensioneIcone = isset($post['dimensione_icone']) && $post['dimensione_icone'] !== "none" ?
-                DimensioneIcone::tryFrom($post['dimensione_icone']) : DimensioneIcone::MEDIO;
 
             $font = isset($post['modifica_font']) && $post['modifica_font'] !== "none" ?
                 ModificaFont::tryFrom($post['modifica_font']) : ModificaFont::NORMALE;
 
             $_SESSION["tema"] = $tema->value;
             $_SESSION["dimensione_testo"] = $dimensioneTesto->value;
-            $_SESSION["dimensione_icone"] = $dimensioneIcone->value;
             $_SESSION["modifica_font"] = $font->value;
 
-                
+
             if ($isLoggedIn) {
                 $username = UserModel::findByUsername($_SESSION["username"])->getUsername();
                 $preferences = PreferenzeUtenteModel::findByUsername($username) ?? new PreferenzeUtenteModel();
@@ -311,7 +307,6 @@ class SettingsController implements BaseController
                 $preferences->setUsername($username);
                 $preferences->setTema($tema);
                 $preferences->setDimensioneTesto($dimensioneTesto);
-                $preferences->setDimensioneIcone($dimensioneIcone);
                 $preferences->setModificaFont($font);
 
                 $preferences->syncToSession();
@@ -338,7 +333,7 @@ class SettingsController implements BaseController
             }
         } catch (\Exception $e) {
             error_log("Errore nel salvataggio preferenze: " . $e->getMessage());
-            
+
             $view->render([
                 "errors" => ["Impossibile salvare le preferenze dell'utente: " . $e->getMessage()],
                 "formData" => $post,

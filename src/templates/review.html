@@ -10,7 +10,6 @@
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="stylesheet" href="styles/base/rating-fix.css" />
-        
     </head>
     <body>
         <template id="header-template"></template>
@@ -36,7 +35,8 @@
 
                         <label for="piatto">Nome del piatto:</label>
                         <p class="text-secondary text-sm" id="piatto-instructions">
-                            Dopo aver selezionato la mensa, inizia a scrivere il nome del piatto e selezionalo dalla lista.
+                            Dopo aver selezionato la mensa, inizia a scrivere il nome del piatto e selezionalo dalla
+                            lista.
                         </p>
                         <input
                             type="text"
@@ -91,8 +91,15 @@
                                     <span class="sr-only">2 stelle - discreto</span>
                                     <template id="star-template-2"></template>
                                 </label>
-                                
-                                <input type="radio" id="star1" name="rating" value="1" class="visually-hidden" required />
+
+                                <input
+                                    type="radio"
+                                    id="star1"
+                                    name="rating"
+                                    value="1"
+                                    class="visually-hidden"
+                                    required
+                                />
                                 <label for="star1" title="1 stella">
                                     <span class="sr-only">1 stella - insufficiente</span>
                                     <template id="star-template-1"></template>

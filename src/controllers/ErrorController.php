@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-use Views\BaseView;
+use Views\ErrorView;
 
 class ErrorController implements BaseController
 {
@@ -10,20 +10,39 @@ class ErrorController implements BaseController
 
     public function __construct()
     {
-        $this->view = new \Views\ErrorView();
+        $this->view = new ErrorView();
     }
 
     public function handleGETRequest(array $get = []): void
     {
-        $errorCode = isset($get['code']) ? intval($get['code']) : 500;
-        $errorMessage = isset($get['message']) ? $get['message'] : "Si è verificato un errore";
-        
-        // Salva il riferimento alla pagina che l'utente tentava di accedere
-        if (isset($get['page']) && !empty($get['page'])) {
+        $errorTitle = isset($get['title']) ? $get['title'] : null;;
+        $errorCode = isset($get['code']) ? intval($get['code']) : (isset($_SERVER['REDIRECT_STATUS']) ? intval($_SERVER['REDIRECT_STATUS']) : 500);
+        $errorMessage = isset($get['message']) ? $get['message'] : null;
+        if (empty($errorMessage) || empty($errorTitle)) {
+            switch ($errorCode) {
+                case 404:
+                    empty($errorTitle) ? $errorTitle = "Pagina non trovata" : null;
+                    empty($errorMessage) ? $errorMessage = "La pagina che stai cercando non è stata trovata" : null;
+                    break;
+                case 401:
+                case 403:
+                    empty($errorTitle) ? $errorTitle = "Accesso richiesto" : null;
+                    empty($errorMessage) ? $errorMessage =  "È necessario effettuare l'accesso per visualizzare questa pagina" : null;
+                    break;
+                case 500:
+                default:
+                    empty($errorTitle) ? $errorTitle = "Qualcosa è andato storto" : null;
+                    empty($errorMessage) ? $errorMessage = "Si è verificato un errore interno del server" : null;
+                    break;
+            }
+        }
+
+        if (isset($get['page']) && !empty($get['page']) && $get['page'] != "error.php") {
             $_SESSION['login_redirect'] = $get['page'];
         }
-        
+
         $this->view->render([
+            'title' => $errorTitle,
             'code' => $errorCode,
             'message' => $errorMessage
         ]);
@@ -31,40 +50,11 @@ class ErrorController implements BaseController
 
     public function handlePOSTRequest(array $post = []): void
     {
-        // Reindirizza alla GET per semplicità
-        $this->handleGETRequest($post);
-    }
-    
-    /**
-     * Gestisce diversi tipi di errore in base al codice HTTP
-     */
-    public function handleError(string $message, int $code = 500): void
-    {
-        $this->view->render([
-            'code' => $code,
-            'message' => $message
+        http_response_code(400);
+        echo json_encode([
+            "status" => "error",
+            "error" => "Richiesta POST non consentita",
         ]);
-    }
-    
-    /**
-     * Gestisce specificamente errori 404 (pagina non trovata)
-     */
-    public function handle404(): void
-    {
-        $this->view->render([
-            'code' => 404,
-            'message' => 'La pagina richiesta non è stata trovata'
-        ]);
-    }
-    
-    /**
-     * Gestisce specificamente errori di accesso non autorizzato
-     */
-    public function handleUnauthorized(): void
-    {
-        $this->view->render([
-            'code' => 401,
-            'message' => 'Devi effettuare il login per accedere'
-        ]);
+        exit();
     }
 }

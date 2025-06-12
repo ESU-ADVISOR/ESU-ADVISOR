@@ -1,5 +1,5 @@
+Options -Indexes -MultiViews
 RewriteEngine On
-
 RewriteBase /
 
 ErrorDocument 400 /error.php?code=400
@@ -10,5 +10,4 @@ ErrorDocument 500 /error.php?code=500
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-RewriteRule ^ /error.php?code=404 [L]
+RewriteRule . /error.php?code=404 [R=302,L]

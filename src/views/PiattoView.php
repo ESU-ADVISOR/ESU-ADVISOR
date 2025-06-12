@@ -3,8 +3,8 @@
 namespace Views;
 
 use Models\PiattoModel;
-use Models\RecensioneModel;
 use Views\Utils;
+use Views\BaseView;
 
 class PiattoView extends BaseView
 {
@@ -15,20 +15,47 @@ class PiattoView extends BaseView
 
     public function render(array $data = []): void
     {
+        // Personalizza SEO per questo specifico piatto
         if (isset($data["nome"])) {
-            $this->setBreadcrumb([
-                'parent' => [
-                    'url' => 'index.php',
-                    'title' => 'Home'
-                ],
-                'current' => $data["nome"],
-                'prefix' => 'Piatto: '
-            ]);
+            $nomePiatto = $data["nome"];
+            
+            // Title dinamico con nome del piatto
+            $this->setTitle("$nomePiatto - Recensioni e Dettagli | ESU Advisor");
+            
+            // Description con ingredienti del piatto
+            $descrizione = $data["descrizione"] ?? "";
+            $this->setDescription("Scopri tutto su $nomePiatto delle mense ESU di Padova: $descrizione Leggi recensioni degli studenti, ingredienti e allergeni.");
+            
+            // Keywords specifiche per il piatto
+            $this->setKeywords("$nomePiatto, recensioni $nomePiatto, piatto mensa padova, valutazioni studenti, ingredienti $nomePiatto, allergeni");
+            
+            // Gestisci breadcrumb in base alla provenienza
+            $fromProfile = isset($_GET['from']) && $_GET['from'] === 'profile';
+            
+            if ($fromProfile) {
+                // Breadcrumb: Profilo > [Nome Piatto]
+                $this->setBreadcrumb([
+                    'parent' => [
+                        'url' => 'profile.php',
+                        'title' => 'Profilo'
+                    ],
+                    'current' => $nomePiatto
+                ]);
+            } else {
+                // Breadcrumb: Home > [Nome Piatto] (comportamento standard)
+                $this->setBreadcrumb([
+                    'parent' => [
+                        'url' => 'index.php',
+                        'title' => 'Home'
+                    ],
+                    'current' => $nomePiatto
+                ]);
+            }
         }
 
         parent::render();
 
-        $piattoTitle = "<h1 class=\"card-title\" id=\"primoContenuto\">" . htmlspecialchars($data["nome"]) . "</h1>";
+        $piattoTitle = "<h2 class=\"card-title\" id=\"primoContenuto\">" . htmlspecialchars($data["nome"]) . "</h2>";
 
         $piatto = PiattoModel::findByName($data["nome"]);
 
@@ -76,10 +103,10 @@ class PiattoView extends BaseView
         $allergeni = $piatto->getAllergeni();
         if (!empty($allergeni)) {
             // Rimuovi "Nessuno" dalla lista se presente insieme ad altri allergeni
-            $allergeni = array_filter($allergeni, function($allergene) {
+            $allergeni = array_filter($allergeni, function ($allergene) {
                 return $allergene !== "Nessuno";
             });
-            
+
             if (!empty($allergeni)) {
                 $allergeniContent = "<p>" . htmlspecialchars(implode(", ", $allergeni)) . "</p>";
             } else {

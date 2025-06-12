@@ -8,7 +8,6 @@ use Models\MenseModel;
 use PDO;
 use DateTimeImmutable;
 use Models\Enums\DimensioneTesto;
-use Models\Enums\DimensioneIcone;
 use Models\Enums\ModificaFont;
 use Models\Enums\ModificaTema;
 
@@ -19,7 +18,6 @@ class PreferenzeUtenteModel
     private int|null $utente = null;
     private string|null $username = null;
     private DimensioneTesto|null $dimensioneTesto = null;
-    private DimensioneIcone|null $dimensioneIcone = null;
     private ModificaFont|null $modificaFont = null;
     private ModificaTema|null $modificaTema = null;
     private string|null $mensaPreferita = null;
@@ -50,9 +48,6 @@ class PreferenzeUtenteModel
         }
         if (isset($data["dimensione_testo"])) {
             $this->dimensioneTesto = DimensioneTesto::tryFrom($data["dimensione_testo"]);
-        }
-        if (isset($data["dimensione_icone"])) {
-            $this->dimensioneIcone = DimensioneIcone::tryFrom($data["dimensione_icone"]);
         }
         if (isset($data["modifica_font"])) {
             $this->modificaFont = ModificaFont::tryFrom($data["modifica_font"]);
@@ -89,16 +84,6 @@ class PreferenzeUtenteModel
     public function setDimensioneTesto(?DimensioneTesto $dimensioneTesto): void
     {
         $this->dimensioneTesto = $dimensioneTesto;
-    }
-
-    public function getDimensioneIcone(): ?DimensioneIcone
-    {
-        return $this->dimensioneIcone;
-    }
-
-    public function setDimensioneIcone(?DimensioneIcone $dimensioneIcone): void
-    {
-        $this->dimensioneIcone = $dimensioneIcone;
     }
 
     public function getModificaFont(): ?ModificaFont
@@ -140,7 +125,6 @@ class PreferenzeUtenteModel
             $stmt = $this->db->prepare(
                 "UPDATE preferenze_utente SET
                     dimensione_testo = :dimensione_testo,
-                    dimensione_icone = :dimensione_icone,
                     modifica_font = :modifica_font,
                     modifica_tema = :modifica_tema,
                     mensa_preferita = :mensa_preferita
@@ -149,7 +133,6 @@ class PreferenzeUtenteModel
 
             return $stmt->execute([
                 "dimensione_testo" => $this->dimensioneTesto->value,
-                "dimensione_icone" => $this->dimensioneIcone->value,
                 "modifica_font" => $this->modificaFont->value,
                 "modifica_tema" => $this->modificaTema->value,
                 "mensa_preferita" => $this->mensaPreferita,
@@ -159,11 +142,11 @@ class PreferenzeUtenteModel
             $stmt = $this->db->prepare(
                 "INSERT INTO preferenze_utente (
                     utente, dimensione_testo,
-                    dimensione_icone, modifica_font,
+                   modifica_font,
                     modifica_tema, mensa_preferita
                 ) VALUES (
                     :utente, :dimensione_testo,
-                    :dimensione_icone, :modifica_font,
+                     :modifica_font,
                     :modifica_tema, :mensa_preferita
                 )"
             );
@@ -171,7 +154,6 @@ class PreferenzeUtenteModel
             return $stmt->execute([
                 "utente" => $this->utente,
                 "dimensione_testo" => $this->dimensioneTesto->value,
-                "dimensione_icone" => $this->dimensioneIcone->value,
                 "modifica_font" => $this->modificaFont->value,
                 "modifica_tema" => $this->modificaTema->value,
                 "mensa_preferita" => $this->mensaPreferita
@@ -201,7 +183,7 @@ class PreferenzeUtenteModel
     {
         $db = Database::getInstance();
         $stmt = $db->prepare(
-            "SELECT utente, dimensione_testo, dimensione_icone,
+            "SELECT utente, dimensione_testo,
                     modifica_font, modifica_tema, mensa_preferita,
                     u.username as username
              FROM preferenze_utente pu
@@ -226,7 +208,7 @@ class PreferenzeUtenteModel
     {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT utente, dimensione_testo,
-                                    dimensione_icone, modifica_font,
+                                    modifica_font,
                                     modifica_tema, mensa_preferita,
                                     u.username as username
                             FROM preferenze_utente pu
@@ -319,13 +301,10 @@ class PreferenzeUtenteModel
         if ($this->dimensioneTesto) {
             $_SESSION["dimensione_testo"] = $this->dimensioneTesto->value;
         }
-        if ($this->dimensioneIcone) {
-            $_SESSION["dimensione_icone"] = $this->dimensioneIcone->value;
-        }
         if ($this->modificaFont) {
             $_SESSION["modifica_font"] = $this->modificaFont->value;
         }
-        
+
         $allergeni = $this->getAllergeni();
         if (!empty($allergeni)) {
             $_SESSION["allergeni"] = $allergeni;

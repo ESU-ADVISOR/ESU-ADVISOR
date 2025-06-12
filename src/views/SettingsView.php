@@ -124,7 +124,7 @@ class SettingsView extends BaseView
                 if (isset($formData["new_password_confirm"]) && !empty($formData["new_password_confirm"])) {
                     $this->dom->getElementById("new_password_confirm")->setAttribute("value", htmlspecialchars($formData["new_password_confirm"]));
                 }
-            } 
+            }
         }
 
         // ======== Dark Mode =========
@@ -177,32 +177,6 @@ class SettingsView extends BaseView
             $this->dom,
             "dimensione-testo-options-template",
             $dimensioneTestoContent
-        );
-
-        // ======== Dimensione Icone =========
-        $dimensioneIconeContent = "";
-        $opzioniDimensioneIcone = DimensioneIcone::cases();
-        $dimensioneIconeScelta = null;
-
-        if ($userPreferences != null && $userPreferences->getDimensioneIcone()) {
-            $dimensioneIconeScelta = $userPreferences->getDimensioneIcone()->value;
-        } elseif (isset($_SESSION["dimensione_icone"])) {
-            $dimensioneIconeScelta = $_SESSION["dimensione_icone"];
-        }
-
-        foreach ($opzioniDimensioneIcone as $opzione) {
-            if ($dimensioneIconeScelta != null) {
-                $selected = ($dimensioneIconeScelta === $opzione->value) ? 'selected' : '';
-            } else {
-                $selected = $opzione->value == "medio" ? 'selected' : '';
-            }
-            $dimensioneIconeContent .= '<option value="' . $opzione->value . '" ' . $selected . '>' . ucwords($opzione->value) . '</option>';
-        }
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "dimensione-icone-options-template",
-            $dimensioneIconeContent
         );
 
         // ======== Modifica font =========

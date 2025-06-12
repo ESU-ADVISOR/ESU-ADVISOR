@@ -1,2 +1,18 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap location
+Sitemap: /sitemap.php
+
+# Disallow private areas only
+Disallow: /src/
+Disallow: /docs/
+Disallow: /logout.php
+
+# Disallow authenticated pages
+Disallow: /profile.php
+Disallow: /review.php
+Disallow: /settings.php
+Disallow: /review-edit.php
+
+Crawl-delay: 1

@@ -3,9 +3,6 @@
 namespace Views;
 
 use Models\MenseModel;
-use Models\PiattoModel;
-use Models\RecensioneModel;
-use Models\UserModel;
 use Views\Utils;
 
 class ReviewView extends BaseView
@@ -20,16 +17,14 @@ class ReviewView extends BaseView
         parent::render();
 
         if (empty($_SESSION["username"])) {
-            self::renderError("Non hai effettuato il <span lang='en'>login</span>, impossibile inviare una recensione.");
+            self::renderError("Non hai effettuato il <span lang='en'>login</span>, impossibile inviare una recensione.", 403);
             return;
         }
 
         $menseContent = "";
         $piattiContent = "";
 
-        $count = 0;
         $mense = MenseModel::findAll();
-        $tot = count($mense);
         foreach ($mense as $mensa) {
 
             $menseContent .=
@@ -44,14 +39,6 @@ class ReviewView extends BaseView
                     "\"></option>";
             }
             $piattiContent .= "</datalist>";
-            // if ($count + 1 < $tot) {
-            //     //    $piattiContent .= "<template id=\"suggerimenti-piatti-template\"></template>";
-            //     Utils::replaceTemplateContent(
-            //         $this->dom,
-            //         "suggerimenti-piatti-template",
-            //         $piattiContent
-            //     );
-            // }
         }
 
         Utils::replaceTemplateContent(

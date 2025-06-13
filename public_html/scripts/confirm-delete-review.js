@@ -1,29 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const deleteReviewButton = document.getElementById("delete-review-button");
+  const form = document.getElementById("review-edit-form");
+  form.addEventListener("submit", function (event) {
+    const button = event.submitter;
+    if (button.name == "delete") {
+      if (
+        confirm(
+          "Sei sicuro di voler eliminare questa recensione? Questa azione è irreversibile.",
+        )
+      ) {
+        const actionField = document.getElementById("form-action");
+        const form = document.querySelector("form");
 
-  if (deleteReviewButton) {
-    deleteReviewButton.addEventListener("click", function () {
-      confirmDelete();
-    });
-  }
-});
-
-function confirmDelete() {
-  if (
-    confirm(
-      "Sei sicuro di voler eliminare questa recensione? Questa azione è irreversibile.",
-    )
-  ) {
-    const actionField = document.getElementById("form-action");
-    const form = document.querySelector("form");
-
-    if (actionField && form) {
-      actionField.value = "delete";
-      form.submit();
-    } else {
-      console.error(
-        "Impossibile trovare il campo azione o il form per l'eliminazione",
-      );
+        if (actionField && form) {
+          actionField.value = "delete";
+          form.submit();
+        } else {
+          console.error(
+            "Impossibile trovare il campo azione o il form per l'eliminazione",
+          );
+        }
+      } else {
+        event.preventDefault();
+      }
     }
-  }
-}
+  });
+});

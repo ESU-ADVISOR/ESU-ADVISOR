@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const piattoInput = document.getElementById("piatto");
   const mensaInput = document.getElementById("mensa");
-  const form = document.querySelector(".base-form");
+  const form = document.getElementById("review-form");
   let errors = new Map();
 
   mensaInput.addEventListener("input", updateDatalist);

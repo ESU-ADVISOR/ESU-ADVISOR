@@ -127,7 +127,7 @@ class SettingsController implements BaseController
             exit();
         }
 
-        if (!UserModel::authenticate($user->getUsername(), $post['password'])) {
+        if (!UserModel::authenticate($user->getUsername(), $post['current_password'])) {
             $errors[] = "La <span lang='en'>password</span> attuale è errata";
         }
 
@@ -135,7 +135,7 @@ class SettingsController implements BaseController
             $errors[] = "Le nuove <span lang='en'>password</span> non corrispondono";
         }
 
-        if ($post['new_password'] === $post['password']) {
+        if ($post['new_password'] === $post['current_password']) {
             $errors[] = "La nuova <span lang='en'>password</span> deve essere diversa da quella attuale";
         }
 

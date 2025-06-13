@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   function updateBackLinks() {
     const backLinks = document.querySelectorAll(
-      'a[href="index.php"], a[href="./index.php"], a[href="../index.php"]',
+      'a[href="index.php"]:not(.bottom-nav a):not(.sidebar a), a[href="./index.php"]:not(.bottom-nav a):not(.sidebar a), a[href="../index.php"]:not(.bottom-nav a):not(.sidebar a)',
     );
 
     if (backLinks.length === 0) return;

@@ -132,7 +132,7 @@ class ProfileView extends BaseView
 
                 $recensioniContent .= "<div class='review-actions'>";
                 $recensioniContent .= "<a href='piatto.php?nome=" .
-                    urldecode(str_replace(" ", "_", strtolower($recensione->getPiatto()))) .
+                    htmlspecialchars(urldecode(str_replace(" ", "_", strtolower($recensione->getPiatto())))) .
                     "&from=profile'>Vedi dettagli piatto</a>";
                 $recensioniContent .= "<a class='review-edit-button' href='review-edit.php?piatto=" .
                     htmlspecialchars(urlencode($recensione->getPiatto())) .

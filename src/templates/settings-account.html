@@ -30,11 +30,11 @@
         <fieldset>
             <legend>Modifica <span lang="en">password:</span></legend>
             <div class="form-group">
-                <label for="password"><span lang="en">Password</span> attuale</label>
+                <label for="current_password"><span lang="en">Password</span> attuale</label>
                 <input
                     type="password"
                     id="current_password"
-                    name="password"
+                    name="current_password"
                     class="form-input password-input"
                     placeholder=""
                 />
@@ -71,7 +71,7 @@
     <form id="delete-account-form" method="POST" action="settings.php">
         <div class="form-group">
             <input type="hidden" name="delete_account" value="1" />
-            <button type="button" id="delete-account-button" class="danger form-button" aria-label="Elimina Account">
+            <button type="submit" id="delete-account-button" class="danger form-button" aria-label="Elimina Account">
                 Elimina <span lang="en">Account</span>
             </button>
         </div>

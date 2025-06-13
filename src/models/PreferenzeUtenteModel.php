@@ -64,7 +64,6 @@ class PreferenzeUtenteModel
 
     public function setIdUtente(int $idUtente): void
     {
-        print_r($idUtente);
         $this->idUtente = $idUtente;
     }
 

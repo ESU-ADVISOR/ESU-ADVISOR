@@ -6,7 +6,7 @@
   primary-color: rgb("#00b0ff"),
   body
 ) = {
-  
+
   let secondary-color = color.mix(color.rgb(100%, 100%, 100%,60%), primary-color, space:rgb)
   set page(
     header: [
@@ -32,10 +32,10 @@
     #set text(
       size: 14pt,
     )
-    
+
     #place(top + left, dx: -35%, dy: -28%, circle(radius: 150pt, fill: primary-color))
     #place(top + left, dx: -10%, circle(radius: 75pt, fill: secondary-color))
-    
+
     // decorations at bottom right
     #place(bottom +right, dx: 40%, dy: 30%, circle(radius: 150pt, fill: secondary-color))
 
@@ -108,7 +108,7 @@ Il progetto è stato realizzato da un gruppo di quattro studenti con competenze 
     [Giacomo], [Loat], [2077677], [HTML5, Design UI/UX, Struttura Frontend],
     [Giulio], [Botta], [2042340], [CSS3, Responsive Design, Accessibilità],
     [Malik], [Giafar Mohamed], [2075543], [Database Design, SQL, Architettura Dati],
-    [Manuel], [Felipe Vasquez], [2076425], [PHP, Backend Development, API Design]
+    [Manuel Felipe], [Vasquez], [2076425], [PHP, Backend Development, API Design]
   )
 )
 
@@ -389,13 +389,13 @@ FOR each mensa:
   piatti = getPiattiMensa(mensa)
   bestPiatto = null
   bestScore = 0
-  
+
   FOR each piatto in piatti:
     score = calculateAverageRating(piatto)
     IF score > bestScore:
       bestScore = score
       bestPiatto = piatto
-  
+
   setPiattoDelGiorno(mensa, bestPiatto)
 ```
 
@@ -468,7 +468,7 @@ Stored procedure per varietà automatica:
 === Browser Testing
 Testing completato su:
 - Chrome 120+ (desktop/mobile)
-- Firefox 121+ (desktop/mobile) 
+- Firefox 121+ (desktop/mobile)
 - Safari 17+ (desktop/mobile)
 - Edge 120+ (desktop)
 
@@ -553,7 +553,7 @@ Testing completato su:
 
 === Lighthouse Audit Results
 - *Performance*: 95/100
-- *Accessibility*: 100/100  
+- *Accessibility*: 100/100
 - *Best Practices*: 100/100
 - *SEO*: 100/100
 
@@ -591,7 +591,7 @@ Testing completato su:
 - *Integrazione pagamenti* per prenotazione pasti
 - *API pubbliche* per terze parti
 
-=== Versione 3.0 (Long-term)  
+=== Versione 3.0 (Long-term)
 - *Machine Learning* per raccomandazioni personalizzate
 - *IoT integration* per disponibilità posti in tempo reale
 - *Blockchain* per certificazione qualità ingredienti

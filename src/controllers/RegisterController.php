@@ -37,11 +37,9 @@ class RegisterController implements BaseController
             ]);
 
             if ($new_user->saveToDB()) {
-                print_r("hi");
                 $view->render(["success" => "Registrazione completata con successo!"]);
                 return;
             } else {
-                print_r("hi");
 
                 $view->render([
                     "errors" => ["Registrazione fallita: impossibile salvare nel database"],

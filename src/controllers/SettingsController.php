@@ -91,6 +91,7 @@ class SettingsController implements BaseController
             $_SESSION["username"] = $user->getUsername();
             $view->render([
                 "success" => "<span lang='en'>Username</span> modificato con successo",
+                "type" => "username_change",
             ]);
             exit();
         } else {
@@ -108,6 +109,8 @@ class SettingsController implements BaseController
         $user = UserModel::findByUsername($_SESSION["username"]);
         $errors = [];
 
+        print_r($post);
+
         if ($user === null) {
             $view->render([
                 "errors" => ["Utente non trovato"],
@@ -117,35 +120,14 @@ class SettingsController implements BaseController
 
         if (!UserModel::authenticate($user->getUsername(), $post['password'])) {
             $errors[] = "La <span lang='en'>password</span> attuale è errata";
-            /*
-            $view->render([
-                "errors" => $errors,
-                "formData" => [
-                    "new_password" => $post['new_password'],
-                    "new_password_confirm" => $post['new_password_confirm']
-                ]
-            ]);
-            exit();*/
         }
 
         if ($post['new_password'] !== $post['new_password_confirm']) {
             $errors[] = "Le nuove <span lang='en'>password</span> non corrispondono";
-            /*
-            $view->render([
-                "errors" => ["Le nuove <span lang='en'>password</span> non corrispondono"],
-                "formData" => []
-            ]);
-            exit();*/
         }
 
         if ($post['new_password'] === $post['password']) {
             $errors[] = "La nuova <span lang='en'>password</span> deve essere diversa da quella attuale";
-            /*
-            $view->render([
-                "errors" => ["La nuova <span lang='en'>password</span> deve essere diversa da quella attuale"],
-                "formData" => []
-            ]);
-            exit();*/
         }
 
         if (strlen($post['new_password']) < 8) {
@@ -177,7 +159,8 @@ class SettingsController implements BaseController
 
         if ($user->saveToDB()) {
             $view->render([
-                "success" => "<span lang='en'>Password</span> modificata con successo"
+                "success" => "<span lang='en'>Password</span> modificata con successo",
+                "type" => "password_change",
             ]);
             exit();
         } else {
@@ -223,7 +206,6 @@ class SettingsController implements BaseController
         if ($isLoggedIn) {
             $idUtente = UserModel::findByUsername($_SESSION["username"])->getId();
             $preferences = PreferenzeUtenteModel::findByUsername($_SESSION["username"]);
-            print_r($idUtente);
 
             $preferences->setIdUtente($idUtente);
             if ($mensaPreferita) {
@@ -240,6 +222,7 @@ class SettingsController implements BaseController
 
                 $view->render([
                     "success" => "Preferenze salvate con successo",
+                    "type" => "preference_change",
                 ]);
                 exit();
             } catch (\Exception $e) {
@@ -258,6 +241,7 @@ class SettingsController implements BaseController
 
             $view->render([
                 "success" => "Preferenze salvate per questa sessione",
+                "type" => "preference_change",
             ]);
             exit();
         }
@@ -298,6 +282,7 @@ class SettingsController implements BaseController
                 if ($preferences->saveToDB()) {
                     $view->render([
                         "success" => "Preferenze salvate con successo",
+                        "type" => "accessibility_change",
                     ]);
                     exit();
                 } else {
@@ -310,6 +295,7 @@ class SettingsController implements BaseController
             } else {
                 $view->render([
                     "success" => "Preferenze salvate per questa sessione",
+                    "type" => "accessibility_change",
                 ]);
             }
         } catch (\Exception $e) {
@@ -337,9 +323,9 @@ class SettingsController implements BaseController
             }
         }
 
-        if (isset($post['save_preferenze_generali']))   //mensa e allergeni
+        if (isset($post['save_preferenze_generali']))
             $this->savePreferences($post);
-        else if (isset($post['preferences'])) {         //accessibilità
+        else if (isset($post['preferences'])) {
             $this->saveUserPreferences($post);
         } else {
             http_response_code(400);

@@ -22,15 +22,7 @@ class SettingsView extends BaseView
     {
         parent::render();
 
-
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
-
-        $menseContent = "";
-        $mense = MenseModel::findAll();
-
-        $mensaPreferita = null;
-        // Inizializza gli allergeni dalla sessione prima di tutto
-        $allergeni = isset($_SESSION["allergeni"]) && is_array($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
 
         $userPreferences = null;
         if ($isLoggedIn) {
@@ -38,23 +30,77 @@ class SettingsView extends BaseView
             if ($user !== null) {
                 $userPreferences = PreferenzeUtenteModel::findByUsername($user->getUsername());
 
-                // Determina la mensa preferita e allergeni dall'utente loggato
+
                 if ($userPreferences) {
-                    // Recupera allergeni dal DB (hanno priorità sulla sessione per utenti loggati)
+
                     $dbAllergeni = $userPreferences->getAllergeni();
                     if (!empty($dbAllergeni)) {
                         $allergeni = $dbAllergeni;
-                        $_SESSION["allergeni"] = $allergeni; // Sincronizza la sessione con il DB
+                        $_SESSION["allergeni"] = $allergeni;
                     }
                     $mensaPreferita = $userPreferences->getMensaPreferita();
                 }
             }
         }
 
-        // Recupera mensa preferita dalla sessione per utenti non loggati
-        if (!$isLoggedIn && isset($_SESSION["mensa_preferita"])) {
-            $mensaPreferita = $_SESSION["mensa_preferita"];
+        $this->renderGeneralPreferences();
+
+        $this->renderFontPreferences($userPreferences);
+        $this->renderTextSizePreferences($userPreferences);
+        $this->renderThemePreferences($userPreferences);
+
+        if ($isLoggedIn) {
+            $this->renderAccountSection($data);
         }
+
+        $template_id = "server-response-preferences-template";
+
+        if (isset($data["type"])) {
+            print_r($data["type"]);
+            if ($data["type"] == "username_change") {
+                $template_id = "server-response-username-template";
+            } elseif ($data["type"] == "password_change") {
+                $template_id = "server-response-password-template";
+            } elseif ($data["type"] == "accessibility_change") {
+                $template_id = "server-response-accessibility-template";
+            }
+        }
+
+        // ======== Messaggi di errore o successo =========
+        if (isset($data["errors"])) {
+            $errorHtml = "";
+            foreach ($data["errors"] as $error) {
+                $errorHtml .= "<div class='error'>$error</div>";
+            }
+            Utils::replaceTemplateContent(
+                $this->dom,
+                $template_id,
+                $errorHtml
+            );
+        }
+
+        if (isset($data["success"])) {
+            $successHtml = "<div class='success'>{$data["success"]}</div>";
+
+            Utils::replaceTemplateContent(
+                $this->dom,
+                $template_id,
+                $successHtml
+            );
+        }
+
+        echo $this->dom->saveHTML();
+    }
+
+
+    private function renderGeneralPreferences(): void
+    {
+        $menseContent = "";
+        $mense = MenseModel::findAll();
+
+        $mensaPreferita = isset($_SESSION["mensa_preferita"]) ? $_SESSION["mensa_preferita"] : null;
+
+        $allergeni = isset($_SESSION["allergeni"]) && is_array($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
 
         $hasMensaPreferita = false;
         foreach ($mense as $mensa) {
@@ -94,39 +140,42 @@ class SettingsView extends BaseView
                 }
             }
         }
+    }
 
-        // ======== Renderizzazione sezione account (condizionale) ========
-        if ($isLoggedIn) {
-            $settingsAccountContent = file_get_contents(__DIR__ . '/../templates/settings-account.html');
+    private function renderAccountSection($data): void
+    {
+        $settingsAccountContent = file_get_contents(__DIR__ . '/../templates/settings-account.html');
 
-            Utils::replaceTemplateContent(
-                $this->dom,
-                "settings-account-template",
-                $settingsAccountContent
-            );
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "settings-account-template",
+            $settingsAccountContent
+        );
 
-            // ricompilazione campi se si proviene da un errore
-            if (isset($data["formData"])) {
-                $formData = $data["formData"];
+        // ricompilazione campi se si proviene da un errore
+        if (isset($data["formData"])) {
+            $formData = $data["formData"];
 
-                if (isset($formData["new_username"]) && !empty($formData["new_username"])) {
-                    $this->dom->getElementById("new_username")->setAttribute("value", htmlspecialchars($formData["new_username"]));
-                }
+            if (isset($formData["new_username"]) && !empty($formData["new_username"])) {
+                $this->dom->getElementById("new_username")->setAttribute("value", htmlspecialchars($formData["new_username"]));
+            }
 
-                if (isset($formData["password"]) && !empty($formData["password"])) {
-                    $this->dom->getElementById("password")->setAttribute("value", htmlspecialchars($formData["password"]));
-                }
+            if (isset($formData["password"]) && !empty($formData["password"])) {
+                $this->dom->getElementById("password")->setAttribute("value", htmlspecialchars($formData["password"]));
+            }
 
-                if (isset($formData["new_password"]) && !empty($formData["new_password"])) {
-                    $this->dom->getElementById("new_password")->setAttribute("value", htmlspecialchars($formData["new_password"]));
-                }
+            if (isset($formData["new_password"]) && !empty($formData["new_password"])) {
+                $this->dom->getElementById("new_password")->setAttribute("value", htmlspecialchars($formData["new_password"]));
+            }
 
-                if (isset($formData["new_password_confirm"]) && !empty($formData["new_password_confirm"])) {
-                    $this->dom->getElementById("new_password_confirm")->setAttribute("value", htmlspecialchars($formData["new_password_confirm"]));
-                }
+            if (isset($formData["new_password_confirm"]) && !empty($formData["new_password_confirm"])) {
+                $this->dom->getElementById("new_password_confirm")->setAttribute("value", htmlspecialchars($formData["new_password_confirm"]));
             }
         }
+    }
 
+    private function renderThemePreferences($userPreferences): void
+    {
         // ======== Dark Mode =========
         $temaContent = "";
         $opzioniTema = ModificaTema::cases();
@@ -152,32 +201,10 @@ class SettingsView extends BaseView
             "tema-option-template",
             $temaContent
         );
+    }
 
-        // ======== Dimensione Testo =========
-        $dimensioneTestoContent = "";
-        $opzioniDimensioneTesto = DimensioneTesto::cases();
-        $dimensioneTestoScelta = null;
-
-        if (isset($userPreferences)) {
-            $dimensioneTestoScelta = $userPreferences->getDimensioneTesto()->value;
-        } elseif (isset($_SESSION["dimensione_testo"])) {
-            $dimensioneTestoScelta = $_SESSION["dimensione_testo"];
-        }
-
-        foreach ($opzioniDimensioneTesto as $opzione) {
-            if ($dimensioneTestoScelta != null) {
-                $selected = ($dimensioneTestoScelta === $opzione->value) ? 'selected' : '';
-            } else {
-                $selected = $opzione->value == "medio" ? 'selected' : '';
-            }
-            $dimensioneTestoContent .= '<option value="' . $opzione->value . '" ' . $selected . '>' . ucwords($opzione->value) . '</option>';
-        }
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "dimensione-testo-options-template",
-            $dimensioneTestoContent
-        );
+    private function renderFontPreferences($userPreferences): void
+    {
 
         // ======== Modifica font =========
         $fontContent = "";
@@ -204,29 +231,34 @@ class SettingsView extends BaseView
             "font-options-template",
             $fontContent
         );
+    }
 
-        // ======== Messaggi di errore o successo =========
-        if (isset($data["errors"])) {
-            $errorHtml = "";
-            foreach ($data["errors"] as $error) {
-                $errorHtml .= "<div class='error'>$error</div>";
+    private function renderTextSizePreferences($userPreferences): void
+    {
+        // ======== Dimensione Testo =========
+        $dimensioneTestoContent = "";
+        $opzioniDimensioneTesto = DimensioneTesto::cases();
+        $dimensioneTestoScelta = null;
+
+        if (isset($userPreferences)) {
+            $dimensioneTestoScelta = $userPreferences->getDimensioneTesto()->value;
+        } elseif (isset($_SESSION["dimensione_testo"])) {
+            $dimensioneTestoScelta = $_SESSION["dimensione_testo"];
+        }
+
+        foreach ($opzioniDimensioneTesto as $opzione) {
+            if ($dimensioneTestoScelta != null) {
+                $selected = ($dimensioneTestoScelta === $opzione->value) ? 'selected' : '';
+            } else {
+                $selected = $opzione->value == "medio" ? 'selected' : '';
             }
-            Utils::replaceTemplateContent(
-                $this->dom,
-                "server-response-template",
-                $errorHtml
-            );
+            $dimensioneTestoContent .= '<option value="' . $opzione->value . '" ' . $selected . '>' . ucwords($opzione->value) . '</option>';
         }
 
-        if (isset($data["success"])) {
-            $successHtml = "<div class='success'>{$data["success"]}</div>";
-            Utils::replaceTemplateContent(
-                $this->dom,
-                "server-response-template",
-                $successHtml
-            );
-        }
-
-        echo $this->dom->saveHTML();
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "dimensione-testo-options-template",
+            $dimensioneTestoContent
+        );
     }
 }

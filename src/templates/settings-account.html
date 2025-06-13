@@ -1,25 +1,34 @@
 <section class="mb-4 pb-4 border-b border-color">
     <h2 class="text-lg font-semibold mb-3">Impostazioni profilo</h2>
-    <form action="settings.php" id="change_username_form" method="post" class="base-form">
-        <div class="form-group">
-            <label for="new_username">Modifica <span lang="en">username</span></label>
-            <p class="text-secondary text-sm" id="username-instructions">
-                Digita un nuovo <span lang="en">username</span> per il tuo profilo.<br />
-                Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo
-                lettere, numeri, <span lang="en">underscore</span> e trattini.
-            </p>
-            <input
-                type="text"
-                id="new_username"
-                name="new_username"
-                class="form-input username-input"
-                placeholder=""
-                aria-describedby="username-instructions"
-            />
 
-            <button type="submit" class="form-button" name="change_username">Salva</button>
-        </div>
+    <template id="server-response-username-template"></template>
+
+    <form action="settings.php" id="change_username_form" method="post" class="base-form">
+        <fieldset>
+            <legend>Modifica <span lang="en">username</span></legend>
+
+            <div class="form-group">
+                <label for="new_username"><span lang="en">Username</span></label>
+                <p class="text-secondary text-sm" id="username-instructions">
+                    Digita un nuovo <span lang="en">username</span> per il tuo profilo.<br />
+                    Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo
+                    lettere, numeri, <span lang="en">underscore</span> e trattini.
+                </p>
+                <input
+                    type="text"
+                    id="new_username"
+                    name="new_username"
+                    class="form-input username-input"
+                    placeholder=""
+                    aria-describedby="username-instructions"
+                />
+
+                <button type="submit" class="form-button" name="change_username">Salva</button>
+            </div>
+        </fieldset>
     </form>
+
+    <template id="server-response-password-template"></template>
 
     <form action="settings.php" id="change_password_form" method="post" class="base-form">
         <fieldset>

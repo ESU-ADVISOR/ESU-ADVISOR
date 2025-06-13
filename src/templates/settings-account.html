@@ -2,11 +2,9 @@
     <h2 class="text-lg font-semibold mb-3">Impostazioni profilo</h2>
 
     <template id="server-response-username-template"></template>
-
     <form action="settings.php" id="change_username_form" method="post" class="base-form">
         <fieldset>
             <legend>Modifica <span lang="en">username</span></legend>
-
             <div class="form-group">
                 <label for="new_username"><span lang="en">Username</span></label>
                 <p class="text-secondary text-sm" id="username-instructions">
@@ -22,14 +20,12 @@
                     placeholder=""
                     aria-describedby="username-instructions"
                 />
-
                 <button type="submit" class="form-button" name="change_username">Salva</button>
             </div>
         </fieldset>
     </form>
 
     <template id="server-response-password-template"></template>
-
     <form action="settings.php" id="change_password_form" method="post" class="base-form">
         <fieldset>
             <legend>Modifica <span lang="en">password:</span></legend>
@@ -71,8 +67,10 @@
         </fieldset>
     </form>
 
+    <template id="server-response-delete-account-template"></template>
     <form id="delete-account-form" method="POST" action="settings.php">
         <div class="form-group">
+            <input type="hidden" name="delete_account" value="1" />
             <button type="button" id="delete-account-button" class="danger form-button" aria-label="Elimina Account">
                 Elimina <span lang="en">Account</span>
             </button>

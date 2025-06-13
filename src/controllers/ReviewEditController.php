@@ -30,7 +30,7 @@ class ReviewEditController implements BaseController
             return;
         }
 
-        $recensione = RecensioneModel::findByFields($user->getUsername(), $get['piatto'], $get['mensa']);
+        $recensione = RecensioneModel::findByFields($user->getId(), $get['piatto'], $get['mensa']);
 
         if (!$recensione) {
             $view->renderError("Recensione non trovata", "Recensione non trovata o non hai i permessi per modificarla.", 404);
@@ -51,19 +51,16 @@ class ReviewEditController implements BaseController
             return;
         }
 
-        // Gestione eliminazione recensione
         if ($post['action'] === 'delete') {
             $this->handleDeleteRequest($post);
             return;
         }
 
-        // Gestione aggiornamento recensione
         if (!isset($post['rating']) || !isset($post['review'])) {
             $view->renderError("Richiesta malformata", "Parametri mancanti. Per favore compila tutti i campi.", 400);
             return;
         }
 
-        // Verifica che il menu esista
         if (!MenuModel::exists($post['piatto'], $post['mensa'])) {
             $view->renderError("Menu non trovato", "La combinazione piatto-mensa specificata non esiste.", 404);
             return;
@@ -75,7 +72,7 @@ class ReviewEditController implements BaseController
             return;
         }
 
-        $recensione = RecensioneModel::findByFields($user->getUsername(), $post['piatto'], $post['mensa']);
+        $recensione = RecensioneModel::findByFields($user->getId(), $post['piatto'], $post['mensa']);
 
         if (!$recensione) {
             $view->renderError("Recensione non trovata", "Recensione non trovata o non hai i permessi per modificarla.", 404);
@@ -89,7 +86,7 @@ class ReviewEditController implements BaseController
 
         try {
             if ($recensione->saveToDB()) {
-                $recensione = RecensioneModel::findByFields($user->getUsername(), $post['piatto'], $post['mensa']);
+                $recensione = RecensioneModel::findByFields($user->getId(), $post['piatto'], $post['mensa']);
 
                 $view->render([
                     "success" => "Recensione aggiornata con successo!",
@@ -128,7 +125,7 @@ class ReviewEditController implements BaseController
             return;
         }
 
-        $recensione = RecensioneModel::findByFields($user->getUsername(), $post['piatto'], $post['mensa']);
+        $recensione = RecensioneModel::findByFields($user->getId(), $post['piatto'], $post['mensa']);
 
         if (!$recensione) {
             $view->renderError("Recensione non trovata", "Recensione non trovata o non hai i permessi per eliminarla.", 404);

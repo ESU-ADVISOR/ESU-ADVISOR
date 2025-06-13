@@ -17,13 +17,6 @@ function confirmDeleteAccount() {
     const form = document.getElementById("delete-account-form");
 
     if (form) {
-      // Create a hidden input to indicate account deletion
-      const deleteInput = document.createElement("input");
-      deleteInput.type = "hidden";
-      deleteInput.name = "delete_account";
-      deleteInput.value = "1";
-      form.appendChild(deleteInput);
-
       form.submit();
     } else {
       console.error(

@@ -10,9 +10,8 @@
         <title>Registrati | ESU Advisor</title>
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
-        
+
         <script src="scripts/register_form_validation.js" defer></script>
-        <script src="scripts/toggle-instructions.js" defer></script>
     </head>
     <body>
         <template id="header-template"></template>
@@ -22,27 +21,33 @@
                 <div class="form-header">
                     <h2 class="text-primary">Registrati</h2>
                 </div>
-                <p class="text-secondary mt-3">
-                        Hai già un account? <a href="login.php">Accedi qui</a>
-                </p>
+                <p class="text-secondary mt-3">Hai già un account? <a href="login.php">Accedi qui</a></p>
 
                 <p class="text-secondary text-sm" id="register-form-instructions">
                     Compila tutti i campi del <span lang="en">form</span> per registrarti.
                 </p>
 
-                <form action="register.php" method="POST" class="base-form" id="register-form" novalidate aria-describedby="register-form-instructions">
+                <form
+                    action="register.php"
+                    method="POST"
+                    class="base-form"
+                    id="register-form"
+                    novalidate
+                    aria-describedby="register-form-instructions"
+                >
                     <template id="server-response-template"></template>
                     <div class="form-group">
                         <label for="username" lang="en">Username</label>
                         <p class="text-secondary text-sm" id="username-instructions">
-                            Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere solo lettere, numeri, underscore e trattini.
+                            Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere
+                            solo lettere, numeri, underscore e trattini.
                         </p>
-                        <input 
-                            type="text" 
-                            id="username" 
-                            name="username" 
-                            required 
-                            class="form-input username-input" 
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            required
+                            class="form-input username-input"
                             placeholder=""
                             aria-describedby="username-instructions"
                         />
@@ -56,7 +61,8 @@
                     <div class="form-group">
                         <label for="password" lang="en">Password</label>
                         <p class="text-secondary text-sm" id="password-instructions">
-                            La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
+                            La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un
+                            carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
                         </p>
                         <input
                             type="password"
@@ -82,7 +88,6 @@
                     </div>
 
                     <button type="submit" class="form-button mt-3" aria-label="Registrati">Registrati</button>
-                    
                 </form>
             </div>
         </main>

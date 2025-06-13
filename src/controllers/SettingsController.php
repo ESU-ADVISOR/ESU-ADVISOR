@@ -26,7 +26,7 @@ class SettingsController implements BaseController
         if ($user === null) {
             $view->render([
                 "errors" => ["Utente non trovato"],
-                "template" => "server-response-template-elimina-account"
+                "template" => "server-response-delete-account-template"
             ]);
             exit();
         }
@@ -38,7 +38,7 @@ class SettingsController implements BaseController
         } else {
             $view->render([
                 "errors" => ["Eliminazione account fallita: impossibile rimuovere dal <span lang='en'>database</span>"],
-                "template" => "server-response-template-elimina-account"
+                "template" => "server-response-delete-account-template"
             ]);
             exit();
         }
@@ -51,7 +51,7 @@ class SettingsController implements BaseController
         if ($user === null) {
             $view->render([
                 "errors" => ["Utente non trovato"],
-                "template" => "server-response-template-username"
+                "template" => "server-response-username-template"
             ]);
             exit();
         }
@@ -61,7 +61,7 @@ class SettingsController implements BaseController
             $view->render([
                 "errors" => ["Lo <span lang='en'>username</span> scelto è già in uso da un altro utente"],
                 "formData" => ['new_username' => $post['new_username']],
-                "template" => "server-response-template-username"
+                "template" => "server-response-username-template"
             ]);
             exit();
         }
@@ -70,7 +70,7 @@ class SettingsController implements BaseController
             $view->render([
                 "errors" => ["<span lang='en'>Username</span> non può essere vuoto"],
                 "formData" => ['new_username' => $post['new_username']],
-                "template" => "server-response-template-username"
+                "template" => "server-response-username-template"
             ]);
             exit();
         } else {
@@ -78,7 +78,7 @@ class SettingsController implements BaseController
                 $view->render([
                     "errors" => ["Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri"],
                     "formData" => ['new_username' => $post['new_username']],
-                    "template" => "server-response-template-username"
+                    "template" => "server-response-username-template"
                 ]);
                 exit();
             }
@@ -86,7 +86,7 @@ class SettingsController implements BaseController
                 $view->render([
                     "errors" => ["Lo <span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini"],
                     "formData" => ['new_username' => $post['new_username']],
-                    "template" => "server-response-template-username"
+                    "template" => "server-response-username-template"
                 ]);
                 exit();
             }
@@ -98,14 +98,14 @@ class SettingsController implements BaseController
             $_SESSION["username"] = $user->getUsername();
             $view->render([
                 "success" => "<span lang='en'>Username</span> modificato con successo",
-                "template" => "server-response-template-username"
+                "template" => "server-response-username-template"
             ]);
             exit();
         } else {
             $view->render([
                 "errors" => ["Modifica <span lang='en'>username</span> non riuscita"],
                 "formData" => ['new_username' => $post['new_username']],
-                "template" => "server-response-template-username"
+                "template" => "server-response-username-template"
             ]);
             exit();
         }
@@ -122,7 +122,7 @@ class SettingsController implements BaseController
         if ($user === null) {
             $view->render([
                 "errors" => ["Utente non trovato"],
-                "template" => "server-response-template-password"
+                "template" => "server-response-password-template"
             ]);
             exit();
         }
@@ -160,7 +160,7 @@ class SettingsController implements BaseController
                     "new_password" => $post['new_password'],
                     "new_password_confirm" => $post['new_password_confirm']
                 ],
-                "template" => "server-response-template-password"
+                "template" => "server-response-password-template"
             ]);
             exit();
         }
@@ -170,14 +170,14 @@ class SettingsController implements BaseController
         if ($user->saveToDB()) {
             $view->render([
                 "success" => "<span lang='en'>Password</span> modificata con successo",
-                "template" => "server-response-template-password"
+                "template" => "server-response-password-template"
             ]);
             exit();
         } else {
             $view->render([
                 "errors" => ["Modifica <span lang='en'>password</span> non riuscita"],
                 "formData" => [],
-                "template" => "server-response-template-password"
+                "template" => "server-response-password-template"
             ]);
             exit();
         }
@@ -193,7 +193,7 @@ class SettingsController implements BaseController
                 $view->render([
                     "errors" => ["Mensa non trovata nel <span lang='en'>database</span>"],
                     "formData" => $post,
-                    "template" => "server-response-template-preferenze"
+                    "template" => "server-response-preferences-template"
                 ]);
                 exit();
             }
@@ -234,7 +234,7 @@ class SettingsController implements BaseController
 
                 $view->render([
                     "success" => "Preferenze salvate con successo",
-                    "template" => "server-response-template-preferenze"
+                    "template" => "server-response-preferences-template"
                 ]);
                 exit();
             } catch (\Exception $e) {
@@ -243,7 +243,7 @@ class SettingsController implements BaseController
                 $view->render([
                     "errors" => ["Impossibile salvare le preferenze della mensa: " . $e->getMessage()],
                     "formData" => $post,
-                    "template" => "server-response-template-preferenze"
+                    "template" => "server-response-preferences-template"
                 ]);
                 exit();
             }
@@ -254,7 +254,7 @@ class SettingsController implements BaseController
 
             $view->render([
                 "success" => "Preferenze salvate per questa sessione",
-                "template" => "server-response-template-preferenze"
+                "template" => "server-response-preferences-template"
             ]);
             exit();
         }
@@ -295,21 +295,21 @@ class SettingsController implements BaseController
                 if ($preferences->saveToDB()) {
                     $view->render([
                         "success" => "Preferenze salvate con successo",
-                        "template" => "server-response-template-accessibilita"
+                        "template" => "server-response-accessibility-template"
                     ]);
                     exit();
                 } else {
                     $view->render([
                         "errors" => ["Impossibile salvare le preferenze dell'utente"],
                         "formData" => $post,
-                        "template" => "server-response-template-accessibilita"
+                        "template" => "server-response-accessibility-template"
                     ]);
                     exit();
                 }
             } else {
                 $view->render([
                     "success" => "Preferenze salvate per questa sessione",
-                    "template" => "server-response-template-accessibilità"
+                    "template" => "server-response-accessibility-template"
                 ]);
             }
         } catch (\Exception $e) {
@@ -318,7 +318,7 @@ class SettingsController implements BaseController
             $view->render([
                 "errors" => ["Impossibile salvare le preferenze dell'utente: " . $e->getMessage()],
                 "formData" => $post,
-                "template" => "server-response-template-accessibilità"
+                "template" => "server-response-accessibility-template"
             ]);
             exit();
         }

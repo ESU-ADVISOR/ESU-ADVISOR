@@ -55,16 +55,8 @@ class SettingsView extends BaseView
 
         $template_id = "server-response-preferences-template";
 
-        if (isset($data["type"])) {
-            print_r($data["type"]);
-            if ($data["type"] == "username_change") {
-                $template_id = "server-response-username-template";
-            } elseif ($data["type"] == "password_change") {
-                $template_id = "server-response-password-template";
-            } elseif ($data["type"] == "accessibility_change") {
-                $template_id = "server-response-accessibility-template";
-            }
-        }
+        if (isset($data["template"])) $template_id = $data["template"];
+
 
         // ======== Messaggi di errore o successo =========
         if (isset($data["errors"])) {

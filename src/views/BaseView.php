@@ -13,8 +13,7 @@ abstract class BaseView
     protected $dom;
     protected $currentPage;
     protected $breadcrumbData = null;
-    
-    // SEO properties
+
     protected $customTitle = null;
     protected $customDescription = null;
     protected $customKeywords = null;
@@ -35,66 +34,53 @@ abstract class BaseView
     {
         $this->breadcrumbData = $data;
     }
-    
-    /**
-     * Set custom SEO title
-     */
+
+
     public function setTitle(string $title): void
     {
         $this->customTitle = $title;
     }
-    
-    /**
-     * Set custom SEO description
-     */
+
     public function setDescription(string $description): void
     {
         $this->customDescription = $description;
     }
-    
-    /**
-     * Set custom SEO keywords
-     */
+
+
     public function setKeywords(string $keywords): void
     {
         $this->customKeywords = $keywords;
     }
-    
-    /**
-     * Add basic SEO meta tags
-     */
+
     protected function addBasicSEO(): void
     {
         $head = $this->dom->getElementsByTagName('head')->item(0);
         if (!$head) {
             return;
         }
-        
-        // Use custom values if set, otherwise use defaults
+
         $title = $this->customTitle ?? $this->getDefaultTitle();
         $description = $this->customDescription ?? $this->getDefaultDescription();
         $keywords = $this->customKeywords ?? $this->getDefaultKeywords();
-        
-        // Update title
+
         $titleElements = $this->dom->getElementsByTagName('title');
         if ($titleElements->length > 0) {
             $titleElements->item(0)->textContent = $title;
         }
-        
-        // Add/update meta tags
+
         $this->updateOrCreateMeta('name', 'description', $description);
         $this->updateOrCreateMeta('name', 'keywords', $keywords);
         $this->updateOrCreateMeta('name', 'language', 'it');
         $this->updateOrCreateMeta('name', 'author', 'Giacomo Loat, Giulio Bottacin, Malik Giafar Mohamed, Manuel Felipe Vasquez - Università di Padova');
     }
-    
+
     /**
      * Get default title based on current page
      */
     private function getDefaultTitle(): string
     {
         $baseTitle = "ESU Advisor";
-        
+
         switch ($this->currentPage) {
             case 'index':
                 return "Menu Mense Universitarie Padova | $baseTitle";
@@ -114,10 +100,7 @@ abstract class BaseView
                 return $baseTitle;
         }
     }
-    
-    /**
-     * Get default description based on current page
-     */
+
     private function getDefaultDescription(): string
     {
         switch ($this->currentPage) {
@@ -139,10 +122,8 @@ abstract class BaseView
                 return "Consulta i menu delle mense universitarie di Padova, leggi recensioni e condividi la tua esperienza sui piatti dell'ESU.";
         }
     }
-    
-    /**
-     * Get default keywords based on current page
-     */
+
+
     private function getDefaultKeywords(): string
     {
         switch ($this->currentPage) {
@@ -164,18 +145,18 @@ abstract class BaseView
                 return "mense universitarie padova, ESU, recensioni piatti, menu università";
         }
     }
-    
-    /**
-     * Update or create meta tag
-     */
+
+
     private function updateOrCreateMeta(string $attribute, string $name, string $content): void
     {
         $head = $this->dom->getElementsByTagName('head')->item(0);
         $xpath = new DOMXPath($this->dom);
         $existing = $xpath->query("//meta[@{$attribute}='{$name}']")->item(0);
-        
+
         if ($existing) {
-            $existing->setAttribute('content', $content);
+            if ($existing instanceof DOMElement) {
+                $existing->setAttribute('content', $content);
+            }
         } else {
             $meta = $this->dom->createElement('meta');
             $meta->setAttribute($attribute, $name);
@@ -184,17 +165,11 @@ abstract class BaseView
         }
     }
 
-    /**
-     * Genera l'HTML della breadcrumb secondo la struttura corretta:
-     * - Primo livello (nessuna breadcrumb): Home, Profilo, Recensione, Login, Register, Settings, Errore
-     * - Secondo livello (con breadcrumb): Piatto, Modifica Recensione
-     */
     private function generateBreadcrumbHTML(): string
     {
         $html = '<h1>&rsaquo; ';
 
         if ($this->breadcrumbData && isset($this->breadcrumbData['parent'])) {
-            // Pagine di secondo livello con breadcrumb definito
             $parent = $this->breadcrumbData['parent'];
             $html .= '<a href="' . htmlspecialchars($parent['url']) . '">'
                 . htmlspecialchars($parent['title']) . '</a>';
@@ -204,14 +179,13 @@ abstract class BaseView
             $prefix = $this->breadcrumbData['prefix'] ?? '';
             $html .= htmlspecialchars($prefix . $currentTitle);
         } else {
-            // Pagine di primo livello - mostrano solo il nome della pagina
             $pageNames = [
                 'index' => 'Home',
                 'profile' => 'Profilo',
                 'review' => 'Recensione',
                 'settings' => 'Impostazioni',
                 'login' => 'Login',
-                'register' => 'Register',
+                'register' => 'Registrati',
                 'error' => 'Errore'
             ];
 
@@ -227,9 +201,8 @@ abstract class BaseView
 
     public function render(array $data = []): void
     {
-        // Apply SEO meta tags
         $this->addBasicSEO();
-        
+
         $headerContent = file_get_contents(
             __DIR__ . "/../templates/header.html"
         );

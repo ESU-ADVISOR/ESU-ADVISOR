@@ -28,7 +28,7 @@ class ReviewView extends BaseView
         foreach ($mense as $mensa) {
 
             $menseContent .=
-                "<option value=\"" . $mensa->getNome() . "\">" . $mensa->getNome() . "</option>";
+                "<option class=\"mensa-option\" value=\"" . $mensa->getNome() . "\">" . $mensa->getNome() . "</option>";
 
             $piattiContent .= "<datalist class=\"dynamic-datalist\" data-mensa-name=\"" . $mensa->getNome() . "\">";
             $piatti = $mensa->getPiatti();

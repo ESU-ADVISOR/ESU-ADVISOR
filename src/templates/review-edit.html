@@ -24,22 +24,24 @@
                     <input type="hidden" name="action" value="update" id="form-action" />
                     <div class="form-group">
                         <label for="mensa">Nome della mensa:</label>
+                        <p class="text-secondary text-sm">
+                            La mensa non può essere modificata durante l'aggiornamento di una recensione.
+                        </p>
                         <select id="mensa" name="mensa" required class="form-select" disabled>
                             <option value="">Seleziona una mensa</option>
                             <template id="mense-select-template"></template>
                         </select>
-                        <p class="text-secondary text-sm">
-                            La mensa non può essere modificata durante l'aggiornamento di una recensione.
-                        </p>
+                        
                     </div>
 
                     <div class="form-group">
                         <label for="piatto">Nome del piatto:</label>
-                        <input type="text" id="piatto" class="form-input" disabled />
-                        <template id="hidden-piatto-value-template"></template>
                         <p class="text-secondary text-sm">
                             Il piatto non può essere modificato durante l'aggiornamento di una recensione.
                         </p>
+                        <input type="text" id="piatto" class="form-input" disabled />
+                        <template id="hidden-piatto-value-template"></template>
+                        
                     </div>
 
                     <div class="form-group">
@@ -56,7 +58,7 @@
 
                     <div class="form-group">
                         <label id="rating-label">Valutazione:</label>
-                        <div class="rating" aria-labelledby="rating-label rating-description">
+                        <div class="rating" aria-labelledby="rating-label" aria-describedby="rating-description">
                             <p id="rating-description" class="sr-only">Valuta da 1 a 5 stelle, dove 5 è il massimo</p>
                             <div class="rating-container">
                                 <input type="radio" id="star5" name="rating" value="5" class="visually-hidden" />
@@ -82,7 +84,6 @@
                                     <span class="sr-only">2 stelle - discreto</span>
                                     <template id="star-template-2"></template>
                                 </label>
-
                                 <input
                                     type="radio"
                                     id="star1"

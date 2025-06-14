@@ -55,7 +55,7 @@ class PiattoView extends BaseView
 
         parent::render();
 
-        $piattoTitle = "<h2 class=\"card-title\" id=\"primoContenuto\">" . htmlspecialchars($data["nome"]) . "</h2>";
+        $piattoTitle = "<h2 class=\"card-title\">" . htmlspecialchars($data["nome"]) . "</h2>";
 
         $piatto = PiattoModel::findByName($data["nome"]);
 
@@ -88,8 +88,8 @@ class PiattoView extends BaseView
             __DIR__ . "/../../public_html/images/star_filled.svg"
         );
 
-        $piattoRating = "<div class=\"ratings\">";
         $avgVote = $piatto->getAvgVote() ?: 0;
+        $piattoRating = "<div class=\"ratings\" aria-label=\"" . $avgVote . " su 5\">";
         for ($i = 0; $i < $avgVote; $i++) {
             $piattoRating .= $starFilledSVG;
         }
@@ -140,7 +140,7 @@ class PiattoView extends BaseView
                 $piattoReview .= "<div class=\"review-header\">";
                 $piattoReview .= "<h4 class=\"review-author\">" . htmlspecialchars($recensione->getUsername()) . "</h4>";
 
-                $piattoReview .= "<div class=\"ratings\">";
+                $piattoReview .= "<div class=\"ratings\" aria-label=\"Valutazione: " . $recensione->getVoto() . " su 5\">";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {
                     $piattoReview .= $starFilledSVG;
                 }

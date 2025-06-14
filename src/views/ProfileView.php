@@ -109,7 +109,8 @@ class ProfileView extends BaseView
                 $recensioniContent .= "<div class='review-header'>";
                 $recensioniContent .= "<h4>" . htmlspecialchars($recensione->getPiatto()) . "</h4>";
 
-                $recensioniContent .= "<div class='ratings'>";
+                $recensioniContent .= "<div class='ratings' aria-label='Valutazione: " .
+                    $recensione->getVoto() . " su 5'>";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {
                     $recensioniContent .= $starFilledSVG;
                 }

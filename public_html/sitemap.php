@@ -18,7 +18,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
-    <!-- Main pages -->
+    <!-- Main public pages -->
     <url>
         <loc><?php echo $baseUrl; ?>/index.php</loc>
         <lastmod><?php echo $currentDate; ?></lastmod>
@@ -44,6 +44,13 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         <loc><?php echo $baseUrl; ?>/settings.php</loc>
         <lastmod><?php echo $currentDate; ?></lastmod>
         <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc><?php echo $baseUrl; ?>/review.php</loc>
+        <lastmod><?php echo $currentDate; ?></lastmod>
+        <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     
@@ -62,6 +69,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         }
     } catch (Exception $e) {
         // Continue if mense can't be loaded
+        error_log("Sitemap generation error (mense): " . $e->getMessage());
     }
     ?>
     
@@ -83,6 +91,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         }
     } catch (Exception $e) {
         // Continue without dish URLs if error
+        error_log("Sitemap generation error (piatti): " . $e->getMessage());
     }
     ?>
     

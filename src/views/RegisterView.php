@@ -20,7 +20,7 @@ class RegisterView extends BaseView
             foreach ($data["errors"] as $error) {
                 $errorHtml .= "<div class='error'>$error</div>";
             }
-            $errorHtml = "<div class='error-container' role='alert' aria-live='assertive'>$errorHtml</div>";
+            $errorHtml = "<div class='error-container' id='server-error-container' role='alert' aria-live='assertive'>$errorHtml</div>";
             Utils::replaceTemplateContent(
                 $this->dom,
                 "server-response-template",
@@ -68,14 +68,14 @@ class RegisterView extends BaseView
                 );
             }
         }
-
+/*
         if (isset($data["focus"])) {
             $focusElement = $this->dom->getElementById($data["focus"]);
             if ($focusElement) {
                 $focusElement->setAttribute("autofocus", "autofocus");
             }
         }
-
+*/
         echo $this->dom->saveHTML();
     }
 }

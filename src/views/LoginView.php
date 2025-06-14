@@ -20,7 +20,7 @@ class LoginView extends BaseView
             foreach ($data["errors"] as $error) {
                 $errorHtml .= "<div class='error'>$error</div>";
             }
-            $errorHtml = "<div class='error-container' role='alert' aria-live='assertive'>$errorHtml</div>";
+            $errorHtml = "<div class='error-container' id='server-error-container' role='alert' aria-live='assertive'>$errorHtml</div>";
             Utils::replaceTemplateContent(
                 $this->dom,
                 "server-response-template",
@@ -29,7 +29,7 @@ class LoginView extends BaseView
         }
 
         if (isset($data["success"])) {
-            $successHtml = "<div class='success' role='polite' aria-live='region'>{$data["success"]}</div>";
+            $successHtml = "<div class='success' id='server-success-message' role='polite' aria-live='region'>{$data["success"]}</div>";
             Utils::replaceTemplateContent(
                 $this->dom,
                 "server-response-template",

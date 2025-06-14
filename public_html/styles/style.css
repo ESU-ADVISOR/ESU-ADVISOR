@@ -690,15 +690,15 @@ p {
 
 .sidebar-auth-button.secondary {
     background-color: transparent;
-    color: var(--text-secondary);
-    border-color: var(--secondary-button-border);
+    color: var(--primary);
+    border-color: var(--primary);
 }
 
 .sidebar-auth-button.secondary:hover {
-    background-color: var(--secondary-button);
-    color: var(--text-secondary);
+    background-color: var(--primary-button);
+    color: var(--text-on-primary);
     text-decoration: none;
-    filter: brightness(200%);
+    filter: brightness(100%);
 }
 
 .sidebar-auth-button.danger {
@@ -1185,8 +1185,9 @@ body {
 .form-button.secondary:hover {
     /* background-color: var(--primary); */
     color: var(--text-on-primary);
-    border-color: var(--text-on-primary);
-    filter: brightness(200%);
+    border-color: var(--primary);
+    background-color: var(--primary-button);
+    filter: brightness(100%);
 }
 
 .nav-button.danger,

@@ -114,11 +114,7 @@ Il progetto è stato realizzato da un gruppo di quattro studenti con competenze 
 
 == Analisi degli Utenti Target
 === Caratteristiche Primarie degli Utenti
-- *Studenti universitari* presso l'Università di Padova
-- Età compresa tra 18 e 30 anni
-- Utilizzo frequente di dispositivi mobili
-- Esigenze alimentari specifiche (allergie, intolleranze, preferenze)
-- Budget limitato e ricerca di opzioni convenienti
+Il pubblico di riferimento è costituito principalmente da studenti universitari di Padova, con un'età compresa tra 18 e 30 anni, che fanno un uso frequente di dispositivi mobili.  Si è tenuto conto anche delle loro possibili esigenze alimentari specifiche (come allergie o intolleranze) e della loro attenzione a opzioni di pasto convenienti, dato il budget limitato.
 
 === Possibili Ricerche sui Motori di Ricerca
 - "mense universitarie Padova"
@@ -148,7 +144,7 @@ Il progetto è stato realizzato da un gruppo di quattro studenti con competenze 
 - Implementazione delle validazioni form
 - Architettura MVC backend in PHP
 - Gestione dell'autenticazione e autorizzazione
-- Sviluppo delle API RESTful
+- Sviluppo delle API REST
 
 === Struttura Database (Malik Giafar Mohamed)
 - Design dello schema del database normalizzato
@@ -168,54 +164,31 @@ Il progetto è stato realizzato da un gruppo di quattro studenti con competenze 
 === Integrazione dei Componenti
 - Sviluppo asincrono di componenti mutualmente esclusive
 - Utilizzo dei tag `<template>` per separare business layer da presentation layer
-- API RESTful per la comunicazione frontend-backend
+- API REST per la comunicazione frontend-backend
 - Architettura MVC per separazione delle responsabilità
 
 = Descrizione del Sito
 
 == Panoramica Generale
-ESU-Advisor è un'applicazione web moderna che consente agli studenti di:
-- Visualizzare le mense universitarie disponibili con informazioni dettagliate
-- Consultare i menu giornalieri di ogni mensa
-- Leggere e scrivere recensioni sui piatti
-- Gestire preferenze alimentari e allergeni
-- Personalizzare l'esperienza utente con temi e accessibilità
+ESU-Advisor è un'applicazione web moderna che consente agli studenti di visualizzare le mense universitarie con informazioni dettagliate, consultare i menu giornalieri, leggere e scrivere recensioni sui piatti, oltre a gestire preferenze alimentari, allergeni e personalizzare l'esperienza utente con temi e opzioni di accessibilità.
 
 == Funzionalità Principali
 
-=== Sistema di Gestione Mense
-- 7 mense universitarie dell'ESU di Padova
-- Informazioni complete: indirizzo, telefono, orari di apertura
-- Integrazione con Google Maps per la localizzazione
-- Menu settimanali generati automaticamente
+Una funzionalità cardine è il Sistema di *Gestione Mense*, che offre informazioni complete su 7 mense ESU di Padova e i piatti presenti nel loro menù, includendo indirizzo, orari di apertura e un'integrazione con Google Maps per facilitarne la localizzazione.
 
-=== Sistema di Recensioni
-- Valutazione da 1 a 5 stelle per ogni piatto
-- Commenti testuali liberi
-- Calcolo automatico della media delle valutazioni
-- Selezione automatica del "Piatto del Giorno" per ogni mensa
+Il *Sistema di Recensioni* permette agli utenti di lasciare una valutazione da 1 a 5 stelle per ogni piatto, accompagnata da commenti testuali. La piattaforma calcola poi in automatico il "Piatto del Giorno" per ogni mensa.
 
-=== Gestione Utenti
-- Registrazione e autenticazione sicura
-- Profilo utente personalizzabile
-- Gestione preferenze di accessibilità
-- Sistema di gestione allergeni personali
+La *Gestione Utenti* include un sistema di registrazione e autenticazione sicuro, profili utente personalizzabili e la possibilità di gestire le proprie preferenze di accessibilità e gli allergeni.
 
-=== Accessibilità Universale
-- Conformità agli standard WCAG 2.0
-- Supporto per screen reader
-- Navigazione completa da tastiera
-- Font OpenDyslexic per utenti dislessici
-- Regolazione dimensioni testo e icone
-- Modalità chiara/scura/automatica
+Infine, una caratteristica fondamentale è l'*Accessibilità Universale*, che garantisce la conformità agli standard WCAG 2.0, il pieno supporto per screen reader, la navigazione completa da tastiera, l'uso di un font specifico per persone con dislessia (#link("https://antijingoist.itch.io/opendyslexic")[*OpenDyslexic*]), la personalizzazione dei temi visivi (di default segue il tema di sistema), e la dimensione del testo.
 
 = Architettura del Software
 
 == Pattern Architetturale MVC
-
-Il progetto implementa rigorosamente il pattern Model-View-Controller per garantire:
+Il progetto implementa rigorosamente il pattern Model-View-Controller (MVC) per garantire modularità e manutenibilità, dove:
 
 === Model Layer
+Gestisce la logica dei dati e le interazioni con il database:
 - *UserModel*: Gestione utenti e autenticazione
 - *MenseModel*: Informazioni sulle mense e orari
 - *PiattoModel*: Catalogo piatti con categorie e allergeni
@@ -223,6 +196,7 @@ Il progetto implementa rigorosamente il pattern Model-View-Controller per garant
 - *PreferenzeUtenteModel*: Personalizzazione esperienza utente
 
 === View Layer
+Si occupa della presentazione dei dati attraverso un sistema di template che separa il contenuto dalla formattazione:
 - *IndexView*: Homepage con selezione mense
 - *PiattoView*: Dettaglio piatto e recensioni
 - *LoginView* / *RegisterView*: Autenticazione
@@ -230,6 +204,7 @@ Il progetto implementa rigorosamente il pattern Model-View-Controller per garant
 - Template system con separazione content/presentation
 
 === Controller Layer
+Gestisce le richieste dell'utente, dialoga con il Model e seleziona la View appropriata da mostrare con i dati appropriati:
 - *IndexController*: Logica homepage e selezione mense
 - *PiattoController*: Gestione visualizzazione piatti
 - *LoginController* / *RegisterController*: Autenticazione
@@ -241,18 +216,21 @@ Il progetto implementa rigorosamente il pattern Model-View-Controller per garant
 ```
 ESU-ADVISOR/
 ├── docs/                    # Documentazione progetto
-├── src/
-│   ├── controllers/         # Controller MVC
-│   ├── models/             # Model MVC
-│   ├── views/              # View MVC
-│   └── utilities/          # Classi di utilità
-├── public/
-│   ├── css/                # Fogli di stile modulari
-│   ├── js/                 # Script client-side
+├── public-html/             # File esposti pubblicamente accessibili
+│   ├── styles/                # Fogli di stile modulari
+│   ├── scripts/                 # Script client-side
 │   ├── images/             # Risorse grafiche
+│   ├── fonts/             # Risorse grafiche
+│   ├── *.php               # pagine
+│   ├── .htaccess               # pagine
+│   ├── robots.txt               # pagine
 │   └── index.php           # Entry point applicazione
-├── db.sql                  # Schema database
-├── Dockerfile              # Containerizzazione
+├── src/
+│   ├── controllers/        # Controller MVC
+│   ├── models/             # Model MVC
+
+│   ├── views/              # View MVC
+├── db.sql                   # Schema database
 └── README.md
 ```
 

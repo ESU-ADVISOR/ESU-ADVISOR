@@ -21,7 +21,6 @@ class Utils
                 return;
             }
 
-            // $newContent = '<?xml encoding="UTF-8">' .
             $newContent =    '<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8">' .
                 '<body>' . $newContent . '</body></html>';
 

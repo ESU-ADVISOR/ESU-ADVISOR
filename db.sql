@@ -1,7 +1,6 @@
 SET CHARACTER SET utf8mb4;
 
 DROP VIEW IF EXISTS mensa_orari_apertura;
-DROP VIEW IF EXISTS piatto_recensioni_foto;
 DROP TABLE IF EXISTS preferenze_utente;
 DROP TABLE IF EXISTS allergeni_utente;
 DROP TABLE IF EXISTS piatto_allergeni;
@@ -81,13 +80,13 @@ CREATE TABLE recensione (
 
 CREATE TABLE piatto_foto (
     photoid INT AUTO_INCREMENT,
-    foto BLOB NOT NULL,
+    foto VARCHAR(100) NOT NULL,
     piatto VARCHAR(100) NOT NULL,
     PRIMARY KEY (photoid, piatto),
     FOREIGN KEY (piatto) REFERENCES piatto (nome) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- Lista allergene dall'EU https://www.salute.gov.it/imgs/C_17_pagineAree_1460_0_file.pdf
+-- Lista allergeni dall'EU https://www.salute.gov.it/imgs/C_17_pagineAree_1460_0_file.pdf
 CREATE TABLE piatto_allergeni (
     allergene ENUM ("Nessuno", "Glutine", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", "Frutta_a_guscio", "Sedano", "Senape", "Sesamo", "Anidride_solforosa", "Lupini", "Molluschi"
     ) NOT NULL DEFAULT "Nessuno",
@@ -113,18 +112,6 @@ CREATE TABLE allergeni_utente (
     PRIMARY KEY (idUtente, allergene),
     FOREIGN KEY (idUtente) REFERENCES utente (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-CREATE VIEW piatto_recensioni_foto AS
-SELECT
-    p.nome AS piatto,
-    AVG(r.voto) AS media_stelle,
-    GROUP_CONCAT(DISTINCT pf.foto ORDER BY RAND() SEPARATOR ", ") AS foto_casuali
-FROM
-    piatto p
-    JOIN recensione r ON p.nome = r.piatto
-    LEFT JOIN piatto_foto pf ON p.nome = pf.piatto
-GROUP BY
-    p.nome;
 
 INSERT INTO utente (password, dataNascita, username)
 VALUES ( "$2y$10$wxWPWc.4uvQrXY4lrTdqiudjxn8aVAB129PUW/f73KkZS.oknZqNu", "1990-01-01", "Malik"),

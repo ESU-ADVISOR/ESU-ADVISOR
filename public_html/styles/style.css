@@ -3034,6 +3034,15 @@ input:checked + .slider:before {
     left: -9999em;
 }
 
+.navigationHelp:focus {
+    position: static;
+    left: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+    overflow: visible;
+}
+
 #orari-mensa-description {
     position: absolute;
     left: -9999em;

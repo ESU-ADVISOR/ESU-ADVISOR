@@ -87,7 +87,7 @@ class IndexView extends BaseView
             ];
 
             $menseInfoContent .= "
-                <p id='orari-mensa-description-" . htmlspecialchars(str_replace(' ', '-', strtolower($mensaId))) . "'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
+                <p class='sr-only' id='orari-mensa-description-" . htmlspecialchars(str_replace(' ', '-', strtolower($mensaId))) . "'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
                 <table aria-describedby=\"orari-mensa-description-" . htmlspecialchars(str_replace(' ', '-', strtolower($mensaId))) . "\">
                     <caption>Orari:</caption>
                     <thead>

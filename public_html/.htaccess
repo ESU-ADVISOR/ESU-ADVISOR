@@ -1,6 +1,11 @@
 RewriteEngine On
 RewriteBase /
 
+# Prevent path info on PHP files - redirect to clean URLs
+RewriteCond %{REQUEST_URI} ^(.+\.php)(/.*)?$
+RewriteCond %2 !^$
+RewriteRule ^(.+\.php)/.*$ %1 [R=301,L]
+
 # Dynamic error handling - captures first directory segment
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

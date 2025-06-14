@@ -19,6 +19,7 @@
                     class="form-input username-input"
                     placeholder=""
                     aria-describedby="username-instructions"
+                    required
                 />
                 <input type="submit" class="form-button" name="change_username" value="Salva"/>
             </div>
@@ -37,6 +38,7 @@
                     name="current_password"
                     class="form-input password-input"
                     placeholder=""
+                    required
                 />
 
                 <label for="new_password">Nuova <span lang="en">password</span></label>
@@ -51,15 +53,17 @@
                     class="form-input password-input"
                     placeholder=""
                     aria-describedby="new-password-instructions"
+                    required
                 />
 
-                <label for="new_password_confirm">Conferma nuova <span lang="en">password</span></label>
+                <label for="new_password_confirm">Ripeti la nuova <span lang="en">password</span></label>
                 <input
                     type="password"
                     id="new_password_confirm"
                     name="new_password_confirm"
                     class="form-input password-input"
                     placeholder=""
+                    required
                 />
 
                 <input type="submit" class="form-button" name="change_password" value="Salva"/>

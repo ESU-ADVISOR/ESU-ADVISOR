@@ -29,7 +29,7 @@ class RegisterView extends BaseView
         }
 
         if (isset($data["success"])) {
-            $successHtml = "<p class='success'>{$data["success"]} Ora puoi effettuare il <a href='login.php' lang='en'>login</a></p>";
+            $successHtml = "<p class='success' role='polite' aria-live='region'>{$data["success"]} Ora puoi effettuare il <a href='login.php' lang='en'>login</a></p>";
             Utils::replaceTemplateContent(
                 $this->dom,
                 "server-response-template",

@@ -29,7 +29,7 @@ class LoginView extends BaseView
         }
 
         if (isset($data["success"])) {
-            $successHtml = "<div class='success'>{$data["success"]}</div>";
+            $successHtml = "<div class='success' role='polite' aria-live='region'>{$data["success"]}</div>";
             Utils::replaceTemplateContent(
                 $this->dom,
                 "server-response-template",

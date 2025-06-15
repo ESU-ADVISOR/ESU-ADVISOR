@@ -62,8 +62,11 @@
           align(left)[*Anno*], align(left)[2024/25]
         )
       ]
-      #v(0.5cm)
-      #v(0.5cm)
+      #v(0.3cm)
+      #text(size: 15pt)[
+        *Indirizzo web:* http://tecweb.studenti.math.unipd.it/~malik/ESU-ADVISOR/
+      ]
+      #v(0.3cm)
       #text()[*A cura di*]
       #align(center)[
         #table(
@@ -78,8 +81,6 @@
       ]
       #v(1cm)
       #text(size: 12pt)[
-        *Indirizzo web del sito:* http://tecweb.studenti.math.unipd.it/~malik/ESU-ADVISOR/ \
-        *Credenziali amministratore:* admin / admin \
         *Credenziali utente:* user / user \
         *Email referente:* malik.giafarmohamed\@studenti.unipd.it
       ]
@@ -162,8 +163,7 @@ Il pubblico di riferimento è costituito principalmente da studenti universitari
 - *Docker* per lo sviluppo containerizzato senza prerequisiti di sistema
 - *Visual Studio Code* come IDE condiviso con Live Share
 
-= Descrizione del Sito
-ESU-Advisor è un'applicazione web moderna che consente agli studenti di visualizzare le mense universitarie con informazioni dettagliate, consultare i menu giornalieri, leggere e scrivere recensioni sui piatti, oltre a gestire preferenze alimentari, allergeni e personalizzare l'esperienza utente con temi e opzioni di accessibilità.
+= Progettazione
 
 == Schema organizzativo
 Siccome la struttura del sito web si differenzia nel contenuto solo nel tag `<main>` mantentendo la struttura,
@@ -220,7 +220,7 @@ Inoltre, sempre nella stessa pagina è possibile impostare una mensa preferita, 
 Sarà anche possibile impostare delle preferenze alimentari in modo che possano essere segnalati i piatti che contengono un insieme di allergeni specificati dagli utenti.
 
 
-= Architettura del Software
+= Implementazione
 
 == Struttura delle Directory
 l progetto è organizzato con una netta separazione tra i file accessibili pubblicamente (public-html), che includono pagine PHP, stili, script e risorse, e il codice sorgente del backend (src), che contiene i file MVC e di configurazione, non esposti direttamente sul web.
@@ -291,7 +291,7 @@ Gestisce le richieste dell'utente, dialoga con il Model e seleziona la View appr
 - *SettingsController*: Configurazione utente
 
 === Tecnica di Templating
-Per separare la struttura dal comportamento abbiamo fatto uso del tag *`<template>`* fornito da HTML per rispettare la sintassi XML nel file, dove per ogni tag veniva aggiunto un id univoco con il formato *`nome-contenuto-template`*. Poi per inserire i dati relativi si è fatto uso della funzione *`replaceTemplateContent($dom, $templateId, $newContent)`* presente nel file Utils.php, dove:
+Per separare la struttura dal comportamento abbiamo fatto uso del tag *`<template>`* fornito da HTML per evitare di inserire snippet di PHP all'interno della struttura del documento. Per ogni tag viene aggiunto un id univoco con il formato *`nome-contenuto-template`*. Poi per inserire i dati relativi si è fatto uso della funzione *`replaceTemplateContent($dom, $templateId, $newContent)`* presente nel file `Utils.php`, dove:
 - *`$dom`* contiene il testo dell'intero file html parsabile contenente i tag *`<template>`*
 - *`$templateId`* l'id del tag *`<template>`* che si vuole sostituire
 - *`$newContent`* il contenuto in formato HTML da inserire
@@ -304,12 +304,12 @@ Questa funzione viene utilizzata spesso per gestire tutte le varie componenti de
 Per gestire gli stili che abbiamo applicato alla pagina sono state definite delle variabili globali per rendere coerenti le proprieta dei vari elementi, come colore dei bottoni, il testo, background di elementi ripetuti, spaziature, font, etc..., inoltre vi è presente la variazione delle stesse variabili per il tema scuro che verranno applicate in base ad una classe che verrà aggiunta al nodo root *`<html>`* per favorire l'uso delle stesse classi per entrami i temi
 
 == Scripts Javascript e Validazione dell'input
-Ove fosse necessario a favore di fornire delle funzionalità al sito, sono stati utilizzati script javascript per gestire il comportamento del sito, in particolare:
-- Validazione dell'input dei form lato client: non strettamente necessari in quanto vi è l'equivalente validazione a lato server per motivi di sicurezza, ma aiuta l'utente ad inserire correttametne i dati inseriti prima di ritorvarsi con una pagina d'errore
-- Funzionalità di ricera dei piatti nel menù: per favorire la ricerca di alimenti o allergeni tra i piatti della mensa attualmente selezionata in maniera veloce, vi è implementata una barra di ricerca in cima alla sezione del menu del giorno, che filtrerà i piatti presenti nascondendo quelli che non corrispondono ai termini di ricerca.
-- Suggerimenti piatti durante la recensione: per facilitare il processo di recensione dei piatti, una volta che viene selezionata la mensa, il campo di input del nome del piatto fornirà una lista dei piatti di cui tale mensa dispone al favorire di evitare problemi di spelling del nome del piatto, questo è stato scelto rispetto ad una lista come nel caso della mensa per rendere più semplice e veloce l'inserimento del nome nel caso il menù della mensa contenesse numerevoli opzioni.
+Sono stati utilizzati script javascript per gestire il comportamento del sito, in particolare:
+- *Validazione dell'input dei form lato client*: non strettamente necessari in quanto vi è l'equivalente validazione a lato server per motivi di sicurezza, ma aiuta l'utente ad inserire correttamente i dati richiesti prima di ritrovarsi con una pagina d'errore
+- *Funzionalità di ricerca dei piatti nel menù*: per favorire la ricerca di alimenti o allergeni tra i piatti della mensa attualmente selezionata in maniera veloce, vi è implementata una barra di ricerca in cima alla sezione del menu del giorno, che filtrerà i piatti presenti nascondendo quelli che non corrispondono ai termini di ricerca.
+- *Suggerimenti piatti durante la recensione*: per facilitare il processo di recensione dei piatti, una volta selezionata la mensa, al momento della scrittura del nome del piatto, verrà fornita una lista dei piatti di cui la mensa dispone al fine di evitare problemi di spelling del nome del piatto. Questa scelta è preferibile rispetto ad avere soltanto una lista, come nel caso della selezione della mensa, per rendere più semplice e veloce l'inserimento del nome del piatto nel caso il menù della mensa contenesse numerevoli opzioni.
 
-A parte alcune funzionalità precedentemente descritte le funzionalità di base del sito rimangono funzionanti pur non avendo abilitato javascript nel browser.
+Il sito web inoltre può funzionare correttamente pur non avendo abilitato javascript nel browser. In tal caso verrà mostrato un avviso che intimerà all'utente di abilitarlo.
 
 == Gestione degli errori di navigazione
 Nel caso si volesse fare accesso a link che puntano a risorse inesistenti or malformati, come ad esempio `http://<server>/index.php/wrong/path` o `http://<server>/wrong-filename.php`, sono state definite delle regole nel file `public_html/.htaccess` per indicare cosa fare in queste condizioni. In particolare se un utente volesse visitare una pagina che non esite o che non può visitare senza un account (ad esempio `review.php` e `profile.php`), essi verrebbero reindirizzati alla pagina `error.php` dove in base alle condizioni del reindirizzamento verranno indicate informazioni utili all'utente per comprendere cosa è appena successo e ad indicargli cosa dovrebbe fare, nel esempio corrente gli indicherà che "È necessario effettuare l'accesso per visualizzare questa pagina", con sotto i pulsanti per effettuare l'accesso o la registrazione se l'utente non ha già un account.
@@ -329,14 +329,17 @@ Lo schema è normalizzato fino alla Terza Forma Normale (3NF) per minimizzare la
     [mensa], [Informazioni mense], [1:N con orarioapertura, menu],
     [piatto], [Catalogo piatti], [1:N con recensione, menu, piatto_foto],
     [utente], [Gestione utenti], [1:N con recensione, 1:1 con preferenze_utente],
-    [recensione], [Sistema valutazioni], [N:1 con utente, piatto],
+    [orarioapertura], [Orari mense], [-],
     [menu], [Associazione piatti-mense], [N:N tra piatto e mensa],
+    [recensione], [Sistema valutazioni], [N:1 con utente, piatto],
+    [piatto_foto], [Associazione piatti-foto], [-],
     [piatto_allergeni], [Gestione allergeni], [N:N tra piatto e allergeni],
-    [preferenze_utente], [Personalizzazione], [1:1 con utente]
+    [preferenze_utente], [Personalizzazione], [1:1 con utente],
+    [allergeni_utente], [Personalizzazione], [1:1 con utente]
   )
 )
 Lo schema si articola attorno a tre entità fondamentali: le *mense*, i *piatti* e gli *utenti*.
-- *mensa:* Questa tabella contiene le informazioni anagrafiche di ogni mensa universitaria. Il nome della mensa funge da chiave primaria e identificatore univoco. Gli altri campi includono l' indirizzo, il numero di telefono e un `maps_link` per la localizzazione geografica.
+- *mensa:* Questa tabella contiene le informazioni anagrafiche di ogni mensa universitaria. Il nome della mensa funge da chiave primaria e identificatore univoco. Gli altri campi includono l' indirizzo, il numero di telefono e un link esterno a Google Maps per la localizzazione geografica.
 - *piatto:* Memorizza il catalogo di tutti i piatti che possono essere serviti. Ogni piatto è identificato univocamente dal suo nome (chiave primaria) e appartiene a una categoria predefinita ("Primo", "Secondo", "Contorno"). Contiene inoltre una descrizione testuale.
 - *utente:* Gestisce i dati degli utenti registrati alla piattaforma. Ogni utente ha un id numerico auto-incrementale come chiave primaria e uno username univoco. La tabella memorizza anche la password (che verrà sottoposta ad hashing prima dell'inserimento) e la data di nascita.
 
@@ -350,35 +353,33 @@ Infine, sono presenti tabelle per gestire informazioni aggiuntive sui piatti e l
   - *piatto_foto* e *piatto_allergeni:* Queste due tabelle aggiungono dettagli ai piatti. La prima gestisce l'associazione uno-a-molti tra un piatto e le sue foto (salvando il percorso all'immagine nel db). La seconda definisce una relazione molti-a-molti per associare a ogni piatto uno o più allergene da una lista predefinita conforme alla normativa europea.
   - *preferenze_utente* e *allergeni_utente:* Queste tabelle sono dedicate alla personalizzazione dell'esperienza utente. `preferenze_utente` ha una relazione uno-a-uno con utente e memorizza impostazioni di accessibilità come la `dimensione_testo`, l'uso del font per la dislessia (`modifica_font`), il `modifica_tema` visivo e la `mensa_preferita`. `allergeni_utente`, invece, permette agli utenti di registrare i propri allergeni personali in una relazione molti-a-molti, per ricevere avvisi mirati.
 
-// Da continuare qua sotto
-
-
 == SEO e Performance
-
-=== Ottimizzazione Motori di Ricerca
-- *Meta tags* appropriati per ogni pagina
-- *Structured data* Schema.org per rich snippets
-- *Sitemap XML* generata automaticamente
-- *URLs SEO-friendly* con mod_rewrite
-- *Open Graph* tags per social sharing
+Al fine di ottimizzare il posizionamento del sito nei motori di ricerca, sono state implementate le seguenti strategie:
+- *Definizione di Meta tags*: sono stati creati meta tag specifici per ogni pagina, inclusi titolo e descrizione per ogni pagina del sito web. 
+- *Sitemap XML*: è stata creata una sitemap per facilitare l'indicizzazione da parte dei motori di ricerca, che include tutte le pagine principali del sito. La sitemap viene generata automanticamente dallo script `sitemap.php` presente nella cartella `public_html/`, e viene aggiornata includendo ogni pagina del sito web, al momento dell'accesso.
+- *URLs SEO-friendly*: Ogni URL del sito web è stato progettato per essere descrittivo e contenere parole chiave pertinenti, evitando di utilizzare parametri complessi o identificatori numerici. Ad esempio, l'URL per la pagina di recensioni di un piatto specifico è strutturato come `http://<server>/review.php?piatto=<nome-piatto>&mensa=<nome-mensa>`, dove `<nome-piatto>` e `<nome-mensa>` sono i nomi dei piatti e delle mense rispettivamente.
 
 = Accessibilità
 
 == Personalizzazione Accessibilità
-Le seguenti impostazioni possono essere gestite anche senza essere a disposizione di un account, esse verranno salvate all'interno della sessione di PHP, e nel caso tali fossero salvate per un utente registrato, una volta effettuato l'accesso tali impostazioni vengono applicate automaticamente.
+Le impostazioni di accessibilità possono essere gestite sia dagli utenti registrati che non. Esse verranno salvate all'interno della sessione di PHP, e nel caso tali fossero salvate per un utente registrato, una volta effettuato l'accesso esse verranno applicate automaticamente. Le impostazioni disponibili sono: 
 
 - *Dimensioni testo*: Piccolo, medio, grande
 - *Font per dislessia*: OpenDyslexic font selezionabile dalle impostazioni
-- *Temi*: Chiaro, scuro, sistema automatico, tale viene caricato prima che l'utente possa visualizzare la pagina per evitare flashing
+- *Temi*: Chiaro, scuro, sistema (prende l'impostazione dal tema del browser), tale viene caricato prima che l'utente possa visualizzare la pagina per evitare flashing
 
-== Supporto ulteriore
+== Navigazione accessibile
+Vengono riportati qui sotto altri aspetti che rendono questo sito accessibile a tutte le tipologie di utenti:
 
 - *Navigazione da Tastiera*: Il sito e interamente utilizzabile tramite la tastiera e vengono nascosti gli elementi non interagibili della pagina (come la mensa e il nome del piatto durante la modifica di una recensione), e sono presenti dei link nascosti per navigare più velocemente la pagina ("Vai al contenuto" e "Vai alla navigazione")
 - *Supporto per gli screen reader*: sono state utilizzate classi CSS per migliorare l'accessibilità del sito per gli utenti che necessitano l'uso di uno screen reader, dove tali applicano descrizioni e informazioni utili soprattuto riguardando le immagini dei piatti presenti nel sito e le stelle di valutazione nella pagina per la review, dove ad ogni stella vi è indicata il numero e il significato della valutazione.
-- *Tabelle accessibili*
-- *Evitati i Link Circolari*
-- *Form accessibili*
-- *Evitando il disorientamento tramite BreadCrumb*
+- *Tabelle accessibili*: Ogni tabella del sito web è stata resa accessibile tramite: 
+  - *attributi di scoping*: Ogni tabella ha un'intestazione chiara e descrittiva per ogni colonna, che aiuta gli utenti a comprendere il contenuto della tabella.
+  - *tag di accessibilità*: Lo scopo principale delle tabelle nel sito è quello di mostrare gli orari di apertura delle mense di padova, quindi sono stati utilizzati i tag `<abbr>` per abbreviare i nomi dei giorni della settimana, ad esempio "Lun" per "Lunedì", "Mar" per "Martedì", etc. Questo aiuta gli utenti a comprendere rapidamente il significato delle abbreviazioni. Inoltre, è stato utilizzato il tag `<time>` per indicare gli orari di apertura e chiusura delle mense, in modo che gli screen reader possano leggere correttamente le informazioni temporali.
+  - *descrizione accessibile e caption*: Ogni tabella ha una caption che descrive il suo contenuto e scopo, migliorando l'accessibilità per gli utenti di screen reader. È presente inoltre l'attirbuto `aria-describedby` per fornire una descrizione aggiuntiva della tabella, che viene letta dagli screen reader per fornire ulteriori informazioni sul contenuto della tabella.
+- *Assenza di Link Circolari*: Non sono presenti link circolari o che portano a pagine senza contenuto utile, per evitare confusione e disorientamento dell'utente.
+- *Form accessibili*: I form di inserimento dati sono stati progettati per essere accessibili, con etichette chiare e descrittive per ogni campo. Sono stati utilizzati attributi ARIA per migliorare l'accessibilità dei campi di input e dei pulsanti di invio.
+- *Utilizzo di breadcrumbs*: È stata implementata una breadcrumb che mostra il percorso di navigazione dell'utente all'interno del sito, facilitando l'orientamento e la comprensione della struttura delle informazioni.
 
 = Testing e Validazione
 Il sito durante la fase di sviluppo e collaudo finale è stato sottoposto a numerevoli test che ci hanno permesso di evalutare alcune decisione prese e trovare parti che necessitavano correzioni o migliorie.
@@ -391,13 +392,6 @@ Il sito durante la fase di sviluppo e collaudo finale è stato sottoposto a nume
 - *Keyboard navigation testing* completo
 - *Total Validator* per individuare possibili problemi su ogni pagina del sito.
 
-=== Risultati Test
-- ✅ Contrasto colori conforme WCAG AA
-- ✅ Navigazione keyboard completa
-- ✅ Screen reader compatibility
-- ✅ Focus management appropriato
-- ✅ ARIA labels corretti
-- ✅ Superato Total Validator con alcuni Warning e Info, i 7 "Errori" che mostra derivano dai link di google maps che non sembra essere in grado di risolvere (ma dal sito funzionano correttamente)
 
 == Browser Testing
 Testing completato su:
@@ -423,97 +417,3 @@ Testing completato su:
 - *Security scan* con RIPS
 - *Performance profiling* con Xdebug
 
-== Conformità alle Specifiche Tecniche
-=== HTML5 e Accessibilità
-✅ *Standard HTML5*: Tutte le pagine utilizzano doctype HTML5 e markup semantico
-✅ *Sintassi XML*: Tutti i tag sono correttamente chiusi e annidati
-✅ *Degradazione elegante*: Il sito funziona anche con JavaScript disabilitato
-✅ *Accessibilità universale*: Conformità WCAG 2.0 verificata
-
-=== CSS e Layout
-✅ *CSS puri*: Nessun framework CSS, solo CSS3 custom
-✅ *Flexbox e Grid*: Layout moderni per responsive design
-✅ *Separazione completa*: Zero inline styles, completa separazione content/presentation
-
-=== Interattività e Validazione
-✅ *Comportamento separato*: JavaScript esterno, zero inline handlers
-✅ *Validazione dual-layer*: Client-side (JavaScript) e server-side (PHP)
-✅ *Input sanitization*: Protezione contro XSS e SQL injection
-
-=== Gestione Dati
-✅ *Campi testo libero*: Descrizioni recensioni e commenti
-✅ *Database storage*: Tutti i dati persistenti in MariaDB
-✅ *Normalizzazione*: Schema in terza forma normale (3NF)
-✅ *CRUD completo*: Create, Read, Update, Delete per tutti i dati utente
-
-== Responsive Design
-
-=== Approccio Mobile-First
-Il design è sviluppato con filosofia mobile-first:
-- Breakpoint progressivi: 320px, 768px, 1024px, 1200px
-- Layout fluidi con unità relative (rem, em, %)
-- Immagini responsive con attributi `srcset`
-- Touch-friendly con target size minimo 44px
-
-=== Ottimizzazioni per Dispositivi
-- *Smartphone*: Layout a singola colonna, navigazione hamburger
-- *Tablet*: Layout a due colonne, navigazione mista
-- *Desktop*: Layout a tre colonne, navigazione completa
-- *Print*: Stylesheet dedicato per stampa pulita
-
-== Sicurezza
-
-=== Autenticazione
-- Password hashing con `password_hash()` PHP
-- Session management sicuro con token CSRF
-- Protezione contro session hijacking
-- Logout automatico per inattività
-
-=== Protezione Dati
-- Prepared statements per prevenire SQL injection
-- Input sanitization e validation
-- XSS protection con `htmlspecialchars()`
-- HTTPS ready (certificati non inclusi per ambiente di test)
-
-== Feedback e Testing Utente
-
-=== Test con Utenti Reali
-- 15 studenti universitari coinvolti
-- Tasks completion rate: 98%
-- User satisfaction score: 4.7/5
-- Accessibility rating: 4.9/5
-
-=== Feedback Raccolti
-- Interface intuitiva e user-friendly
-- Eccellente supporto accessibility
-- Performance ottimali su mobile
-- Sistema recensioni molto apprezzato
-
-= Conclusioni
-
-== Obiettivi Raggiunti
-
-Il progetto ESU-Advisor ha raggiunto tutti gli obiettivi prefissati, creando una piattaforma web moderna, accessibile e performante per la gestione delle informazioni sulle mense universitarie. La rigorosa implementazione del pattern MVC, combinata con un design database normalizzato e un'attenzione particolare all'accessibilità, ha prodotto un'applicazione robusta e scalabile.
-
-== Competenze Acquisite
-
-Il team ha sviluppato competenze avanzate in:
-- *Architettura software* enterprise-grade
-- *Web standards* moderni e best practices
-- *Database design* e ottimizzazione
-- *Accessibility compliance* WCAG 2.0
-- *Performance optimization* e SEO
-- *Team collaboration* con strumenti moderni
-
-== Valore Aggiunto
-
-ESU-Advisor si distingue per:
-- *Eccellente accessibilità* (100/100 Lighthouse)
-- *Performance ottimali* su tutti i dispositivi
-- *Architettura scalabile* e manutenibile
-- *User experience* superiore alla media
-- *Codice di qualità* con standard professionali
-
-Il progetto rappresenta un esempio concreto di come le tecnologie web moderne possano essere utilizzate per creare soluzioni pratiche che migliorano la vita quotidiana degli studenti universitari, mantenendo sempre al centro l'accessibilità e l'usabilità per tutti gli utenti.
-
-La documentazione completa, il codice ben strutturato e i test approfonditi garantiscono che questo progetto possa servire come base solida per futuri sviluppi e come reference implementation per progetti simili nel dominio universitario.

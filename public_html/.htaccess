@@ -6,13 +6,7 @@ RewriteCond %{REQUEST_URI} ^(.+\.php)(/.*)?$
 RewriteCond %2 !^$
 RewriteRule ^(.+\.php)/.*$ %1 [R=301,L]
 
-# Dynamic error handling - captures first directory segment
+# Handle all 404 errors at the root level
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} ^(/[^/]+)/
-RewriteRule . %1/error.php?code=404 [R=302,L]
-
-# Fallback for root-level requests
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^[^/]*$ /error.php?code=404 [R=302,L]
+RewriteRule . /error.php?code=404 [R=302,L]

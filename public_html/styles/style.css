@@ -527,9 +527,15 @@ p {
 }
 
 .logo {
-    height: auto;
-    max-height: 32px;
-    padding-right: 2px;
+    /*padding-right: 2px;*/
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    background: no-repeat center center;
+    background-size: contain;
+    margin-bottom: 0;
+    display: block;
+
 }
 
 .breadcrumb-integrated {
@@ -999,9 +1005,6 @@ body {
         gap: var(--spacing-lg);
     } */
 
-    .logo {
-        max-height: 36px;
-    }
 
     .breadcrumb-integrated h1 {
         font-size: var(--text-lg);
@@ -3127,25 +3130,39 @@ input:checked + .slider:before {
     }
 
     /* Show fork logo on mobile, hide desktop logo */
+/*
     .logo-desktop {
         display: none;
     }
-
+*/
+    .logo{
+        height: 76px;
+        width: 15px;
+        background-image: url("../images/fork.svg");
+    }
+/*
     .logo-mobile {
         display: inline-block;
         max-height: none;
     }
+*/
 }
 
 /* Desktop styles for logo */
 @media (min-width: 769px) {
-    /* Show desktop logo, hide mobile logo */
+    /* Show desktop logo, hide mobile logo 
     .logo-desktop {
         display: inline-block;
     }
 
     .logo-mobile {
         display: none;
+    }
+*/
+    .logo{
+        height: 76px;
+        width: 200px;
+        background-image: url("../images/logo.svg");
     }
 }
 

@@ -1,12 +1,10 @@
 RewriteEngine On
 RewriteBase /
 
-# Prevent path info on PHP files - redirect to clean URLs
-RewriteCond %{REQUEST_URI} ^(.+\.php)(/.*)?$
-RewriteCond %2 !^$
-RewriteRule ^(.+\.php)/.*$ %1 [R=301,L]
+RewriteRule ^robots\.txt$ robots.txt.php [L]
 
-# Handle all 404 errors at the root level
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /error.php?code=404 [R=302,L]
+RewriteRule . error.php?code=404 [R=302,L]
+
+ErrorDocument 500 error.php?code=500

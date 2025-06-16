@@ -107,9 +107,9 @@ class ProfileView extends BaseView
                 $recensioniContent .= "<li class='review-card mb-3'>";
 
                 $recensioniContent .= "<div class='review-header'>";
-                $recensioniContent .= "<h4>" . htmlspecialchars($recensione->getPiatto()) . "</h4>";
+                $recensioniContent .= "<h3>" . htmlspecialchars($recensione->getPiatto()) . "</h3>";
 
-                $recensioniContent .= "<div class='ratings' aria-label='Valutazione: " .
+                $recensioniContent .= "<div class='ratings' role=\"img\" aria-label='Valutazione: " .
                     $recensione->getVoto() . " su 5'>";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {
                     $recensioniContent .= $starFilledSVG;

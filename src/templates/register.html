@@ -15,11 +15,16 @@
     </head>
     <body>
         <template id="header-template"></template>
-        
+
         <template id="footer-template"></template>
         <template id="sidebar-template"></template>
-
-        <main class="form-container" id="content">
+        <noscript>
+            <div class="noscript-message mb-2">
+                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
+                &egrave; necessario abilitare JavaScript.
+            </div>
+        </noscript>
+        <main class="page-content" id="content">
             <div class="card card-expanded mb-4">
                 <div class="form-header">
                     <h2 class="text-primary">Registrati</h2>
@@ -86,7 +91,7 @@
                         />
                     </div>
 
-                    <input type="submit" class="form-button mt-3" aria-label="Registrati" value="Registrati"/>
+                    <input type="submit" class="form-button mt-3" aria-label="Registrati" value="Registrati" />
                 </form>
             </div>
         </main>

@@ -89,7 +89,7 @@ class PiattoView extends BaseView
         );
 
         $avgVote = $piatto->getAvgVote() ?: 0;
-        $piattoRating = "<div class=\"ratings\" aria-label=\"" . $avgVote . " su 5\">";
+        $piattoRating = "<div class=\"ratings\" role=\"img\" aria-label=\"" . $avgVote . " su 5\">";
         for ($i = 0; $i < $avgVote; $i++) {
             $piattoRating .= $starFilledSVG;
         }
@@ -140,7 +140,7 @@ class PiattoView extends BaseView
                 $piattoReview .= "<div class=\"review-header\">";
                 $piattoReview .= "<h4 class=\"review-author\">" . htmlspecialchars($recensione->getUsername()) . "</h4>";
 
-                $piattoReview .= "<div class=\"ratings\" aria-label=\"Valutazione: " . $recensione->getVoto() . " su 5\">";
+                $piattoReview .= "<div class=\"ratings\" role=\"img\" aria-label=\"Valutazione: " . $recensione->getVoto() . " su 5\">";
                 for ($i = 0; $i < $recensione->getVoto(); $i++) {
                     $piattoReview .= $starFilledSVG;
                 }

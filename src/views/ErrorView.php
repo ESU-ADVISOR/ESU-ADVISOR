@@ -39,7 +39,7 @@ class ErrorView extends BaseView
             $loginButtons = '
             <div class="access-error-container">
                 <p>Per accedere a questa pagina è necessario effettuare il login.</p>
-                <div class="error-actions mt-4 flex gap-4">
+                <div class="error-actions mt-4 gap-4">
                     <a href="login.php' . $redirectTo . '" class="nav-button primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
@@ -66,18 +66,6 @@ class ErrorView extends BaseView
                 $loginButtons
             );
         }
-
-        Utils::replaceTemplateContent(
-            $this->dom,
-            "error-additional-action",
-            '<a href="javascript:history.back()" class="nav-button secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m12 19-7-7 7-7"></path>
-                    <path d="M19 12H5"></path>
-                </svg>
-                Torna Indietro
-            </a>'
-        );
 
         echo $this->dom->saveHTML();
     }

@@ -26,7 +26,7 @@ class ReviewController implements BaseController
         // Verifica che il menu esista
         if (!MenuModel::exists($piatto, $mensa)) {
             $view->render([
-                "errors" => ["Combinazione piatto-mensa non valida"],
+                "errors" => ["Il piatto selezionato non è stato trovato nel menu della mensa"],
                 "formData" => $post
             ]);
             return;

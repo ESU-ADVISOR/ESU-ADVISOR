@@ -3,6 +3,7 @@
 namespace Models;
 
 use Models\Database;
+
 class MenseModel
 {
     private $db;
@@ -107,11 +108,11 @@ class MenseModel
         }
 
         $stmt = $this->db->prepare(
-            "SELECT p.* FROM menu m 
-             JOIN piatto p ON m.piatto = p.nome 
+            "SELECT p.* FROM menu m
+             JOIN piatto p ON m.piatto = p.nome
              WHERE m.mensa = :mensa
-             ORDER BY 
-                CASE 
+             ORDER BY
+                CASE
                     WHEN p.categoria = 'Primo' THEN 1
                     WHEN p.categoria = 'Secondo' THEN 2
                     WHEN p.categoria = 'Contorno' AND p.nome = 'Insalata' THEN 3
@@ -145,7 +146,7 @@ class MenseModel
         }
 
         $stmt = $this->db->prepare(
-            "SELECT CASE 
+            "SELECT CASE
                 WHEN giornoSettimana = 1 THEN 'Lunedì'
                 WHEN giornoSettimana = 2 THEN 'Martedì'
                 WHEN giornoSettimana = 3 THEN 'Mercoledì'
@@ -226,6 +227,7 @@ class MenseModel
         return null;
     }
 
+    /** @return MenseModel[] */
     public static function findAll(): array
     {
         $db = Database::getInstance();

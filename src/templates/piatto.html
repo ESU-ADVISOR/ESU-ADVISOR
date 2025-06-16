@@ -15,9 +15,14 @@
 
         <template id="footer-template"></template>
         <template id="sidebar-template"></template>
-
+        <noscript>
+            <div class="noscript-message mb-2">
+                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
+                &egrave; necessario abilitare JavaScript.
+            </div>
+        </noscript>
         <main class="page-content" id="content">
-            <div class="mb-4">
+            <div class="mb-2">
                 <a href="index.php" class="nav-button secondary">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +116,6 @@
                 Torna su <span aria-hidden="true">&uarr;</span>
             </button>
         </main>
-
 
         <script src="scripts/dynamic-back-link.js"></script>
         <script src="scripts/back-to-top.js"></script>

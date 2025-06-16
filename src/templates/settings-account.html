@@ -1,4 +1,4 @@
-<section class="mb-4 pb-4 border-b border-color">
+<section>
     <h2 class="text-lg font-semibold mb-3">Impostazioni profilo</h2>
 
     <template id="server-response-username-template"></template>
@@ -20,7 +20,7 @@
                     aria-describedby="username-instructions"
                     required
                 />
-                <input type="submit" class="form-button" name="change_username" value="Salva"/>
+                <input type="submit" class="form-button" name="change_username" value="Salva" />
             </div>
         </fieldset>
     </form>
@@ -62,18 +62,32 @@
                     required
                 />
 
-                <input type="submit" class="form-button" name="change_password" value="Salva"/>
+                <input type="submit" class="form-button" name="change_password" value="Salva" />
             </div>
         </fieldset>
     </form>
 
     <template id="server-response-delete-account-template"></template>
-    <form id="delete-account-form" method="POST" action="settings.php">
-        <div class="form-group">
-            <input type="hidden" name="delete_account" value="1" />
-            <button type="submit" id="delete-account-button" class="danger form-button" aria-label="Elimina Account">
-                Elimina <span lang="en">Account</span>
-            </button>
-        </div>
+    <form id="delete-account-form" method="POST" action="settings.php" class="base-form">
+        <fieldset>
+            <legend>Elimina <span lang="en">Account</span></legend>
+            <div class="form-group">
+                <div class="form-group">
+                    <p class="text-secondary text-md" id="delete-account-instructions">
+                        Elimina <span lang="en">l'account</span> e i sui dati relativi, tale azione è irreversibile
+                    </p>
+                    <input type="hidden" name="delete_account" value="1" />
+                    <button
+                        type="submit"
+                        id="delete-account-button"
+                        class="danger form-button"
+                        aria-label="Elimina Account"
+                        aria-describedby="delete-account-instructions"
+                    >
+                        Elimina <span lang="en">Account</span>
+                    </button>
+                </div>
+            </div>
+        </fieldset>
     </form>
 </section>

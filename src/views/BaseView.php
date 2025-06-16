@@ -70,7 +70,6 @@ abstract class BaseView
 
         $this->updateOrCreateMeta('name', 'description', $description);
         $this->updateOrCreateMeta('name', 'keywords', $keywords);
-        $this->updateOrCreateMeta('name', 'language', 'it');
         $this->updateOrCreateMeta('name', 'author', 'Giacomo Loat, Giulio Bottacin, Malik Giafar Mohamed, Manuel Felipe Vasquez - Università di Padova');
     }
 

@@ -48,9 +48,9 @@ class IndexView extends BaseView
         $mensaIniziale = $data["mensa_iniziale"];
 
         // Genera il select delle mense
-        foreach ($menseComplete as $datiMensa) {
-            $selected = ($datiMensa["nome"] === $mensaIniziale) ? 'selected' : '';
-            $menseContent .= "<option value=\"" . htmlspecialchars($datiMensa["nome"]) . "\" " . $selected . ">" . htmlspecialchars($datiMensa["nome"]) . "</option>";
+        foreach (MenseModel::findAll() as $datiMensa) {
+            $selected = ($datiMensa->getNome() === $mensaIniziale) ? 'selected' : '';
+            $menseContent .= "<option value=\"" . htmlspecialchars($datiMensa->getNome()) . "\" " . $selected . ">" . htmlspecialchars($datiMensa->getNome()) . "</option>";
         }
 
         // Genera il contenuto di TUTTE le mense (ma mostra solo quella iniziale)

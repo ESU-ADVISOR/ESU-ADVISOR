@@ -517,6 +517,7 @@ p {
     /* gap: var(--spacing-md); */
     flex: 1;
     min-width: 0;
+    gap: var(--spacing-xs);
 }
 
 .logo-link {
@@ -528,6 +529,7 @@ p {
 .logo {
     height: auto;
     max-height: 32px;
+    padding-right: 2px;
 }
 
 .breadcrumb-integrated {
@@ -540,9 +542,9 @@ p {
     font-weight: 400;
     color: var(--text-secondary);
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.3;
 }
 
 .breadcrumb-integrated h1 a {
@@ -720,7 +722,7 @@ body {
 }
 
 .page-content {
-    padding: 0 var(--spacing-md);
+    padding: 0 var(--spacing-sm);
     max-width: var(--container-max);
     margin: 0 auto;
     padding-bottom: 2.8rem;
@@ -747,7 +749,7 @@ body {
 .mensa-select-container .mense-section {
     max-width: var(--container-max);
     margin: 0 auto;
-    padding: 0 var(--spacing-md);
+    padding: 0 var(--spacing-xs);
     width: 100%;
     display: flex;
     align-items: center;
@@ -1228,6 +1230,39 @@ body {
     height: 48px;
 }
 
+/* Button group container for responsive layout */
+.form-group.button-group {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+@media (min-width: 640px) {
+    .form-group.button-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .form-group.button-group .form-button {
+        width: auto;
+        flex: 1;
+        min-width: 140px;
+        max-width: 200px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .form-group.button-group {
+        gap: var(--spacing-lg);
+    }
+
+    .form-group.button-group .form-button {
+        min-width: 160px;
+        max-width: 220px;
+    }
+}
+
 .button-link {
     display: inline-block;
     padding: var(--spacing-sm) var(--spacing-md);
@@ -1253,12 +1288,12 @@ body {
     color: var(--text-on-primary);
     position: fixed;
     bottom: calc(var(--footer-height) + var(--spacing-md));
-    right: var(--spacing-md);
+    right: var(--spacing-sm);
     display: none;
     box-shadow: var(--shadow-hover);
     text-align: center;
     border-radius: var(--radius);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-sm);
     cursor: pointer;
     z-index: 10;
     border: none;
@@ -1307,10 +1342,11 @@ body {
 .card-header {
     padding: var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
 }
 
 .card-body {
-    padding: var(--spacing-md);
+    /* padding: var(--spacing-md); */
 }
 
 .card-footer {
@@ -1824,7 +1860,7 @@ body {
     gap: var(--spacing-md);
     background-color: var(--background-card);
     border-radius: var(--radius);
-    padding: var(--spacing-md);
+    /* padding: var(--spacing-md); */
     /* margin: var(--spacing-md) 0; */
 }
 
@@ -3082,4 +3118,40 @@ input:checked + .slider:before {
     @page {
         margin: 2cm;
     }
+}
+
+/* Mobile styles for mense selection */
+@media (max-width: 768px) {
+    .mense-label {
+        display: none;
+    }
+
+    /* Show fork logo on mobile, hide desktop logo */
+    .logo-desktop {
+        display: none;
+    }
+
+    .logo-mobile {
+        display: inline-block;
+        max-height: none;
+    }
+}
+
+/* Desktop styles for logo */
+@media (min-width: 769px) {
+    /* Show desktop logo, hide mobile logo */
+    .logo-desktop {
+        display: inline-block;
+    }
+
+    .logo-mobile {
+        display: none;
+    }
+}
+
+noscript div.noscript-message {
+    background-color: #4f0e0e;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    text-align: center;
 }

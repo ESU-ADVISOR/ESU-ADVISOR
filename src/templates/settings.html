@@ -12,15 +12,20 @@
     </head>
     <body>
         <template id="header-template"></template>
-        
+
         <template id="footer-template"></template>
         <template id="sidebar-template"></template>
-
-        <main class="form-container" id="content">
-            <div class="card card-expanded">
+        <noscript>
+            <div class="noscript-message mb-2">
+                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
+                &egrave; necessario abilitare JavaScript.
+            </div>
+        </noscript>
+        <main class="page-content" id="content">
+            <div class="card card-expanded mb-4">
                 <div class="card-body">
                     <!-- Sezione Preferenze generali (visibile a tutti) -->
-                    <section class="mb-4 pb-4 border-b">
+                    <section>
                         <h2 class="text-lg font-semibold mb-3">Preferenze</h2>
                         <template id="server-response-preferences-template"></template>
                         <form action="settings.php" id="preferenze-generali" method="post" class="settings-form">
@@ -179,9 +184,12 @@
                             />
                         </form>
                     </section>
-
+                </div>
+            </div>
+            <div class="card card-expanded mb-4">
+                <div class="card-body">
                     <!-- Sezione Accessibilità (visibile a tutti) -->
-                    <section class="mb-4 pb-4 border-b">
+                    <section>
                         <h2 class="text-lg font-semibold mb-3">Accessibilità</h2>
                         <template id="server-response-accessibility-template"></template>
                         <form action="settings.php" id="preferenze-accessibilità" method="post" class="settings-form">
@@ -208,7 +216,10 @@
                             <input type="submit" name="preferences" class="form-button" value="Salva" />
                         </form>
                     </section>
-
+                </div>
+            </div>
+            <div class="card card-expanded mb-4">
+                <div class="card-body">
                     <template id="settings-account-template"></template>
                 </div>
             </div>

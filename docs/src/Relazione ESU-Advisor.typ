@@ -188,11 +188,18 @@ Al fine di ridurre il fenomeno del disorientamento dell'utente, è stato scelto 
 Il sito inoltre risponde alla domanda *Dove posso trovare altre informazioni?* mettendole a disposizione nella homepage o esplicitandole in dei link.
 
 == Convenzioni interne
-Per garantire uno sviluppo coerente e una manutenzione efficace del progetto, sono state stabilite le seguenti convenzioni:
-- *Breadcrumb:* al fine di evitare il fenomeno del disorientamento
-- *Stile bottoni:* Sono stati definiti 3 stili di bottone di colori diversi al fine di indicarne a prima vista i loro ruoli: Blu -> bottone principale, Nero con testo azzurro -> bottone secondario, e Arancione -> bottone di "pericolo" (logout, cancellazione di una recensione/account)
-- *Stile dei link:* I colori sono stati modificati al fine di aumentarne il constrasto pur mantenendone tutte le caratteristiche necessarie al fine di renderli accessibili, incluso il colore che indica una pagina già visitata (reso chiaramente distinto da un link di una pagina non ancora visitata)
+Per garantire coerenza, usabilità e orientamento all’utente, sono state adottate delle serie di convenzioni interne che si riflettono in tutte le pagine dell’applicazione:
+- *Stile bottoni:* sono stati definiti tre stili di bottone al fine di indicare a prima vista i loro ruoli: 
+  - bottone principale: sempre blu con testo bianco;
+  - bottone secondario: testo blu su sfondo chiaro o scuro a seconda del tema e bordo blu; 
+  - bottoni di pericolo: sempre arancioni con testo bianco. 
+  Tutti gli stili rispettano i corretti contrasti tra testo, corpo del pulsante e sfondo per garantire accessibilità.
+- *Stile dei link:* lo stile dei link è stato mantenuto molto simile a quello standard ma la tonalità dei colori (blu per i link non visitati, viola per i link visitati) è stata adattata alla palette cromatica del sito per ottenere una buona resa estetica e corretti contrasti tra i colori.
 - *Struttura a Card:* Le varie sezioni delle pagine e i loro elementi sono illustrati con uno stile ripetuto, al fine di rendere più semplice e intuitiva la struttura secondo la quale i contenuti sono disposti all'interno del sito.
+- *Navigazione adattiva:* La disposizione degli elementi di navigazione varia in base al dispositivo utilizzato. Su dispositivi mobili, il menu principale è posizionato in un footer fisso in basso, mentre i pulsanti di accesso, registrazione e logout sono collocati in alto a destra. Su desktop, invece, tutte le funzioni di navigazione sono raccolte in una sidebar laterale a sinistra, ottimizzando lo spazio e rendendo più intuitivo l’accesso alle diverse sezioni.
+- *Assenza di link circolari:* nonostante spesso l’icona del titolo sia un link alla home, per evitare di creare un link circolare questa caratteristica non è presente. La home è comunque sempre raggiungibile tramite il nav.
+- *Istruzioni di compilazione nei form:* dove necessario, i campi dei form sono preceduti da istruzioni di compilazione che spiegano cosa inserire e indicano i requisiti del campo.
+- *Messaggi di errore nei form:* per ridurre la probabilità che un utente debba compilare e inviare un modulo più volte, i messaggi di errore vengono mostrati sotto i rispettivi campi già con l’evento “blur” (fatta eccezione per gli errori che devono essere verificati lato server).
 
 == Layout
 In base a quanto dedotto nella sezione di analisi delle utenze, è stato deciso adottare un *approccio mobile-first* nella progettazione dell'interfaccia utente.

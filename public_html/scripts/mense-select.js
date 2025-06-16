@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     menseSelect.addEventListener("change", function () {
-      const form = document.getElementById("form-selection");
+      const form = document.getElementById("mense-selection");
       if (form) {
         form.submit();
       }

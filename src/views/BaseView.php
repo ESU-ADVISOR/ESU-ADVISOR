@@ -219,9 +219,11 @@ abstract class BaseView
         libxml_clear_errors();
 
         $xpathHeader = new DOMXpath($headerDOM);
+        
+        /* da rimuovere, non serve più
         $headerLink = $xpathHeader->query('//a[@href="index.php"]')->item(0);
         if ($headerLink && $this->currentPage === 'index') {
-            /** @var DOMElement $headerLink */
+            /** @var DOMElement $headerLink 
             $span = $headerDOM->createElement('span');
             foreach ($headerLink->attributes as $attr) {
                 if ($attr->name !== 'href') {
@@ -233,6 +235,8 @@ abstract class BaseView
             }
             $headerLink->parentNode->replaceChild($span, $headerLink);
         }
+        */
+        
         $headerContent = $headerDOM->saveHTML();
 
         $footerDOM = new \DOMDocument();

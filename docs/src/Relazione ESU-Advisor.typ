@@ -63,7 +63,7 @@
         )
       ]
       #v(0.3cm)
-      #text(size: 15pt)[
+      #text(size: 13pt)[
         *Indirizzo web:* http://tecweb.studenti.math.unipd.it/~mvasquez/ESU-ADVISOR/
       ]
       #v(0.3cm)
@@ -79,7 +79,7 @@
           align(left)[Manuel Felipe Vasquez], align(left)[2076425]
         )
       ]
-      #v(1cm)
+      #v(0.5cm)
       #text(size: 12pt)[
         *Credenziali utente:* user / user \
         *Email referente:* manuelfelipe.vasquez\@studenti.unipd.it
@@ -108,9 +108,9 @@ Il progetto è stato realizzato da un gruppo di quattro studenti con competenze 
     columns: 4,
     [*Nome*], [*Cognome*], [*Matricola*], [*Competenze Principali*],
     [Giacomo], [Loat], [2077677], [HTML5, Design UI/UX, Struttura Frontend],
-    [Giulio], [Botta], [2042340], [CSS3, Responsive Design, Accessibilità],
+    [Giulio], [Bottacin], [2042340], [CSS3, Responsive Design, Accessibilità],
     [Malik], [Giafar Mohamed], [2075543], [Database Design, SQL, Architettura Dati],
-    [Manuel Felipe], [Vasquez], [2076425], [PHP, Backend Development, API Design]
+    [Manuel Felipe], [Vasquez], [2076425], [PHP, Backend Development]
   )
 )
 
@@ -140,7 +140,7 @@ Il pubblico di riferimento è costituito principalmente da studenti universitari
 - Sviluppo delle feature di accessibilità (WCAG 2.0)
 - Gestione dei temi chiaro/scuro
 - Supporto per utenti con dislessia
-
+#pagebreak()
 === Componente di Comportamento (Manuel Felipe Vasquez)
 - Sviluppo della logica JavaScript client-side
 - Implementazione delle validazioni form
@@ -152,7 +152,6 @@ Il pubblico di riferimento è costituito principalmente da studenti universitari
 - Design dello schema del database normalizzato
 - Implementazione delle relazioni tra entità
 - Ottimizzazione delle query
-- Gestione delle procedure stored e trigger
 - Implementazione del sistema di gestione allergeni
 
 == Metodologia di Collaborazione
@@ -166,9 +165,7 @@ Il pubblico di riferimento è costituito principalmente da studenti universitari
 = Progettazione
 
 == Schema organizzativo
-Siccome la struttura del sito web si differenzia nel contenuto solo nel tag `<main>` mantentendo la struttura,
-composta da header e sidebar, pressochè invariata. Si può dire che lo schema organizzativo ambiguio scelto per
-il raggruppamento dei link alle pagine principali si applica a tutto il sito web.
+Poiché la struttura del sito web varia solo nel contenuto del tag `<main>`, mantenendo pressoché invariata la struttura composta da header e sidebar. Si può dire che lo schema organizzativo ambiguo scelto per il raggruppamento dei link alle pagine principali si applica a tutto il sito web.
 
 Nel sito web infatti, sarà sempre presente una sidebar a sinistra, che contiene i link alle pagine principali del sito, tra le quali è possibile trovare:
 - *Home*: Pagina principale con i piatti del giorno e le recensioni
@@ -177,18 +174,19 @@ Nel sito web infatti, sarà sempre presente una sidebar a sinistra, che contiene
 - *Impostazioni*: Pagina per la gestione di preferenze alimentari, stilistiche del sito, dello username e per la cancellazione dell'account.
 
 == Schema a tre pannelli
-Al fine di ridurre il fenomeno del disorientamento dell'utente, è stato scelto di adottare lo schema a tre pannelli, adattando il design del sito per risponere a quese tre domande:
+Per ridurre il fenomeno del disorientamento dell'utente, è stato scelto di adottare lo schema a tre pannelli, adattando il design del sito per risponere a queste tre domande:
 - *Dove sono?*
   - L'utente può orientarsi grazie all'evidenziazione della pagina corrente nella sidebar,  oppure tramite la breadcrumb presente nell'header
 - *Dove posso andare?*
   - L'utente può navigare tra le pagine del sito tramite la sidebar, che mostra le sezioni principali del sito web. \ Sono inoltre presenti dei link all'interno del contenuto del sito che portano alla visualizzazione dei piatti del giorno, rispondendo alla domanda *_Cosa posso fare?_*.
+#pagebreak()
 - *Di cosa si tratta?*
  - Ogni azione intraprendibile è descritta in modo chiaro e conciso, con l'eventuale uso di icone e testi esplicativi per facilitare la comprensione. Alcuni esempi sono i link "vedi le recensioni" presenti nelle schede dei piatti della homepage.
 
 Il sito inoltre risponde alla domanda *Dove posso trovare altre informazioni?* mettendole a disposizione nella homepage o esplicitandole in dei link.
 
 == Convenzioni interne
-Per garantire coerenza, usabilità e orientamento all’utente, sono state adottate delle serie di convenzioni interne che si riflettono in tutte le pagine dell’applicazione:
+Per garantire coerenza, usabilità e orientamento all'utente, sono state adottate delle convenzioni interne, che si riflettono in tutte le pagine dell'applicazione:
 - *Stile bottoni:* sono stati definiti tre stili di bottone al fine di indicare a prima vista i loro ruoli: 
   - bottone principale: sempre blu con testo bianco;
   - bottone secondario: testo blu su sfondo chiaro o scuro a seconda del tema e bordo blu; 
@@ -196,15 +194,15 @@ Per garantire coerenza, usabilità e orientamento all’utente, sono state adott
   Tutti gli stili rispettano i corretti contrasti tra testo, corpo del pulsante e sfondo per garantire accessibilità.
 - *Stile dei link:* lo stile dei link è stato mantenuto molto simile a quello standard ma la tonalità dei colori (blu per i link non visitati, viola per i link visitati) è stata adattata alla palette cromatica del sito per ottenere una buona resa estetica e corretti contrasti tra i colori.
 - *Struttura a Card:* Le varie sezioni delle pagine e i loro elementi sono illustrati con uno stile ripetuto, al fine di rendere più semplice e intuitiva la struttura secondo la quale i contenuti sono disposti all'interno del sito.
-- *Navigazione adattiva:* La disposizione degli elementi di navigazione varia in base al dispositivo utilizzato. Su dispositivi mobili, il menu principale è posizionato in un footer fisso in basso, mentre i pulsanti di accesso, registrazione e logout sono collocati in alto a destra. Su desktop, invece, tutte le funzioni di navigazione sono raccolte in una sidebar laterale a sinistra, ottimizzando lo spazio e rendendo più intuitivo l’accesso alle diverse sezioni.
-- *Assenza di link circolari:* nonostante spesso l’icona del titolo sia un link alla home, per evitare di creare un link circolare questa caratteristica non è presente. La home è comunque sempre raggiungibile tramite il nav.
+- *Navigazione adattiva:* La disposizione degli elementi di navigazione varia in base al dispositivo utilizzato. Su dispositivi mobili, il menu principale è posizionato in un footer fisso in basso, mentre i pulsanti di accesso, registrazione e logout sono collocati in alto a destra. Su desktop, invece, tutte le funzioni di navigazione sono raccolte in una sidebar laterale a sinistra, ottimizzando lo spazio e rendendo più intuitivo l'accesso alle diverse sezioni.
+- *Assenza di link circolari:* nonostante spesso l'icona del titolo sia un link alla home, per evitare di creare un link circolare questa caratteristica non è presente. La home è comunque sempre raggiungibile tramite il nav.
 - *Istruzioni di compilazione nei form:* dove necessario, i campi dei form sono preceduti da istruzioni di compilazione che spiegano cosa inserire e indicano i requisiti del campo.
-- *Messaggi di errore nei form:* per ridurre la probabilità che un utente debba compilare e inviare un modulo più volte, i messaggi di errore vengono mostrati sotto i rispettivi campi già con l’evento “blur” (fatta eccezione per gli errori che devono essere verificati lato server).
+- *Messaggi di errore nei form:* per ridurre la probabilità che un utente debba compilare e inviare un modulo più volte, i messaggi di errore vengono mostrati sotto i rispettivi campi già con l'evento “blur” (fatta eccezione per gli errori che devono essere verificati lato server).
 
 == Layout
 In base a quanto dedotto nella sezione di analisi delle utenze, è stato deciso adottare un *approccio mobile-first* nella progettazione dell'interfaccia utente.
 Questo non significa soltanto aver adottato un *layout responsive*, ma significa che il design e lo sviluppo dell'applicazione sono stati inizialmente focalizzati sulle esigenze degli utenti che utilizzano dispositivi mobili, siccome questi saranno coloro che utilizzeranno maggiormente il sito web.
-
+#pagebreak()
 == Funzionalità
 Il sito web offre le seguenti funzionalità principali:
 === Autenticazione
@@ -219,7 +217,7 @@ Gli utenti possono impostare preferenze alimentari specifiche, come allergie o i
 Nella pagina delle impostazioni, gli utenti sia autenticati che non possono personalizzare la propria esperienza di navigazione, in particolare, è possibile:
 - Attivare la *modalità scura* per ridurre l'affaticamento visivo, se il dispositivo o il browser ha la preferenza per il tema scuro il sito apparirà in tale modo in automatico
 - Modificare le *dimensioni del testo* per una lettura più confortevole
-- Cambiare il font in uno specifco font per la *dislessia* per migliorare la leggibilità del testo
+- Cambiare il font in uno specifico font per la *dislessia* per migliorare la leggibilità del testo
 
 Il font per la dislessia scelto è stato "OpenDyslexic", un font open source progettato specificamente per facilitare la lettura dei contenuti testuali presenti nel sito.
 
@@ -227,12 +225,14 @@ Inoltre, sempre nella stessa pagina è possibile impostare una mensa preferita, 
 Sarà anche possibile impostare delle preferenze alimentari in modo che possano essere segnalati i piatti che contengono un insieme di allergeni specificati dagli utenti.
 
 == Note
-Le immagini presenti nel sito sono state prese tramite gli smarthpone dei membri del gruppo e dei loro conoscenti nelle varie mense presenti nel sito, ma la loro associazione alla mensa non rispecchia realmente il menu esatto di tale mensa, a scopo didattico di fornite un numero equilibrato e vario di piatti tra le mense mostrate nel sito.
+Le immagini presenti nel sito sono state prese dagli smartphone dei membri del gruppo e dei loro conoscenti, mentre in alcuni casi, siccome non erano disponibili delle foto dove venisse mostrato il piatto singolo, abbiamo ricorso alla generazione delle foto con l'intelligenza artificiale.
 
+Inoltre, per quanto riguarda i menu, la disposizione dei piatti nel sito non rispecchia quella delle mense reali.
+#pagebreak()
 = Implementazione
 
 == Struttura delle Directory <struttura>
-l progetto è organizzato con una netta separazione tra i file accessibili pubblicamente (public-html), che includono pagine PHP, stili, script e risorse, e il codice sorgente del backend (src), che contiene i file MVC e di configurazione, non esposti direttamente sul web.
+Il progetto è organizzato con una netta separazione tra i file accessibili pubblicamente (public-html), che includono pagine PHP, stili, script e risorse, e il codice sorgente del backend (src), che contiene i file MVC e di configurazione, non esposti direttamente sul web.
 
 ```bash
 ESU-ADVISOR/
@@ -251,7 +251,7 @@ ESU-ADVISOR/
 ├── src/                     # File utilizzati lato backend non ottenibili dal webserver
 │   ├── controllers/        # Controller MVC
 │   ├── models/             # Model MVC
-│   ├── templates/          # File HTML puri contententi la struttura della pagina
+│   ├── templates/          # File HTML puri contenenti la struttura della pagina
 │   ├── views/              # View MVC
 │   ├── config.php          # File per le variabili d'ambiente per l'accesso al DB
 │   └── session_init.php    # File per le impostazioni della sessione di PHP
@@ -274,7 +274,7 @@ Gestisce la logica dei dati e le interazioni con il database:
 - *PreferenzeUtenteModel*: Personalizzazione esperienza utente
 - *RecensioneModel*: Sistema di valutazioni e commenti
 - *UserModel*: Gestione utenti e autenticazione
-
+#pagebreak()
 ==== View Layer
 Si occupa della presentazione dei dati attraverso un sistema di template che separa il contenuto dalla formattazione:
 - *BaseView*: Classe di base da cui ogni view eredita le funzionalità
@@ -307,21 +307,22 @@ Per separare la struttura dal comportamento abbiamo fatto uso del tag *`<templat
 
 Per effettuare il parsing del file e ottenere la posizione del tag è stata utilizzata la classe *`DOMDocument`* di PHP, che fornisce una serie di funzioni per gestire e manipolare i file HTML. Nel nostro caso specifico utilizziamo la classe per controllare che il contenuto inserito sia formattato correttamente con caratteri utf-8 e che rispetti la sintassi HTML.
 
-Questa funzione viene utilizzata spesso per gestire tutte le varie componenti del sito che richiedono dati provienienti dal DB o che richiedono di essere processate, ad esempio viene utilizzata per modularizzare la struttura della pagina, in particolare ogni View eredita dalla classe *`BaseView`* che espone il metodo *`render()`* che di default inserisce le componenti *`header`*, *`footer`* e *`sidebar`* in ogni file html che viene richiesto affinche esistano i tag template corrispettivi. Questo permette di separare la struttura di componenti ripetute in file unici favorendo la modularita del sito e permettendo a più componenti del gruppo di lavorare sul progetto evitando il più possibile di avere conflitti nelle modifiche.
-
+Questa funzione viene utilizzata spesso per gestire tutte le varie componenti del sito che richiedono dati provenienti dal DB o che richiedono di essere processate, ad esempio viene utilizzata per modularizzare la struttura della pagina, in particolare ogni View eredita dalla classe *`BaseView`* che espone il metodo *`render()`* che di default inserisce le componenti *`header`*, *`footer`* e *`sidebar`* in ogni file html che viene richiesto affinché esistano i tag template corrispondenti. Questo permette di separare la struttura di componenti ripetute in file unici favorendo la modularità del sito e permettendo a più componenti del gruppo di lavorare sul progetto evitando il più possibile di avere conflitti nelle modifiche.
+#pagebreak()
 == Stili CSS
-Per gestire gli stili che abbiamo applicato alla pagina sono state definite delle variabili globali per rendere coerenti le proprieta dei vari elementi, come colore dei bottoni, il testo, background di elementi ripetuti, spaziature, font, etc..., inoltre vi è presente la variazione delle stesse variabili per il tema scuro che verranno applicate in base ad una classe che verrà aggiunta al nodo root *`<html>`* per favorire l'uso delle stesse classi per entrami i temi
+Per gestire gli stili che abbiamo applicato alla pagina sono state definite delle variabili globali per rendere coerenti le proprietà dei vari elementi, come colore dei bottoni, il testo, background di elementi ripetuti, spaziature, font, etc..., inoltre vi è presente la variazione delle stesse variabili per il tema scuro che verranno applicate in base ad una classe che verrà aggiunta al nodo root *`<html>`* per favorire l'uso delle stesse classi per entrami i temi
 
 == Scripts Javascript e Validazione dell'input
 Sono stati utilizzati script javascript per gestire il comportamento del sito, in particolare:
 - *Validazione dell'input dei form lato client*: non strettamente necessari in quanto vi è l'equivalente validazione a lato server per motivi di sicurezza, ma aiuta l'utente ad inserire correttamente i dati richiesti prima di ritrovarsi con una pagina d'errore
+
 - *Funzionalità di ricerca dei piatti nel menù*: per favorire la ricerca di alimenti o allergeni tra i piatti della mensa attualmente selezionata in maniera veloce, vi è implementata una barra di ricerca in cima alla sezione del menu del giorno, che filtrerà i piatti presenti nascondendo quelli che non corrispondono ai termini di ricerca.
-- *Suggerimenti piatti durante la recensione*: per facilitare il processo di recensione dei piatti, una volta selezionata la mensa, al momento della scrittura del nome del piatto, verrà fornita una lista dei piatti di cui la mensa dispone al fine di evitare problemi di spelling del nome del piatto. Questa scelta è preferibile rispetto ad avere soltanto una lista, come nel caso della selezione della mensa, per rendere più semplice e veloce l'inserimento del nome del piatto nel caso il menù della mensa contenesse numerevoli opzioni.
+- *Suggerimenti piatti durante la recensione*: per facilitare il processo di recensione dei piatti, una volta selezionata la mensa, al momento della scrittura del nome del piatto, verrà fornita una lista dei piatti di cui la mensa dispone al fine di evitare problemi di spelling del nome del piatto. Questa scelta è preferibile rispetto ad avere soltanto una lista, come nel caso della selezione della mensa, per rendere più semplice e veloce l'inserimento del nome del piatto nel caso il menù della mensa contenesse numerose opzioni.
 
 Il sito web inoltre può funzionare correttamente pur non avendo abilitato javascript nel browser. In tal caso verrà mostrato un avviso che intimerà all'utente di abilitarlo.
 
 == Gestione degli errori di navigazione
-Nel caso si volesse fare accesso a link che puntano a risorse inesistenti or malformati, come ad esempio `http://<server>/index.php/wrong/path` o `http://<server>/wrong-filename.php`, sono state definite delle regole nel file `public_html/.htaccess` per indicare cosa fare in queste condizioni. In particolare se un utente volesse visitare una pagina che non esite o che non può visitare senza un account (ad esempio `review.php` e `profile.php`), essi verrebbero reindirizzati alla pagina `error.php` dove in base alle condizioni del reindirizzamento verranno indicate informazioni utili all'utente per comprendere cosa è appena successo e ad indicargli cosa dovrebbe fare, nel esempio corrente gli indicherà che "È necessario effettuare l'accesso per visualizzare questa pagina", con sotto i pulsanti per effettuare l'accesso o la registrazione se l'utente non ha già un account.
+Nel caso si volesse fare accesso a link che puntano a risorse inesistenti or malformati, come ad esempio `http://<server>/index.php/wrong/path` o `http://<server>/wrong-filename.php`, sono state definite delle regole nel file `public_html/.htaccess` per indicare cosa fare in queste condizioni. In particolare se un utente volesse visitare una pagina che non esiste o che non può visitare senza un account (ad esempio `review.php` e `profile.php`), essi verrebbero reindirizzati alla pagina `error.php` dove in base alle condizioni del reindirizzamento verranno indicate informazioni utili all'utente per comprendere cosa è appena successo e ad indicargli cosa dovrebbe fare, nell'esempio corrente gli indicherà che "È necessario effettuare l'accesso per visualizzare questa pagina", con sotto i pulsanti per effettuare l'accesso o la registrazione se l'utente non ha già un account.
 
 Queste regole sono state scritte per supportare deployment del sito web sia nel caso in cui sia presente nel root del server (`http://<server>/index.php`) o che si trovi in una sottocartella, come nel caso del server universitario (`http://<server>/<name>/index.php`)
 
@@ -361,18 +362,17 @@ Le entità principali sono collegate tra loro e arricchite di dettagli attravers
 Infine, sono presenti tabelle per gestire informazioni aggiuntive sui piatti e le preferenze degli utenti.
   - *piatto_foto* e *piatto_allergeni:* Queste due tabelle aggiungono dettagli ai piatti. La prima gestisce l'associazione uno-a-molti tra un piatto e le sue foto (salvando il percorso all'immagine nel db). La seconda definisce una relazione molti-a-molti per associare a ogni piatto uno o più allergene da una lista predefinita conforme alla normativa europea.
   - *preferenze_utente* e *allergeni_utente:* Queste tabelle sono dedicate alla personalizzazione dell'esperienza utente. `preferenze_utente` ha una relazione uno-a-uno con utente e memorizza impostazioni di accessibilità come la `dimensione_testo`, l'uso del font per la dislessia (`modifica_font`), il `modifica_tema` visivo e la `mensa_preferita`. `allergeni_utente`, invece, permette agli utenti di registrare i propri allergeni personali in una relazione molti-a-molti, per ricevere avvisi mirati.
-
+#pagebreak()
 == SEO e Performance
 Al fine di ottimizzare il posizionamento del sito nei motori di ricerca, sono state implementate le seguenti strategie:
 - *Definizione di Meta tags*: sono stati creati meta tag specifici per ogni pagina, inclusi titolo e descrizione per ogni pagina del sito web.
-- *Sitemap XML*: è stata creata una sitemap per facilitare l'indicizzazione da parte dei motori di ricerca, che include tutte le pagine principali del sito. La sitemap viene generata automanticamente dallo script `sitemap.php` presente nella cartella `public_html/`, e viene aggiornata includendo ogni pagina del sito web, al momento dell'accesso.
+- *Sitemap XML*: è stata creata una sitemap per facilitare l'indicizzazione da parte dei motori di ricerca, che include tutte le pagine principali del sito. La sitemap viene generata automaticamente dallo script `sitemap.php` presente nella cartella `public_html/`, e viene aggiornata includendo ogni pagina del sito web, al momento dell'accesso.
 - *URLs SEO-friendly*: Ogni URL del sito web è stato progettato per essere descrittivo e contenere parole chiave pertinenti, evitando di utilizzare parametri complessi o identificatori numerici. Ad esempio, l'URL per la pagina di recensioni di un piatto specifico è strutturato come `http://<server>/review.php?piatto=<nome-piatto>&mensa=<nome-mensa>`, dove `<nome-piatto>` e `<nome-mensa>` sono i nomi dei piatti e delle mense rispettivamente.
 
 = Accessibilità
 
 == Personalizzazione Accessibilità
 Le impostazioni di accessibilità possono essere gestite sia dagli utenti registrati che non. Esse verranno salvate all'interno della sessione di PHP, e nel caso tali fossero salvate per un utente registrato, una volta effettuato l'accesso esse verranno applicate automaticamente. Le impostazioni disponibili sono:
-
 - *Dimensioni testo*: Piccolo, medio, grande
 - *Font per dislessia*: OpenDyslexic font selezionabile dalle impostazioni
 - *Temi*: Chiaro, scuro, sistema (prende l'impostazione dal tema del browser), tale viene caricato prima che l'utente possa visualizzare la pagina per evitare flashing
@@ -380,14 +380,15 @@ Le impostazioni di accessibilità possono essere gestite sia dagli utenti regist
 == Navigazione accessibile
 Vengono riportati qui sotto altri aspetti che rendono questo sito accessibile a tutte le tipologie di utenti:
 
-- *Navigazione da Tastiera*: Il sito e interamente utilizzabile tramite la tastiera e vengono nascosti gli elementi non interagibili della pagina (come la mensa e il nome del piatto durante la modifica di una recensione), e sono presenti dei link nascosti per navigare più velocemente la pagina ("Vai al contenuto" e "Vai alla navigazione")
+- *Navigazione da Tastiera*: Il sito è interamente utilizzabile tramite la tastiera e vengono nascosti gli elementi non interagibili della pagina (come la mensa e il nome del piatto durante la modifica di una recensione), e sono presenti dei link nascosti per navigare più velocemente la pagina ("Vai al contenuto" e "Vai alla navigazione")
 
-- *Supporto per gli screen reader*: sono state utilizzate classi CSS per migliorare l'accessibilità del sito per gli utenti che necessitano l'uso di uno screen reader, dove tali applicano descrizioni e informazioni utili soprattuto riguardando le immagini dei piatti presenti nel sito e le stelle di valutazione nella pagina per la review, dove ad ogni stella vi è indicata il numero e il significato della valutazione.
+- *Supporto per gli screen reader*: sono state utilizzate classi CSS per migliorare l'accessibilità del sito per gli utenti che necessitano l'uso di uno screen reader, dove tali applicano descrizioni e informazioni utili soprattutto riguardo alle immagini dei piatti presenti nel sito e le stelle di valutazione nella pagina per la review, dove ad ogni stella vi è indicata il numero e il significato della valutazione.
 
 - *Tabelle accessibili*: Ogni tabella del sito web è stata resa accessibile tramite:
   - *attributi di scoping*: Ogni tabella ha un'intestazione chiara e descrittiva per ogni colonna, che aiuta gli utenti a comprendere il contenuto della tabella.
 
   - *tag di accessibilità*: Lo scopo principale delle tabelle nel sito è quello di mostrare gli orari di apertura delle mense di padova, quindi sono stati utilizzati i tag `<abbr>` per abbreviare i nomi dei giorni della settimana, ad esempio "Lun" per "Lunedì", "Mar" per "Martedì", etc. Questo aiuta gli utenti a comprendere rapidamente il significato delle abbreviazioni. Inoltre, è stato utilizzato il tag `<time>` per indicare gli orari di apertura e chiusura delle mense, in modo che gli screen reader possano leggere correttamente le informazioni temporali.
+#pagebreak()
 
   - *descrizione accessibile e caption*: Ogni tabella ha una caption che descrive il suo contenuto e scopo, migliorando l'accessibilità per gli utenti di screen reader. È presente inoltre l'attirbuto `aria-describedby` per fornire una descrizione aggiuntiva della tabella, che viene letta dagli screen reader per fornire ulteriori informazioni sul contenuto della tabella.
 
@@ -400,18 +401,18 @@ Vengono riportati qui sotto altri aspetti che rendono questo sito accessibile a 
 - *Contrasto e Colori:* i colori utilizzati per il tema chiaro/scuro sono stati scelti al fine di garantire un adeguato rapporto di contrasto tra i vari elementi presenti nel sito al fine di rispettale almeno le normative dello standard *WCAG 2.1 AA*
 
 = Testing e Validazione
-Il sito durante la fase di sviluppo e collaudo finale è stato sottoposto a numerevoli test che ci hanno permesso di evalutare alcune decisione prese e trovare parti che necessitavano correzioni o migliorie
+Il sito durante la fase di sviluppo e collaudo finale è stato sottoposto a numerosi test che ci hanno permesso di valutare alcune decisioni prese e trovare parti che necessitavano correzioni o migliorie
 
 == Ambiente di Sviluppo
-Per avere un ambiente di sviluppo unico tra i membri del gruppo si è fatto uso di *Docker* per eseguire il codice sviluppato in un ambiente il più simile a quello del server del laboratorio, in particolare:
+Per avere un ambiente di sviluppo unico tra i membri del gruppo è stato utilizzato *Docker* per eseguire il codice sviluppato in un ambiente il più simile a quello del server del laboratorio, in particolare:
 - Apache con PHP 8.2 (stessa del server universitario, diversamente da quanto inizialmente scritto nella consegna del progetto detta a lezione, ossia 8.1)
 - MariaDB 10.6.7
 - phpmyadmin come strumento di utility per visualizzare il database
 
-Periodicamente durante il periodo di sviluppo del progetto il gruppo ha provato il sito anche sul server universitario per confermare la sua corretta fuzionalità
+Periodicamente durante il periodo di sviluppo del progetto il gruppo ha provato il sito anche sul server universitario per confermare la sua corretta funzionalità
 
 == Strumenti
-Qui sono riportati vari strumenti utilizzati al fine di convalidare sia la correttezza del codice utilizzato cha la sua accessibilità:
+Qui sono riportati vari strumenti utilizzati al fine di convalidare sia la correttezza del codice utilizzato che la sua accessibilità:
 
 === Strumenti per L'accessibilità
 - *WAVE* (Web Accessibility Evaluation Tool)
@@ -439,7 +440,7 @@ Qui sono riportati vari strumenti utilizzati al fine di convalidare sia la corre
 - *Performance profiling* con Xdebug
 
 == Browser Testing
-Il sito è stato testatosui seguenti browser/dispositivi:
+Il sito è stato testato sui seguenti browser/dispositivi:
 - Chrome 120+ (desktop/mobile)
 - Firefox 121+ (desktop/mobile)
 - Safari 17+ (desktop/mobile)
@@ -447,15 +448,15 @@ Il sito è stato testatosui seguenti browser/dispositivi:
 
 = Istruzioni per l'installazione del progetto
 Per installare il progetto in locale in un ambiente simile a quello del laboratorio (*Apache* con *PHP 8.2* e *MariaDB*):
-1. Copiare la cartella *`public_html`* nella corispettiva cartella dove Apache andrà a prendere i file da servire
+1. Copiare la cartella *`public_html`* nella corrispettiva cartella dove Apache andrà a prendere i file da servire
 2. Copiare la cartella *`src`* nella stessa directory della cartella *`public_html`* o equivalente, come mostrato in *@struttura*
 3. Eseguire lo script *`db.sql`* su *MariaDB*
 4. Per configurare l'accesso al database ci sono 2 modi:
     - Nel proprio ambiente dove vi è il server apache configurare le seguenti variabili d'ambiente
-    - Andare su `src/config.php` e modificare i valore nelle linee 2-5 rimpiazzando i *`getenv("DB_*")`* con le strighe dei rispettivi valori
+    - Andare su `src/config.php` e modificare i valore nelle linee 2-5 rimpiazzando i *`getenv("DB_*")`* con le stringhe dei rispettivi valori
   Tali variabili sono:
     - `DB_HOST`: indica l'indirizzo del server in cui si trova il server MariaDB, nel nostro caso `localhost`
     - `DB_NAME`: indica il nome del database di MariaDB
     - `DB_USER`: indica l'username dell'account per accedere a MariaDB
     - `DB_PASS`: indica la password associata all'username specificato precedentemente
-5. In base alla configurazione del server Apache (come ad esempio il caso del laboratorio) se il sito viene servito su una path diversa da *`"/"`* bisogna andara su *`public_html/.htaccess`* e cambiare la seconda riga dove vi indica la path che prenderà in considerazione per gestire le regole per il robots.txt, errori 404 e 500 (nel nostro caso è *`RewriteBase /mvasquez`*)
+5. In base alla configurazione del server Apache (come ad esempio il caso del laboratorio) se il sito viene servito su una path diversa da *`"/"`* bisogna andare su *`public_html/.htaccess`* e cambiare la seconda riga dove vi indica la path che prenderà in considerazione per gestire le regole per il robots.txt, errori 404 e 500 (nel nostro caso è *`RewriteBase /mvasquez`*)

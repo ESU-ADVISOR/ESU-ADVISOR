@@ -21,14 +21,18 @@ class ReviewView extends BaseView
             return;
         }
 
+        // Get pre-filled values from URL parameters
+        $prefilledMensa = $data["mensa"] ?? "";
+        $prefilledPiatto = $data["piatto"] ?? "";
+
         $menseContent = "";
         $piattiContent = "";
 
         $mense = MenseModel::findAll();
         foreach ($mense as $mensa) {
-
+            $selected = ($prefilledMensa === $mensa->getNome()) ? " selected" : "";
             $menseContent .=
-                "<option class=\"mensa-option\" value=\"" . $mensa->getNome() . "\">" . $mensa->getNome() . "</option>";
+                "<option class=\"mensa-option\" value=\"" . $mensa->getNome() . "\"" . $selected . ">" . $mensa->getNome() . "</option>";
 
             $piattiContent .= "<datalist class=\"dynamic-datalist\" data-mensa-name=\"" . $mensa->getNome() . "\">";
             $piatti = $mensa->getPiatti();
@@ -114,6 +118,26 @@ class ReviewView extends BaseView
                 $successHtml
             );
         }
+
+        // Pre-fill the piatto input field if provided
+        if (!empty($prefilledPiatto)) {
+            $piattoInput = $this->dom->getElementById('piatto');
+            if ($piattoInput) {
+                $piattoInput->setAttribute('value', $prefilledPiatto);
+            }
+        }
+
+        // Add data attributes for JavaScript to handle pre-filled values
+        if (!empty($prefilledMensa) || !empty($prefilledPiatto)) {
+            $body = $this->dom->getElementsByTagName('body')->item(0);
+            if (!empty($prefilledMensa)) {
+                $body->setAttribute('data-prefilled-mensa', $prefilledMensa);
+            }
+            if (!empty($prefilledPiatto)) {
+                $body->setAttribute('data-prefilled-piatto', $prefilledPiatto);
+            }
+        }
+
         echo $this->dom->saveHTML();
     }
 }

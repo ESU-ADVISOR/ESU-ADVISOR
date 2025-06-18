@@ -55,21 +55,15 @@ class PiattoView extends BaseView
 
         parent::render();
 
+        $mensa = $data["mensa"] ?? null;
+
         $piattoTitle = "<h2 class=\"card-title\">" . htmlspecialchars($data["nome"]) . "</h2>";
 
         $piatto = PiattoModel::findByName($data["nome"]);
 
         $userAllergeni = isset($_SESSION["allergeni"]) ? $_SESSION["allergeni"] : [];
-        $hasAllergens = $piatto->containsAllergens($userAllergeni);
 
         $piattoDescription = "<div class=\"card-description\">";
-
-        if ($hasAllergens) {
-            $piattoDescription .= "<div class=\"allergen-warning\" role=\"alert\">
-                <strong>Attenzione:</strong> Questo piatto contiene allergeni da te segnalati.
-            </div>";
-        }
-
         $piattoDescription .= "<p>" . htmlspecialchars($data["descrizione"]) . "</p>";
         $piattoDescription .= "</div>";
 
@@ -108,7 +102,15 @@ class PiattoView extends BaseView
             });
 
             if (!empty($allergeni)) {
-                $allergeniContent = "<p>" . htmlspecialchars(implode(", ", $allergeni)) . "</p>";
+                $allergeniFormatted = [];
+                foreach ($allergeni as $allergene) {
+                    if (in_array($allergene, $userAllergeni)) {
+                        $allergeniFormatted[] = "<span class=\"allergen-highlighted\">" . htmlspecialchars($allergene) . "</span>";
+                    } else {
+                        $allergeniFormatted[] = htmlspecialchars($allergene);
+                    }
+                }
+                $allergeniContent = "<p>" . implode(", ", $allergeniFormatted) . "</p>";
             } else {
                 $allergeniContent = "<p>Nessuno</p>";
             }
@@ -121,8 +123,8 @@ class PiattoView extends BaseView
         $mense = $piatto->getMense();
         if (!empty($mense)) {
             $menseContent = "<ul>";
-            foreach ($mense as $mensa) {
-                $menseContent .= "<li>" . htmlspecialchars($mensa) . "</li>";
+            foreach ($mense as $mensaNome) {
+                $menseContent .= "<li>" . htmlspecialchars($mensaNome) . "</li>";
             }
             $menseContent .= "</ul>";
         } else {
@@ -153,8 +155,8 @@ class PiattoView extends BaseView
                 $piattoReview .= "<p class=\"review-text\">" . htmlspecialchars($recensione->getDescrizione()) . "</p>";
 
                 if ($recensione->getData()) {
-                    $data = $recensione->getData()->format('d/m/Y');
-                    $piattoReview .= "<div class=\"review-meta\">Recensione pubblicata il: " . $data . "</div>";
+                    $date = $recensione->getData()->format('d/m/Y');
+                    $piattoReview .= "<div class=\"review-meta\">Recensione pubblicata il: " . $date . "</div>";
                 }
 
                 $piattoReview .= "</li>";
@@ -197,6 +199,36 @@ class PiattoView extends BaseView
             $piattoReview
         );
 
+        // Generate review button with mensa and piatto parameters
+        $reviewButtonQuery = "?piatto=" . urlencode($data["nome"]);
+        if ($mensa) {
+            $reviewButtonQuery .= "&mensa=" . urlencode($mensa);
+        }
+
+        $reviewButtonHtml = "<a href=\"review.php" . $reviewButtonQuery . "\" class=\"nav-button primary\">
+                                <svg
+                                    xmlns=\"http://www.w3.org/2000/svg\"
+                                    width=\"20\"
+                                    height=\"20\"
+                                    viewBox=\"0 0 24 24\"
+                                    fill=\"none\"
+                                    stroke=\"currentColor\"
+                                    stroke-width=\"2\"
+                                    stroke-linecap=\"round\"
+                                    stroke-linejoin=\"round\"
+                                >
+                                    <path d=\"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\"></path>
+                                    <path d=\"M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z\"></path>
+                                </svg>
+                                Scrivi una recensione
+                            </a>";
+
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "review-button-template",
+            $reviewButtonHtml
+        );
+
         if (isset($data["errors"])) {
             $errorHtml = "";
             foreach ($data["errors"] as $error) {
@@ -216,6 +248,14 @@ class PiattoView extends BaseView
                 "server-response-template",
                 $successHtml
             );
+        }
+
+        // Add script to store mensa in sessionStorage for back navigation
+        if (!empty($mensa)) {
+            $script = $this->dom->createElement('script');
+            $scriptContent = "sessionStorage.setItem('currentMensa', " . json_encode($mensa) . ");";
+            $script->appendChild($this->dom->createTextNode($scriptContent));
+            $this->dom->getElementsByTagName('head')->item(0)->appendChild($script);
         }
 
         echo $this->dom->saveHTML();

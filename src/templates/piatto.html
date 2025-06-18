@@ -13,109 +13,98 @@
     <body>
         <template id="header-template"></template>
 
-        <template id="footer-template"></template>
-        <template id="sidebar-template"></template>
         <noscript>
             <div class="noscript-message mb-2">
                 <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
                 &egrave; necessario abilitare JavaScript.
             </div>
         </noscript>
-        <main class="page-content" id="content">
-            <div class="mb-2">
-                <a href="index.php" class="nav-button secondary">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="m12 19-7-7 7-7" />
-                        <path d="M19 12H5" />
-                    </svg>
-                    Torna alla lista dei piatti
-                </a>
-            </div>
 
-            <article class="card card-expanded mb-4">
-                <div class="piatto-header">
-                    <template id="piatto-title-template"></template>
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
 
-                    <div class="piatto-meta">
-                        <div class="piatto-ratings">
-                            <span>Valutazione media: </span>
-                            <template id="piatto-rating-template"></template>
+            <main class="page-content container" id="content">
+                <div class="mb-2">
+                    <a href="index.php" class="nav-button secondary">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="m12 19-7-7 7-7" />
+                            <path d="M19 12H5" />
+                        </svg>
+                        Torna alla lista dei piatti
+                    </a>
+                </div>
+
+                <article class="card card-expanded mb-4">
+                    <div class="piatto-header">
+                        <template id="piatto-title-template"></template>
+
+                        <div class="piatto-meta">
+                            <div class="piatto-ratings">
+                                <span>Valutazione media: </span>
+                                <template id="piatto-rating-template"></template>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="piatto-content">
-                    <div class="piatto-media mb-4">
-                        <template id="piatto-image-template"></template>
+                    <div class="piatto-content">
+                        <div class="piatto-media mb-4">
+                            <template id="piatto-image-template"></template>
+                        </div>
+
+                        <div class="piatto-details">
+                            <section class="mb-4">
+                                <h3 class="font-semibold mb-2">Descrizione</h3>
+                                <template id="piatto-description-template"></template>
+                            </section>
+
+                            <section class="mb-4">
+                                <h3 class="font-semibold mb-2">Allergeni</h3>
+                                <template id="piatto-allergeni-template">
+                                    <p class="text-secondary">Informazioni sugli allergeni non disponibili</p>
+                                </template>
+                            </section>
+
+                            <section>
+                                <h3 class="font-semibold mb-2">Disponibile presso</h3>
+                                <template id="piatto-mense-template">
+                                    <p class="text-secondary">Informazioni sulla disponibilità non disponibili</p>
+                                </template>
+                            </section>
+                        </div>
                     </div>
+                </article>
 
-                    <div class="piatto-details">
-                        <section class="mb-4">
-                            <h3 class="font-semibold mb-2">Descrizione</h3>
-                            <template id="piatto-description-template"></template>
-                        </section>
+                <section class="mb-4">
+                    <div class="card card-expanded">
+                        <h3 class="font-semibold mb-3">Recensioni degli utenti</h3>
 
-                        <section class="mb-4">
-                            <h3 class="font-semibold mb-2">Allergeni</h3>
-                            <template id="piatto-allergeni-template">
-                                <p class="text-secondary">Informazioni sugli allergeni non disponibili</p>
-                            </template>
-                        </section>
+                        <div class="review-actions mb-4">
+                            <template id="review-button-template"></template>
+                        </div>
 
-                        <section>
-                            <h3 class="font-semibold mb-2">Disponibile presso</h3>
-                            <template id="piatto-mense-template">
-                                <p class="text-secondary">Informazioni sulla disponibilità non disponibili</p>
-                            </template>
-                        </section>
+                        <ul class="cards-stack">
+                            <template id="review-template"></template>
+                        </ul>
                     </div>
-                </div>
-            </article>
+                </section>
 
-            <section class="mb-4">
-                <div class="card card-expanded">
-                    <h3 class="font-semibold mb-3">Recensioni degli utenti</h3>
+                <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+                    Torna su <span aria-hidden="true">&uarr;</span>
+                </button>
+            </main>
+        </div>
 
-                    <div class="review-actions mb-4">
-                        <a href="review.php" class="nav-button primary">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                            </svg>
-                            Scrivi una recensione
-                        </a>
-                    </div>
-
-                    <ul class="cards-stack">
-                        <template id="review-template"></template>
-                    </ul>
-                </div>
-            </section>
-
-            <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
-                Torna su <span aria-hidden="true">&uarr;</span>
-            </button>
-        </main>
+        <template id="footer-template"></template>
 
         <script src="scripts/dynamic-back-link.js"></script>
         <script src="scripts/back-to-top.js"></script>

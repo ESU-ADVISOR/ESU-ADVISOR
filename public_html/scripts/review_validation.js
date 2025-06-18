@@ -4,16 +4,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const reviewInput = document.getElementById("review");
   const ratingContainer = document.getElementById("rating-container");
   const form = document.getElementById("review-form");
-  //let errors = new Map();
-  
 
-  mensaInput.addEventListener("input", updateDatalist);
-  mensaInput.addEventListener("input", validateMensa);
+  mensaInput.addEventListener("blur", updateDatalist);
   mensaInput.addEventListener("blur", validateMensa);
   piattoInput.addEventListener("blur", validatePiatto);
   reviewInput.addEventListener("blur", validateReview);
   ratingContainer.addEventListener("change", validateRating);
 
+  handlePrefilledValues();
 
   form.addEventListener("submit", function (event) {
     let isValid = true;
@@ -47,13 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
   function validateReview() {
     let errors = [];
     let isValid = true;
+
     const reviewInput = document.getElementById("review");
     const review = reviewInput.value.trim();
 
     if (!review) {
       errors.push("Per favore, inserisci una recensione.");
-//      errors.set("review-error", "Per favore, inserisci una recensione.");
- //     refreshErrors();
       isValid = false;
     }
 
@@ -89,11 +86,11 @@ document.addEventListener("DOMContentLoaded", function () {
       errors.push("Per favore, inserisci una mensa.");
       displayErrors(errors, "mensa-error-container", mensaInput);
       return false;
-    } 
-    
+    }
+
     const mensaList = document.getElementById("mensa");
     const options = mensaList.getElementsByTagName("option");
-    
+
     for (let i = 0; i < options.length; i++) {
       if (options[i].value.toLowerCase() === mensa.trim().toLowerCase()) {
         displayErrors(errors, "mensa-error-container", mensaInput);
@@ -104,31 +101,27 @@ document.addEventListener("DOMContentLoaded", function () {
     errors.push("La mensa non esiste nel <span lang='en'>database</span>");
     displayErrors(errors, "mensa-error-container", mensaInput);
     return false;
-    
   }
 
   function validatePiatto() {
     let errors = [];
     const piattoInput = document.getElementById("piatto");
-   
+
     const listaPiatti = document.getElementById("suggerimenti-piatti");
     if (!listaPiatti) return;
 
     const options = listaPiatti.getElementsByTagName("option");
-    
+
     for (let i = 0; i < options.length; i++) {
       if (
         options[i].value.toLowerCase() ===
         piattoInput.value.trim().toLowerCase()
       ) {
-        //errors.delete("piatto-error");
-        //refreshErrors();
+        displayErrors(errors, "piatto-error-container", piattoInput);
         return true;
       }
     }
- 
-    //errors.set("piatto-error", "Il piatto non esiste nel database");
-    //refreshErrors();
+
     errors.push("Il piatto non esiste nel <span lang='en'>database</span>");
     displayErrors(errors, "piatto-error-container", piattoInput);
     return false;
@@ -150,54 +143,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!ratingSelected) {
-      /*
-      errors.set(
-        "rating-error",
+      errors.push(
         "Per favore, seleziona almeno una stella per la valutazione.",
       );
-      refreshErrors();
-      */
-      errors.push("Per favore, seleziona almeno una stella per la valutazione.");
       isValid = false;
     }
-      //errors.delete("rating-error");
-      //refreshErrors();
+
     displayErrors(errors, "rating-error-container", ratingContainer);
     return isValid;
   }
 
-  function refreshErrors() {
-    const elements = document.getElementsByTagName("small");
-    for (let i = 0; i < elements.length; i++) {
-      if (errors.has(elements[i].id)) {
-        elements[i].display = "block";
-        elements[i].textContent = errors.get(elements[i].id);
-      } else {
-        elements[i].display = "none";
-        elements[i].textContent = "";
-      }
-    }
-  }
-
   function displayErrors(errors, container_id = null, input_element = null) {
-
     document.getElementById(container_id)?.remove();
 
     const errorContainer = document.createElement("div");
     errorContainer.classList.add("error-container");
     errorContainer.setAttribute("role", "alert");
     errorContainer.setAttribute("aria-live", "assertive");
+    if (errors.length === 0) {
+      return;
+    }
     if (container_id !== null) {
       errorContainer.id = container_id;
     }
-
     errors.forEach((error) => {
       const errorElement = document.createElement("div");
       errorElement.classList.add("error");
       errorElement.innerHTML = error;
       errorContainer.appendChild(errorElement);
     });
-
     if (input_element) {
       input_element.parentNode.insertBefore(
         errorContainer,
@@ -207,6 +181,19 @@ document.addEventListener("DOMContentLoaded", function () {
       form.prepend(errorContainer);
     }
   }
+
+  function handlePrefilledValues() {
+    const body = document.body;
+    const prefilledMensa = body.getAttribute("data-prefilled-mensa");
+    const prefilledPiatto = body.getAttribute("data-prefilled-piatto");
+
+    if (prefilledMensa) {
+      mensaInput.value = prefilledMensa;
+      updateDatalist();
+    }
+
+    if (prefilledPiatto) {
+      piattoInput.value = prefilledPiatto;
+    }
+  }
 });
-
-

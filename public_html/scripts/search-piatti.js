@@ -20,11 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function filterPiatti() {
     const searchTerm = searchInput.value.toLowerCase().trim();
-    const selectedMensaId = document.getElementById("mense-select").value;
 
-    const menuItems = document.querySelectorAll(
-      `.piatti-list .menu-item[data-mensa-id="${selectedMensaId}"]`,
-    );
+    const menuItems = document.querySelectorAll(`.piatti-list .menu-item`);
 
     let visibleCount = 0;
 
@@ -55,18 +52,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    const emptyMenu = document.querySelector(
-      `.empty-menu[data-mensa-id="${selectedMensaId}"]`,
-    );
-    const emptyDishMessage = document.querySelector(
-      `.dish-of-day-empty[data-mensa-id="${selectedMensaId}"]`,
-    );
+    const emptyMenu = document.querySelector(`.empty-menu`);
+    const emptyDishMessage = document.querySelector(`.dish-of-day-empty`);
 
     if (searchTerm === "") {
       resultsCount.textContent = "";
       if (emptyMenu) {
         const normalMenuItems = document.querySelectorAll(
-          `.menu-item[data-mensa-id="${selectedMensaId}"]:not(.dish-of-day-item)`,
+          `.menu-item:not(.dish-of-day-item)`,
         );
         emptyMenu.style.display = normalMenuItems.length === 0 ? "" : "none";
       }

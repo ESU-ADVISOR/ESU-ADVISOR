@@ -13,6 +13,25 @@ class ErrorView extends BaseView
 
     public function render(array $data = []): void
     {
+        // Set breadcrumb based on original page if provided
+        if (isset($data['page']) && !empty($data['page'])) {
+            $originalPage = basename($data['page'], '.php');
+            $pageNames = [
+                'review' => 'Review',
+                'profile' => 'Profilo'
+            ];
+
+            if (isset($pageNames[$originalPage])) {
+                $this->setBreadcrumb(['current' => $pageNames[$originalPage]]);
+                // Override currentPage for proper footer/sidebar highlighting
+                $this->currentPage = $originalPage;
+            } else {
+                $this->setBreadcrumb(['current' => 'Error']);
+            }
+        } else {
+            $this->setBreadcrumb(['current' => 'Error']);
+        }
+
         parent::render();
         $title = isset($data['title']) ? $data['title'] : "<h1>Qualcosa è andato storto</h1>";
         $errorCode = isset($data['code']) ? intval($data['code']) : 500;
@@ -39,7 +58,7 @@ class ErrorView extends BaseView
             $loginButtons = '
             <div class="access-error-container">
                 <p>Per accedere a questa pagina è necessario effettuare il login.</p>
-                <div class="error-actions mt-4 gap-4">
+                <div class="error-actions">
                     <a href="login.php' . $redirectTo . '" class="nav-button primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />

@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Pagina di registrazione per l'applicazione ESU Advisor" />
         <link rel="stylesheet" href="styles/style.css" />
-        <link rel="stylesheet" href="styles/form-icons.css" />
         <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
         <title>Registrati | ESU Advisor</title>
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
@@ -16,85 +15,96 @@
     <body>
         <template id="header-template"></template>
 
-        <template id="footer-template"></template>
-        <template id="sidebar-template"></template>
         <noscript>
             <div class="noscript-message mb-2">
                 <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
                 &egrave; necessario abilitare JavaScript.
             </div>
         </noscript>
-        <main class="page-content" id="content">
-            <div class="card card-expanded mb-4">
-                <div class="form-header">
-                    <h2 class="text-primary">Registrati</h2>
+
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
+
+            <main class="page-content container" id="content">
+                <div class="card card-expanded mb-4">
+                    <div class="form-header">
+                        <h2 class="text-primary">Registrati</h2>
+                    </div>
+                    <p class="text-secondary mt-3">Hai già un account? <a href="login.php">Accedi qui</a></p>
+
+                    <p class="text-secondary text-sm" id="register-form-instructions">
+                        Compila tutti i campi del <span lang="en">form</span> per registrarti.
+                    </p>
+
+                    <form
+                        action="register.php"
+                        method="POST"
+                        class="base-form"
+                        id="register-form"
+                        aria-describedby="register-form-instructions"
+                    >
+                        <template id="server-response-template"></template>
+                        <div class="form-group">
+                            <label for="username" lang="en">Username</label>
+                            <p class="text-secondary text-sm" id="username-instructions">
+                                Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può
+                                contenere solo lettere, numeri, underscore e trattini.
+                            </p>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                required
+                                class="form-input username-input"
+                                aria-describedby="username-instructions"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birth_date">Data di nascita</label>
+                            <input
+                                type="date"
+                                id="birth_date"
+                                name="birth_date"
+                                required
+                                class="form-input date-input"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" lang="en">Password</label>
+                            <p class="text-secondary text-sm" id="password-instructions">
+                                La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un
+                                carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
+                            </p>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class="form-input password-input"
+                                aria-describedby="password-instructions"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirm_password">Conferma <span lang="en">password</span></label>
+                            <input
+                                type="password"
+                                id="confirm_password"
+                                name="confirm_password"
+                                required
+                                class="form-input password-input"
+                            />
+                        </div>
+
+                        <input type="submit" class="form-button mt-3" aria-label="Registrati" value="Registrati" />
+                    </form>
                 </div>
-                <p class="text-secondary mt-3">Hai già un account? <a href="login.php">Accedi qui</a></p>
+            </main>
+        </div>
 
-                <p class="text-secondary text-sm" id="register-form-instructions">
-                    Compila tutti i campi del <span lang="en">form</span> per registrarti.
-                </p>
-
-                <form
-                    action="register.php"
-                    method="POST"
-                    class="base-form"
-                    id="register-form"
-                    aria-describedby="register-form-instructions"
-                >
-                    <template id="server-response-template"></template>
-                    <div class="form-group">
-                        <label for="username" lang="en">Username</label>
-                        <p class="text-secondary text-sm" id="username-instructions">
-                            Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere
-                            solo lettere, numeri, underscore e trattini.
-                        </p>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            required
-                            class="form-input username-input"
-                            aria-describedby="username-instructions"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="birth_date">Data di nascita</label>
-                        <input type="date" id="birth_date" name="birth_date" required class="form-input date-input" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password" lang="en">Password</label>
-                        <p class="text-secondary text-sm" id="password-instructions">
-                            La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un
-                            carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
-                        </p>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            required
-                            class="form-input password-input"
-                            aria-describedby="password-instructions"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirm_password">Conferma <span lang="en">password</span></label>
-                        <input
-                            type="password"
-                            id="confirm_password"
-                            name="confirm_password"
-                            required
-                            class="form-input password-input"
-                        />
-                    </div>
-
-                    <input type="submit" class="form-button mt-3" aria-label="Registrati" value="Registrati" />
-                </form>
-            </div>
-        </main>
+        <template id="footer-template"></template>
 
         <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
             Torna su <span aria-hidden="true">&uarr;</span>

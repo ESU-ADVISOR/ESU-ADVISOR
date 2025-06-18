@@ -13,16 +13,16 @@
     <body>
         <template id="header-template"></template>
 
-        <template id="footer-template"></template>
-        <template id="sidebar-template"></template>
         <noscript>
             <div class="noscript-message mb-2">
                 <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
                 &egrave; necessario abilitare JavaScript.
             </div>
         </noscript>
-        <main class="page-content" id="content">
-            <div class="error-container">
+
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
+            <main class="page-content container" id="content">
                 <div class="card card-expanded">
                     <div class="form-header">
                         <template id="error-title-template">
@@ -35,48 +35,48 @@
                         <template id="error-message-template"></template>
 
                         <template id="error-content-template"> </template>
-
-                        <div class="mt-5 pt-4 border-t">
-                            <div class="gap-3">
-                                <a href="index.php" class="nav-button primary">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                                        <polyline points="9 22 9 12 15 12 15 22" />
-                                    </svg>
-                                    Torna alla Home
-                                </a>
-                                <a href="javascript:history.back()" class="nav-button secondary">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path d="m12 19-7-7 7-7"></path>
-                                        <path d="M19 12H5"></path>
-                                    </svg>
-                                    Torna Indietro
-                                </a>
-                            </div>
+                        <div class="error-buttons">
+                            <!-- <div class="mt-5 pt-4 border-t gap-3"> -->
+                            <a href="index.php" class="nav-button primary">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                </svg>
+                                Torna alla Home
+                            </a>
+                            <a href="javascript:history.back()" class="nav-button secondary">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m12 19-7-7 7-7"></path>
+                                    <path d="M19 12H5"></path>
+                                </svg>
+                                Torna Indietro
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
+            </main>
+        </div>
+
+        <template id="footer-template"></template>
     </body>
 </html>

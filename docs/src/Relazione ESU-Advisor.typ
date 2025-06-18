@@ -187,10 +187,10 @@ Il sito inoltre risponde alla domanda *Dove posso trovare altre informazioni?* m
 
 == Convenzioni interne
 Per garantire coerenza, usabilità e orientamento all'utente, sono state adottate delle convenzioni interne, che si riflettono in tutte le pagine dell'applicazione:
-- *Stile bottoni:* sono stati definiti tre stili di bottone al fine di indicare a prima vista i loro ruoli: 
+- *Stile bottoni:* sono stati definiti tre stili di bottone al fine di indicare a prima vista i loro ruoli:
   - Bottone principale: sempre blu con testo bianco;
-  - Bottone secondario: testo blu su sfondo chiaro o scuro a seconda del tema e bordo blu; 
-  - Bottoni di pericolo: sempre arancioni con testo bianco. 
+  - Bottone secondario: testo blu su sfondo chiaro o scuro a seconda del tema e bordo blu;
+  - Bottoni di pericolo: sempre arancioni con testo bianco.
   Tutti gli stili rispettano i corretti contrasti tra testo, corpo del pulsante e sfondo per garantire accessibilità.
 - *Stile dei link:* lo stile dei link è stato mantenuto molto simile a quello standard ma la tonalità dei colori (blu per i link non visitati, viola per i link visitati) è stata adattata alla palette cromatica del sito per ottenere una buona resa estetica e corretti contrasti tra i colori;
 - *Struttura a Card:* le varie sezioni delle pagine e i loro elementi sono illustrati con uno stile ripetuto, al fine di rendere più semplice e intuitiva la struttura secondo la quale i contenuti sono disposti all'interno del sito;
@@ -348,6 +348,12 @@ Lo schema è normalizzato fino alla Terza Forma Normale (3NF) per minimizzare la
     [allergeni_utente], [Personalizzazione], [1:1 con utente]
   )
 )
+
+#figure(
+  image("img/DBER.png", width: 100%, height: auto, alt: "Schema ER del database ESU-Advisor"),
+  caption: [Schema ER del database ESU-Advisor]
+)
+
 Lo schema si articola attorno a tre entità fondamentali: le *mense*, i *piatti* e gli *utenti*.
 - *mensa:* questa tabella contiene le informazioni anagrafiche di ogni mensa universitaria. Il nome della mensa funge da chiave primaria e identificatore univoco. Gli altri campi includono l'indirizzo, il numero di telefono e un link esterno a Google Maps per la localizzazione geografica;
 - *piatto:* memorizza il catalogo di tutti i piatti che possono essere serviti. Ogni piatto è identificato univocamente dal suo nome (chiave primaria) e appartiene a una categoria predefinita ("Primo", "Secondo", "Contorno"). Contiene inoltre una descrizione testuale;
@@ -388,7 +394,7 @@ Vengono riportati qui sotto altri aspetti che rendono questo sito accessibile a 
   - *Attributi di scoping*: Ogni tabella ha un'intestazione chiara e descrittiva per ogni colonna, che aiuta gli utenti a comprendere il contenuto della tabella;
 
   - *Tag di accessibilità*: lo scopo principale delle tabelle nel sito è quello di mostrare gli orari di apertura delle mense di Padova, quindi sono stati utilizzati i tag `<abbr>` per abbreviare i nomi dei giorni della settimana, ad esempio "Lun" per "Lunedì", "Mar" per "Martedì", etc. Questo aiuta gli utenti a comprendere rapidamente il significato delle abbreviazioni. Inoltre, è stato utilizzato il tag `<time>` per indicare gli orari di apertura e chiusura delle mense, in modo che gli screen reader possano leggere correttamente le informazioni temporali;
-#pagebreak()
+
   - *Descrizione accessibile e caption*: ogni tabella ha una caption che descrive il suo contenuto e scopo, migliorando l'accessibilità per gli utenti di screen reader. È presente inoltre l'attributo `aria-describedby` per fornire una descrizione aggiuntiva della tabella, che viene letta dagli screen reader per fornire ulteriori informazioni sul contenuto della tabella.
 
 - *Assenza di Link Circolari*: non sono presenti link circolari o che portano a pagine senza contenuto utile, per evitare confusione e disorientamento dell'utente;
@@ -398,6 +404,97 @@ Vengono riportati qui sotto altri aspetti che rendono questo sito accessibile a 
 - *Utilizzo di breadcrumbs*: è stata implementata una breadcrumb che mostra il percorso di navigazione dell'utente all'interno del sito, facilitando l'orientamento e la comprensione della struttura delle informazioni;
 
 - *Contrasto e Colori:* i colori utilizzati per il tema chiaro/scuro sono stati scelti al fine di garantire un adeguato rapporto di contrasto tra i vari elementi presenti nel sito al fine di rispettale almeno le normative dello standard *WCAG 2.1 AA*.
+
+== Tabelle di Contrasto
+In queste tabelle sono riportati i colori utilizzati nel sito web, sia per la modalità chiara che per quella scura, con i rispettivi rapporti di contrasto tra testo e sfondo. I valori sono stati calcolati utilizzando il servizio online https://polypane.app/color-contrast, gli strumenti di accessibilità di Firefox e Chrome, e sono conformi agli standard WCAG 2.1 AA.
+
+Per i casi in cui il colore di uno sfondo è semi-trasparente, e stato concatenato con il simbolo `+` il colore dello sfondo sotto quello semi-trasparente per indicare che il contrasto è stato calcolato considerando la sovrapposizione dei colori.
+
+=== Modalità Chiara (White-Mode)
+
+==== Header
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`--primary: #006ca8`], [`--background: #FFFFFF`], [5.66:1],
+  [`--text-secondary: #333333`], [`--background: #FFFFFF`], [12.63:1]
+)
+
+==== Sidebar (testo sulla pagina corrente)
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`--primary: #006ca8`], [`--primary-15: #006ca826` + `--background: #FFFFFF`], [4.55:1]
+)
+
+==== Pulsanti
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`--text-on-primary: #ffffff`], [`--primary-button: #006BD2`], [5.21:1],
+  [`--text-secondary: #006ca8`], [`--background: #FFFFFF`], [5.65:1],
+  [`--text-on-danger: #ffffff`], [`--danger: #c25600`], [4.54:1]
+)
+
+==== Link
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`(non-visitato) --primary: #0044ff`], [`--background: #FFFFFF`], [6.42:1],
+  [`(visitato) --visited: #6d2ed0`], [`--background: #FFFFFF`], [7.11:1]
+)
+
+==== Messaggio di Successo, Errore e Allergeni Evidenziati
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`--success: #025e40`], [`--success-background: #10b9811a` + `--background: #ffffff`], [7.14:1],
+  [`--danger: #a52c00`], [`--background: #FFFFFF`], [7.09:1],
+  [`--warning: #bb0202`], [`warning-background: #fdd50073` + `--background: #FFFFFF`], [5.63:1]
+)
+
+=== Modalità Scura (Dark-Mode)
+
+==== Header
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`--primary: #60C6FF`], [`--background: #1B1B1B`], [9.03:1],
+  [`--text-secondary: #EFEFEF`], [`--background: #1B1B1B`], [14.97:1]
+)
+
+===== Sidebar (testo sulla pagina corrente)
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`--primary: #60C6FF`], [`--primary-15: #006ca826` + `--background: #1B1B1B`], [8.15:1]
+)
+
+==== Pulsanti
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`--text-on-primary: #FFFFFF`], [`--primary-button: #006BD2`], [5.21:1],
+  [`--primary: #60C6FF`], [`--background: #1B1B1B`], [9.03:1],
+  [`--text-on-danger: #FFFFFF`], [`--danger: #a74b02`], [5.75:1]
+)
+
+==== Link
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`(non-visitato) --primary: #20afff`], [`--background: #1B1B1B`], [7.08:1],
+  [`(visitato) --visited: #b793ff`], [`--background: #1B1B1B`], [7.08:1]
+)
+
+==== Messaggio di Successo, Errore e Allergeni Evidenziati
+#table(
+  columns: 3,
+  [*Testo*], [*Sfondo*], [*Rapporto di Contrasto*],
+  [`#04cc8b`], [`--success-background: #10b9811a` + `--background: #1B1B1B`], [7.06:1],
+  [`--danger: #ff7507`], [`--background: #1B1B1B`], [6.40:1],
+  [`--warning: #fb9c00`], [`warning-background: #7d60561a` SOPRA `--background: #1B1B1B`], [7.41:1]
+)
 
 = Testing e Validazione
 Il sito durante la fase di sviluppo e collaudo finale è stato sottoposto a numerosi test che ci hanno permesso di valutare alcune decisioni prese e trovare parti che necessitavano correzioni o migliorie.

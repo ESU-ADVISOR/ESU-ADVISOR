@@ -18,11 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (currentPassword === password) {
       isValid = false;
-      errors.push("La nuova <span lang=\"en\">password</span> deve essere diversa da quella attuale.");
+      errors.push(
+        'La nuova <span lang="en">password</span> deve essere diversa da quella attuale.',
+      );
     }
     if (password.length < 8) {
       isValid = false;
-      errors.push("La <span lang=\"en\">password</span> deve essere di almeno 8 caratteri.");
+      errors.push(
+        'La <span lang="en">password</span> deve essere di almeno 8 caratteri.',
+      );
     }
     if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
@@ -31,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
       isValid = false;
       errors.push(
-        "La <span lang=\"en\">password</span> deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&).",
+        'La <span lang="en">password</span> deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&).',
       );
     }
 
@@ -47,17 +51,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (password !== confirmPassword) {
       isValid = false;
-      errors.push("Le nuove <span lang=\"en\">password</span> non corrispondono.");
+      errors.push(
+        'Le nuove <span lang="en">password</span> non corrispondono.',
+      );
     }
 
-    displayErrors(errors, "confirm-password-error-container", confirmPasswordInput);
+    displayErrors(
+      errors,
+      "confirm-password-error-container",
+      confirmPasswordInput,
+    );
     return isValid;
   }
 
-
   form.addEventListener("submit", function (event) {
-
-    document.querySelectorAll('.error-container').forEach(el => el.remove());
+    document.querySelectorAll(".error-container").forEach((el) => el.remove());
 
     let isValid = true;
 
@@ -111,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     errorContainer.classList.add("error-container");
     errorContainer.setAttribute("role", "alert");
     errorContainer.setAttribute("aria-live", "assertive");
-    if(container_id!== null) {
+    if (container_id !== null) {
       errorContainer.id = container_id;
     }
 
@@ -122,9 +130,11 @@ document.addEventListener("DOMContentLoaded", function () {
       errorContainer.appendChild(errorElement);
     });
     if (input_element) {
-      input_element.parentNode.insertBefore(errorContainer, input_element.nextSibling);
-    }
-    else {
+      input_element.parentNode.insertBefore(
+        errorContainer,
+        input_element.nextSibling,
+      );
+    } else {
       form.prepend(errorContainer);
     }
   }

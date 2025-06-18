@@ -108,6 +108,7 @@ class ProfileView extends BaseView
 
                 $recensioniContent .= "<div class='review-header'>";
                 $recensioniContent .= "<h3>" . htmlspecialchars($recensione->getPiatto()) . "</h3>";
+                $recensioniContent .= "<h4>In: " . htmlspecialchars($recensione->getMensa()) . "</h4>";
 
                 $recensioniContent .= "<div class='ratings' role=\"img\" aria-label='Valutazione: " .
                     $recensione->getVoto() . " su 5'>";

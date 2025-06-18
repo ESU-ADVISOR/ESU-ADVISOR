@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     validateUsername();
   });
 
-  
   form.addEventListener("submit", function (event) {
     if (!validateUsername()) {
       event.preventDefault();
@@ -19,13 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
     let isValid = true;
     let errors = [];
 
-    document.querySelectorAll(".error").forEach((el) => el.remove());
-    document.querySelectorAll(".error-container").forEach((el) => el.remove());
-
     const username = usernameInput.value.trim();
     if (username.length < 3 || username.length > 50) {
       isValid = false;
-      errors.push("Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.");
+      errors.push(
+        "Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.",
+      );
     }
     if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
       isValid = false;
@@ -34,24 +32,23 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     }
 
-    
     displayErrors(errors, "username-error-container", usernameInput);
     return isValid;
-    
   }
 
   function displayErrors(errors, container_id = null, input_element = null) {
-
     document.getElementById(container_id)?.remove();
 
     const errorContainer = document.createElement("div");
     errorContainer.classList.add("error-container");
     errorContainer.setAttribute("role", "alert");
     errorContainer.setAttribute("aria-live", "assertive");
+    if (errors.length === 0) {
+      return;
+    }
     if (container_id !== null) {
       errorContainer.id = container_id;
     }
-
     errors.forEach((error) => {
       const errorElement = document.createElement("div");
       errorElement.classList.add("error");

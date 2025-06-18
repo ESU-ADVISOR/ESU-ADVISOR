@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Models\PiattoModel;
@@ -13,6 +14,7 @@ class PiattoController implements BaseController
         $piatto = null;
 
         $nome_piatto = $get["nome"] ?? null;
+        $mensa = $get["mensa"] ?? null;
 
         foreach (PiattoModel::findAll() as $p) {
             if (
@@ -23,20 +25,19 @@ class PiattoController implements BaseController
             }
         }
 
-        if(isset($piatto) && !empty($piatto)) {
+        if (isset($piatto) && !empty($piatto)) {
             $view = new PiattoView();
             $view->render([
                 "nome" => $piatto->getNome(),
                 "descrizione" => $piatto->getDescrizione(),
+                "mensa" => $mensa,
             ]);
-        }else{
+        } else {
             $view = new ErrorView();
             $view->render([
                 "message" => "Il piatto richiesto non è disponibile.",
             ]);
         }
-
-        
     }
     public function handlePOSTRequest(array $post = []): void
     {

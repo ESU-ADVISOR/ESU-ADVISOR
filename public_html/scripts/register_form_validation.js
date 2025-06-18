@@ -10,10 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function verifica_username() {
-    let isValid = true;
     let errors = [];
-    document.querySelectorAll(".username-error").forEach((el) => el.remove());
-    document.getElementById("username-error-container")?.remove();
+    let isValid = true;
+
     const username = usernameInput.value.trim();
 
     if (username.length < 3 || username.length > 50) {
@@ -29,9 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     }
 
-    if (!isValid) {
-      displayErrors(errors, "username-error-container", usernameInput);
-    }
+    displayErrors(errors, "username-error-container", usernameInput);
+
     return isValid;
   }
 
@@ -42,8 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function verifica_password() {
     let isValid = true;
     let errors = [];
-    document.querySelectorAll(".password-error").forEach((el) => el.remove());
-    document.getElementById("password-error-container")?.remove();
+
     const password = passwordInput.value.trim();
 
     if (password.length < 8) {
@@ -63,9 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     }
 
-    if (!isValid) {
-      displayErrors(errors, "password-error-container", passwordInput);
-    }
+    displayErrors(errors, "password-error-container", passwordInput);
+
     return isValid;
   }
 
@@ -76,10 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function verifica_confirm_password() {
     let isValid = true;
     let errors = [];
-    document
-      .querySelectorAll(".confirm-password-error")
-      .forEach((el) => el.remove());
-    document.getElementById("confirm-password-error-container")?.remove();
+
     const confirmPassword = confirmPasswordInput.value.trim();
     const password = passwordInput.value.trim();
 
@@ -94,13 +87,12 @@ document.addEventListener("DOMContentLoaded", function () {
       errors.push('Le <span lang="en">password</span> non corrispondono.');
     }
 
-    if (!isValid) {
-      displayErrors(
-        errors,
-        "confirm-password-error-container",
-        confirmPasswordInput,
-      );
-    }
+    displayErrors(
+      errors,
+      "confirm-password-error-container",
+      confirmPasswordInput,
+    );
+
     return isValid;
   }
 
@@ -111,8 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function verifica_data() {
     let isValid = true;
     let errors = [];
-    document.querySelectorAll(".data-error").forEach((el) => el.remove());
-    document.getElementById("data-error-container")?.remove();
+
     const data = dataInput.value.trim();
 
     if (!data) {
@@ -135,9 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    if (!isValid) {
-      displayErrors(errors, "data-error-container", dataInput);
-    }
+    displayErrors(errors, "data-error-container", dataInput);
+
     return isValid;
   }
 
@@ -171,14 +161,18 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function displayErrors(errors, container_id = null, input_element = null) {
+    document.getElementById(container_id)?.remove();
+
     const errorContainer = document.createElement("div");
     errorContainer.classList.add("error-container");
     errorContainer.setAttribute("role", "alert");
     errorContainer.setAttribute("aria-live", "assertive");
+    if (errors.length === 0) {
+      return;
+    }
     if (container_id !== null) {
       errorContainer.id = container_id;
     }
-
     errors.forEach((error) => {
       const errorElement = document.createElement("div");
       errorElement.classList.add("error");

@@ -218,25 +218,6 @@ abstract class BaseView
         Utils::updatePreferencesFromSession($this->dom, $_SESSION);
         libxml_clear_errors();
 
-        $xpathHeader = new DOMXpath($headerDOM);
-        
-        /* da rimuovere, non serve più
-        $headerLink = $xpathHeader->query('//a[@href="index.php"]')->item(0);
-        if ($headerLink && $this->currentPage === 'index') {
-            /** @var DOMElement $headerLink 
-            $span = $headerDOM->createElement('span');
-            foreach ($headerLink->attributes as $attr) {
-                if ($attr->name !== 'href') {
-                    $span->setAttribute($attr->name, $attr->value);
-                }
-            }
-            while ($headerLink->firstChild) {
-                $span->appendChild($headerLink->firstChild);
-            }
-            $headerLink->parentNode->replaceChild($span, $headerLink);
-        }
-        */
-        
         $headerContent = $headerDOM->saveHTML();
 
         $footerDOM = new \DOMDocument();

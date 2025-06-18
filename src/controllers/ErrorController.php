@@ -44,7 +44,8 @@ class ErrorController implements BaseController
         $this->view->render([
             'title' => $errorTitle,
             'code' => $errorCode,
-            'message' => $errorMessage
+            'message' => $errorMessage,
+            'page' => isset($get['page']) ? $get['page'] : null
         ]);
     }
 

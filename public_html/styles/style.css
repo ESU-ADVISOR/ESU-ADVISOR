@@ -497,7 +497,7 @@ p {
     right: 0;
     z-index: var(--z-header);
     width: 100%;
-    height: var(--header-height);
+    min-height: var(--header-height);
 }
 
 .header-container {
@@ -719,6 +719,10 @@ p {
     background-color: var(--danger-hover);
     border-color: var(--danger-hover);
     text-decoration: none;
+}
+
+html{
+    scroll-padding-top: calc(var(--header-height) + var(--spacing-sm));
 }
 
 /* Body / Main content */
@@ -988,7 +992,7 @@ body {
     }
 
     .header {
-        height: 88px;
+        min-height: 88px;
         left: 0;
         z-index: var(--z-header);
     }
@@ -3130,35 +3134,16 @@ input:checked + .slider:before {
     }
 
     /* Show fork logo on mobile, hide desktop logo */
-/*
-    .logo-desktop {
-        display: none;
-    }
-*/
     .logo{
         height: 76px;
         width: 15px;
         background-image: url("../images/fork.svg");
     }
-/*
-    .logo-mobile {
-        display: inline-block;
-        max-height: none;
-    }
-*/
 }
 
 /* Desktop styles for logo */
 @media (min-width: 769px) {
-    /* Show desktop logo, hide mobile logo 
-    .logo-desktop {
-        display: inline-block;
-    }
-
-    .logo-mobile {
-        display: none;
-    }
-*/
+    /* Show desktop logo, hide mobile logo */
     .logo{
         height: 76px;
         width: 200px;

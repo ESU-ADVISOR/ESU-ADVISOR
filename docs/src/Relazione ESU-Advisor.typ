@@ -348,6 +348,12 @@ Lo schema è normalizzato fino alla Terza Forma Normale (3NF) per minimizzare la
     [allergeni_utente], [Personalizzazione], [1:1 con utente]
   )
 )
+
+#figure(
+  image("img/DBER.png", width: 100%, height: auto, alt: "Schema ER del database ESU-Advisor"),
+  caption: [Schema ER del database ESU-Advisor]
+)
+
 Lo schema si articola attorno a tre entità fondamentali: le *mense*, i *piatti* e gli *utenti*.
 - *mensa:* questa tabella contiene le informazioni anagrafiche di ogni mensa universitaria. Il nome della mensa funge da chiave primaria e identificatore univoco. Gli altri campi includono l'indirizzo, il numero di telefono e un link esterno a Google Maps per la localizzazione geografica;
 - *piatto:* memorizza il catalogo di tutti i piatti che possono essere serviti. Ogni piatto è identificato univocamente dal suo nome (chiave primaria) e appartiene a una categoria predefinita ("Primo", "Secondo", "Contorno"). Contiene inoltre una descrizione testuale;

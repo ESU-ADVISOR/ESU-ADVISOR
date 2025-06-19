@@ -6,15 +6,20 @@
     .form-button,
     .nav-button,
     button,
-    .mensa-select-container {
+    .mensa-select-container,
+    .hide-in-print {
         display: none !important;
+    }
+
+    .logo {
+        content: url("../images/fork.svg") !important;
     }
 
     a{
         display: none;
     }
 
-    a .show-in-print {
+    .breadcrumb-integrated a {
         display: inline !important;
     }
 

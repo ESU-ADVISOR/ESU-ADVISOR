@@ -27,7 +27,7 @@ class PiattoView extends BaseView
             $this->setDescription("Scopri tutto su $nomePiatto delle mense ESU di Padova: $descrizione Leggi recensioni degli studenti, ingredienti e allergeni.");
 
             // Keywords specifiche per il piatto
-            $this->setKeywords("$nomePiatto, recensioni $nomePiatto, piatto mensa padova, valutazioni studenti, ingredienti $nomePiatto, allergeni");
+            $this->setKeywords("$nomePiatto,recensioni,piatto mensa padova,valutazioni studenti,ingredienti,allergeni");
 
             // Gestisci breadcrumb in base alla provenienza
             $fromProfile = isset($_GET['from']) && $_GET['from'] === 'profile';

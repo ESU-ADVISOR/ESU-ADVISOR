@@ -26,7 +26,7 @@ class IndexView extends BaseView
             $this->setDescription("Consulta il menu di oggi di $mensaIniziale a Padova. Scopri piatti, orari, recensioni e allergeni della mensa universitaria ESU.");
 
             // Keywords specifiche per la mensa
-            $this->setKeywords("$mensaIniziale, menu $mensaIniziale, mensa $mensaIniziale, orari $mensaIniziale, ESU Padova, mense universitarie padova");
+            $this->setKeywords("$mensaIniziale,menu,orari,ESU Padova,mense universitarie,piatti,recensioni,allergeni,piatto del giorno");
         }
 
         parent::render();

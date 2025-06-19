@@ -127,7 +127,7 @@ abstract class BaseView
     {
         switch ($this->currentPage) {
             case 'index':
-                return "mense universitarie padova, menu ESU, cibo università padova, mense studenti, recensioni piatti mensa";
+                return "mense universitarie padova,menu,ESU,cibo università padova,mense studenti,recensioni piatti mensa";
             case 'piatto':
                 return "piatti mensa padova, recensioni cibo università, allergeni mensa, valutazioni piatti ESU";
             case 'login':

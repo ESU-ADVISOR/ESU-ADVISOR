@@ -6,9 +6,16 @@
     .form-button,
     .nav-button,
     button,
-    a,
     .mensa-select-container {
         display: none !important;
+    }
+
+    a{
+        display: none;
+    }
+
+    a .show-in-print {
+        display: inline !important;
     }
 
     body {
@@ -105,9 +112,10 @@
         margin: 0 0 0.25rem 0;
         color: #666 !important;
     }
+    /*
     .ratings {
         display: none !important;
-    }
+    }*/
 
     .mense-info-section .card {
         margin-top: 0.75rem;
@@ -169,6 +177,27 @@
     }
 
     .directions-button {
+        background: none !important;
+        color: #0044ff !important;
+        padding: 0 !important;
+        border: none !important;
+        text-decoration: underline !important;
+        font-weight: normal !important;
+        font-size: 0.8rem !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        display: inline !important;
+        vertical-align: baseline !important;
+    }
+
+    .directions-button::after{
+        content: " [" attr(href) "] " !important;
+        word-break: break-all;
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
+
+    .directions-button .external-link-icon {
         display: none !important;
     }
 

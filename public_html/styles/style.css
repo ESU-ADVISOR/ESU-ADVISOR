@@ -6,7 +6,7 @@
     --primary-20: #006ca833;
     --primary-button: #006bd2;
     --primary-hover: #167eb9;
-    --danger-button: #c25600; /* DA CAMBIARE*/
+    --danger-button: #c25600;
 
     /* Link colors */
     --link: #0044ff;
@@ -19,10 +19,8 @@
     --danger-hover: #d33901;
 
     /* Warning colors */
-    /* --warning: #664e46;bb0202 */
     --warning: #bb0202;
     --warning-border: #f8774b;
-    /* --warning-background: #fb9c001a;#fdd50073 */
     --warning-background: #fdd50073;
 
     /* Text colors */
@@ -36,7 +34,6 @@
     --background-card: #ffffff;
 
     /* Border colors */
-    /* --border-color: #e5e7eb; */
     --border-color: #c1c1c1;
 
     /* Shadows */
@@ -97,7 +94,6 @@
 }
 
 /* Dark theme */
-/* @media not print { */
 .theme-dark {
     /* Main Colors */
     --primary: #60c6ff;
@@ -134,10 +130,8 @@
     --background-card: #1b1b1b;
 
     /* Border colors */
-    /* --border-color: #333333; */
     --border-color: #3c3c3c;
 }
-/* } */
 
 /* System preference dark mode override */
 @media (prefers-color-scheme: dark) {
@@ -177,7 +171,6 @@
         --background-card: #1b1b1b;
 
         /* Border colors */
-        /* --border-color: #333333; */
         --border-color: #3c3c3c;
     }
 }
@@ -249,7 +242,6 @@ svg:not(.logo) {
 @media (min-width: 640px) {
     :root {
         --container-width: 640px;
-        /* --text-lg: 1.25rem; */
     }
 }
 
@@ -328,9 +320,9 @@ body {
 }
 
 .page-layout {
+    order: 2;
     display: flex;
     flex: 1;
-    /* min-height: calc(100vh - var(--header-height)); */
     overflow: hidden;
 }
 
@@ -539,13 +531,13 @@ p {
 /* ===== LAYOUT ===== */
 /* Header */
 .header {
+    order: 1;
     background-color: var(--background-card);
     border-bottom: 1px solid var(--border-color);
     z-index: var(--z-header);
     width: 100%;
     flex-shrink: 0;
     padding: var(--spacing-sm) 0;
-    /* position: fixed; */
     top: 0;
     left: 0;
     right: 0;
@@ -559,13 +551,11 @@ p {
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    /* min-height: var(--header-height); */
 }
 
 .logo-breadcrumb-container {
     display: flex;
     align-items: center;
-    /* gap: var(--spacing-md); */
     flex: 1;
     min-width: 0;
     gap: var(--spacing-xs);
@@ -578,7 +568,6 @@ p {
 }
 
 .logo {
-    /*padding-right: 2px;*/
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -624,7 +613,6 @@ p {
 .sidebar {
     background-color: var(--background-card);
     border-right: 1px solid var(--border-color);
-    /* z-index: calc(var(--z-header) - 1); */
     display: none;
     flex-direction: column;
     overflow-y: auto;
@@ -770,8 +758,6 @@ p {
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    /* overflow-y: auto;
-    overflow-x: hidden; */
     position: relative;
 }
 
@@ -792,9 +778,7 @@ p {
 }
 
 .mensa-select-container .mense-section {
-    /* max-width: var(--container-max); */
     margin: 0 auto;
-    /* padding: 0 var(--spacing-xs); */
     width: 100%;
     display: flex;
     align-items: center;
@@ -844,9 +828,6 @@ p {
 }
 
 .piatti-list {
-    /* display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md); */
     list-style: none;
     padding: 0;
     margin: 0;
@@ -887,36 +868,19 @@ p {
 
 /* Footer */
 .bottom-nav {
+    order: 3;
     background: var(--background-card);
     border-top: 1px solid var(--border-color);
     padding: var(--spacing-sm) 0;
     z-index: var(--z-navigation);
     flex-shrink: 0;
-    /* position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: auto; */
 }
 
 /* Ensure footer is visible on mobile */
 @media (max-width: 1023px) {
     .bottom-nav {
         display: block;
-        /* position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0; */
         z-index: var(--z-navigation);
-        /* height: 60px; */
-    }
-
-    body {
-        /* padding-bottom: 60px; */
-    }
-
-    .page-layout {
-        /* min-height: calc(100vh - var(--header-height) - 60px); */
     }
 }
 
@@ -1082,11 +1046,9 @@ p {
         gap: var(--container-gap);
         flex: 1;
         min-height: 0;
-        /* max-height: calc(100vh - var(--header-height)); */
         margin-top: 0;
         align-items: stretch;
         overflow: hidden;
-        /* padding: 0 var(--spacing-lg); */
         padding-top: 0;
         padding-bottom: 0;
     }
@@ -1099,11 +1061,7 @@ p {
         overflow-x: hidden;
         display: flex;
         flex-direction: column;
-        /* gap: 2rem; */
         min-height: 0;
-        /* max-height: calc(100vh - var(--header-height)); */
-        scrollbar-width: thin;
-        scrollbar-color: var(--primary) transparent;
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
     }
@@ -1131,7 +1089,6 @@ p {
         overflow-x: hidden;
         order: 3;
         min-height: 0;
-        /* max-height: calc(100vh - var(--header-height)); */
         scrollbar-width: thin;
         scrollbar-color: var(--primary) transparent;
         -webkit-overflow-scrolling: touch;
@@ -1356,7 +1313,7 @@ p {
     background-color: var(--primary-button);
     color: var(--text-on-primary);
     position: fixed;
-    bottom: calc(var(--footer-height) + var(--spacing-md));
+    bottom: 5.5rem;
     right: var(--spacing-sm);
     display: none;
     box-shadow: var(--shadow-hover);
@@ -1392,8 +1349,6 @@ p {
     border-radius: var(--radius);
     border: 1px solid var(--border-color);
     transition: box-shadow var(--transition);
-    /* margin-bottom: var(--spacing-md); */
-    /* overflow: hidden; */
 }
 
 .card:hover {
@@ -1412,10 +1367,6 @@ p {
     padding: var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 1.5rem;
-}
-
-.card-body {
-    /* padding: var(--spacing-md); */
 }
 
 .card-footer {
@@ -1449,7 +1400,6 @@ p {
 }
 
 .card-title {
-    /* font-size: var(--text-lg); */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: var(--spacing-sm);
@@ -1551,10 +1501,8 @@ p {
 }
 
 .menu-item article figure img {
-    /* width: 100%; */
     height: 100%;
     object-fit: contain;
-    /* object-fit: cover; */
 }
 
 .menu-item-content {
@@ -1585,11 +1533,6 @@ p {
     margin-bottom: var(--spacing-sm);
     margin-top: auto;
 }
-/*
-.menu-item a {
-    color: var(--primary);
-    text-decoration: none;
-} */
 
 .menu-item a:hover {
     text-decoration: underline;
@@ -1785,8 +1728,6 @@ p {
 
 .form-input[type="search"] {
     width: 100%;
-    /* padding-right: 40px; */
-    /* height: 48px; */
     border-radius: var(--radius);
     border: 1px solid var(--border-color);
     transition:
@@ -1956,8 +1897,6 @@ p {
     gap: var(--spacing-md);
     background-color: var(--background-card);
     border-radius: var(--radius);
-    /* padding: var(--spacing-md); */
-    /* margin: var(--spacing-md) 0; */
 }
 
 .form-group {
@@ -2015,7 +1954,6 @@ textarea.form-input {
     -moz-appearance: none;
     appearance: none;
     width: 100%;
-    /* height: 48px; */
     padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-sm)
         var(--spacing-md);
     background-color: var(--background-card);
@@ -2299,12 +2237,10 @@ span.center {
     }
 
     .menu-item article {
-        /* flex-direction: column; */
         flex-direction: row;
     }
 
     .menu-item article figure {
-        /* width: 100%; */
         height: auto;
         max-height: 200px;
         margin-bottom: var(--spacing-sm);
@@ -2340,7 +2276,6 @@ span.center {
     .page-content {
         overflow-y: auto;
         overflow-x: hidden;
-        /* height: calc(100vh - var(--header-height) - 60px); */
         -webkit-overflow-scrolling: touch;
         position: relative;
     }
@@ -2368,6 +2303,11 @@ span.center {
 }
 
 @media (min-width: 1024px) {
+    .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
     .modal-content {
         margin: 15% auto;
     }
@@ -2453,7 +2393,6 @@ span.center {
 
 @supports selector(:focus-visible) {
     .rating input:focus:not(:focus-visible) + label {
-        /* outline: none;  E914 - SC 2.4.7: Do not remove the visual focus indicator or render it invisible. Turning off the focus indicator, or using styling which may make it difficult to see the focus indicator, prevents people from knowing which element has the keyboard focus. See WCAG2 Failure F78.  */
         box-shadow: none;
     }
 
@@ -3212,290 +3151,4 @@ noscript div.noscript-message {
     border: 1px solid #ff0000;
     padding: 10px;
     text-align: center;
-}
-
-/* Print styles */
-@media print {
-    /* Page setup */
-    @page {
-        margin: 1.5cm;
-    }
-
-    /* Hide non-essential elements */
-    aside,
-    footer,
-    .search-form,
-    .back-to-top,
-    .form-button,
-    .nav-button,
-    button,
-    .mensa-select-container {
-        display: none !important;
-    }
-
-    .logo {
-        height: 40px;
-        width: 120px;
-        background-image: url("../images/logo.svg");
-        margin-bottom: 0.5rem;
-    }
-
-    /* Reset layout constraints and force light colors */
-    body {
-        height: auto !important;
-        min-height: auto !important;
-        display: block !important;
-        overflow: visible !important;
-        font-size: 12px;
-        line-height: 1.4;
-        background: white !important;
-        color: black !important;
-    }
-
-    .page-layout {
-        display: block !important;
-        flex: none !important;
-        min-height: auto !important;
-        height: auto !important;
-    }
-
-    .page-content {
-        display: block !important;
-        flex: none !important;
-        min-height: auto !important;
-        height: auto !important;
-        overflow: visible !important;
-        padding: 0;
-    }
-
-    .content-layout {
-        display: block !important;
-        flex-direction: column !important;
-        height: auto !important;
-        min-height: auto !important;
-    }
-
-    .left-column {
-        overflow: visible !important;
-        max-height: none !important;
-        height: auto !important;
-        min-height: auto !important;
-    }
-
-    .mense-info-section {
-        overflow: visible !important;
-        max-height: none !important;
-        height: auto !important;
-        min-height: auto !important;
-    }
-
-    .piatti-list {
-        height: auto !important;
-        max-height: none !important;
-        overflow: visible !important;
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        margin: 0;
-        padding: 0;
-    }
-
-    /* Compact card styling */
-    .card {
-        box-shadow: none;
-        border: 1px solid #ddd !important;
-        background: white !important;
-        color: black !important;
-        margin-bottom: 0.75rem;
-    }
-
-    .card-title {
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-        color: #000 !important;
-    }
-
-    /* Optimized menu items for print */
-    .menu-item {
-        margin: 0;
-        list-style: none;
-    }
-
-    .menu-item article {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: flex-start;
-        gap: 0.5rem;
-        padding: 0.5rem;
-        border: 1px solid #ddd !important;
-        border-radius: 4px;
-        background: white !important;
-        color: black !important;
-        box-shadow: none;
-        margin-bottom: 0;
-    }
-
-    .menu-item article figure {
-        /* flex-shrink: 0; */
-        /* width: 60px !important; */
-        height: 60px !important;
-        /* overflow: hidden; */
-        border-radius: 4px;
-    }
-
-    .menu-item article figure img {
-        /* width: 100%; */
-        height: 100%;
-        /* object-fit: cover; */
-        object-fit: contain;
-    }
-
-    .menu-item-content {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .menu-item-content h3 {
-        font-size: 0.9rem;
-        margin: 0 0 0.25rem 0;
-        font-weight: 600;
-        line-height: 1.2;
-        color: #000 !important;
-    }
-
-    .menu-item-content p {
-        font-size: 0.75rem;
-        margin: 0 0 0.25rem 0;
-        line-height: 1.3;
-        color: #333 !important;
-    }
-
-    .allergens-list p {
-        font-size: 0.7rem;
-        margin: 0 0 0.25rem 0;
-        color: #666 !important;
-    }
-
-    .ratings {
-        display: none !important;
-    }
-
-    .menu-item a {
-        display: none !important;
-    }
-
-    /* Dish of the day - more prominent but still compact */
-    .dish-of-the-day .card {
-        margin-bottom: 0.5rem;
-    }
-
-    .dish-of-the-day .menu-item article {
-        border: 2px solid #333 !important;
-        background: #f9f9f9 !important;
-        color: black !important;
-        padding: 0.4rem;
-    }
-
-    /* .dish-of-the-day .menu-item article figure {
-        width: 70px !important;
-        height: 70px !important;
-    } */
-
-    .dish-of-the-day .menu-item-content h3 {
-        font-size: 0.95rem;
-        font-weight: 700;
-    }
-
-    /* Mensa info section */
-    .mense-info-section .card {
-        margin-top: 0.75rem;
-    }
-
-    .mense-info-item h3 {
-        font-size: 1rem;
-        margin: 0 0 0.5rem 0;
-        color: #000 !important;
-    }
-
-    .contact-info {
-        font-size: 0.8rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .contact-group {
-        margin-bottom: 0.25rem;
-    }
-
-    .contact-group dt {
-        display: inline;
-        font-weight: 600;
-        margin-right: 0.25rem;
-    }
-
-    .contact-group dd {
-        display: inline;
-        margin: 0;
-    }
-
-    .schedule-container table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.75rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .schedule-container th,
-    .schedule-container td {
-        border: 1px solid #ddd !important;
-        padding: 0.25rem;
-        text-align: left;
-        background: white !important;
-        color: black !important;
-    }
-
-    .schedule-container th {
-        background: #f5f5f5 !important;
-        color: black !important;
-        font-weight: 600;
-    }
-
-    .schedule-container caption {
-        font-size: 0.8rem;
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-        text-align: left;
-    }
-
-    .directions-button {
-        display: none !important;
-    }
-
-    .allergen-warning {
-        display: none !important;
-    }
-
-    /* Force single column on narrow print */
-    @media print and (max-width: 600px) {
-        .piatti-list {
-            grid-template-columns: 1fr !important;
-        }
-
-        /* Ensure borders are visible in portrait/narrow print */
-        .card {
-            border: 1px solid #333 !important;
-        }
-
-        .menu-item article {
-            border: 1px solid #333 !important;
-        }
-
-        .dish-of-the-day .menu-item article {
-            border: 2px solid #000 !important;
-        }
-
-        .schedule-container th,
-        .schedule-container td {
-            border: 1px solid #333 !important;
-        }
-    }
 }

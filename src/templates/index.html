@@ -8,6 +8,8 @@
             content="ESU Advisor è un sito web permette di cercare piatti, selezionare mense e visualizzare il menu del giorno."
         />
         <link rel="stylesheet" href="styles/style.css" />
+        <link rel="stylesheet" href="styles/print.css" />
+
         <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
         <title>ESU Advisor</title>
         <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
@@ -18,7 +20,7 @@
     </head>
     <body>
         <template id="header-template"></template>
-
+        <template id="footer-template"></template>
         <div class="page-layout">
             <template id="sidebar-template"></template>
 
@@ -42,7 +44,7 @@
                 <!-- Container principale per layout responsivo -->
                 <div class="content-layout">
                     <!-- Colonna Sinistra: Wrapper scrollabile per Piatto del giorno + Menu -->
-                    <div class="left-column">
+                    <div id="content-scroll" class="left-column">
                         <noscript>
                             <div class="noscript-message">
                                 <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le
@@ -111,8 +113,6 @@
                 </button>
             </main>
         </div>
-
-        <template id="footer-template"></template>
 
         <script src="scripts/back-to-top.js" defer></script>
     </body>

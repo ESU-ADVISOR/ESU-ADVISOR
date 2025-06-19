@@ -299,13 +299,12 @@ svg:not(.logo) {
 
 html {
     scroll-behavior: smooth;
-    height: 100vh;
+    height: 100%;
 }
 
 body {
-    height: 100vh;
+    height: 100dvh; /* Altezza dinamica di viewport per dispositivi mobili, vedi: https://caniuse.com/viewport-unit-variants */
     margin: 0;
-    /* padding-top: var(--header-height); */
     display: flex;
     flex-direction: column;
     text-rendering: optimizeSpeed;
@@ -756,7 +755,7 @@ p {
 .page-content {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    /* flex: 1; */
     min-height: 0;
     position: relative;
 }
@@ -1314,7 +1313,7 @@ p {
     color: var(--text-on-primary);
     position: fixed;
     bottom: 5.5rem;
-    right: var(--spacing-sm);
+    right: var(--spacing-md);
     display: none;
     box-shadow: var(--shadow-hover);
     text-align: center;
@@ -2338,6 +2337,13 @@ span.center {
     }
 }
 
+/* Support for devices with notch */
+@supports (padding: max(0px)) {
+    .bottom-nav {
+        padding-bottom: max(var(--spacing-xs), env(safe-area-inset-bottom));
+    }
+}
+
 /* ===== RATING FIX ===== */
 .rating {
     display: block;
@@ -3151,4 +3157,9 @@ noscript div.noscript-message {
     border: 1px solid #ff0000;
     padding: 10px;
     text-align: center;
+}
+@media (max-height: 480px) and (orientation: landscape) {
+    .page-layout {
+        overflow: visible;
+    }
 }

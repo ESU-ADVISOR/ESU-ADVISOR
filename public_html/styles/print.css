@@ -11,8 +11,15 @@
         display: none !important;
     }
 
+    :root {
+        --primary: #000000;
+    }
+
     .logo {
-        content: url("../images/fork.svg") !important;
+        background-image: none !important;
+        content: url("../images/logo_print.svg") !important;
+        height: 76px;
+        width: 200px;
     }
 
     a{

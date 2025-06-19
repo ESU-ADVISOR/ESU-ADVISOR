@@ -20,9 +20,9 @@ class IndexView extends BaseView
 
             $this->setTitle("Menu $mensaIniziale | ESU Advisor");
 
-            $this->setDescription("Consulta il menu di oggi di $mensaIniziale a Padova. Scopri piatti, orari, recensioni e allergeni della mensa universitaria ESU.");
+            $this->setDescription("Consulta il menu di oggi di $mensaIniziale a Padova. Scopri piatti, orari e recensioni delle mense universitarie ESU.");
 
-            $this->setKeywords("$mensaIniziale, menu $mensaIniziale, mensa $mensaIniziale, orari $mensaIniziale, ESU Padova, mense universitarie padova");
+            $this->setKeywords("$mensaIniziale,menu,mensa,orari,ESU,Padova,università,piatti,recensioni,allergeni");
         }
 
         parent::render();

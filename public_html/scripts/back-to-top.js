@@ -38,6 +38,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   document.body.onscroll = function () {
     if (document.body.scrollTop > 200) {
+      console.log("body scroll", document.body.scrollTop);
+      backToTopBtn.style.display = "block";
+    } else if (document.documentElement.scrollTop > 200) {
+      backToTopBtn.style.display = "block";
+    } else {
+      backToTopBtn.style.display = "none";
+    }
+  };
+  document.onscroll = function () {
+    console.log("document scroll", document.documentElement.scrollTop);
+    if (document.documentElement.scrollTop > 200) {
       backToTopBtn.style.display = "block";
     } else {
       backToTopBtn.style.display = "none";

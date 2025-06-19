@@ -18,12 +18,12 @@ class PiattoView extends BaseView
         if (isset($data["nome"])) {
             $nomePiatto = $data["nome"];
 
-            $this->setTitle("$nomePiatto - Recensioni e Dettagli | ESU Advisor");
+            $this->setTitle("$nomePiatto | ESU Advisor");
 
             $descrizione = $data["descrizione"] ?? "";
-            $this->setDescription("Scopri tutto su $nomePiatto delle mense ESU di Padova: $descrizione Leggi recensioni degli studenti, ingredienti e allergeni.");
+            $this->setDescription("Scopri il piatto $nomePiatto presso le mense ESU di Padova, con valutazioni e recensioni degli studenti.");
 
-            $this->setKeywords("$nomePiatto,recensioni,piatto mensa padova,valutazioni studenti,ingredienti,allergeni");
+            $this->setKeywords("$nomePiatto,recensioni,piatto,mensa,padova,valutazioni,ingredienti,allergeni,studenti,università");
 
             $fromProfile = isset($_GET['from']) && $_GET['from'] === 'profile';
 

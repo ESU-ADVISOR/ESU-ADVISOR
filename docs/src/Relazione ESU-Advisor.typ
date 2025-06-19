@@ -64,7 +64,7 @@
       ]
       #v(0.3cm)
       #text(size: 13pt)[
-        *Indirizzo web:* http://tecweb.studenti.math.unipd.it/~mvasquez/ESU-ADVISOR/
+        *Indirizzo web:* http://tecweb.studenti.math.unipd.it/mvasquez/index.php
       ]
       #v(0.3cm)
       #text()[*A cura di*]
@@ -165,25 +165,25 @@ Il pubblico di riferimento è costituito principalmente da studenti universitari
 = Progettazione
 
 == Schema organizzativo
-Poiché la struttura del sito web varia solo nel contenuto del tag `<main>`, mantenendo pressoché invariata la struttura composta da header e sidebar. Si può dire che lo schema organizzativo ambiguo scelto per il raggruppamento dei link alle pagine principali si applica a tutto il sito web.
+Poiché la struttura del sito web varia solo nel contenuto del tag `<main>`, mantenendo pressoché invariata la struttura composta da header e sidebar/footer, si può dire che lo schema organizzativo ambiguo scelto per il raggruppamento dei link alle pagine principali si applica a tutto il sito web.
 
-Nel sito web infatti, sarà sempre presente una sidebar a sinistra, che contiene i link alle pagine principali del sito, tra le quali è possibile trovare:
-- *Home*: pagina principale con i piatti del giorno e le recensioni;
-- *Review*: pagina per la visualizzazione e l'inserimento di recensioni sui piatti;
+Nel sito web infatti, sarà sempre presente una sidebar a sinistra (desktop), o un footer in basso (mobile), che contiene i link alle pagine principali del sito, le quali sono:
+- *Home*: pagina principale dove è possibile seleziona una mensa tra quelle disponibili e visualizzare i piatti offerti nel menu del giorno e le loro recensioni;
+- *Review*: pagina per l'inserimento di recensioni sui piatti;
 - *Profilo*: pagina del profilo utente per visualizzare le informazioni personali e le recensioni;
-- *Impostazioni*: pagina per la gestione di preferenze alimentari, stilistiche del sito, dello username e per la cancellazione dell'account.
+- *Impostazioni*: pagina per la gestione di preferenze alimentari, impostazioni d'accessibilità, modifica del username e password, e la possibilità di cancellare l'account.
 
 == Schema a tre pannelli
 Per ridurre il fenomeno del disorientamento dell'utente, è stato scelto di adottare lo schema a tre pannelli, adattando il design del sito per rispondere a queste tre domande:
 - *Dove sono?*
-  - L'utente può orientarsi grazie all'evidenziazione della pagina corrente nella sidebar,  oppure tramite la breadcrumb presente nell'header.
+  - L'utente può orientarsi grazie all'evidenziazione della pagina corrente nella sidebar (o l'icona evidenziata nel footer su mobile), oppure tramite la breadcrumb presente nell'header.
 - *Dove posso andare?*
-  - L'utente può navigare tra le pagine del sito tramite la sidebar, che mostra le sezioni principali del sito web. \ Sono inoltre presenti dei link all'interno del contenuto del sito che portano alla visualizzazione dei piatti del giorno, rispondendo alla domanda *_Cosa posso fare?_*.
+  - L'utente può navigare tra le pagine del sito tramite la sidebar/footer, che mostra le sezioni principali del sito web. \ Sono inoltre presenti dei link all'interno del contenuto del sito che portano alla visualizzazione dei piatti del giorno, rispondendo alla domanda *_Cosa posso fare?_*.
 #pagebreak()
 - *Di cosa si tratta?*
  - Ogni azione intraprendibile è descritta in modo chiaro e conciso, con l'eventuale uso di icone e testi esplicativi per facilitare la comprensione. Alcuni esempi sono i link "vedi le recensioni" presenti nelle schede dei piatti della homepage.
 
-Il sito inoltre risponde alla domanda *Dove posso trovare altre informazioni?* mettendole a disposizione nella homepage o esplicitandole in dei link.
+Il sito inoltre risponde alla domanda *Dove posso trovare altre informazioni?* mettendole a disposizione nella homepage o esplicitandole in dei link (come ad esempio il link di Maps per la mensa).
 
 == Convenzioni interne
 Per garantire coerenza, usabilità e orientamento all'utente, sono state adottate delle convenzioni interne, che si riflettono in tutte le pagine dell'applicazione:
@@ -195,7 +195,7 @@ Per garantire coerenza, usabilità e orientamento all'utente, sono state adottat
 - *Stile dei link:* lo stile dei link è stato mantenuto molto simile a quello standard ma la tonalità dei colori (blu per i link non visitati, viola per i link visitati) è stata adattata alla palette cromatica del sito per ottenere una buona resa estetica e corretti contrasti tra i colori;
 - *Struttura a Card:* le varie sezioni delle pagine e i loro elementi sono illustrati con uno stile ripetuto, al fine di rendere più semplice e intuitiva la struttura secondo la quale i contenuti sono disposti all'interno del sito;
 - *Navigazione adattiva:* la disposizione degli elementi di navigazione varia in base al dispositivo utilizzato. Su dispositivi mobili, il menu principale è posizionato in un footer fisso in basso, mentre i pulsanti di accesso, registrazione e logout sono collocati in alto a destra. Su desktop, invece, tutte le funzioni di navigazione sono raccolte in una sidebar laterale a sinistra, ottimizzando lo spazio e rendendo più intuitivo l'accesso alle diverse sezioni;
-- *Assenza di link circolari:* nonostante spesso l'icona del titolo sia un link alla home, per evitare di creare un link circolare questa caratteristica non è presente. La home è comunque sempre raggiungibile tramite il nav;
+- *Assenza di link circolari:* per evitare di creare un link circolare, i relativi pulsanti della pagina corrente vengono disabilitati automaticamente
 - *Istruzioni di compilazione nei form:* dove necessario, i campi dei form sono preceduti da istruzioni di compilazione che spiegano cosa inserire e indicano i requisiti del campo;
 - *Messaggi di errore nei form:* per ridurre la probabilità che un utente debba compilare e inviare un modulo più volte, i messaggi di errore vengono mostrati sotto i rispettivi campi già con l'evento “blur” (fatta eccezione per gli errori che devono essere verificati lato server).
 
@@ -210,7 +210,7 @@ Gli utenti possono registrarsi e accedere al sito per usufruire di funzionalità
 === Visualizzazione piatti del giorno
 Gli utenti possono visualizzare i piatti del giorno delle mense universitarie, con dettagli su ingredienti, allergeni e recensioni degli utenti.
 === Recensioni
-Gli utenti registrati possono lasciare recensioni sui piatti, valutandoli e fornendo commenti utili ad altri studenti.
+Gli utenti registrati possono lasciare recensioni sui piatti, valutandoli e fornendo commenti che possono tornare utili ad altri utenti.
 === Preferenze alimentari
 Gli utenti possono impostare preferenze alimentari specifiche, come allergie o intolleranze, per ricevere avvisi sui piatti che potrebbero contenere ingredienti indesiderati.
 === Personalizzazione impostazioni
@@ -221,8 +221,7 @@ Nella pagina delle impostazioni, gli utenti sia autenticati che non possono pers
 
 Il font per la dislessia scelto è stato "OpenDyslexic", un font open source progettato specificamente per facilitare la lettura dei contenuti testuali presenti nel sito.
 
-Inoltre, sempre nella stessa pagina è possibile impostare una mensa preferita, che verrà mostrata subito al login senza necessità di selezionarla ogni volta.
-Sarà anche possibile impostare delle preferenze alimentari in modo che possano essere segnalati i piatti che contengono un insieme di allergeni specificati dagli utenti.
+Inoltre, sempre nella stessa pagina è possibile impostare una mensa preferita, che verrà mostrata subito nella home senza necessità di selezionarla ogni volta.
 
 == Note
 Le immagini presenti nel sito sono state prese dagli smartphone dei membri del gruppo e dei loro conoscenti, mentre in alcuni casi, siccome non erano disponibili delle foto dove venisse mostrato il piatto singolo, abbiamo ricorso alla generazione delle foto con l'intelligenza artificiale.
@@ -236,9 +235,9 @@ Il progetto è organizzato con una netta separazione tra i file accessibili pubb
 
 ```bash
 ESU-ADVISOR/
-├── docs/                    # Documentazione progetto
+├── docs/                   # Documentazione progetto
 │
-├── public-html/             # File esposti pubblicamente accessibili
+├── public-html/            # File esposti pubblicamente accessibili
 │   ├── styles/             # Fogli di stile modulari
 │   ├── scripts/            # Script client-side
 │   ├── images/             # Risorse grafiche
@@ -248,7 +247,7 @@ ESU-ADVISOR/
 │   ├── robots.txt          # File per indicare ai crawler le pagine che possono visitare
 │   └── index.php           # Entry point applicazione
 │
-├── src/                     # File utilizzati lato backend non ottenibili dal webserver
+├── src/                    # File utilizzati lato backend non ottenibili dal webserver
 │   ├── controllers/        # Controller MVC
 │   ├── models/             # Model MVC
 │   ├── templates/          # File HTML puri contenenti la struttura della pagina
@@ -256,7 +255,7 @@ ESU-ADVISOR/
 │   ├── config.php          # File per le variabili d'ambiente per l'accesso al DB
 │   └── session_init.php    # File per le impostazioni della sessione di PHP
 │
-├── db.sql                   # Schema database e query di inserimento dati iniziali
+├── db.sql                  # Schema database e query di inserimento dati iniziali
 └── README.md
 ```
 
@@ -528,12 +527,6 @@ Qui sono riportati vari strumenti utilizzati al fine di convalidare sia la corre
 - *W3C CSS Validator*: CSS3 valido;
 - *Cross-browser compatibility*: Chrome, Firefox, Safari, Edge;
 - *Mobile compatibility*: Android, iOS.
-
-=== Controllo qualità PHP
-- *PSR-12* coding standards compliance;
-- *Static analysis* con PHPStan;
-- *Security scan* con RIPS;
-- *Performance profiling* con Xdebug.
 
 == Browser Testing
 Il sito è stato testato sui seguenti browser/dispositivi:

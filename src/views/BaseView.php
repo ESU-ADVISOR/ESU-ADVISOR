@@ -125,21 +125,21 @@ abstract class BaseView
     {
         switch ($this->currentPage) {
             case 'index':
-                return "mense universitarie padova,menu,ESU,cibo università padova,mense studenti,recensioni piatti mensa";
+                return "mense,università,Padova,menu,ESU,cibo,studenti,recensioni,piatti,orari";
             case 'piatto':
-                return "piatti mensa padova, recensioni cibo università, allergeni mensa, valutazioni piatti ESU";
+                return "piatti,mense,Padova,recensioni,valutazioni,ingredienti,università,allergeni,ESU";
             case 'login':
-                return "login mensa padova, accesso ESU advisor, account studente";
+                return "login,mense,piatti,Padova,account,ESU,account,studente";
             case 'register':
-                return "registrazione mensa padova, nuovo account ESU, studente università padova";
+                return "registrazione,mensa,Padova,nuovo account,ESU,studente,università,Padova";
             case 'profile':
-                return "profilo studente, recensioni mensa, statistiche valutazioni";
+                return "profilo,studente,recensioni,mensa,statistiche,valutazioni";
             case 'review':
-                return "recensione piatti mensa, valutazione cibo università, esperienza mensa padova";
+                return "recensione,piatto,mensa,valutazione,università,esperienza,Padova";
             case 'settings':
-                return "impostazioni mensa, preferenze alimentari, allergeni, accessibilità";
+                return "impostazioni,mensa,preferenze alimentari,allergeni,accessibilità";
             default:
-                return "mense universitarie padova, ESU, recensioni piatti, menu università";
+                return "mense,Padova,ESU,recensioni,piatti,menu,università";
         }
     }
 

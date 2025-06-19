@@ -24,7 +24,6 @@ class IndexController implements BaseController
 
         $isLoggedIn = isset($_SESSION["username"]) && !empty($_SESSION["username"]);
 
-        // Determina la mensa da mostrare inizialmente
         $mensaInizialeNome = null;
         if (isset($get["mensa"]) && !empty($get["mensa"])) {
             $mensaTest = MenseModel::findByName($get["mensa"]);

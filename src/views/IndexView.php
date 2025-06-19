@@ -15,18 +15,14 @@ class IndexView extends BaseView
 
     public function render(array $data = []): void
     {
-        // Personalizza SEO per la mensa iniziale
         if (isset($data["mensa_iniziale"]) && !empty($data["mensa_iniziale"])) {
             $mensaIniziale = $data["mensa_iniziale"];
 
-            // Title dinamico con nome della mensa
-            $this->setTitle("Menu $mensaIniziale - Mense Universitarie Padova | ESU Advisor");
+            $this->setTitle("Menu $mensaIniziale | ESU Advisor");
 
-            // Description specifica per la mensa
             $this->setDescription("Consulta il menu di oggi di $mensaIniziale a Padova. Scopri piatti, orari, recensioni e allergeni della mensa universitaria ESU.");
 
-            // Keywords specifiche per la mensa
-            $this->setKeywords("$mensaIniziale,menu,orari,ESU Padova,mense universitarie,piatti,recensioni,allergeni,piatto del giorno");
+            $this->setKeywords("$mensaIniziale, menu $mensaIniziale, mensa $mensaIniziale, orari $mensaIniziale, ESU Padova, mense universitarie padova");
         }
 
         parent::render();
@@ -47,14 +43,12 @@ class IndexView extends BaseView
         $menseComplete = $data["mense_complete"];
         $mensaIniziale = $data["mensa_iniziale"];
 
-        // Genera il select delle mense
         foreach (MenseModel::findAll() as $datiMensa) {
             $selected = ($datiMensa->getNome() === $mensaIniziale) ? 'selected' : '';
             $menseContent .= "<option value=\"" . htmlspecialchars($datiMensa->getNome()) . "\" " . $selected . ">" . htmlspecialchars($datiMensa->getNome()) . "</option>";
         }
 
-        // Genera il contenuto della mensa selezionata
-        $datiMensa = $menseComplete[0]; // Ora l'array contiene solo la mensa selezionata
+        $datiMensa = $menseComplete[0]; 
         $mensaId = $datiMensa["nome"];
 
         // === MENSE INFO ===
@@ -269,7 +263,6 @@ class IndexView extends BaseView
             }
             $dishOfTheDayContent .= "</div>";
 
-            // Link pulito senza parametro mensa
             $dishOfTheDayContent .=
                 "<a href=\"./piatto.php?nome=" .
                 urldecode(str_replace(" ", "_", strtolower($piatto->getNome()))) .
@@ -283,7 +276,6 @@ class IndexView extends BaseView
             $dishOfTheDayContent .= "<p class=\"text-center text-secondary dish-of-day-empty\">Nessun piatto del giorno disponibile per questa mensa</p>";
         }
 
-        // Replace template placeholders with actual content
         Utils::replaceTemplateContent(
             $this->dom,
             "mense-template",

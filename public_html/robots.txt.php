@@ -1,12 +1,9 @@
 <?php
-// Dynamic robots.txt generator
 header('Content-Type: text/plain; charset=utf-8');
 
-// Get base URL including subfolder
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
 $host = $_SERVER['HTTP_HOST'];
 $scriptPath = dirname($_SERVER['SCRIPT_NAME']);
-// Remove trailing slash if script is in root to avoid double slashes
 $scriptPath = ($scriptPath === '/') ? '' : $scriptPath;
 $baseUrl = $protocol . $host . $scriptPath;
 ?>

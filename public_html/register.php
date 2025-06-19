@@ -20,9 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (strlen($username) < 3 || strlen($username) > 50) {
             $errors[] = "Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.";
         }
-        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $username)) {
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
             $errors[] =
-                "Lo <span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini.";
+                "Lo <span lang='en'>username</span> può contenere solo lettere, numeri e <span lang='en'>underscore</span>.";
         }
     }
 

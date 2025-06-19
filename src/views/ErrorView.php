@@ -13,7 +13,6 @@ class ErrorView extends BaseView
 
     public function render(array $data = []): void
     {
-        // Set breadcrumb based on original page if provided
         if (isset($data['page']) && !empty($data['page'])) {
             $originalPage = basename($data['page'], '.php');
             $pageNames = [
@@ -23,7 +22,6 @@ class ErrorView extends BaseView
 
             if (isset($pageNames[$originalPage])) {
                 $this->setBreadcrumb(['current' => $pageNames[$originalPage]]);
-                // Override currentPage for proper footer/sidebar highlighting
                 $this->currentPage = $originalPage;
             } else {
                 $this->setBreadcrumb(['current' => 'Error']);

@@ -194,7 +194,6 @@ class RecensioneModel
         }
 
 
-        // Assicurati che il menu esista nel database
         if (!MenuModel::exists($this->piatto, $this->mensa)) {
 
             return false;

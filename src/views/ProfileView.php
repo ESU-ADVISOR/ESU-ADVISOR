@@ -46,7 +46,6 @@ class ProfileView extends BaseView
             $dateOfBirth
         );
 
-        // Handle success/error messages
         if (isset($data['success'])) {
             $successHtml = "<div class='success'>{$data['success']}</div>";
             Utils::replaceTemplateContent(

@@ -18,7 +18,6 @@ class ReviewEditController implements BaseController
             return;
         }
 
-        // Verifica che il menu esista
         if (!MenuModel::exists($get['piatto'], $get['mensa'])) {
             $view->renderError("Menu non trovato", "La combinazione piatto-mensa specificata non esiste.", 404);
             return;
@@ -113,7 +112,6 @@ class ReviewEditController implements BaseController
     {
         $view = new ReviewEditView();
 
-        // Verifica che il menu esista
         if (!MenuModel::exists($post['piatto'], $post['mensa'])) {
             $view->renderError("Menu non trovato", "La combinazione piatto-mensa specificata non esiste.", 404);
             return;
@@ -134,7 +132,6 @@ class ReviewEditController implements BaseController
 
         try {
             if ($recensione->deleteFromDB()) {
-                // Reindirizza al profilo con messaggio di successo
                 header("Location: profile.php?success=" . urlencode("Recensione eliminata con successo!"));
                 exit;
             } else {

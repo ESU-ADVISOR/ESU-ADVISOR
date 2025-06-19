@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("change_password_form");
+  if (!form) {return;}
   const currentPasswordInput = document.getElementById("current_password");
   const passwordInput = document.getElementById("new_password");
   const confirmPasswordInput = document.getElementById("new_password_confirm");

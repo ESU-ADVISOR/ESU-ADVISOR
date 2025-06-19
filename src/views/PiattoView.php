@@ -15,25 +15,19 @@ class PiattoView extends BaseView
 
     public function render(array $data = []): void
     {
-        // Personalizza SEO per questo specifico piatto
         if (isset($data["nome"])) {
             $nomePiatto = $data["nome"];
 
-            // Title dinamico con nome del piatto
             $this->setTitle("$nomePiatto - Recensioni e Dettagli | ESU Advisor");
 
-            // Description con ingredienti del piatto
             $descrizione = $data["descrizione"] ?? "";
             $this->setDescription("Scopri tutto su $nomePiatto delle mense ESU di Padova: $descrizione Leggi recensioni degli studenti, ingredienti e allergeni.");
 
-            // Keywords specifiche per il piatto
             $this->setKeywords("$nomePiatto,recensioni,piatto mensa padova,valutazioni studenti,ingredienti,allergeni");
 
-            // Gestisci breadcrumb in base alla provenienza
             $fromProfile = isset($_GET['from']) && $_GET['from'] === 'profile';
 
             if ($fromProfile) {
-                // Breadcrumb: Profilo > [Nome Piatto]
                 $this->setBreadcrumb([
                     'parent' => [
                         'url' => 'profile.php',
@@ -42,7 +36,6 @@ class PiattoView extends BaseView
                     'current' => $nomePiatto
                 ]);
             } else {
-                // Breadcrumb: Home > [Nome Piatto] (comportamento standard)
                 $this->setBreadcrumb([
                     'parent' => [
                         'url' => 'index.php',
@@ -92,11 +85,9 @@ class PiattoView extends BaseView
         }
         $piattoRating .= "</div>";
 
-        // Gestione allergeni
         $allergeniContent = "";
         $allergeni = $piatto->getAllergeni();
         if (!empty($allergeni)) {
-            // Rimuovi "Nessuno" dalla lista se presente insieme ad altri allergeni
             $allergeni = array_filter($allergeni, function ($allergene) {
                 return $allergene !== "Nessuno";
             });
@@ -118,7 +109,6 @@ class PiattoView extends BaseView
             $allergeniContent = "<p>Nessuno</p>";
         }
 
-        // Gestione mense
         $menseContent = "";
         $mense = $piatto->getMense();
         if (!empty($mense)) {
@@ -199,7 +189,6 @@ class PiattoView extends BaseView
             $piattoReview
         );
 
-        // Generate review button with mensa and piatto parameters
         $reviewButtonQuery = "?piatto=" . urlencode($data["nome"]);
         if ($mensa) {
             $reviewButtonQuery .= "&mensa=" . urlencode($mensa);
@@ -250,7 +239,6 @@ class PiattoView extends BaseView
             );
         }
 
-        // Add script to store mensa in sessionStorage for back navigation
         if (!empty($mensa)) {
             $script = $this->dom->createElement('script');
             $scriptContent = "sessionStorage.setItem('currentMensa', " . json_encode($mensa) . ");";

@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("delete-account-form");
+  if (!form) {
+    return;
+  }
   form.addEventListener("submit", function (event) {
     if (
       confirm(

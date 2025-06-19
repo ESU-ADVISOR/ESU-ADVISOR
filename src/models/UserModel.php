@@ -13,7 +13,6 @@ class UserModel
     private $db;
 
 
-    // table fields
     private int|null $id = null;
     private string|null $username = null;
     private string|null $password = null;
@@ -150,7 +149,7 @@ class UserModel
             try {
                 $this->dataNascita = new DateTimeImmutable($this->dataNascita);
             } catch (\Exception) {
-                return false; // Invalid date format
+                return false; 
             }
         }
 

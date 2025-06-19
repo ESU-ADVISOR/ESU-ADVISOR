@@ -8,7 +8,6 @@ class MenseModel
 {
     private $db;
 
-    // table fields
     private string|null $nome;
     private string|null $indirizzo;
     private string|null $telefono;

@@ -117,8 +117,6 @@ class SettingsController implements BaseController
         $user = UserModel::findByUsername($_SESSION["username"]);
         $errors = [];
 
-        //print_r($post);
-
         if ($user === null) {
             $view->render([
                 "errors" => ["Utente non trovato"],

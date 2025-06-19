@@ -73,9 +73,7 @@ abstract class BaseView
         $this->updateOrCreateMeta('name', 'author', 'Giacomo Loat, Giulio Bottacin, Malik Giafar Mohamed, Manuel Felipe Vasquez - Università di Padova');
     }
 
-    /**
-     * Get default title based on current page
-     */
+
     private function getDefaultTitle(): string
     {
         $baseTitle = "ESU Advisor";

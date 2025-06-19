@@ -9,7 +9,6 @@ class PiattoModel
 {
     private $db;
 
-    // table fields
     private string|null $nome;
     private string|null $descrizione;
     private string|null $categoria;
@@ -168,7 +167,6 @@ class PiattoModel
 
         $piattoAllergeni = $this->getAllergeni();
 
-        // Normalize both arrays for case-insensitive comparison
         $normalizedUserAllergeni = array_map('strtolower', $allergeni);
         $normalizedPiattoAllergeni = array_map('strtolower', $piattoAllergeni);
 
@@ -191,7 +189,6 @@ class PiattoModel
 
         foreach ($recensioni as $recensione) {
             if ($recensione->getPiatto() == $this->nome) {
-                // Se è specificata una mensa, filtra per quella mensa
                 if ($mensa === null || $recensione->getMensa() == $mensa) {
                     $result[] = $recensione;
                 }

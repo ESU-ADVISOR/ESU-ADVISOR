@@ -16,8 +16,7 @@ class ReviewEditView extends BaseView
 
     public function render(array $data = []): void
     {
-        // ✅ La modifica recensioni è accessibile SOLO da profile.php
-        // Breadcrumb sempre: Profilo > Modifica Recensione
+
         $this->setBreadcrumb([
             'parent' => [
                 'url' => 'profile.php',
@@ -44,7 +43,6 @@ class ReviewEditView extends BaseView
         foreach ($mense as $mensa) {
             $selected = "";
 
-            // Seleziona la mensa se corrisponde a quella della recensione
             if ($mensa->getNome() === $recensione->getMensa()) {
                 $selected = " selected";
             }

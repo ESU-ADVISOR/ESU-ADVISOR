@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function scrollToTop() {
-    content.scrollTop = 0;
-    left_column.scrollTop = 0;
+    if (content) content.scrollTop = 0;
+    if (left_column) left_column.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }
 

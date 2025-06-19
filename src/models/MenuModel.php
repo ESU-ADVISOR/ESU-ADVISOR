@@ -114,7 +114,6 @@ class MenuModel
             ]);
         }
 
-        // Se esiste già, non c'è nulla da aggiornare
         return true;
     }
 

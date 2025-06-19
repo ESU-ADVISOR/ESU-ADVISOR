@@ -37,12 +37,10 @@ class LoginView extends BaseView
             );
         }
 
-        // Aggiunta della persistenza dei dati del form
         if (isset($data["formData"])) {
             $formData = $data["formData"];
             $html = $this->dom->saveHTML();
 
-            // Ripopola il campo username
             if (isset($formData["username"])) {
                 $pattern = '/<input[^>]*id="username"[^>]*>/';
                 $replacement = '<input type="text" id="username" name="username" required class="form-input" value="' .

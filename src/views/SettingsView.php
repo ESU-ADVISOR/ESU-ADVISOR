@@ -118,12 +118,11 @@ class SettingsView extends BaseView
         foreach ($allergeniCheckboxes as $checkbox) {
             if ($checkbox->getAttribute('type') === 'checkbox' && $checkbox->getAttribute('name') === 'allergeni[]') {
                 $allergeneValue = $checkbox->getAttribute('value');
-                // Ensure consistent casing for comparison
                 $allergeneValueNormalized = ucfirst($allergeneValue);
                 if (
                     in_array($allergeneValueNormalized, $allergeni, true) ||
                     in_array($allergeneValue, $allergeni, true)
-                ) { // Check both normalized and original value
+                ) { 
                     $checkbox->setAttribute('checked', 'checked');
                 } else {
                     if ($checkbox->hasAttribute('checked')) {
@@ -144,7 +143,6 @@ class SettingsView extends BaseView
             $settingsAccountContent
         );
 
-        // ricompilazione campi se si proviene da un errore
         if (isset($data["formData"])) {
             $formData = $data["formData"];
 

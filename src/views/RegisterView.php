@@ -68,14 +68,7 @@ class RegisterView extends BaseView
                 );
             }
         }
-/*
-        if (isset($data["focus"])) {
-            $focusElement = $this->dom->getElementById($data["focus"]);
-            if ($focusElement) {
-                $focusElement->setAttribute("autofocus", "autofocus");
-            }
-        }
-*/
+
         echo $this->dom->saveHTML();
     }
 }

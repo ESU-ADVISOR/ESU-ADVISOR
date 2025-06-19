@@ -21,7 +21,6 @@ class ReviewView extends BaseView
             return;
         }
 
-        // Get pre-filled values from URL parameters
         $prefilledMensa = $data["mensa"] ?? "";
         $prefilledPiatto = $data["piatto"] ?? "";
 
@@ -119,7 +118,6 @@ class ReviewView extends BaseView
             );
         }
 
-        // Pre-fill the piatto input field if provided
         if (!empty($prefilledPiatto)) {
             $piattoInput = $this->dom->getElementById('piatto');
             if ($piattoInput) {
@@ -127,7 +125,6 @@ class ReviewView extends BaseView
             }
         }
 
-        // Add data attributes for JavaScript to handle pre-filled values
         if (!empty($prefilledMensa) || !empty($prefilledPiatto)) {
             $body = $this->dom->getElementsByTagName('body')->item(0);
             if (!empty($prefilledMensa)) {

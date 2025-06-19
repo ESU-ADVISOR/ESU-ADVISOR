@@ -4,10 +4,8 @@ require_once "../src/config.php";
 use Models\PiattoModel;
 use Models\MenseModel;
 
-// Set content type
 header('Content-Type: application/xml; charset=utf-8');
 
-// Get base URL
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
 $host = $_SERVER['HTTP_HOST'];
 $baseUrl = $protocol . $host;
@@ -68,7 +66,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
             echo "    </url>\n";
         }
     } catch (Exception $e) {
-        // Continue if mense can't be loaded
         error_log("Sitemap generation error (mense): " . $e->getMessage());
     }
     ?>
@@ -78,7 +75,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     try {
         $piatti = PiattoModel::findAll();
         foreach ($piatti as $piatto) {
-            // Format matches PiattoController expectation with proper URL encoding
             $nomeParam = str_replace(" ", "_", strtolower($piatto->getNome()));
             $nomeParam = urlencode($nomeParam);
             
@@ -90,7 +86,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
             echo "    </url>\n";
         }
     } catch (Exception $e) {
-        // Continue without dish URLs if error
         error_log("Sitemap generation error (piatti): " . $e->getMessage());
     }
     ?>

@@ -67,6 +67,8 @@ jobs:
           sed -i 's/\getenv("DB_PASS")/'\"$DB_PASS\"'/g' ./src/config.php
           sed -i 's/\getenv("DB_NAME")/'\"$DB_NAME\"'/g' ./src/config.php
 
+          sed -i 's/\RewriteBase //'\"RewriteBase /mvasquez\"'/g' ./public_html/.htaccess
+
           sftp tecweb <<EOF
           put -r ./src src
           bye

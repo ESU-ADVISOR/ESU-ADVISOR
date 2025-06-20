@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Pagina di recensione per l'applicazione ESU Advisor" />
+        <link rel="stylesheet" href="styles/style.css" />
+        <link rel="stylesheet" href="styles/print.css" />
+
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+        <title>Recensione Piatto | ESU Advisor</title>
+        <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    </head>
+    <body>
+        <template id="header-template"></template>
+        <template id="footer-template"></template>
+
+        <noscript>
+            <div class="noscript-message mb-2">
+                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
+                &egrave; necessario abilitare JavaScript.
+            </div>
+        </noscript>
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
+
+            <main class="page-content container" id="content">
+                <div class="card card-expanded mb-4">
+                    <h1 class="card-title">Lascia una recensione</h1>
+                    <p class="text-secondary mb-4">Condividi la tua esperienza dettagliata:</p>
+
+                    <template id="server-response-template"></template>
+
+                    <form action="review.php" method="post" class="base-form" id="review-form">
+                        <div class="form-group">
+                            <label for="mensa">Nome della mensa:</label>
+                            <select id="mensa" name="mensa" required class="form-select">
+                                <option value="">Seleziona una mensa</option>
+                                <template id="mense-select-2-template"></template>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <template id="suggerimenti-piatti-template"></template>
+
+                            <label for="piatto">Nome del piatto:</label>
+                            <p class="text-secondary text-sm" id="piatto-instructions">
+                                Dopo aver selezionato la mensa, inizia a scrivere il nome del piatto e selezionalo dalla
+                                lista.
+                            </p>
+                            <input
+                                type="text"
+                                id="piatto"
+                                name="piatto"
+                                required
+                                class="form-input"
+                                list="suggerimenti-piatti"
+                                autocomplete="off"
+                                aria-describedby="piatto-instructions"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="review">Recensione:</label>
+                            <textarea
+                                id="review"
+                                name="review"
+                                rows="4"
+                                required
+                                class="form-input"
+                                placeholder="Descrivi la tua esperienza con questo piatto..."
+                            ></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label id="rating-label">Valutazione:</label>
+                            <div class="rating" id="rating-container" aria-describedby="rating-description">
+                                <p id="rating-description" class="sr-only">
+                                    Valuta da 1 a 5 stelle, dove 5 è il massimo
+                                </p>
+                                <fieldset class="rating-container">
+                                    <legend>Seleziona il numero di stelle per la tua valutazione</legend>
+                                    <input type="radio" id="star5" name="rating" value="5" class="visually-hidden" />
+                                    <label for="star5" title="5 stelle">
+                                        <span class="sr-only">5 stelle - eccellente</span>
+                                        <template id="star-template-5"></template>
+                                    </label>
+
+                                    <input type="radio" id="star4" name="rating" value="4" class="visually-hidden" />
+                                    <label for="star4" title="4 stelle">
+                                        <span class="sr-only">4 stelle - molto buono</span>
+                                        <template id="star-template-4"></template>
+                                    </label>
+
+                                    <input type="radio" id="star3" name="rating" value="3" class="visually-hidden" />
+                                    <label for="star3" title="3 stelle">
+                                        <span class="sr-only">3 stelle - buono</span>
+                                        <template id="star-template-3"></template>
+                                    </label>
+
+                                    <input type="radio" id="star2" name="rating" value="2" class="visually-hidden" />
+                                    <label for="star2" title="2 stelle">
+                                        <span class="sr-only">2 stelle - discreto</span>
+                                        <template id="star-template-2"></template>
+                                    </label>
+
+                                    <input
+                                        type="radio"
+                                        id="star1"
+                                        name="rating"
+                                        value="1"
+                                        class="visually-hidden"
+                                        required
+                                    />
+                                    <label for="star1" title="1 stella">
+                                        <span class="sr-only">1 stella - insufficiente</span>
+                                        <template id="star-template-1"></template>
+                                    </label>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <input type="submit" class="form-button" value="Invia Recensione" />
+                    </form>
+                </div>
+
+                <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+                    Torna su <span aria-hidden="true">&uarr;</span>
+                </button>
+            </main>
+        </div>
+
+        <script src="scripts/rating-keyboard.js"></script>
+        <script src="scripts/review_validation.js"></script>
+        <script src="scripts/back-to-top.js"></script>
+    </body>
+</html>

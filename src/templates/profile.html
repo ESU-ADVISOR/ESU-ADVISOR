@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Pagina di profilo per l'applicazione ESU Advisor" />
+        <link rel="stylesheet" href="styles/style.css" />
+        <link rel="stylesheet" href="styles/print.css" />
+
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+        <title>Profilo | ESU Advisor</title>
+        <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    </head>
+    <body>
+        <template id="header-template"></template>
+        <template id="footer-template"></template>
+
+        <noscript>
+            <div class="noscript-message mb-2">
+                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
+                &egrave; necessario abilitare JavaScript.
+            </div>
+        </noscript>
+
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
+
+            <main class="page-content container" id="content">
+                <template id="server-response-template"></template>
+
+                <div class="profile-header card card-expanded mc-b">
+                    <div class="profile-info">
+                        <div class="profile-avatar">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="64"
+                                height="64"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="profile-icon"
+                            >
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="profile-details">
+                            <h2 class="text-primary">
+                                <template id="profile-username-template"></template>
+                            </h2>
+                            <p class="text-secondary">
+                                <template id="profile-date-of-birth-template">Nato nel <time>2000</time></template>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="profile-stats">
+                        <div class="stat-card">
+                            <span class="stat-number"
+                                ><template id="profile-recensioni-count-template">0</template></span
+                            >
+                            <span class="stat-label">Recensioni</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number"><template id="profile-avg-rating-template">0</template></span>
+                            <span class="stat-label">Media voti</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <a href="review.php" class="nav-button primary">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Scrivi una recensione
+                        </a>
+                        <a href="settings.php" class="nav-button secondary">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path
+                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+                                ></path>
+                            </svg>
+                            Impostazioni profilo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card card-expanded">
+                    <div class="card-header">
+                        <h2 class="text-lg font-semibold">Le tue Recensioni</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <ul class="cards-stack">
+                            <template id="profile-recensioni-template"></template>
+                        </ul>
+                    </div>
+                </div>
+
+                <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+                    Torna su <span aria-hidden="true">&uarr;</span>
+                </button>
+            </main>
+        </div>
+
+        <script src="scripts/back-to-top.js"></script>
+    </body>
+</html>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Pagina di impostazioni per l'applicazione ESU Advisor" />
+        <link rel="stylesheet" href="styles/style.css" />
+        <link rel="stylesheet" href="styles/print.css" />
+
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+        <title>Impostazioni | ESU Advisor</title>
+        <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    </head>
+    <body>
+        <template id="header-template"></template>
+        <template id="footer-template"></template>
+
+        <noscript>
+            <div class="noscript-message mb-2">
+                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
+                &egrave; necessario abilitare JavaScript.
+            </div>
+        </noscript>
+
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
+
+            <main class="page-content container content-scroll" id="content">
+                <div class="card card-expanded mc-b">
+                    <div class="card-body">
+                        <!-- Sezione Preferenze generali (visibile a tutti) -->
+                        <section>
+                            <h2 class="text-lg font-semibold mb-3">Preferenze</h2>
+                            <template id="server-response-preferences-template"></template>
+                            <form action="settings.php" id="preferenze-generali" method="post" class="settings-form">
+                                <div class="form-group">
+                                    <label for="mensa-preferita-select">Seleziona la tua mensa preferita:</label>
+                                    <p class="text-secondary text-sm" id="mensa-preferita-instructions">
+                                        La mensa selezionata verrà visualizzata automaticamente nella
+                                        <span lang="en">home</span>.
+                                    </p>
+                                    <select
+                                        class="form-select"
+                                        id="mensa-preferita-select"
+                                        name="mensa_preferita"
+                                        aria-describedby="mensa-preferita-instructions"
+                                    >
+                                        <template id="mense-options-template"></template>
+                                    </select>
+                                </div>
+
+                                <!-- Implementazione allergeni migliorata -->
+                                <div class="form-group">
+                                    <fieldset aria-describedby="allergeni-instructions">
+                                        <legend>Allergeni da segnalare:</legend>
+                                        <p class="text-secondary text-sm" id="allergeni-instructions">
+                                            I piatti contenenti gli allergeni selezionati verranno segnalati durante la
+                                            navigazione.
+                                        </p>
+                                        <div class="checkbox-grid">
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-glutine"
+                                                    name="allergeni[]"
+                                                    value="glutine"
+                                                />
+                                                <label for="allergene-glutine">Glutine</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-crostacei"
+                                                    name="allergeni[]"
+                                                    value="crostacei"
+                                                />
+                                                <label for="allergene-crostacei">Crostacei</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-uova"
+                                                    name="allergeni[]"
+                                                    value="uova"
+                                                />
+                                                <label for="allergene-uova">Uova</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-Pesce"
+                                                    name="allergeni[]"
+                                                    value="Pesce"
+                                                />
+                                                <label for="allergene-Pesce">Pesce</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-arachidi"
+                                                    name="allergeni[]"
+                                                    value="arachidi"
+                                                />
+                                                <label for="allergene-arachidi">Arachidi</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-soia"
+                                                    name="allergeni[]"
+                                                    value="soia"
+                                                />
+                                                <label for="allergene-soia">Soia</label>
+                                            </div>
+
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-latte"
+                                                    name="allergeni[]"
+                                                    value="latte"
+                                                />
+                                                <label for="allergene-latte">Latte</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-frutta_a_guscio"
+                                                    name="allergeni[]"
+                                                    value="frutta_a_guscio"
+                                                />
+                                                <label for="allergene-frutta_a_guscio">Frutta a guscio</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-sedano"
+                                                    name="allergeni[]"
+                                                    value="sedano"
+                                                />
+                                                <label for="allergene-sedano">Sedano</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-senape"
+                                                    name="allergeni[]"
+                                                    value="senape"
+                                                />
+                                                <label for="allergene-senape">Senape</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-anidride-solforosa"
+                                                    name="allergeni[]"
+                                                    value="anidride_solforosa"
+                                                />
+                                                <label for="allergene-anidride-solforosa">Anidride solforosa</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-lupini"
+                                                    name="allergeni[]"
+                                                    value="lupini"
+                                                />
+                                                <label for="allergene-lupini">Lupini</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input
+                                                    type="checkbox"
+                                                    id="allergene-molluschi"
+                                                    name="allergeni[]"
+                                                    value="molluschi"
+                                                />
+                                                <label for="allergene-molluschi">Molluschi</label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <input
+                                    type="submit"
+                                    name="save_preferenze_generali"
+                                    class="form-button"
+                                    value="Salva preferenze"
+                                />
+                            </form>
+                        </section>
+                    </div>
+                </div>
+                <div class="card card-expanded">
+                    <div class="card-body">
+                        <!-- Sezione Accessibilità (visibile a tutti) -->
+                        <section>
+                            <h2 class="text-lg font-semibold mb-3">Accessibilità</h2>
+                            <template id="server-response-accessibility-template"></template>
+                            <form
+                                action="settings.php"
+                                id="preferenze-accessibilità"
+                                method="post"
+                                class="settings-form"
+                            >
+                                <div class="form-group">
+                                    <label for="modifica-tema-select">Modifica tema:</label>
+                                    <select class="form-select" id="modifica-tema-select" name="modifica_tema">
+                                        <template id="tema-option-template"></template>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="dimensioni-testo-select">Dimensioni testo:</label>
+                                    <select class="form-select" id="dimensioni-testo-select" name="dimensione_testo">
+                                        <template id="dimensione-testo-options-template"></template>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="modifica-font-select">Modifica font:</label>
+                                    <select class="form-select" id="modifica-font-select" name="modifica_font">
+                                        <template id="font-options-template"></template>
+                                    </select>
+                                </div>
+                                <input type="submit" name="preferences" class="form-button" value="Salva" />
+                            </form>
+                        </section>
+                    </div>
+                </div>
+
+                <template id="settings-account-template"></template>
+
+                <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+                    Torna su <span aria-hidden="true">&uarr;</span>
+                </button>
+            </main>
+        </div>
+
+        <script src="scripts/confirm-delete-account.js"></script>
+        <script src="scripts/change_password_validation.js"></script>
+        <script src="scripts/change_username_validation.js"></script>
+        <script src="scripts/back-to-top.js"></script>
+    </body>
+</html>

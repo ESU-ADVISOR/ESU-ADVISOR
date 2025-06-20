@@ -1,50 +1,76 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Login</title>
-        <!-- <link rel="stylesheet" href="/styles/main.css" /> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Pagina di login per l'applicazione ESU Advisor" />
+        <link rel="stylesheet" href="styles/style.css" />
+        <link rel="stylesheet" href="styles/print.css" />
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+        <title>Login | ESU Advisor</title>
+        <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin />
+
         <script src="scripts/login_form_validation.js" defer></script>
     </head>
     <body>
-        <main>
-            <h1>Login</h1>
+        <template id="header-template"></template>
+        <template id="footer-template"></template>
+        <noscript>
+            <div class="noscript-message mb-2">
+                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le funzionalit&agrave; del sito,
+                &egrave; necessario abilitare JavaScript.
+            </div>
+        </noscript>
 
-            <template id="server-response-template"></template>
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
 
-            <form action="login.php" method="POST" class="login-form">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        required
-                        aria-describedby="username-error"
-                    />
-                    <small id="username-error" class="error-message"></small>
+            <main class="page-content container" id="content">
+                <div class="card card-expanded mb-4">
+                    <div class="form-header">
+                        <h2 lang="en" class="text-primary">Login</h2>
+                    </div>
+
+                    <p class="hide-in-print">Non hai un account? <a href="register.php">Registrati qui</a>.</p>
+
+                    <form action="login.php" id="login-form" method="POST" class="base-form">
+                        <template id="server-response-template"></template>
+
+                        <div class="form-group">
+                            <label for="username" lang="en">Username</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                required
+                                class="form-input username-input"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" lang="en">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class="form-input password-input"
+                            />
+                        </div>
+
+                        <div class="flex gap-3 mt-3">
+                            <input type="submit" value="Accedi" class="form-button" lang="en" />
+                        </div>
+                    </form>
                 </div>
+            </main>
+        </div>
 
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                        aria-describedby="password-error"
-                    />
-                    <small id="password-error" class="error-message"></small>
-                </div>
+        <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+            Torna su <span aria-hidden="true">&uarr;</span>
+        </button>
 
-                <button type="submit" class="btn">Login</button>
-            </form>
-
-            <p>
-                Don't have an account?
-                <a href="register.php">Register here</a>.
-            </p>
-        </main>
+        <script src="scripts/back-to-top.js"></script>
     </body>
 </html>

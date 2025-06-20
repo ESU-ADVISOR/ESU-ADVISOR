@@ -1,0 +1,104 @@
+<div class="card card-expanded mc-t mc-b">
+    <div class="card-body">
+        <section>
+            <h2 class="text-lg font-semibold mb-3">Impostazioni profilo</h2>
+
+            <template id="server-response-username-template"></template>
+            <form action="settings.php" id="change_username_form" method="post" class="base-form">
+                <fieldset>
+                    <legend>Modifica <span lang="en">username</span></legend>
+                    <div class="form-group">
+                        <label for="new_username"><span lang="en">Username</span></label>
+                        <p class="text-secondary text-sm" id="username-instructions">
+                            Digita un nuovo <span lang="en">username</span> per il tuo profilo.<br />
+                            Lo <span lang="en">username</span> deve essere compreso tra 3 e 50 caratteri e può contenere
+                            solo lettere, numeri, <span lang="en">underscore</span>.
+                        </p>
+                        <input
+                            type="text"
+                            id="new_username"
+                            name="new_username"
+                            class="form-input username-input"
+                            aria-describedby="username-instructions"
+                            required
+                        />
+                        <input type="submit" class="form-button" name="change_username" value="Salva Username" />
+                    </div>
+                </fieldset>
+            </form>
+
+            <template id="server-response-password-template"></template>
+            <form action="settings.php" id="change_password_form" method="post" class="base-form">
+                <fieldset>
+                    <legend>Modifica <span lang="en">password:</span></legend>
+                    <div class="form-group">
+                        <label for="current_password"><span lang="en">Password</span> attuale</label>
+                        <input
+                            type="password"
+                            id="current_password"
+                            name="current_password"
+                            class="form-input password-input"
+                            required
+                        />
+
+                        <label for="new_password">Nuova <span lang="en">password</span></label>
+                        <p class="text-secondary text-sm" id="new-password-instructions">
+                            La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un
+                            carattere speciale (@$!%*?&) e deve essere lunga almeno 8 caratteri.
+                        </p>
+                        <input
+                            type="password"
+                            id="new_password"
+                            name="new_password"
+                            class="form-input password-input"
+                            aria-describedby="new-password-instructions"
+                            required
+                        />
+
+                        <label for="new_password_confirm">Ripeti la nuova <span lang="en">password</span></label>
+                        <input
+                            type="password"
+                            id="new_password_confirm"
+                            name="new_password_confirm"
+                            class="form-input password-input"
+                            required
+                        />
+
+                        <input type="submit" class="form-button" name="change_password" value="Salva Password" />
+                    </div>
+                </fieldset>
+            </form>
+        </section>
+    </div>
+</div>
+<div class="card card-expanded">
+    <div class="card-body">
+        <!-- Sezione Accessibilità (visibile a tutti) -->
+        <section>
+            <template id="server-response-delete-account-template"></template>
+            <form id="delete-account-form" method="POST" action="settings.php" class="base-form">
+                <fieldset>
+                    <legend>Elimina <span lang="en">Account</span></legend>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <p class="text-secondary text-md" id="delete-account-instructions">
+                                Elimina <span lang="en">l'account</span> e i sui dati relativi, tale azione è
+                                irreversibile
+                            </p>
+                            <input type="hidden" name="delete_account" value="1" />
+                            <button
+                                type="submit"
+                                id="delete-account-button"
+                                class="danger form-button"
+                                aria-label="Elimina Account"
+                                aria-describedby="delete-account-instructions"
+                            >
+                                Elimina <span lang="en">Account</span>
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </section>
+    </div>
+</div>

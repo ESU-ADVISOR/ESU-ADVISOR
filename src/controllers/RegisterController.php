@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Models\UserModel;
@@ -6,37 +7,51 @@ use Views\RegisterView;
 
 class RegisterController implements BaseController
 {
-    private $model;
-    private $view;
-
-    public function __construct()
-    {
-        $this->model = new UserModel();
-        $this->view = new RegisterView();
-    }
-
     public function handleGETRequest(array $get = []): void
     {
-        $this->view->render();
+        $view = new RegisterView();
+        $view->render($get);
     }
 
     public function handlePOSTRequest(array $post = []): void
     {
         $username = $post["username"];
-        $email = $post["email"];
         $password = $post["password"];
-
-        if ($this->model->isEmailTaken($email)) {
-            $this->view->render(["errors" => ["Email is already taken"]]);
-            return;
-        }
+        $dataNascita = $post["birth_date"];
+        $view = new RegisterView();
 
         try {
-            $this->model->createUser($username, $email, $password);
-            $this->view->render(["success" => "Registration successful!"]);
+            if (UserModel::isUsernameTaken($username)) {
+                $view->render([
+                    "errors" => ["Registrazione fallita: <span lang='en'>username</span> già in uso"],
+                    "formData" => $post,
+                    "focus" => "username"
+                ]);
+                return;
+            }
+
+            $new_user = new UserModel([
+                "username" => $username,
+                "password" => $password,
+                "dataNascita" => $dataNascita,
+            ]);
+
+            if ($new_user->saveToDB()) {
+                $view->render(["success" => "Registrazione completata con successo!"]);
+                return;
+            } else {
+
+                $view->render([
+                    "errors" => ["Registrazione fallita: impossibile salvare nel database"],
+                    "formData" => $post
+                ]);
+            }
         } catch (\Exception $e) {
-            $this->view->render([
-                "error" => "Registration failed: " . $e->getMessage(),
+            error_log("Errore di registrazione: " . $e->getMessage());
+
+            $view->render([
+                "errors" => ["Registrazione fallita: " . $e->getMessage()],
+                "formData" => $post
             ]);
         }
     }

@@ -1,11 +1,20 @@
-<header>
-    <nav>
+<header class="header">
+    <nav aria-label="Aiuti alla navigazione">
         <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="login.php">Login</a></li>
-            <li><a href="register.php">Register</a></li>
-            <li></li>
-            <li><a href="logout.php">Logout</a></li>
+            <li><a href="#menu" class="navigationHelp">Vai alla navigazione</a></li>
+            <li><a href="#content" class="navigationHelp">Vai al contenuto</a></li>
         </ul>
     </nav>
+    <div class="header-container">
+        <div class="logo-breadcrumb-container">
+            
+            <h1 class="logo">ESU Advisor</h1>
+            <nav class="breadcrumb-integrated" aria-label="Percorso di navigazione">
+                <template id="breadcrumb-template"></template>
+            </nav>
+        </div>
+        <nav class="nav-buttons" aria-label="Azioni utente">
+            <template id="session-buttons-template"></template>
+        </nav>
+    </div>
 </header>

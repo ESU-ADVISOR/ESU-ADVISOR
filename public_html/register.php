@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once "../src/config.php";
 
 use Controllers\RegisterController;
@@ -7,38 +6,43 @@ use Controllers\RegisterController;
 $controller = new RegisterController();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = $email = $password = "";
+    $username = $password = "";
     $errors = [];
 
     $username = trim($_POST["username"] ?? "");
-    $email = trim($_POST["email"] ?? "");
     $password = trim($_POST["password"] ?? "");
+    $confirmPassword = trim($_POST["confirm_password"] ?? "");
+    $dataNascita = trim($_POST["birth_date"] ?? "");
 
     if (empty($username)) {
-        $errors[] = "Username is required.";
+        $errors[] = "È necessario lo <span lang='en'>username</span>.";
     } else {
         if (strlen($username) < 3 || strlen($username) > 50) {
-            $errors[] = "Username must be between 3 and 50 characters long.";
+            $errors[] = "Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.";
         }
-        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $username)) {
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
             $errors[] =
-                "Username can only contain letters, numbers, underscores, and hyphens.";
+                "Lo <span lang='en'>username</span> può contenere solo lettere, numeri e <span lang='en'>underscore</span>.";
         }
     }
 
-    if (empty($email)) {
-        $errors[] = "Email address is required.";
+    if (empty($dataNascita) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dataNascita)) {
+        $errors[] = "Per favore inserisci una data di nascita valida.";
     } else {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Please enter a valid email address.";
+        $birthDate = new DateTime($dataNascita);
+        $today = new DateTime();
+        $today->setTime(0, 0, 0);
+
+        if ($birthDate > $today) {
+            $errors[] = "La data di nascita non può essere nel futuro.";
         }
     }
 
     if (empty($password)) {
-        $errors[] = "Password is required.";
+        $errors[] = "È necessaria la <span lang='en'>password</span>.";
     } else {
         if (strlen($password) < 8) {
-            $errors[] = "Password must be at least 8 characters long.";
+            $errors[] = "La <span lang='en'>password</span> deve essere di almeno 8 caratteri.";
         }
         if (
             !preg_match(
@@ -47,27 +51,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             )
         ) {
             $errors[] =
-                "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).";
+                "La <span lang='en'>password</span> deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale (@$!%*?&).";
         }
+    }
+
+    if (empty($confirmPassword)) {
+        $errors[] = "È necessario confermare la <span lang='en'>password</span>.";
+    } elseif ($password !== $confirmPassword) {
+        $errors[] = "Le <span lang='en'>password</span> non corrispondono.";
     }
 
     if (empty($errors)) {
         $data = [
             "username" => $username,
-            "email" => $email,
             "password" => $password,
+            "birth_date" => $dataNascita,
+            "confirm_password" => $confirmPassword,
         ];
         $controller->handlePOSTRequest($data);
     } else {
         http_response_code(400);
-        echo json_encode([
+
+        $controller->handleGETRequest([
             "status" => "error",
             "errors" => $errors,
+            "formData" => [
+                "username" => $username,
+                "birth_date" => $dataNascita,
+                "password" => $password,
+                "confirm_password" => $confirmPassword,
+            ],
         ]);
+
         exit();
     }
 } else {
     $controller->handleGETRequest($_GET);
 }
-
-?>

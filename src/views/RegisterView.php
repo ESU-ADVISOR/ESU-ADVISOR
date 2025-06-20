@@ -1,4 +1,5 @@
 <?php
+
 namespace Views;
 
 use Views\Utils;
@@ -19,6 +20,7 @@ class RegisterView extends BaseView
             foreach ($data["errors"] as $error) {
                 $errorHtml .= "<div class='error'>$error</div>";
             }
+            $errorHtml = "<div class='error-container' id='server-error-container' role='alert' aria-live='assertive'>$errorHtml</div>";
             Utils::replaceTemplateContent(
                 $this->dom,
                 "server-response-template",
@@ -27,7 +29,7 @@ class RegisterView extends BaseView
         }
 
         if (isset($data["success"])) {
-            $successHtml = "<div class='success'>{$data["success"]}</div><p>You can now <a href='login.php'>login</a></p>";
+            $successHtml = "<p class='success' role='polite' aria-live='region'>{$data["success"]} Ora puoi effettuare il <a href='login.php' lang='en'>login</a></p>";
             Utils::replaceTemplateContent(
                 $this->dom,
                 "server-response-template",
@@ -35,7 +37,38 @@ class RegisterView extends BaseView
             );
         }
 
+        if (isset($data["formData"])) {
+
+            if (isset($data["formData"]["username"])) {
+                $username = htmlspecialchars($data["formData"]["username"]);
+                $this->dom->getElementById("username")->setAttribute(
+                    "value",
+                    $username
+                );
+            }
+            if (isset($data["formData"]["birth_date"])) {
+                $birthDate = htmlspecialchars($data["formData"]["birth_date"]);
+                $this->dom->getElementById("birth_date")->setAttribute(
+                    "value",
+                    $birthDate
+                );
+            }
+            if (isset($data["formData"]["password"])) {
+                $password = htmlspecialchars($data["formData"]["password"]);
+                $this->dom->getElementById("password")->setAttribute(
+                    "value",
+                    $password
+                );
+            }
+            if (isset($data["formData"]["confirm_password"])) {
+                $confirmPassword = htmlspecialchars($data["formData"]["confirm_password"]);
+                $this->dom->getElementById("confirm_password")->setAttribute(
+                    "value",
+                    $confirmPassword
+                );
+            }
+        }
+
         echo $this->dom->saveHTML();
     }
 }
-?>

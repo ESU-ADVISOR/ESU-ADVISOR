@@ -9,9 +9,10 @@ services:
     ports:
       - "8800:80"
     volumes:
-      - "./public_html:/var/www/html:Z"
+      - "./public_html:/var/www/public_html:Z"
       - "./src:/var/www/src:Z"
       - "./php.ini:/usr/local/etc/php/php.ini:Z"
+      - "./000-default.conf:/etc/apache2/sites-available/000-default.conf:Z"
     env_file:
       - ".env"
   mariadb:
@@ -27,6 +28,14 @@ services:
       MYSQL_DATABASE: "db"
       MYSQL_USER: "user"
       MYSQL_PASSWORD: "password"
+  phpmyadmin:
+    image: "phpmyadmin/phpmyadmin"
+    restart: "unless-stopped"
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: "mariadb"
+      MYSQL_ROOT_PASSWORD: "root-password"
 
 volumes:
   mariadb:

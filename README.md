@@ -1,4 +1,4 @@
-# TecWeb
+# ESU-ADVISOR
 
 ## Local Development
 To start the local development environment, you'll need to have installed [docker](https://www.docker.com/), after that run the following command inside the repo directory:
@@ -45,7 +45,7 @@ Then you can open your browser and see the website at http://localhost:8800
 ├── docs                # Documentation
 ├── fix_perms.sh        # Script to fix permissions on the project files (not sure if we'll need this)
 ├── html                # Root directory for the web server which points at /var/www/html
-│   ├── *.php          # PHP filesl, each one is a page/route
+│   ├── *.php          # PHP files, each one is a page/route
 │   ├── favicon.ico
 │   ├── fonts          # Fonts
 │   ├── images         # Images

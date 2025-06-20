@@ -1,53 +1,120 @@
 <!doctype html>
-
 <html lang="it">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- <link rel="stylesheet" href="/styles/main.css" /> -->
-        <!-- <link rel="icon" href="images/favicon.ico" type="image/x-icon" /> -->
-        <title>ESUADVISOR</title>
+        <meta
+            name="description"
+            content="ESU Advisor è un sito web permette di cercare piatti, selezionare mense e visualizzare il menu del giorno."
+        />
+        <link rel="stylesheet" href="styles/style.css" />
+        <link rel="stylesheet" href="styles/print.css" />
+
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+        <title>ESU Advisor</title>
+        <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <!-- <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin /> -->
+
+        <script src="scripts/search-piatti.js" defer></script>
+        <script src="scripts/mense-select.js" defer></script>
     </head>
     <body>
         <template id="header-template"></template>
-        <main>
-            <!-- <h1>ESUADVISOR</h1> -->
-
-            <img class="logo" src="images/logo.svg" alt="ESUADVISOR (logo)" />
-
-            <template id="welcome-template"></template>
-
-            <section class="search-section">
-                <form action="search.php" method="GET" class="search-form">
-                    <input
-                        type="text"
-                        name="query"
-                        placeholder="Cerca Menù, Mense o Piatti..."
-                        required
-                    />
-                    <button type="submit">Cerca</button>
-                </form>
-            </section>
-
-            <section class="menu-section">
-                <h2>Menu</h2>
-                <ul>
-                    <template id="menu-template"></template>
-                </ul>
-            </section>
-
-            <section class="mense-section">
-                <h2>Mense</h2>
-                <ul>
-                    <template id="mense-template"></template>
-                </ul>
-            </section>
-
-            <section class="dish-of-the-day">
-                <h2>Piatto del giorno</h2>
-                <template id="dish-of-the-day-template"></template>
-            </section>
-        </main>
         <template id="footer-template"></template>
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
+
+            <main class="page-content" id="content">
+                <div class="mensa-select-container">
+                    <section class="mense-section">
+                        <form method="GET" id="mense-selection" class="mense-section">
+                            <label for="mense-select" class="mense-label">Seleziona mensa:</label>
+                            <select id="mense-select" name="mensa" class="form-select">
+                                <template id="mense-template"></template>
+                            </select>
+                            <noscript>
+                                <div class="flex">
+                                    <input type="submit" class="form-button secondary" value="Aggiorna" />
+                                </div>
+                            </noscript>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- Container principale per layout responsivo -->
+                <div class="content-layout">
+                    <!-- Colonna Sinistra: Wrapper scrollabile per Piatto del giorno + Menu -->
+                    <div id="content-scroll" class="left-column">
+                        <noscript>
+                            <div class="noscript-message">
+                                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le
+                                funzionalit&agrave; del sito, &egrave; necessario abilitare JavaScript.
+                            </div>
+                        </noscript>
+                        <!-- Piatto del giorno - PRIMO in ordine su desktop -->
+                        <section class="dish-of-the-day">
+                            <div class="card card-expanded">
+                                <h2 class="card-title">Piatto del giorno</h2>
+                                <p class="text-secondary">Il piatto del giorno &egrave; il piatto più votato della mensa selezionata.</p>
+                                <template id="dish-of-the-day-template"></template>
+                            </div>
+                        </section>
+
+                        <!-- Menu del giorno - SECONDO in ordine su desktop -->
+                        <section class="menu-section">
+                            <div class="card card-expanded mc-b">
+                                <h2 class="card-title">Menu del giorno</h2>
+
+                                <div class="search-form mb-3" role="search">
+                                    <label for="search-piatti">Cerca piatti:</label>
+                                    <div class="search-input-wrapper">
+                                        <input
+                                            type="search"
+                                            id="search-piatti"
+                                            class="form-input"
+                                            placeholder="Cerca piatti..."
+                                            aria-label="Cerca piatti"
+                                        />
+                                        <button
+                                            type="submit"
+                                            id="clear-search"
+                                            class="search-clear-button"
+                                            aria-label="Cancella ricerca"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    id="search-results-count"
+                                    class="search-results-info"
+                                    aria-live="polite"
+                                    role="status"
+                                ></div>
+                                <ul class="piatti-list">
+                                    <template id="piatti-template"></template>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Colonna Destra: Informazioni Mense -->
+                    <section class="mense-info-section">
+                        <div class="card card-expanded">
+                            <h2 class="card-title">Informazioni sulla mensa</h2>
+                            <template id="mense-info-template"></template>
+                        </div>
+                    </section>
+                </div>
+
+                <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+                    <span class="back-to-top-text">Torna su</span>
+                    <span aria-hidden="true" class="back-to-top-arrow">&uarr;</span>
+                </button>
+            </main>
+        </div>
+
+        <script src="scripts/back-to-top.js" defer></script>
     </body>
 </html>

@@ -215,7 +215,7 @@ Gli utenti registrati possono lasciare recensioni sui piatti, valutandoli e forn
 Gli utenti possono impostare preferenze alimentari specifiche, come allergie o intolleranze, per ricevere avvisi sui piatti che potrebbero contenere ingredienti indesiderati.
 === Personalizzazione impostazioni
 Nella pagina delle impostazioni, gli utenti sia autenticati che non possono personalizzare la propria esperienza di navigazione, in particolare, è possibile:
-- Attivare la *modalità scura* per ridurre l'affaticamento visivo, se il dispositivo o il browser ha la preferenza per il tema scuro il sito apparirà in tale modo in automatico;
+- Attivare la *modalità scura* per ridurre l'affaticamento visivo, se il dispositivo o il browser ha la preferenza per il tema scuro il sito apparirà in tal modo automaticamente;
 - Modificare le *dimensioni del testo* per una lettura più confortevole;
 - Cambiare il font in uno specifico font per la *dislessia* per migliorare la leggibilità del testo.
 
@@ -260,43 +260,44 @@ ESU-ADVISOR/
 ```
 
 == Backend PHP
+Tutte le richieste che vengono effettuate al sito web vengono gestite da file PHP present in public_html, come `index.php`, `register.php`, `login.php`, `settings.php`, etc., che fungono da entry point per l'applicazione. Questi file, oltre a validare i dati inseriti dell'utente lato server, si occupano di caricare le configurazioni necessarie, inizializzare la sessione e instradare le richieste agli appropriati controller MVC in base all'URL richiesto e al metodo utilizzato (GET/POST).
 
 === Pattern Architetturale MVC
 Il progetto implementa rigorosamente il pattern Model-View-Controller (MVC) per garantire modularità e manutenibilità, dove:
 
 ==== Model Layer
 Gestisce la logica dei dati e le interazioni con il database:
-- *DatabaseModel*: gestione dell'accesso al database;
-- *MenseModel*: informazioni sulle mense e orari;
-- *MenuModel*: informazioni sui menu delle mense e i loro piatti;
-- *PiattoModel*: catalogo piatti con categorie e allergeni;
-- *PreferenzeUtenteModel*: personalizzazione esperienza utente;
-- *RecensioneModel*: sistema di valutazioni e commenti;
-- *UserModel*: gestione utenti e autenticazione.
+- *DatabaseModel*: gestisce l'accesso al database;
+- *MenseModel*: rappresenta le mense universitarie e le relative informazioni;
+- *MenuModel*: rappresenta le i menu delle mense;
+- *PiattoModel*: rappresenta un piatto di un singolo menu;
+- *PreferenzeUtenteModel*: l'insieme delle impostazioni di personalizzazione esperienza utente;
+- *RecensioneModel*: rappresenta una singola valutazione;
+- *UserModel*: rappresenta un utente.
 #pagebreak()
 ==== View Layer
 Si occupa della presentazione dei dati attraverso un sistema di template che separa il contenuto dalla formattazione:
 - *BaseView*: classe di base da cui ogni view eredita le funzionalità;
-- *ErrorView*: gestione della pagina di errore;
+- *ErrorView*: gestisce le pagine di errore;
 - *IndexView*: homepage con selezione mense;
-- *LoginView* / *RegisterView*: autenticazione;
-- *PiattoView*: dettaglio piatto e recensioni;
-- *ProfileView*: dettaglio profilo;
-- *ReviewView*: dettaglio di una recensione;
-- *ReviewEditView*: dettaglio piatto e recensioni;
-- *SettingsView*: gestione preferenze e accessibilità.
+- *LoginView* / *RegisterView*: mostra i form di autenticazione o registrazione;
+- *PiattoView*: mostra i dettagli di un piatto piatto e le sue recensioni;
+- *ProfileView*: mostra i dettagli di un profilo utente;
+- *ReviewView*: mostra i dettagli di una recensione;
+- *ReviewEditView*: mostra un form per modificare una recensione;
+- *SettingsView*: mostra la pagina delle impostazioni.
 
 ==== Controller Layer
 Gestisce le richieste dell'utente, dialoga con il Model e seleziona la View appropriata da mostrare con i dati appropriati:
 - *BaseController*: classe di base da cui ogni controller eredita le funzionalità;
-- *ErrorController*: gestisce la richiesta errata;
-- *IndexController*: Llgica homepage e selezione mense;
-- *LoginController* / *RegisterController*: autenticazione;
-- *PiattoController*: gestione visualizzazione piatti;
-- *ProfileController*: gestione informazioni utente;
-- *ReviewController*: gestione recensioni;
-- *ReviewEditController*: gestione modifiche recensioni;
-- *SettingsController*: configurazione utente.
+- *ErrorController*: gestisce le pagine di errore;
+- *IndexController*: gestisce la visualizzazione dei piatti e delle informazioni di una mensa;
+- *LoginController* / *RegisterController*: gestiscono l'autenticazione e la registrazione degli utenti nel sito web;
+- *PiattoController*: gestisce la visualizzazione dei singoli piatti presenti nel database;
+- *ProfileController*: gestisce la visualizzazione delle informazioni sul profilo utente;
+- *ReviewController*: si occupa dell'inserimento e modifica delle recensioni di un utente;
+- *ReviewEditController*: un controller più specifico che gestisce il form di modifica di una recensione;
+- *SettingsController*: si occupa della gestione delle impostazioni del sito web.
 
 === Tecnica di Templating
 Per separare la struttura dal comportamento abbiamo fatto uso del tag *`<template>`* fornito da HTML per evitare di inserire snippet di PHP all'interno della struttura del documento. Per ogni tag viene aggiunto un id univoco con il formato *`nome-contenuto-template`*. Poi per inserire i dati relativi si è fatto uso della funzione *`replaceTemplateContent($dom, $templateId, $newContent)`* presente nel file `Utils.php`, dove:
@@ -308,10 +309,12 @@ Per effettuare il parsing del file e ottenere la posizione del tag è stata util
 
 Questa funzione viene utilizzata spesso per gestire tutte le varie componenti del sito che richiedono dati provenienti dal DB o che richiedono di essere processate, ad esempio viene utilizzata per modularizzare la struttura della pagina, in particolare ogni View eredita dalla classe *`BaseView`* che espone il metodo *`render()`* che di default inserisce le componenti *`header`*, *`footer`* e *`sidebar`* in ogni file html che viene richiesto affinché esistano i tag template corrispondenti. Questo permette di separare la struttura di componenti ripetute in file unici favorendo la modularità del sito e permettendo a più componenti del gruppo di lavorare sul progetto evitando il più possibile di avere conflitti nelle modifiche.
 #pagebreak()
-== Stili CSS
-Per gestire gli stili che abbiamo applicato alla pagina sono state definite delle variabili globali per rendere coerenti le proprietà dei vari elementi, come colore dei bottoni, il testo, background di elementi ripetuti, spaziature, font, etc..., inoltre vi è presente la variazione delle stesse variabili per il tema scuro che verranno applicate in base ad una classe che verrà aggiunta al nodo root *`<html>`* per favorire l'uso delle stesse classi per entrambi i temi
+== CSS
+Per il sito è stato utilizzato CSS3 puro, e per una migliore gestione del layout delle pagine sono state definite delle variabili globali per rendere coerenti le proprietà dei vari elementi, come colore dei bottoni, il testo, background di elementi ripetuti, spaziature, font, e così via. Inoltre vi è presente la variazione delle stesse variabili per il tema scuro, che verranno applicate in base in base alle preferenze dell'utente o del suo sistema operativo.
 
-== Scripts Javascript e Validazione dell'input
+È stato anche implementato un sistema di *media queries* per garantire che il sito sia responsive e favorisca la fruizione dei contenuti del sito su più dispositivi con diverse dimensioni di schermo.
+
+== Scripts Javascript e Validazione dell'input lato Client
 Sono stati utilizzati script javascript per gestire il comportamento del sito, in particolare:
 - *Validazione dell'input dei form lato client*: non strettamente necessaria in quanto vi è l'equivalente validazione a lato server per motivi di sicurezza, ma aiuta l'utente ad inserire correttamente i dati richiesti prima di ritrovarsi con una pagina d'errore;
 
@@ -367,12 +370,14 @@ Le entità principali sono collegate tra loro e arricchite di dettagli attravers
 Infine, sono presenti tabelle per gestire informazioni aggiuntive sui piatti e le preferenze degli utenti.
   - *piatto_foto* e *piatto_allergeni:* queste due tabelle aggiungono dettagli ai piatti. La prima gestisce l'associazione uno-a-molti tra un piatto e le sue foto (salvando il percorso all'immagine nel db). La seconda definisce una relazione molti-a-molti per associare a ogni piatto uno o più allergene da una lista predefinita conforme alla normativa europea;
   - *preferenze_utente* e *allergeni_utente:* queste tabelle sono dedicate alla personalizzazione dell'esperienza utente. `preferenze_utente` ha una relazione uno-a-uno con utente e memorizza impostazioni di accessibilità come la `dimensione_testo`, l'uso del font per la dislessia (`modifica_font`), il `modifica_tema` visivo e la `mensa_preferita`. `allergeni_utente`, invece, permette agli utenti di registrare i propri allergeni personali in una relazione molti-a-molti, per ricevere avvisi mirati.
-#pagebreak()
+
 == SEO e Performance
 Al fine di ottimizzare il posizionamento del sito nei motori di ricerca, sono state implementate le seguenti strategie:
 - *Definizione di Meta tags*: sono stati creati meta tag specifici per ogni pagina, inclusi titolo e descrizione per ogni pagina del sito web;
 - *Sitemap XML*: è stata creata una sitemap per facilitare l'indicizzazione da parte dei motori di ricerca, che include tutte le pagine principali del sito. La sitemap viene generata automaticamente dallo script `sitemap.php` presente nella cartella `public_html/`, e viene aggiornata includendo ogni pagina del sito web, al momento dell'accesso;
 - *URLs SEO-friendly*: ogni URL del sito web è stato progettato per essere descrittivo e contenere parole chiave pertinenti, evitando di utilizzare parametri complessi o identificatori numerici. Ad esempio, l'URL per la pagina di recensioni di un piatto specifico è strutturato come `http://<server>/review.php?piatto=<nome-piatto>&mensa=<nome-mensa>`, dove `<nome-piatto>` e `<nome-mensa>` sono i nomi dei piatti e delle mense rispettivamente.
+
+#pagebreak()
 
 = Accessibilità
 
@@ -390,7 +395,7 @@ Vengono riportati qui sotto altri aspetti che rendono questo sito accessibile a 
 - *Supporto per gli screen reader*: sono state utilizzate classi CSS per migliorare l'accessibilità del sito per gli utenti che necessitano l'uso di uno screen reader, dove tali applicano descrizioni e informazioni utili soprattutto riguardo alle immagini dei piatti presenti nel sito e le stelle di valutazione nella pagina per la review, dove ad ogni stella vi è indicata il numero e il significato della valutazione;
 
 - *Tabelle accessibili*: ogni tabella del sito web è stata resa accessibile tramite:
-  - *Attributi di scoping*: Ogni tabella ha un'intestazione chiara e descrittiva per ogni colonna, che aiuta gli utenti a comprendere il contenuto della tabella;
+  - *Attributi di scoping*: Ogni tabella ha un'intestazione chiara e descrittiva per ogni colonna, aiutando gli utenti a comprendere la struttura e il contenuto della tabella;
 
   - *Tag di accessibilità*: lo scopo principale delle tabelle nel sito è quello di mostrare gli orari di apertura delle mense di Padova, quindi sono stati utilizzati i tag `<abbr>` per abbreviare i nomi dei giorni della settimana, ad esempio "Lun" per "Lunedì", "Mar" per "Martedì", etc. Questo aiuta gli utenti a comprendere rapidamente il significato delle abbreviazioni. Inoltre, è stato utilizzato il tag `<time>` per indicare gli orari di apertura e chiusura delle mense, in modo che gli screen reader possano leggere correttamente le informazioni temporali;
 
@@ -496,18 +501,18 @@ Per i casi in cui il colore di uno sfondo è semi-trasparente, e stato concatena
 )
 
 = Testing e Validazione
-Il sito durante la fase di sviluppo e collaudo finale è stato sottoposto a numerosi test che ci hanno permesso di valutare alcune decisioni prese e trovare parti che necessitavano correzioni o migliorie.
+Nei paragrafi successivi sono riportati tutti i test di accessibilità effettuati per il sito web ESU-ADVISOR, includendo gli strumenti utilizzati per la validazione.
 
 == Ambiente di Sviluppo
-Per avere un ambiente di sviluppo unico tra i membri del gruppo è stato utilizzato *Docker* per eseguire il codice sviluppato in un ambiente il più simile a quello del server del laboratorio, in particolare:
+Per avere un ambiente di sviluppo unico tra i membri del gruppo è stato utilizzato *Docker* per eseguire il codice sviluppato in un ambiente il più simile a quello del server del laboratorio, abbiamo utilizzato in particolare:
 - Apache con PHP 8.2 (stessa del server universitario, diversamente da quanto inizialmente scritto nella consegna del progetto detta a lezione, ossia 8.1);
 - MariaDB 10.6.7;
-- phpmyadmin come strumento di utility per visualizzare il database.
+- PHPMyAdmin come strumento di utility per visualizzare il database.
 
 Periodicamente durante il periodo di sviluppo del progetto il gruppo ha provato il sito anche sul server universitario per confermare la sua corretta funzionalità
 
 == Strumenti
-Qui sono riportati vari strumenti utilizzati al fine di convalidare sia la correttezza del codice utilizzato che la sua accessibilità:
+Qui sono riportati vari strumenti utilizzati al fine di convalidare l'accessibilità del sito:
 
 === Strumenti per L'accessibilità
 - *WAVE* (Web Accessibility Evaluation Tool);

@@ -13,6 +13,14 @@
 
     :root {
         --primary: #000000;
+
+        --background: #ffffff;
+        --background-card: #ffffff;
+
+        --text-primary: #000000;
+        --text-secondary: #333333;
+        --text-on-primary: #ffffff;
+        --text-on-danger: #ffffff;
     }
 
     .logo {
@@ -22,7 +30,7 @@
         width: 200px;
     }
 
-    a{
+    a {
         display: none;
     }
 
@@ -202,7 +210,7 @@
         vertical-align: baseline !important;
     }
 
-    .directions-button::after{
+    .directions-button::after {
         content: " [" attr(href) "] " !important;
         word-break: break-all;
         overflow-wrap: anywhere;
@@ -237,6 +245,15 @@
         .schedule-container th,
         .schedule-container td {
             border: 1px solid #333 !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .piatti-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+            align-items: center;
         }
     }
 }

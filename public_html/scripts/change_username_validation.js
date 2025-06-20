@@ -25,10 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
         "Lo <span lang='en'>username</span> deve essere compreso tra 3 e 50 caratteri.",
       );
     }
-    if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
       isValid = false;
       errors.push(
-        "Lo <span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini.",
+        "Lo <span lang='en'>username</span> può contenere solo lettere, numeri e <span lang='en'>underscore</span>.",
       );
     }
 

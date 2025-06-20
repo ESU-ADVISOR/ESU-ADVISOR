@@ -82,9 +82,9 @@ class SettingsController implements BaseController
                 ]);
                 exit();
             }
-            if (!preg_match('/^[a-zA-Z0-9_-]+$/', $post['new_username'])) {
+            if (!preg_match('/^[a-zA-Z0-9_]+$/', $post['new_username'])) {
                 $view->render([
-                    "errors" => ["Lo <span lang='en'>username</span> può contenere solo lettere, numeri, <span lang='en'>underscore</span> e trattini"],
+                    "errors" => ["Lo <span lang='en'>username</span> può contenere solo lettere, numeri e <span lang='en'>underscore</span>"],
                     "formData" => ['new_username' => $post['new_username']],
                     "template" => "server-response-username-template"
                 ]);

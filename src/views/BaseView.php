@@ -81,6 +81,8 @@ abstract class BaseView
         switch ($this->currentPage) {
             case 'index':
                 return "Menu Mense Universitarie Padova | $baseTitle";
+            case 'mensa':
+                return "Mensa Universitaria | $baseTitle";
             case 'piatto':
                 return "Dettagli Piatto | $baseTitle";
             case 'login':
@@ -103,6 +105,8 @@ abstract class BaseView
         switch ($this->currentPage) {
             case 'index':
                 return "Scopri i menu giornalieri delle mense ESU di Padova. Trova orari, località e recensioni dei piatti delle mense universitarie.";
+            case 'mensa':
+                return "Informazioni sulla mensa universitaria di Padova: orari, indirizzo, telefono e link a Google Maps. Scopri come raggiungerla facilmente.";
             case 'piatto':
                 return "Leggi recensioni e dettagli sui piatti delle mense universitarie di Padova. Scopri ingredienti, allergeni e valutazioni degli studenti.";
             case 'login':
@@ -126,6 +130,8 @@ abstract class BaseView
         switch ($this->currentPage) {
             case 'index':
                 return "mense,università,Padova,menu,ESU,cibo,studenti,recensioni,piatti,orari";
+            case 'mensa':
+                return "mensa, Padova, ESU, orari, apertura, indirizzo, telefono, università, Google Maps";
             case 'piatto':
                 return "piatti,mense,Padova,recensioni,valutazioni,ingredienti,università,allergeni,ESU";
             case 'login':

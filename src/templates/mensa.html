@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="description"
+            content="Pagina relativa alle informazioni di una mensa dell'applicazione ESU Advisor"
+        />
+        <link rel="stylesheet" href="styles/style.css" />
+        <link rel="stylesheet" href="styles/print.css" />
+
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+        <title>ESU Advisor</title>
+        <link rel="preload" href="fonts/OpenDyslexic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <!-- <link rel="preload" href="fonts/OpenDyslexic-Bold.woff2" as="font" type="font/woff2" crossorigin /> -->
+
+        <script src="scripts/mense-select.js" defer></script>
+    </head>
+    <body>
+        <template id="header-template"></template>
+        <template id="footer-template"></template>
+        <div class="page-layout">
+            <template id="sidebar-template"></template>
+
+            <main class="page-content" id="content">
+                <div class="mensa-select-container">
+                    <section class="mense-section">
+                        <form method="GET" id="mense-info-selection" class="mense-section">
+                            <label for="mense-select" class="mense-label">Seleziona mensa:</label>
+                            <select id="mense-info-select" name="mensa" class="form-select">
+                                <template id="mense-template"></template>
+                            </select>
+                            <noscript>
+                                <div class="flex">
+                                    <input type="submit" class="form-button secondary" value="Aggiorna" />
+                                </div>
+                            </noscript>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- Container principale per layout responsivo -->
+                <div class="content-layout">
+                    <!-- Colonna Sinistra: Wrapper scrollabile per Piatto del giorno + Menu -->
+                    <noscript>
+                        <div class="noscript-message">
+                            <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le
+                            funzionalit&agrave; del sito, &egrave; necessario abilitare JavaScript.
+                        </div>
+                    </noscript>
+                    <section class="mense-info-section">
+                        <div class="card card-expanded">
+                            <h2 class="card-title">Informazioni sulla mensa</h2>
+                            <template id="mense-info-template"></template>
+                        </div>
+                    </section>
+                </div>
+
+                <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+                    <span class="back-to-top-text">Torna su</span>
+                    <span aria-hidden="true" class="back-to-top-arrow">&uarr;</span>
+                </button>
+            </main>
+        </div>
+
+        <script src="scripts/back-to-top.js" defer></script>
+    </body>
+</html>

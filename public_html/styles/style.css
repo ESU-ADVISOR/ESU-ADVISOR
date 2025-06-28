@@ -1083,7 +1083,6 @@ p {
         padding: 1.5rem 0;
         flex: 1;
         min-width: 250px;
-        max-width: 500px;
         overflow-y: auto;
         overflow-x: hidden;
         order: 3;
@@ -1092,6 +1091,11 @@ p {
         scrollbar-color: var(--primary) transparent;
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
+    }
+
+    #mensa-info-button{
+        padding: none;
+        text-align: center;
     }
 
     /* Scrollbar styles for columns */
@@ -1156,6 +1160,7 @@ p {
 
     .content-layout {
         grid-template-columns: 1fr 450px;
+        scroll-behavior: smooth;
     }
 }
 

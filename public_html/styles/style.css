@@ -1082,7 +1082,6 @@ p {
     .mense-info-section {
         padding: 1.5rem 0;
         flex: 1;
-        min-width: 250px;
         overflow-y: auto;
         overflow-x: hidden;
         order: 3;
@@ -1094,7 +1093,6 @@ p {
     }
 
     #mensa-info-button{
-        padding: none;
         text-align: center;
     }
 

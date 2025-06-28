@@ -27,7 +27,7 @@
                 <div class="mensa-select-container">
                     <section class="mense-section">
                         <form method="GET" id="mense-info-selection" class="mense-section">
-                            <label for="mense-select" class="mense-label">Seleziona mensa:</label>
+                            <label for="mense-info-select" class="mense-label">Seleziona mensa:</label>
                             <select id="mense-info-select" name="mensa" class="form-select">
                                 <template id="mense-template"></template>
                             </select>
@@ -41,15 +41,15 @@
                 </div>
 
                 <!-- Container principale per layout responsivo -->
-                <div class="content-layout">
+                <div class="content-layout" id="content-scroll">
                     <!-- Colonna Sinistra: Wrapper scrollabile per Piatto del giorno + Menu -->
-                    <noscript>
-                        <div class="noscript-message">
-                            <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le
-                            funzionalit&agrave; del sito, &egrave; necessario abilitare JavaScript.
-                        </div>
-                    </noscript>
                     <section class="mense-info-section">
+                        <noscript>
+                            <div class="noscript-message">
+                                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le
+                                funzionalit&agrave; del sito, &egrave; necessario abilitare JavaScript.
+                            </div>
+                        </noscript>
                         <div class="card card-expanded">
                             <h2 class="card-title">Informazioni sulla mensa</h2>
                             <template id="mense-info-template"></template>

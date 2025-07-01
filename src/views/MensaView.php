@@ -48,6 +48,7 @@ class MensaView extends BaseView
         $mensaId = $data["nome"];
 
         // === MENSE INFO ===
+        $menseInfoContent .= "<article>";
         $menseInfoContent .= "<h3 class=\"mense-info-name\">" . htmlspecialchars($data["nome"]) . "</h3>";
 
         $menseInfoContent .= "<dl class=\"contact-info\">";
@@ -115,7 +116,7 @@ class MensaView extends BaseView
                             <polyline points=\"15 3 21 3 21 9\"></polyline>
                             <line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\"></line>
                         </svg>
-                </a>";
+                </a></article>";
 
         Utils::replaceTemplateContent(
             $this->dom,

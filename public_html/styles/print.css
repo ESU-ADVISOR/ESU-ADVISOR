@@ -74,7 +74,7 @@
         min-height: auto !important;
     }
 
-    .left-column {
+    .mense-content {
         overflow: visible !important;
         max-height: none !important;
         height: auto !important;
@@ -141,10 +141,15 @@
         margin-top: 0.75rem;
     }
 
-    .mense-info-item h3 {
-        font-size: 1rem;
-        margin: 0 0 0.5rem 0;
-        color: #000 !important;
+    .mense-info-section a {
+        display: inline !important;
+        color: #0044ff !important;
+        text-decoration: underline !important;
+    }
+
+    .mense-info-section a:visited {
+        color: #6d2ed0 !important;
+        text-decoration: underline !important;
     }
 
     .contact-info {

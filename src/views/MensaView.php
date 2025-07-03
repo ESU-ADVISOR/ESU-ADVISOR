@@ -47,8 +47,9 @@ class MensaView extends BaseView
 
         $mensaId = $data["nome"];
 
+        $backToMensa = "<a href=\"./index.php?mensa=" . urlencode($mensaId) . "\" class=\"nav-button primary\" id=\"mensa-info-button\">Visualizza Piatti</a>";
+        
         // === MENSE INFO ===
-        $menseInfoContent .= "<article>";
         $menseInfoContent .= "<h3 class=\"mense-info-name\">" . htmlspecialchars($data["nome"]) . "</h3>";
 
         $menseInfoContent .= "<dl class=\"contact-info\">";
@@ -75,13 +76,13 @@ class MensaView extends BaseView
         ];
 
         $menseInfoContent .= "
-                <p class='sr-only' id='orari-mensa-description-" . htmlspecialchars(str_replace(' ', '-', strtolower($mensaId))) . "'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
-                <table aria-describedby=\"orari-mensa-description-" . htmlspecialchars(str_replace(' ', '-', strtolower($mensaId))) . "\">
+                <p class='sr-only' id='orari-mensa-description'>Tabella degli orari della mensa organizzata in due colonne: la prima indica i giorni della settimana, la seconda gli orari di apertura. Ogni riga corrisponde a un giorno.</p>
+                <table aria-describedby=\"orari-mensa-description\">
                     <caption>Orari della mensa:</caption>
                     <thead>
                         <tr>
-                            <th scope=\"col\">Giorno</th>
-                            <th scope=\"col\">Orari</th>
+                            <th>Giorno</th>
+                            <th>Orari</th>
                         </tr>
                     </thead>
                     <tbody>";
@@ -116,7 +117,7 @@ class MensaView extends BaseView
                             <polyline points=\"15 3 21 3 21 9\"></polyline>
                             <line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\"></line>
                         </svg>
-                </a></article>";
+                </a>";
 
         Utils::replaceTemplateContent(
             $this->dom,
@@ -128,7 +129,11 @@ class MensaView extends BaseView
             "mense-info-template",
             $menseInfoContent
         );
-
+        Utils::replaceTemplateContent(
+            $this->dom,
+            "mense-piatti-template-link",
+            $backToMensa
+        );
         echo $this->dom->saveHTML();
     }
 }

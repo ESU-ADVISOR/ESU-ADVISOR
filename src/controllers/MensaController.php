@@ -36,7 +36,7 @@ class MensaController implements BaseController
         } else {
             $view = new ErrorView();
             $view->render([
-                "message" => "La Mensa richiesta non esiste.",
+                "message" => "La mensa richiesta non esiste.",
             ]);
         }
     }

@@ -37,24 +37,30 @@
                                 </div>
                             </noscript>
                         </form>
+                        <div>
+                            <template id="mense-piatti-template-link"></template>
+                        </div>
                     </section>
                 </div>
 
                 <!-- Container principale per layout responsivo -->
-                <div class="content-layout" id="content-scroll">
-                    <!-- Colonna Sinistra: Wrapper scrollabile per Piatto del giorno + Menu -->
-                    <section class="mense-info-section">
-                        <noscript>
-                            <div class="noscript-message">
-                                <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le
-                                funzionalit&agrave; del sito, &egrave; necessario abilitare JavaScript.
+                <div class="content-layout">
+                    <div class="mense-content" id="content-scroll">
+                        <section class="mense-info-section">
+                            <noscript>
+                                <div class="noscript-message">
+                                    <strong>JavaScript &egrave; disabilitato.</strong> Per avere tutte le
+                                    funzionalit&agrave; del sito, &egrave; necessario abilitare JavaScript.
+                                </div>
+                            </noscript>
+                            <article>
+                            <div class="card card-expanded">
+                                <h2 class="card-title">Informazioni sulla mensa</h2>
+                                <template id="mense-info-template"></template>
                             </div>
-                        </noscript>
-                        <div class="card card-expanded">
-                            <h2 class="card-title">Informazioni sulla mensa</h2>
-                            <template id="mense-info-template"></template>
-                        </div>
-                    </section>
+                            </article>
+                        </section>
+                    </div>
                 </div>
 
                 <button type="button" id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
